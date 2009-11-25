@@ -1,0 +1,9 @@
+=================================================
+                    BUG LIST
+=================================================
+
+1.  Local socket sometimes stays open after remote machine closes connection. (2009/nov/23)
+This may only be happening when I shut down the program in the debugger, in which case it's not a bug.
+
+2.  ~tArray() is causing exception on exit from wm_init() in cDlgSettingsAdvanced.cpp. (2009/nov/23)
+Fixed 2009/nov/24.  Cause was allocation in DLL and deallocation in EXE.  Solution was to derive a fixed class from the template with all function code in the DLL.

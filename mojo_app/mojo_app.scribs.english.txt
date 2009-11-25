@@ -1,0 +1,87 @@
+//======================================================================================================================
+//
+//      mojo.scribs.english.txt / mojo
+//
+//      Copyright 2009 Robert Sacks
+//
+//      This file gets compiled by scrib_compiler.exe into C++ source code.
+//
+//      Syntax:  Each line has the following form:
+//
+//                  Keyword = Text
+//
+//      Keywords identify where the text appears in the program's windows.  
+//      Text appears on the user's screen.
+//
+//      Printf formatting characters are embedded in text to control where and
+//      how the progam inserts variables.
+//
+//======================================================================================================================
+
+Welcome											= Howdy!
+Welcome											= Welcome to %s version %s.
+Welcome											= This is an early alpha build, and only a few features are working.
+Welcome											= For more info, go to www.hotkeynet.com.
+
+// ABOUT DIALOG
+
+DlgAbout										= %s
+DlgAbout										= This is an early alpha version.  Only a few features have been implemented so far.\n
+DlgAbout										= Version %s\n
+DlgAbout										= Built on %s\n
+DlgAbout										= Source code for this program is available under the GNU General Public License version 3.\n
+DlgAbout										= Copyright 2009 Robert Sacks
+DlgAbout.Link									= <a href=\"%s\">Learn more about %s</a>
+
+DlgMonitor.InputEventsHead						= Your last action
+DlgMonitor.MemosHead							= %s's actions on this PC
+DlgMonitor.ConnectionsHead						= Connections
+
+// INPUT EVENTS MONITOR
+
+InputEvents.MouseMotion							= Mouse motion
+InputEvents.ScrnPosition						= scrn position
+InputEvents.WinPosition							= win position
+InputEvents.KeyName								= Key name
+InputEvents.Event								= event
+InputEvents.VirtualKey							= virtual key
+InputEvents.ScanCode							= scan code
+InputEvents.Extended							= extended
+
+// SETTINGS DIALOG
+
+DlgSettingsConnection.Title						= %s: Connection settings
+DlgSettingsConnection.Connect.Label				= Connect computers
+DlgSettingsConnection.Connect.Caption			= Are you using this program with one computer or several?
+DlgSettingsConnection.Connect.Yes				= More than one PC
+DlgSettingsConnection.Connect.No				= One PC
+DlgSettingsConnection.AutoFind.Label			= Auto find
+DlgSettingsConnection.AutoFind.Caption			= Do you want this computer to find other computers on your local network automatically and open connections to them?
+DlgSettingsConnection.AutoFind.Yes				= Yes
+DlgSettingsConnection.AutoFind.No				= No
+DlgSettingsConnection.List.Label				= Connection list
+DlgSettingsConnection.List.Caption				= If you wish, you can type names or IP addresses of other computers, each on its own line.  The program will attempt to connect to them.  This is optional because Auto Find (above) usually connects all your computers automatically.
+DlgSettingsConnection.Link						= <a href=\"%s\">Learn more about these choices</a>
+DlgSettingsConnection.MoreOptions				= More Options
+DlgSettingsConnection.OK						= OK
+DlgSettingsConnection.Cancel					= Cancel
+DlgSettingsConnection.RestoreDefaults			= Restore Defaults
+
+// "MORE OPTIONS" SETTINGS DIALOG
+
+DlgSettingsConnectionAdvanced.Title						= %s: More connection settings
+DlgSettingsConnectionAdvanced.SpecifyLocalIP.Label		= This computer's IP address
+DlgSettingsConnectionAdvanced.SpecifyLocalIP.Caption 	= If this computer has more than one IP address, either you or the operating system must choose which one to use.
+DlgSettingsConnectionAdvanced.SpecifyLocalIP.Yes		= I'll choose from the following list:
+DlgSettingsConnectionAdvanced.SpecifyLocalIP.No			= Let the operating system choose.
+DlgSettingsConnectionAdvanced.NetworkOptions.Label		= Network options
+DlgSettingsConnectionAdvanced.UseNagle					= Use Nagle algorithm (default: unchecked)
+DlgSettingsConnectionAdvanced.Port.Label				= Port
+DlgSettingsConnectionAdvanced.Port.Caption				= Don't change the port unless you get an error message saying it's necessary.
+DlgSettingsConnectionAdvanced.Passphrase.Label			= Passphrase
+DlgSettingsConnectionAdvanced.Passphrase.Caption		= A passphrase is optional, but if you use one, it should contain at least 32 characters and spaces.
+DlgSettingsConnectionAdvanced.Link						= <a href=\"%s\">Learn more about these choices</a>
+DlgSettingsConnectionAdvanced.OK						= OK
+DlgSettingsConnectionAdvanced.Cancel					= Cancel
+DlgSettingsConnectionAdvanced.RestoreDefaults			= Restore Defaults
+DlgSettingsConnectionAdvanced.SpecifyLocalIP.Error		= Please select an IP address. You need to do this because\nyou checked \"I'll choose from the following list.\"
