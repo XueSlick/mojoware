@@ -1,0 +1,71 @@
+=================================================
+           FIRST PUBLIC BUILD -- TO DO
+=================================================
+
+
+1.  License.  								DONE 						
+
+2.  Settings file in DLL.  					DONE
+
+3.  Settings file in EXE.					DONE
+
+4.  Scrib file in DLL.						DONE
+
+5.  Scrib file in EXE.						DONE
+
+6.  Installer								DONE
+
+7.  Mouse and keyboard hooks. 				DONE
+
+8.  InputEvent display						DONE
+
+9.  Check version of osbxr_hooks.			DONE
+
+10.  About dialog							DONE
+
+11.  UDP finder								DONE
+
+12.  Pool.									DONE
+
+13.  Memos.									DONE
+
+14.  cKeyboard :: verify_table ();
+
+15.  cDlgVars (convenient settings) 		DONE
+
+16.  Convenient scribs in dialogs			DONE
+
+17.  Rename project							DONE
+
+18.  Connection monitor						DONE
+
+19.  Improve reliability of socket close
+
+20.  Settings stop/start comm
+
+21.  Fix bug in cMachlist.rem_del_all 		DONE
+
+22.  Balloons								DONE
+
+23.  Labeled horizontal rules				DONE
+
+24.  Pick typeface							DONE
+
+25.  Make website							DONE
+
+26.  Make web respository account  			DONE
+
+27.  Fix tArray2 bug						DONE
+
+28.  Use port setting						DONE
+
+29.  cWin :: set_text						DONE
+
+30.  Test for valid cSignature		
+
+
+
+
+
+
+

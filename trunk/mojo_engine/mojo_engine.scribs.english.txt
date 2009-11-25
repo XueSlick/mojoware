@@ -1,0 +1,27 @@
+//
+//    mojo_engine.scribs.english.txt / mojo_engine
+//
+//    Copyright Robert Sacks 2009
+//
+
+
+FileVersionMismatch					= Program file versions do not match.
+FileVersionMismatch					= The EXE requires: \t%s.
+FileVersionMismatch                  = %s is:\t%s.
+FileVersionMismatch                  = %s is:\t%s.
+FileVersionMismatch					= Hint: Try reinstalling the program.
+
+BadOsVersion					= The program can't run on this version of Windows.
+BadOsVersion					= The program requires Windows XP service pack 1 or higher.
+
+BadArgument						= Invalid argument in function call.
+BadArgument						= Function: %s.
+BadArgument						= For more information, see the DLL log file.
+
+LoadScribFile					= Loading language file.
+LoadScribFile					= Lines loaded: %d.
+
+CannotLoadScribFile				= Loading language file.
+CannotLoadScribFile				= Cannot find file %s.
+CannotLoadScribFile				= The program's text will appear in English.
+CannotLoadScribFile				= Try reinstalling the program.

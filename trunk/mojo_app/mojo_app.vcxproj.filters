@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="cWin">
+      <UniqueIdentifier>{5ffdad92-14ff-45ce-8621-1105335864d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="balloon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cCrashHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlg.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgAbout.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgLicense.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgMessageBox.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgMonitor.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgSettingsConnection.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgSettingsConnectionAdvanced.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgVars.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cListviewConnections.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cWin.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cWinLabel.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cWinMain.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cWinMain_window_proc.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cWinMain_wm_command.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="default_scribs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="global_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpl3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rich_edit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="single_instance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="window_stuff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="balloon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cCrashHandler.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlg.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgAbout.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgLicense.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgMessageBox.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgMonitor.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgSettingsConnection.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgSettingsConnectionAdvanced.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgVars.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cListviewConnections.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cWin.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cWinLabel.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cWinMain.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="global_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="global_data_version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rich_edit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="window_stuff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\mojo_art\mojo-logo-star-150.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="gpl3.txt" />
+    <None Include="mojo_app.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="mojo_app.scribs.english.txt" />
+    <None Include="osbxr.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="small.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="mojo_app.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

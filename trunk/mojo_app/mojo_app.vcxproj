@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1C2C64A6-6D8F-415E-B068-A2928A82A47A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>mojo_app</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
+    <TargetName>mojo</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
+    <TargetName>mojo</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAPALLOC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>comctl32.lib;user32.lib;shell32.lib;mojo_engine.lib;Dbghelp.lib;gdiplus.lib;gdi32.lib;Advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>MaxSpeed</Optimization>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>comctl32.lib;user32.lib;shell32.lib;mojo_engine.lib;Dbghelp.lib;gdiplus.lib;gdi32.lib;Advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy $(SolutionDir)Release\mojo.exe \\2004A\SharedDocs
+copy $(SolutionDir)Release\mojo_engine.dll  \\2004A\SharedDocs
+copy $(SolutionDir)Release\mojo_hooks.dll  \\2004A\SharedDocs
+copy $(SolutionDir)Release\mojo.exe $(SolutionDir)MojoInstaller
+copy $(SolutionDir)Release\mojo_engine.dll  $(SolutionDir)MojoInstaller
+copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="balloon.cpp" />
+    <ClCompile Include="cCrashHandler.cpp" />
+    <ClCompile Include="cDlg.cpp" />
+    <ClCompile Include="cDlgAbout.cpp" />
+    <ClCompile Include="cDlgLicense.cpp" />
+    <ClCompile Include="cDlgMessageBox.cpp" />
+    <ClCompile Include="cDlgMonitor.cpp" />
+    <ClCompile Include="cDlgSettingsConnection.cpp" />
+    <ClCompile Include="cDlgSettingsConnectionAdvanced.cpp" />
+    <ClCompile Include="cDlgVars.cpp" />
+    <ClCompile Include="cListviewConnections.cpp" />
+    <ClCompile Include="cSettings.cpp" />
+    <ClCompile Include="cWin.cpp" />
+    <ClCompile Include="cWinLabel.cpp" />
+    <ClCompile Include="cWinMain.cpp" />
+    <ClCompile Include="cWinMain_window_proc.cpp" />
+    <ClCompile Include="cWinMain_wm_command.cpp" />
+    <ClCompile Include="default_scribs.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="global_data.cpp" />
+    <ClCompile Include="gpl3.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="rich_edit.cpp" />
+    <ClCompile Include="single_instance.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="utility.cpp" />
+    <ClCompile Include="window_stuff.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="balloon.h" />
+    <ClInclude Include="cCrashHandler.h" />
+    <ClInclude Include="cDlg.h" />
+    <ClInclude Include="cDlgAbout.h" />
+    <ClInclude Include="cDlgLicense.h" />
+    <ClInclude Include="cDlgMessageBox.h" />
+    <ClInclude Include="cDlgMonitor.h" />
+    <ClInclude Include="cDlgSettingsConnection.h" />
+    <ClInclude Include="cDlgSettingsConnectionAdvanced.h" />
+    <ClInclude Include="cDlgVars.h" />
+    <ClInclude Include="cListviewConnections.h" />
+    <ClInclude Include="cSettings.h" />
+    <ClInclude Include="cWin.h" />
+    <ClInclude Include="cWinLabel.h" />
+    <ClInclude Include="cWinMain.h" />
+    <ClInclude Include="global_data.h" />
+    <ClInclude Include="global_data_version.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="rich_edit.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="utility.h" />
+    <ClInclude Include="window_stuff.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\mojo_art\mojo-logo-star-150.bmp" />
+    <None Include="gpl3.txt" />
+    <None Include="mojo_app.ico" />
+    <None Include="mojo_app.scribs.english.txt" />
+    <None Include="osbxr.ico" />
+    <None Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="mojo_app.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
