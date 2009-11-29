@@ -26,9 +26,9 @@
 
 namespace mojo {
 
-MOJO_ENGINE_API wchar_t * get_our_local_app_data_directory 	( cStrW * pRet, const wchar_t * pAppTitle );
-MOJO_ENGINE_API wchar_t * get_app_data_directory				( cStrW * s );
-MOJO_ENGINE_API wchar_t * get_local_app_data_directory 		( cStrW * s );
-MOJO_ENGINE_API wchar_t * get_module_directory 				( cStrW * s );
+MOJO_ENGINE_API const wchar_t * get_our_local_app_data_directory 	( cStrW * pRet, const wchar_t * pAppTitle );
+MOJO_ENGINE_API const wchar_t * get_app_data_directory				( cStrW * s );
+MOJO_ENGINE_API const wchar_t * get_local_app_data_directory 		( cStrW * s );
+MOJO_ENGINE_API const wchar_t * get_module_directory 				( cStrW * s );
 
 } // namespace

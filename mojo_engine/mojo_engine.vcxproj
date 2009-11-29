@@ -58,7 +58,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>mojo_hooks.lib;ws2_32.lib;Netapi32.lib;Iphlpapi.lib;Mpr.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mojo_hooks.lib;ws2_32.lib;Netapi32.lib;Iphlpapi.lib;Mpr.lib;shell32.lib;Kernel32.lib;Psapi.lib;Advapi32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -78,15 +78,18 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>mojo_hooks.lib;ws2_32.lib;Netapi32.lib;Iphlpapi.lib;Mpr.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mojo_hooks.lib;ws2_32.lib;Netapi32.lib;Iphlpapi.lib;Mpr.lib;shell32.lib;Kernel32.lib;Psapi.lib;Advapi32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cAdLibMemo.cpp" />
+    <ClCompile Include="cKeyBroadcaster.cpp" />
     <ClCompile Include="cFinder.cpp" />
     <ClCompile Include="cDisplay.cpp" />
     <ClCompile Include="cException.cpp" />
     <ClCompile Include="cFile.cpp" />
+    <ClCompile Include="cFinder_receive.cpp" />
+    <ClCompile Include="cFinder_target.cpp" />
     <ClCompile Include="cInputEvent.cpp" />
     <ClCompile Include="cInputEventBuffer.cpp" />
     <ClCompile Include="cKeyboard.cpp" />
@@ -98,6 +101,7 @@
     <ClCompile Include="cMachlist.cpp" />
     <ClCompile Include="cMemo.cpp" />
     <ClCompile Include="cMemoBuffer.cpp" />
+    <ClCompile Include="cMessage.cpp" />
     <ClCompile Include="cMessenger.cpp" />
     <ClCompile Include="cPool.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -133,6 +137,7 @@
     <ClCompile Include="cSettings.cpp" />
     <ClCompile Include="cSettingsBase.cpp" />
     <ClCompile Include="cSignature.cpp" />
+    <ClCompile Include="cSyringe.cpp" />
     <ClCompile Include="default_scribs.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -163,6 +168,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="set.cpp" />
+    <ClCompile Include="se_debug_privilege.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -184,6 +190,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cAdLibMemo.h" />
+    <ClInclude Include="cKeyBroadcaster.h" />
+    <ClInclude Include="cMessage.h" />
+    <ClInclude Include="cSyringe.h" />
+    <ClInclude Include="cTarget.h" />
     <ClInclude Include="cFinder.h" />
     <ClInclude Include="cDisplay.h" />
     <ClInclude Include="cException.h" />
@@ -214,9 +224,10 @@
     <ClInclude Include="mojo_engine.h" />
     <ClInclude Include="regex.h" />
     <ClInclude Include="set.h" />
+    <ClInclude Include="se_debug_privilege.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="tArray2.h" />
+    <ClInclude Include="tArray.h" />
     <ClInclude Include="tCircBuf.h" />
     <ClInclude Include="tList.h" />
     <ClInclude Include="tList2.h" />

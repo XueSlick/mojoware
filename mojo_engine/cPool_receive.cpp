@@ -34,7 +34,7 @@
 #include "cLog.h"
 #include "cSettings.h"
 #include "cException.h"
-// #include "cMessenger.h"
+#include "cMessenger.h"
 
 
 //=============================================================================================
@@ -44,7 +44,7 @@
 //==============================================================================================
 // DATA
 //==============================================================================================
-// extern cMessenger g_Messenger;
+extern cMessenger g_Messenger;
 
 //=============================================================================================
 // CODE
@@ -57,7 +57,7 @@ void cPool::receive_cb ( cLapPlus * pLap )
 {
 	if ( 1 <= pLap->dwQtyBytesXfered )
 	{
-		// g_Messenger.receive ( pLap->pSocketInfo, pLap->sBuf.buffer(), pLap->dwQtyBytesXfered );
+		g_Messenger.receive ( pLap->pSocketInfo, pLap->sBuf.buffer(), pLap->dwQtyBytesXfered );
 	}
 
 	pLap->pPool->receive ( pLap );

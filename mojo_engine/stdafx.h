@@ -55,7 +55,7 @@
 #include "..\\mojo_hooks\\hooks_public.h"
 
 //---------------------------------
-//  CLASSES
+//  EMGINE HEADERS
 //---------------------------------
 
 #include "cSettings.h"
@@ -65,12 +65,13 @@
 #include "cFinder.h"
 #include "cSignature.h"
 #include "cPool.h"
-#include "tArray2.h"
+#include "tArray.h"
 #include "cMessenger.h"
 #include "net_stuff.h"
 #include "cMemoBuffer.h"
 #include "utility_private.h"
-
+#include "cKeyBroadcaster.h"
+#include "cSyringe.h"
 
 //---------------------------------
 //  GLOBAL DATA (KEEP THIS LAST)
@@ -88,7 +89,6 @@
 		log_and_put_memo ( __WFILE__, __LINE__, e, t, __VA_ARGS__ );	\
 		break;															\
 	}
-
 
 
 /***********************************************************************************************************************

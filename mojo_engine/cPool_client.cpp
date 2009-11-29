@@ -178,6 +178,7 @@ void cPool::connectex_cb ( cLapPlus * pLapPlus )
 	pSI->Socket			= pLapPlus->sock;
 	pSI->eType			= sSocketInfo::connect;
 	pSI->pMach			= g_Machlist.get_by_ip_or_add ( dwRemoteIP );
+	pSI->dwMachHandle   = pSI->pMach->dwSerialNumber;
 	pLapPlus->pPool->SocketInfoList.append ( pSI );
 
 	is_nagle_on ( pLapPlus->sock );
@@ -347,8 +348,8 @@ bool cPool :: connect_to ( const wchar_t * pAddr )
 						Socket,
 						(SOCKADDR*)&saiRemoteAddr,
 						sizeof(saiRemoteAddr),
-						(void*)Sig.buf(), // (void *)cPool::sig(),
-						Sig.len(), // (cPool::sig_len()+1) * 2,
+						(void*)pSig->buf(), // (void *)cPool::sig(),
+						pSig->len(), // (cPool::sig_len()+1) * 2,
 						&dwQtyBytesSent,
 						reinterpret_cast<WSAOVERLAPPED*>(pLapPlus) );
 

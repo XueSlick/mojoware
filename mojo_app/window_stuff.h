@@ -33,7 +33,7 @@ mojo::cPtI 		get_window_size ( HWND hwnd );
 mojo::cPtI 		get_window_position ( HWND hwnd );
 mojo::cPtI 		get_screen_size ();
 unsigned 		get_show_state ( HWND hwnd );
-wchar_t * 		get_window_text ( mojo::cStrW * pRet, HWND hwnd );
+const wchar_t * 		get_window_text ( mojo::cStrW * pRet, HWND hwnd );
 bool 			set_child_window_size ( HWND hChild, int iDimX, int iDimY );
 
 

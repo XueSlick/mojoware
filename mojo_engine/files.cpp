@@ -47,7 +47,7 @@ namespace mojo {
 //   GET MODULE DIRECTORY
 //   returns it with trailing backslash (e.g.) "c:\d\sou\"
 //-------------------------------------------------------------------------------------------------------
-wchar_t * get_module_directory ( cStrW * s )
+const wchar_t * get_module_directory ( cStrW * s )
 {
 	wchar_t t[4096];
 
@@ -77,7 +77,7 @@ wchar_t * get_module_directory ( cStrW * s )
 //-------------------------------------------------------------------------------------------------------
 //   GET LOCAL APP DATA DIRECTORY
 //-------------------------------------------------------------------------------------------------------
-wchar_t * get_local_app_data_directory ( cStrW * s )
+const wchar_t * get_local_app_data_directory ( cStrW * s )
 {
 	wchar_t szPath [ MAX_PATH ];
 
@@ -99,7 +99,7 @@ wchar_t * get_local_app_data_directory ( cStrW * s )
 //-------------------------------------------------------------------------------------------------------
 //   GET APP DATA DIRECTORY
 //-------------------------------------------------------------------------------------------------------
-wchar_t * get_app_data_directory ( cStrW * s )
+const wchar_t * get_app_data_directory ( cStrW * s )
 {
 	wchar_t szPath [ MAX_PATH ];
 
@@ -121,7 +121,7 @@ wchar_t * get_app_data_directory ( cStrW * s )
 //   GET OUR LOCAL APP DATA DIRECTORY
 //   creates it if it doesn't exist
 //-------------------------------------------------------------------------------------------------------
-wchar_t * get_our_local_app_data_directory ( cStrW * pRet, const wchar_t * pAppTitle )
+const wchar_t * get_our_local_app_data_directory ( cStrW * pRet, const wchar_t * pAppTitle )
 {
 	cStrW s;
 

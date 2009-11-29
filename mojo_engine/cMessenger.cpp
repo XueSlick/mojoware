@@ -12,6 +12,7 @@
 
 #pragma once
 
+using namespace mojo;
 
 //======================================================================================================================
 // DATA
@@ -25,12 +26,187 @@
 // CODE
 //======================================================================================================================
 
+//-------------------------------------------------------------------------------------------------------
+// PRINT FROM MACH
+//-------------------------------------------------------------------------------------------------------
+const wchar_t * cMessenger :: print_from_mach ( mojo::cStrW * pRet, const cMach * pMach )
+{
+	if ( 0 == pMach )
+		*pRet = L"From this computer.";
+
+	else
+		pRet->f ( L"From %s at %s.", ((cMach*)pMach)->sName.cstr(), ((cMach*)pMach)->sDottedDec.cstr() );
+
+	return pRet->cstr();
+}
+
+
+//-------------------------------------------------------------------------------------------------------
+// SEND MESSAGE (TO ONE PC)
+//-------------------------------------------------------------------------------------------------------
+void cMessenger :: send_message ( cMach * pMach, cMessage * pMsg )
+{
+	g_Pool.send ( pMach->dwIP, (char *) pMsg, pMsg->uLen );
+
+	cStrW m;
+	pMsg->print ( & m );
+
+	put_ad_lib_memo ( cMemo::success, L"Message sent", L"To %s at %s.\n"
+		                                              L"%s",
+													  pMach->sName.cstr(),
+													  pMach->sDottedDec.cstr(),
+													  m.cstr() );
+}
+
+
+//-------------------------------------------------------------------------------------------------------
+// BROADCAST MESSAGE (TO ALL PCS)
+//-------------------------------------------------------------------------------------------------------
+void cMessenger :: broadcast_message ( cMessage * pMsg )
+{
+	cStrW sBody1;
+
+	g_Machlist.lock();
+	{
+		for ( cMach * pMach = g_Machlist.pHead; pMach; pMach = pMach->pNext )
+		{
+			g_Pool.send ( pMach->dwIP, (char *) pMsg, pMsg->uLen );
+
+			sBody1 += L"To ";
+			sBody1 += pMach->sName.cstr();
+			sBody1 += L" at ";
+			sBody1 += pMach->sDottedDec.cstr();
+			sBody1 += L".\n";
+		}
+	}
+	g_Machlist.unlock();
+
+	cStrW sBody2;
+	pMsg->print ( & sBody2 );
+
+	put_ad_lib_memo ( cMemo::success, L"Message sent", 
+		                                              L"%s%s",
+													  sBody1.cstr(),
+													  sBody2.cstr() );
+}
+
+
+//-------------------------------------------------------------------------------------------------------
+// KEYBOARD HOOK SERVICE ROUTINE
+//-------------------------------------------------------------------------------------------------------
+bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUCT * p )
+{
+	g_EventBuffer.receive ( wParam, p );
+
+	PostMessage ( g_hwndApp, mojo::uWM_INPUT_EVENT_READY, 0, 0 );
+
+	if ( g_Settings.bBroadcast )
+	{
+		g_KeyBroadcaster.receive_from_keyboard_hook ( wParam, p );
+	}
+
+	return true; // true means "call next hook in chain"
+}
+
+
+//-------------------------------------------------------------------------------------------------------
+// MOUSE HOOK SERVICE ROUTINE
+//-------------------------------------------------------------------------------------------------------
+bool cMessenger :: mouse_hook_service_routine ( WPARAM wParam, MSLLHOOKSTRUCT * p )
+{
+	g_EventBuffer.receive ( wParam, p );
+
+	PostMessage ( g_hwndApp, mojo::uWM_INPUT_EVENT_READY, 0, 0 );
+
+	return true; // true means "call next hook in chain"
+}
+
+
+//---------------------------------------------------------------------------------------------
+// PUT RECEIVE MEMO
+//---------------------------------------------------------------------------------------------
+void cMessenger :: put_receive_memo ( cMessage * pMsg, const wchar_t * pBody2 )
+{
+	put_ad_lib_memo ( cMemo::success, L"Message received", L"From %s at %s.\n%s",
+
+														   pMsg->pFromMach->sName.cstr(),
+														   pMsg->pFromMach->sDottedDec.cstr(),
+														   pBody2 );
+}
+
+
+//---------------------------------------------------------------------------------------------
+// RECEIVE
+//---------------------------------------------------------------------------------------------
+void cMessenger :: receive ( struct sSocketInfo * pSI, const char * pBuffer, unsigned uLen )
+{
+	pSI;
+	assert ( pBuffer );
+
+	const char * pEnd = pBuffer + uLen;
+
+	//--------------------------------------
+	// THIS LOOP DE-COALESCES TCP MESSAGES
+	//--------------------------------------
+
+	for ( const char * p = pBuffer; p < pEnd; p += ((cMessage*)p)->uLen )
+	{
+		cMessage * pMsg = (cMessage*)p;
+		pMsg->pFromMach = pSI->pMach;
+
+		if ( pMsg->uLen < 5 )
+		{
+			LOG ( L"Disregarding short message." );
+			break;
+		}
+
+		cStrW sPrint;
+
+		switch ( pMsg->Type )
+		{
+		case cMessage::broadcast_key_event:
+			((cMessageBroadcastKeyEvent*)pMsg)->cMessageBroadcastKeyEvent::print(&sPrint);
+			put_receive_memo ( pMsg, sPrint.cstr() );
+			g_KeyBroadcaster.broadcast_to_local_windows ( ( cMessageBroadcastKeyEvent * ) pMsg );
+			break;
+
+#if 0
+		case sMessage::mouseover:
+			g_Mouseover.receive_command ( pMsg );
+			break;
+#endif
+		}
+	}
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  SEND
+//  This is the top-level chokepoint function for sending stuff to other PCs. pMessage can be allocated on the
+//  stack.  It gets copied to heap storage by cPool.
+//----------------------------------------------------------------------------------------------------------------------
+void cMessenger :: send ( DWORD hMachHandle, cMessage * pMessage )
+{
+	DWORD dwIP = g_Machlist.handle_to_ip ( hMachHandle );
+	g_Pool.send ( dwIP, (char*) pMessage, pMessage->uLen );
+}
+
+
 //----------------------------------------------------------------------------------------------------------------------
 //  TELL APP THAT CONNECTIONS CHANGED
 //----------------------------------------------------------------------------------------------------------------------
 void cMessenger :: tell_app_that_connections_changed ()
 {
 	PostMessage ( g_hwndApp, mojo::uWM_CONNECTIONS_CHANGED, 0, 0 );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  TELL APP THAT BROADCAST TARGETS CHANGED
+//----------------------------------------------------------------------------------------------------------------------
+void cMessenger :: tell_app_that_broadcast_targets_changed ()
+{
+	PostMessage ( g_hwndApp, mojo::uWM_BROADCAST_TARGETS_CHANGED, 0, 0 );
 }
 
 

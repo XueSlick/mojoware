@@ -162,6 +162,8 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClInclude Include="window_stuff.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Mojo\mojo_app\mojo_app.ico" />
+    <None Include="..\..\Mojo\mojo_art\mojo-logo-star-150.bmp" />
     <None Include="..\mojo_art\mojo-logo-star-150.bmp" />
     <None Include="gpl3.txt" />
     <None Include="mojo_app.ico" />

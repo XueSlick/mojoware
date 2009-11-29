@@ -169,7 +169,7 @@ void cPool::acceptex_cb ( cLapPlus * pLapPlus )
 	// Get IP addresses.
 	//------------------------------------------------
 	DWORD dwRemoteIP, dwLocalIP;
-	bool bResult = get_acceptex_addresses ( &dwLocalIP, &dwRemoteIP, pLapPlus->sBuf.cstr(), pLapPlus->sBuf.bufsize(), pLapPlus->sock );
+	bool bResult = get_acceptex_addresses ( &dwLocalIP, &dwRemoteIP, (char*) pLapPlus->sBuf.cstr(), pLapPlus->sBuf.bufsize(), pLapPlus->sock );
 	UNREFERENCED_PARAMETER ( bResult );
 
 	// char * pLocal = inet_ntoa ( *(in_addr*)&dwLocalIP );
@@ -182,8 +182,9 @@ void cPool::acceptex_cb ( cLapPlus * pLapPlus )
 	// cStrW sRemoteName; 
 	const wchar_t * pRemoteName;
 	const wchar_t * pDisplayList;
+	const wchar_t * pRemoteAppTitle;
 
-	if ( ! cSignature::parse ( &pDisplayList, &pRemoteName, &pRemoteVersion, (const char*) pMsg ) )
+	if ( ! cSignature::parse ( &pDisplayList, &pRemoteName, &pRemoteAppTitle, &pRemoteVersion, (const char*) pMsg ) )
 
 	// if ( ! pLapPlus->pPool->parse_sig ( NULL, &pRemoteName, &RemoteVersion, pMsg ) )
 	{
@@ -204,6 +205,7 @@ void cPool::acceptex_cb ( cLapPlus * pLapPlus )
 	pSI->RemoteVersion  = *pRemoteVersion;
 	pSI->eType			= sSocketInfo::accept;
 	pSI->pMach			= g_Machlist.get_by_ip_or_add ( dwRemoteIP, pDisplayList );
+	pSI->dwMachHandle   = pSI->pMach->dwSerialNumber;
 	pLapPlus->pPool->SocketInfoList.append ( pSI );
 
 	mojo::put_ad_lib_memo ( mojo::cMemo::success, L"Connection open (type A)",	L"Remote name: %s\n"

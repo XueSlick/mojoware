@@ -30,7 +30,7 @@ public:
 	WPARAM wParam;
 	union { KBDLLHOOKSTRUCT k; MSLLHOOKSTRUCT m; } u;
 
-	wchar_t * print ( cStrW * pRet );
+	const wchar_t * print ( cStrW * pRet );
 
 	static void load_scribs ();
 

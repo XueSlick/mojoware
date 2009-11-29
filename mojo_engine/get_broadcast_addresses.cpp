@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include "tStr.h"
 #include "cLog.h"
-#include "tArray2.h"
+#include "tArray.h"
 
 #if 0
 	#include "cMonitor.h"
@@ -230,7 +230,7 @@ bool get_ip_addresses ( mojo::cArrayU * pRet )
 //---------------------------------------------------------------------------------------------
 // GET BROADCAST ADDRESSES
 //---------------------------------------------------------------------------------------------
-bool get_broadcast_addresses ( mojo::tArray2<DWORD> * pRet )
+bool get_broadcast_addresses ( mojo::tArray<DWORD> * pRet )
 {
 
     PMIB_IPADDRTABLE pIPAT = 0; 

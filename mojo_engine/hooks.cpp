@@ -16,11 +16,11 @@
 //=======================================================================================================
 // CODE
 //=======================================================================================================
-
+#if 0
 //-------------------------------------------------------------------------------------------------------
 // KEYBOARD HOOK SERVICE ROUTINE
 //-------------------------------------------------------------------------------------------------------
-bool keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUCT * p )
+bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUCT * p )
 {
 	g_EventBuffer.receive ( wParam, p );
 
@@ -32,7 +32,7 @@ bool keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUCT * p )
 //-------------------------------------------------------------------------------------------------------
 // MOUSE HOOK SERVICE ROUTINE
 //-------------------------------------------------------------------------------------------------------
-bool mouse_hook_service_routine ( WPARAM wParam, MSLLHOOKSTRUCT * p )
+bool cMessenger :: mouse_hook_service_routine ( WPARAM wParam, MSLLHOOKSTRUCT * p )
 {
 	g_EventBuffer.receive ( wParam, p );
 
@@ -40,6 +40,6 @@ bool mouse_hook_service_routine ( WPARAM wParam, MSLLHOOKSTRUCT * p )
 
 	return true; // true means "call next hook in chain"
 }
-
+#endif
 
 

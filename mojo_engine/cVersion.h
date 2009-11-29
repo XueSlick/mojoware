@@ -59,7 +59,7 @@ class cVersion
 		// GET TEXT
 		// i.e. "0.1.29 build 104";
 		//-------------------------------------------
-		wchar_t * get_text ( cStrW * pRet ) const  	
+		const wchar_t * get_text ( cStrW * pRet ) const  	
 		{
 			assert ( pRet );
 			wchar_t t [1000];

@@ -101,7 +101,7 @@ cMach * cMachlist::get_by_ip_or_add ( DWORD dwIP, const wchar_t * pDisplayList )
 //---------------------------------------------------------------------------------------------
 // FILE PATHNAME
 //---------------------------------------------------------------------------------------------
-wchar_t * cMachlist :: file_pathname ( cStrW * pRet )
+const wchar_t * cMachlist :: file_pathname ( cStrW * pRet )
 {
 	*pRet = g_sAppDataDirectory;
 	*pRet += g_sAppTitle.cstr();

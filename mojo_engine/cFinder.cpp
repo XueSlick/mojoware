@@ -10,7 +10,8 @@
 #include "cFinder.h"
 #include <process.h>
 #include "cPool.h"
-
+#include <Psapi.h> // for GetModuleFileNameEx
+#include "se_debug_privilege.h"
 using namespace mojo;
 
 //======================================================================================================================
@@ -24,7 +25,7 @@ extern cPool g_Pool;
 // PROTOTYPES
 //======================================================================================================================
 
-bool get_broadcast_addresses	( tArray2<DWORD> * );
+bool get_broadcast_addresses	( tArray<DWORD> * );
 bool get_ip_addresses			( cArrayU * );
 bool get_best_ip				( DWORD * pdwFromIP, DWORD dwDestIP );
 
@@ -32,6 +33,7 @@ bool get_best_ip				( DWORD * pdwFromIP, DWORD dwDestIP );
 //======================================================================================================================
 // CODE
 //======================================================================================================================
+
 
 //----------------------------------------------------------------------------------------------------------------------
 //  IS_LOCAL_IP
@@ -71,9 +73,9 @@ bool cFinder::get_local_ip ( DWORD * pdwLocalIP )
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  MAKE SOCKET
+//  MAKE SEND SOCKET
 //----------------------------------------------------------------------------------------------------------------------
-bool cFinder :: make_socket ( SOCKET * pRet, DWORD dwLocalIP )
+bool cFinder :: make_send_socket ( SOCKET * pRet, DWORD dwLocalIP )
 {
 	SOCKADDR_IN saClient	= {0};
 	BOOL fBroadcast			= TRUE;
@@ -118,26 +120,50 @@ bool cFinder :: make_socket ( SOCKET * pRet, DWORD dwLocalIP )
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  SEND
+//  MAKE REMOTE SOCKET ADDRESS
 //----------------------------------------------------------------------------------------------------------------------
-bool cFinder :: send ( int iPort, const wchar_t * pTxt )
+void cFinder :: make_remote_socket_address ( SOCKADDR_IN * pRet )
 {
-	// memory leak is in here
-
-	UNREFERENCED_PARAMETER ( pTxt );
-
 	//----------------------------------
 	// REMOTE ADDRESS
 	//----------------------------------
-	SOCKADDR_IN saServer		= {0};
-    saServer.sin_family			= AF_INET;
-    saServer.sin_addr.s_addr	= htonl ( INADDR_BROADCAST );
-    saServer.sin_port = htons ( static_cast<u_short>(iPort) );
+    pRet->sin_family			= AF_INET;
+    pRet->sin_addr.s_addr	= htonl ( INADDR_BROADCAST );
+	pRet->sin_port = htons ( static_cast<u_short>( g_Settings.uPort ) );
+}
 
+
+//----------------------------------------------------------------------------------------------------------------------
+//  SEND
+//----------------------------------------------------------------------------------------------------------------------
+bool cFinder :: send ()
+{
+	//----------------------------------
+	// REMOTE ADDRESS
+	//----------------------------------
+
+	SOCKADDR_IN saServer = {0};
+	make_remote_socket_address ( &saServer );
+
+	for (;;)
+	{
+		find_wow ();
+		send_inner_loop( &saServer );
+		Sleep ( g_Settings.uDiscoveryyBroadcastInterval );
+
+	}
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  SEND INNER LOOP
+//----------------------------------------------------------------------------------------------------------------------
+bool cFinder :: send_inner_loop ( SOCKADDR_IN * psaServer )
+{
 	//----------------------------------
 	// INNER LOOP -- SEND TO
 	//----------------------------------
-	for ( ;; )
+	// for ( ;; )
 	{
 		SOCKET s;
 
@@ -153,16 +179,16 @@ bool cFinder :: send ( int iPort, const wchar_t * pTxt )
 			LOG_V ( L"Bad local ip: %s", awIP );
 		}
 
-		if ( ! make_socket ( &s, m_dwLocalIP ) )
+		if ( ! make_send_socket ( &s, m_dwLocalIP ) )
 		{
 			LOG ( L"Unable to make socket in cFinder::send." );
 		}
 
 		int iError = sendto (	s,
-								Sig.buf(), 
-								Sig.len(),
+								( const char * ) pSig->buf(), 
+								pSig->len(),
 								0,
-								(SOCKADDR *) &saServer,
+								(SOCKADDR *) psaServer,
 								(int)sizeof ( SOCKADDR_IN )
 							);
 
@@ -192,157 +218,9 @@ bool cFinder :: send ( int iPort, const wchar_t * pTxt )
 #endif
 
 		closesocket ( s );
-
-		Sleep ( g_Settings.uDiscoveryyBroadcastInterval );
 	}
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  RECEIVE
-//----------------------------------------------------------------------------------------------------------------------
-bool cFinder :: receive ( int iPort )
-{
-    SOCKET			s;
-    char			acBuf [ 2000 ];
-    SOCKADDR_IN		sinRemote, sinLocal;
-
-    s = socket ( AF_INET, SOCK_DGRAM, 0 );
-
-    if ( s == INVALID_SOCKET )
-    {
-        LOG_SYSTEM_ERROR_TE ( L"socket", WSAGetLastError() );
-        return false;
-    }
-
-    sinLocal.sin_family = AF_INET;
-    sinLocal.sin_port = htons((short)iPort);
-	sinLocal.sin_addr.s_addr = htonl(INADDR_ANY);
-
-    if ( bind ( s, ( SOCKADDR * ) &sinLocal, sizeof ( sinLocal ) ) == SOCKET_ERROR )
-    {
-		DWORD dwError = WSAGetLastError();
-
-		if ( WSAEADDRINUSE == dwError ) // 10048 means port in use
-		{
-			mojo::put_ad_lib_memo ( mojo::cMemo::error, 
-				                     L"The program is trying to use a port that is already in use.",
-									 L"Select a different port on Connections Settings, More Options." );
-		}
-
-        LOG_SYSTEM_ERROR_TE ( L"bind", dwError );
-        return false;
-    }
-    
-	int iRemoteSize = sizeof ( sinRemote );
-
-	// DWORD dwLocalIP = 0;
-
-	for ( ;; )
-	{
-		//--------------------------------------------------
-		//  receive datagram
-		//--------------------------------------------------
-		int iResult = recvfrom ( s, acBuf, sizeof(acBuf)-1, 0, (SOCKADDR *) &sinRemote, &iRemoteSize );
-
-        if ( iResult == SOCKET_ERROR )
-		{
-            LOG_SYSTEM_ERROR_TE ( L"recvfrom", WSAGetLastError() );
-		}
-
-		//--------------------------------------------------
-		// something valid was received
-		//--------------------------------------------------
-        else if ( 0 < iResult )
-        {
-			const wchar_t * pRemoteName = 0, * pDisplayList = 0;
-			cVersion * pRemoteVersion;
-			acBuf [ iResult ] = '\0';
-			DWORD dwRemoteIP = *(DWORD*) &sinRemote.sin_addr;
-
-			//--------------------------------------------------
-			// NEW nov 21 2009
-			//--------------------------------------------------
-
-			cSignature::parse ( &pDisplayList, &pRemoteName, &pRemoteVersion, acBuf );
-			// put_ad_lib_memo ( mojo::cMemo::success, L"cFinder", L"Signature received\nRemote name = %s", pRemoteName );  
-
-			//--------------------------------------------------
-			// do the fast things first that cover 99.999%
-			// of the cases
-			//--------------------------------------------------
-
-			// it's us
-			if ( dwRemoteIP == m_dwLocalIP )
-				;
-
-			// it's a known remote
-			else if ( cMach * p = g_Machlist.get_by_ip ( dwRemoteIP ) )
-			{
-				if ( 0 == p->sName.len() )
-				{
-					if ( cSignature::parse ( &pDisplayList, &pRemoteName, &pRemoteVersion, acBuf ) )
-					{
-						p->lock();
-						p->sName = pRemoteName;
-						p->unlock();
-					}
-				}
-
-				// if necessary, send connect request
-				if ( ! g_Pool.get_connect_socket_info_by_ip ( dwRemoteIP ) )
-				{
-					if ( cSignature::parse ( &pDisplayList, &pRemoteName, &pRemoteVersion, acBuf ) )
-					{
-						if ( 0 != wcscmp ( pRemoteName, sLocalName.cstr() ) )
-						{
-							g_Pool.connect_to ( dwRemoteIP );
-							// put_ad_lib_memo ( mojo::cMemo::success, L"cFinder", L"(1) Sending connect_to to cPool for\nRemote name = %s", pRemoteName );  
-						}
-					}
-				}
-			}
-
-			//--------------------------------------------------
-			// it's an unknown pc
-			//--------------------------------------------------
-
-			else if ( cSignature::parse ( &pDisplayList, &pRemoteName, &pRemoteVersion, acBuf ) )
-			{
-				// mojo::put_ad_lib_memo ( mojo::cMemo::info, L"cFinder", L"Adding new machine for %s", pRemoteName );
-
-				// make sure it's not us
-				if ( 0 == wcscmp ( pRemoteName, sLocalName.cstr() ) )
-					; // dwLocalIP = dwRemoteIP;
-
-				// it's an unknown remote host
-				else
-				{
-					// send connect request
-					if ( ! g_Pool.get_connect_socket_info_by_ip ( dwRemoteIP ) )
-					{
-						g_Pool.connect_to ( dwRemoteIP );
-						// put_ad_lib_memo ( mojo::cMemo::success, L"cFinder", L"(2) Sending connect_to to cPool for\nRemote name = %s", pRemoteName ); 
-					}
-
-					// insert new cMach in list
-					{
-						cMach * pNewMach = g_Machlist.get_by_ip_or_add ( dwRemoteIP, pDisplayList );
-						pNewMach->lock();
-						pNewMach->dwIP				= dwRemoteIP;
-						pNewMach->sName				= pRemoteName;
-						pNewMach->unlock();
-					}
-				}
-			}
-        }
-	}
-
-#if 0
-    closesocket(s);
 
 	return true;
-#endif
 }
 
 
@@ -353,7 +231,7 @@ unsigned _stdcall cFinder::server_thread ( void * pArg )
 {
 	cFinder * pThis = reinterpret_cast<cFinder *>(pArg);
 
-	pThis->receive ( pThis->uPort );
+	pThis->receive ();
 
 	return 0;
 }
@@ -368,7 +246,7 @@ unsigned _stdcall cFinder::client_thread ( void * pArg )
 
 	cFinder * pThis = reinterpret_cast<cFinder*>(pArg);
 
-	pThis->send ( pThis->uPort, pThis->sLocalName.cstr() );
+	pThis->send ();
 
 	return 0;
 }
@@ -377,12 +255,12 @@ unsigned _stdcall cFinder::client_thread ( void * pArg )
 //----------------------------------------------------------------------------------------------------------------------
 //   START THREADS
 //----------------------------------------------------------------------------------------------------------------------
-bool cFinder::start_threads ()
+bool cFinder::start ()
 {
-	this->uPort = g_Settings.uPort;
+	pSig = new cSignature;
 
-	get_full_dns_name ( &sLocalName );
-	get_local_ip ( &m_dwLocalIP );
+	get_full_dns_name 	( &sLocalName );
+	get_local_ip 		( &m_dwLocalIP );
 
 #if 0
 	if ( ! is_local_ip ( m_dwLocalIP ) )
@@ -427,7 +305,7 @@ bool cFinder::start_threads ()
 //----------------------------------------------------------------------------------------------------------------------
 //   CONSTRUCTOR
 //----------------------------------------------------------------------------------------------------------------------
-cFinder::cFinder () : uPort( g_Settings.uPort ), m_dwLocalIP (0) {}
+cFinder::cFinder () :  m_dwLocalIP (0), pSig (0) {}
 
 
 /***********************************************************************************************************************

@@ -19,15 +19,15 @@ public:
 	cSignature();
 	~cSignature () { if ( pBuf ) delete[] pBuf; }
 
-	static bool parse ( const wchar_t ** ppRetDisplayList, const wchar_t ** ppRetHostName, mojo::cVersion ** ppRetVersion, const char * pMsg );
-	const char * buf () { return pBuf; }
+	static bool parse ( const wchar_t ** ppRetDisplayList, const wchar_t ** ppRetHostName, const wchar_t ** ppRetAppTitle, mojo::cVersion ** ppRetVersion, const char * pMsg );
+	const BYTE * buf () { return pBuf; }
 	int len () { return iLen; }
 
 private:
 
 
 
-	char * pBuf;
+	BYTE * pBuf;
 	int iLen;
 
 	static int iLenOffset;

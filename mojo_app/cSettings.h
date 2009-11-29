@@ -15,16 +15,21 @@
 // CLASSES
 //======================================================================================================================
 
+extern wchar_t g_awAppTitle [];
+extern class mojo::cVersion g_Version;
+
 class cSettings : public mojo::cSettingsBase
 {
 public:
+
+	cSettings           ( const wchar_t * pSignature = g_awAppTitle, mojo::cVersion * pVersion = &g_Version ) : cSettingsBase ( pSignature, pVersion ) {}
 
 	//---------------------------------------------------
 	// PUBLIC DATA
 	//---------------------------------------------------
 
-	mojo::cStrW		sSignature;
-	mojo::cVersion		Version;
+	// mojo::cStrW		    sSignature;
+	// mojo::cVersion		Version;
 	bool				bLicenseAccepted;
 	bool				bConnect;
 	bool 				bConnectAutomatically;

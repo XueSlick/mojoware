@@ -62,7 +62,7 @@ bool set_child_window_size ( HWND hChild, int iDimX, int iDimY )
 //-------------------------------------------------------------------------------------------------------
 // GET WINDOW TEXT
 //-------------------------------------------------------------------------------------------------------
-wchar_t * get_window_text ( cStrW * pRet, HWND hwnd )
+const wchar_t * get_window_text ( cStrW * pRet, HWND hwnd )
 {
 	wchar_t t [8192];
 	GetWindowText ( hwnd, t, sizeof(t)/sizeof(wchar_t) / 1 );

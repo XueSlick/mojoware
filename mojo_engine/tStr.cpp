@@ -88,7 +88,7 @@ const wchar_t * cStrW :: f ( const wchar_t * pTxt, va_list pArgs )
 //-------------------------------------------------------------------------------------------------------
 cStrN :: cStrN ( const cStrW & Rh )
 {
-	wchar_t * pRh = (( cStrW * ) &Rh) -> cstr(); // cast away constness
+	wchar_t * pRh = ( wchar_t *) (( cStrW * ) &Rh) -> cstr(); // cast away constness
 
 	int iRequiredBufSize = WideCharToMultiByte ( CP_ACP, 0, pRh, -1, 
 						   NULL,
@@ -113,7 +113,7 @@ cStrN :: cStrN ( const cStrW & Rh )
 //-------------------------------------------------------------------------------------------------------
 cStrW :: cStrW ( const cStrN & Rh )
 {
-	char * pRh = (( cStrN * ) &Rh) -> cstr(); // cast away constness
+	char * pRh = (char*) (( cStrN * ) &Rh) -> cstr(); // cast away constness
 
 	int iRequiredBufSize = MultiByteToWideChar ( CP_ACP, 0, pRh, -1, 
 						   NULL,

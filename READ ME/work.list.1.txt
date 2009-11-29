@@ -1,5 +1,5 @@
 =================================================
-           FIRST PUBLIC BUILD -- TO DO
+         FIRST PUBLIC BUILD -- WORK LIST
 =================================================
 
 
@@ -55,17 +55,10 @@
 
 26.  Make web respository account  			DONE
 
-27.  Fix tArray2 bug						DONE
+27.  Fix tArray bug						    DONE
 
 28.  Use port setting						DONE
 
 29.  cWin :: set_text						DONE
 
-30.  Test for valid cSignature		
-
-
-
-
-
-
-
+30.  Test for valid cSignature
