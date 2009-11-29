@@ -17,14 +17,14 @@ using namespace mojo;
 //  GLOBAL DATA
 //======================================================================================================================
 
-cVersion			g_Version ( mojo::uVERSION_MAJ, mojo::uVERSION_MIN, mojo::uVERSION_PIP, mojo::uVERSION_BLD );
-mojo::cStrW		g_sAppDataDirectory;
-mojo::cStrW		g_sAppTitle;
-wchar_t				g_awDllTitle [] = L"mojo_engine";
-cScribMgr     		g_ScribMgr;
+cVersion			  g_Version ( mojo::uVERSION_MAJ, mojo::uVERSION_MIN, mojo::uVERSION_PIP, mojo::uVERSION_BLD );
+mojo::cStrW           g_sAppDataDirectory;
+mojo::cStrW           g_sAppTitle;
+const wchar_t * const g_pwEngineTitle = awENGINE_TITLE;
+cScribMgr     		  g_ScribMgr;
 
-cLog				g_Log ( L"mojo", g_awDllTitle, &g_Version );
-cSettings			g_Settings;
+cLog				g_Log ( L"mojo", g_pwEngineTitle, &g_Version );
+cSettings			g_Settings ( awENGINE_TITLE, &g_Version);
 HWND 				g_hwndApp;
 DWORD 				g_dwHookThreadID;
 cInputEventBuffer	g_EventBuffer; // mouse and keyboard events
@@ -34,7 +34,8 @@ HINSTANCE			g_hAppInstance;
 cMessenger			g_Messenger;
 cMemoBuffer			g_MemoBuffer;
 const wchar_t * 	g_apDefaultScribs [];
-cFinder			g_Discovery;
+cFinder			    g_Discovery;
+cKeyBroadcaster        g_KeyBroadcaster;
 
 
 /***********************************************************************************************************************

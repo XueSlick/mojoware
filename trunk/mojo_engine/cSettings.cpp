@@ -23,19 +23,19 @@ using namespace mojo;
 // DATA
 //======================================================================================================================
 
-static const cSettings DefaultSettings;
+static const cSettings DefaultSettings ( awENGINE_TITLE, &g_Version );
 	             
 cSettings::sEntry cSettings::aTable [] =
 {
-	ENTRY ( sSignature,								string,					L"sSignature"							),
-	ENTRY ( Version,								version,				L"Version"								),
 	ENTRY ( bConnect,								boolean,				L"bConnect"								),
 	ENTRY ( bConnectAutomatically,					boolean,				L"bConnectAutomatically"				),
 	ENTRY ( bUseSpecifiedLocalIP,					boolean,				L"bUseSpecifiedLocalIP"					),
 	ENTRY ( uSpecifiedLocalIP,						uint,					L"uSpecifiedLocalIP"					),
 	ENTRY ( uPort,									uint,					L"uPort"								),
 	ENTRY ( bUseNagle,								boolean,				L"bUseNagle"							),
-#if 1
+	ENTRY ( bBroadcast,                             boolean,                L"bBroadcast"                           ),
+
+#if 0
 	ENTRY ( sScriptName,							string,					L"sScriptName"							),
 	ENTRY ( WinPos,									rect_i,					L"WinPos"								),	
 	ENTRY ( bDoNotShowRunAsAdminDialog,				boolean,				L"DoNotShowRunAsAdminDialog"			),
@@ -85,14 +85,15 @@ cSettings::sEntry * cSettings :: table ( int i )
 //----------------------------------------------------------------------------------------------------------------------
 void cSettings :: init ()
 {
-	sSignature							= L"Mojo";
-	Version								= g_Version;
+	// sSignature							= awENGINE_TITLE;
+	// Version								= g_Version;
 	bConnect							= true;
 	bConnectAutomatically				= true;
 	bUseSpecifiedLocalIP				= false;
 	uSpecifiedLocalIP					= 0;
 	uPort 								= 7237;
 	bUseNagle							= false;
+	bBroadcast                          = true;
 
 #if 1
 	WinPos								= mojo::cRectI ( 100, 100, 800, 600 );

@@ -23,12 +23,12 @@ using namespace mojo;
 // DATA
 //======================================================================================================================
 
-static const cSettings DefaultSettings;
+static const cSettings DefaultSettings ( g_awAppTitle, &g_Version );
 	             
 cSettings::sEntry cSettings::aTable [] =
 {
-	ENTRY ( sSignature,								string,					L"sSignature"							),
-	ENTRY ( Version,								version,				L"Version"								),
+	// ENTRY ( sSignature,								string,					L"sSignature"							),
+	// ENTRY ( Version,								version,				L"Version"								),
 	ENTRY ( bLicenseAccepted,						boolean,				L"bLicenseAccepted"						),
 	ENTRY ( bConnect,								boolean,				L"bConnect"								),
 	ENTRY ( bConnectAutomatically,					boolean,				L"bConnectAutomatically"				),
@@ -66,8 +66,8 @@ cSettings::sEntry * cSettings :: table ( int i )
 //----------------------------------------------------------------------------------------------------------------------
 void cSettings :: init ()
 {
-	sSignature							= L"mojo";
-	Version								= g_Version;
+	// sSignature							= L"mojo";
+	// Version								= g_Version;
 	bLicenseAccepted					= false;
 	bConnect							= true;
 	bConnectAutomatically				= true;

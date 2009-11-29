@@ -579,7 +579,7 @@ WORD cKeyboard :: name_to_ex_vk ( const wchar_t * pName )
 //-------------------------------------------------------------------------------------------------------
 // EXTENDED VK TO NAME
 //-------------------------------------------------------------------------------------------------------
-wchar_t * cKeyboard::ex_vk_to_name ( WORD dwExVK )
+const wchar_t * cKeyboard::ex_vk_to_name ( WORD dwExVK )
 {
 	return aExVK[dwExVK].pwName;
 }
@@ -588,9 +588,21 @@ wchar_t * cKeyboard::ex_vk_to_name ( WORD dwExVK )
 //-------------------------------------------------------------------------------------------------------
 // EXTENDED VK TO PRETTY NAME
 //-------------------------------------------------------------------------------------------------------
-wchar_t * cKeyboard::ex_vk_to_pretty_name ( WORD dwExVK )
+const wchar_t * cKeyboard::ex_vk_to_pretty_name ( WORD dwExVK )
 {
 	return aExVK[dwExVK].pwPrettyName;
+}
+
+//-------------------------------------------------------------------------------------------------------
+// PRETTY KEY EVENT
+//-------------------------------------------------------------------------------------------------------
+const wchar_t * cKeyboard :: pretty_key_event ( mojo::cStrW * pRet, const KBDLLHOOKSTRUCT * pHS )
+{
+	WORD wExVK = (WORD) pHS->vkCode + (( pHS->flags & LLKHF_EXTENDED ) ? 0x100 : 0 );
+	const wchar_t * pwTrans = pHS->flags & LLKHF_UP ? L"Up" : L"Down" ;
+	const wchar_t * pwName = mojo :: cKeyboard :: ex_vk_to_pretty_name ( wExVK );
+	pRet->f ( L"%s %s", pwName, pwTrans );
+	return pRet->cstr();
 }
 
 

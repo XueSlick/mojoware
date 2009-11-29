@@ -31,7 +31,7 @@ void mojo :: shut_down_engine ()
 MOJO_ENGINE_API bool mojo :: load_engine_settings ( const wchar_t * pAppDataDirectory )
 {
 	cStrW sPath = pAppDataDirectory;
-	sPath += g_awDllTitle;
+	sPath += g_pwEngineTitle;
 	sPath += L".settings.txt";
 	g_Settings.set_pathname ( sPath.cstr() );
 	return g_Settings.load_from_file ();
@@ -43,6 +43,7 @@ MOJO_ENGINE_API bool mojo :: load_engine_settings ( const wchar_t * pAppDataDire
 //--------------------------------------------------------------------------------------------------------
 bool mojo :: initialize_engine ( HINSTANCE hAppInstance, 
 								  HWND hwndApp,
+								  const wchar_t * pAppTitle,
 								  const wchar_t * apScribs [],
 								  const wchar_t * pScribPathname [],
 	                              const wchar_t  * pAppDataDirectory,
@@ -51,8 +52,11 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	assert ( hwndApp );
 	assert ( pAppDataDirectory );
 	assert ( pVersionRequiredByApp );
+	assert ( pAppTitle );
 
 	g_hAppInstance = hAppInstance;
+	g_sAppTitle = pAppTitle;
+	assert ( g_sAppTitle.len() );
 
 	//----------------------------------------------
 	// RUN ONCE (do this first)
@@ -142,7 +146,7 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	//----------------------------------------------
 
 	cStrW sPath = pAppDataDirectory;
-	sPath += g_awDllTitle;
+	sPath += g_pwEngineTitle;
 	sPath += L".settings.txt";
 	g_Settings.set_pathname ( sPath.cstr() );
 
@@ -150,7 +154,7 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	// START HOOK THREAD AND INSTALL HOOKS
 	//----------------------------------------------
 
-	g_dwHookThreadID = mojo_hooks::start_thread ( g_hwndApp, keyboard_hook_service_routine, mouse_hook_service_routine );
+	g_dwHookThreadID = mojo_hooks::start_thread ( g_hwndApp, cMessenger::keyboard_hook_service_routine, cMessenger::mouse_hook_service_routine );
 
 	//-------------------------------------
 	// START SOCKET (TCP) COMMUNICATIONS
@@ -161,10 +165,8 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	//----------------------------------------------
 	// START Discovery THREADS
 	//----------------------------------------------
-	if ( g_Settings.bConnect && g_Settings.bConnectAutomatically )
-	{
-		g_Discovery.start_threads();
-	}
+
+	g_Discovery.start();
 
 	return true;
 }

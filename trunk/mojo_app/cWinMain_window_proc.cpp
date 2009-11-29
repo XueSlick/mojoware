@@ -39,6 +39,53 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 
 	switch ( uMsg )
 	{
+
+	case WM_KEYDOWN:
+		{
+			int x = 3;
+			x++;
+		}
+		break;
+
+	case WM_KEYUP:
+		{
+			int x = 3;
+			x++;
+		}
+		break;
+
+	case WM_SYSKEYDOWN:
+		{
+			int x = 3;
+			x++;
+		}
+		break;
+
+	case WM_SYSKEYUP:
+		{
+			int x = 3;
+			x++;
+		}
+		break;
+
+	case uWM_BROADCAST_TARGETS_CHANGED:
+		{
+			mojo::cArrayTarget ta;
+			mojo::get_broadcast_targets ( &ta );
+			cStrW sAll;
+			for ( unsigned u = 0; u < ta.qty(); u++ )
+			{
+				if ( 0 < u )
+					sAll += L"\n";
+
+				cStrW sOne;
+				sOne.f ( L"Window handle 0x%X.", ta[u].hwnd );
+				sAll += sOne;
+			}
+			mojo::put_ad_lib_memo ( mojo::cMemo::info, L"Broadcast targets:", sAll.cstr() );
+		}
+		break;
+
 	case WM_COMMAND:
 		if ( pThis )
 		{
@@ -72,6 +119,14 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 
 	case WM_ERASEBKGND:
 		return 1;
+
+	case WM_GETMINMAXINFO:
+		{
+			MINMAXINFO * p    = (MINMAXINFO*) lParam;
+			POINT pt          = { 515, 330 };
+			p->ptMinTrackSize = pt;
+		}
+		break;
 
 	case mojo::uWM_INPUT_EVENT_READY:
 		{

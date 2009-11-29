@@ -93,7 +93,7 @@ void do_it ( const wchar_t * pIn, const wchar_t * pOut )
 
 		fwprintf ( Out.h, L"   L\"" );
 
-		for ( wchar_t * p = s.cstr(); *p; p++ )
+		for ( const wchar_t * p = s.cstr(); *p; p++ )
 		{
 			if ( (*p) == L'\t' )
 				fwprintf ( Out.h, L" " );

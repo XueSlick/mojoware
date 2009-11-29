@@ -8,11 +8,14 @@
 
 #pragma once
 
+#include "cMessage.h"
+
 //======================================================================================================================
 //  DATA
 //======================================================================================================================
 
 extern HWND g_hwndApp;
+class mojo::cMach;
 
 //----------------------------------------------------------------------------------------------------------------------
 //   CLASS Messenger
@@ -22,11 +25,24 @@ class cMessenger
 {
 public:
 
-	cMessenger () : hwnd(0) {}
+	cMessenger             () : hwnd(0) {}
+
+	static bool keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUCT * p );
+	static bool mouse_hook_service_routine    ( WPARAM wParam, MSLLHOOKSTRUCT * p );
+
+	void send                     ( DWORD hMachHandle, cMessage * pMessage );
+	void receive                  ( struct sSocketInfo * pSI, const char * pBuffer, unsigned uLen );
+	static const wchar_t * print_from_mach ( mojo::cStrW * pRet, const mojo::cMach * pMach );
+	void put_receive_memo         ( cMessage * pMsg, const wchar_t * pBody2 );
+	static void broadcast_message ( cMessage * pMsg );
+	static void send_message      ( mojo::cMach * pMach, cMessage * pMsg );
+
+
 
 	static const UINT uWM_SOCKET_HAS_CLOSED = WM_USER + 0;
 
 	static void tell_app_that_connections_changed ();
+	static void tell_app_that_broadcast_targets_changed ();
 
 	DWORD start_thread 	();
 	DWORD dwThreadID;

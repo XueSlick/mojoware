@@ -55,7 +55,7 @@ public:
 	bool operator== ( const tStr<C> & Rh ); 		// tStr
 	bool operator== ( const C * pRh );        		// null-terminated string
 
-	C * cstr();
+	const C * cstr();
 
 	int bufsize () { return iBufSize; }
 	C * buffer () { return pBuf; } 					// not the same as cstr();
@@ -906,7 +906,7 @@ template<class C> void tStr<C>::erase ()
 // CSTR
 // rewritten april 25 2009
 //-------------------------------------------------------------------------------------------------------
-template<class C> C * tStr<C>::cstr ()
+template<class C> const C * tStr<C>::cstr ()
 {
 	if ( ! pBuf )
 	{
@@ -926,6 +926,7 @@ template<class C> C * tStr<C>::cstr ()
 
 	return pBuf;
 }
+
 
 
 

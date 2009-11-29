@@ -2,8 +2,8 @@
 /*
 /*	  tList2.h / mojo_engine
 /*
-/*    One of the differences between this template and earlier version, tList, is the iterators 
-/*    next(), prev(), etc.
+/*    Some of the differences between this template and earlier version, tList, is the iterators 
+/*    next(), prev(), etc., and lock() and unlock();
 /*
 /*    Copyright 2009 Robert Sacks.
 /*

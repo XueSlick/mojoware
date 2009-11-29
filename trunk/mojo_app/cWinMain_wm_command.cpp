@@ -40,6 +40,10 @@ void cWinMain :: wm_command ( WPARAM wParam, LPARAM lParam )
 		}
 		break;
 
+	case ID_CLEAR:
+		PostMessage ( DlgMonitor.hwnd, WM_COMMAND, ID_CLEAR, ID_CLEAR );
+		break;
+
 	case ID_CONNECTION_SETTINGS:
 		{
 			cDlgSettingsConnection d;

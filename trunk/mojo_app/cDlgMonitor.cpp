@@ -11,6 +11,11 @@
 #include "stdafx.h"
 
 //======================================================================================================================
+//  DATA
+//======================================================================================================================
+
+
+//======================================================================================================================
 //  CODE
 //======================================================================================================================
 
@@ -77,7 +82,10 @@ void cDlgMonitor::wm_paint ()
 {
 	draw_head  ( &InputEventsHead  );
 	draw_head  ( &MemosHead 	   );
-	draw_head  ( &ConnectionsHead );
+	draw_head  ( &MemosHeadR       );
+	draw_head  ( &MemosHeadT       );
+	draw_head  ( &MemosHeadB       );
+	draw_head  ( &ConnectionsHead  );
 }
 
 
@@ -89,8 +97,10 @@ void cDlgMonitor::draw_head ( cWin * pHead )
 	cStrW sText;
 	get_window_text ( &sText, pHead->hwnd );
 
+#if 0
 	if ( ! sText.len() )
 		return;
+#endif
 
 	const wchar_t * pTxt = sText.cstr();
 
@@ -115,9 +125,14 @@ void cDlgMonitor::draw_head ( cWin * pHead )
 	SelectObject	( hdc, HGDIOBJ ( hBrush ) );
 	FillRect		( hdc, &rect, hBrush );
 	DeleteObject	( (HGDIOBJ)  hBrush );
-	DWORD dwStyles	= DT_VCENTER | DT_SINGLELINE;
-	rect.left = iLeftMargin;
-	cDlg::draw_text ( hdc, &rect, caption, pTxt, true, dwStyles );
+
+	if ( sText.len() )
+	{
+		DWORD dwStyles	= DT_VCENTER | DT_SINGLELINE;
+		rect.left = iLeftMargin;
+		cDlg::draw_text ( hdc, &rect, caption, pTxt, true, dwStyles );
+	}
+
 	rect.left = 0;
 
 #ifdef DOUBLE_BUFFER
@@ -152,8 +167,10 @@ void cDlgMonitor::wm_initdialog ()
 	set_text ();
 
 	const int iMargin = 9;
-	int iHeadHeight = g_NonClientMetrics.iCaptionHeight;
+	int iHeadHeight = 2 + g_NonClientMetrics.iCaptionHeight;
 	int iVertDiv = 235;
+	int iClearButtonWidth = 62;
+	int iClearButtonMargin = 4;
 
 	//----------------------------------------
 	//  YOUR LAST ACTION (INPUT EVENTS) HEADER
@@ -218,14 +235,48 @@ void cDlgMonitor::wm_initdialog ()
 	//----------------------------------------
 
 	MemosHead.hwnd = GetDlgItem ( hwnd, ID_MEMOS_HEAD );
-
 	register_child ( &MemosHead,
 
 							  nAnchor::left,		0,		iVertDiv + iMargin,
 							  nAnchor::top,			0,		iMargin,
-							  nAnchor::right,		0,		-iMargin,
+							  nAnchor::right,		0,		- ( iClearButtonMargin + iMargin + iClearButtonWidth ),
 							  nAnchor::top,	    	0,		iMargin + iHeadHeight   );
 
+	MemosHeadR.hwnd = GetDlgItem ( hwnd, ID_MEMOS_HEAD_R );
+	register_child ( &MemosHeadR,
+
+							  nAnchor::right,		0,		- ( iMargin + iClearButtonMargin ),
+							  nAnchor::top,			0,		iMargin,
+							  nAnchor::right,		0,		- iMargin,
+							  nAnchor::top,	    	0,		iMargin + iHeadHeight );
+
+	MemosHeadT.hwnd = GetDlgItem ( hwnd, ID_MEMOS_HEAD_T );
+	register_child ( &MemosHeadT,
+
+							  nAnchor::right,		0,		- ( iClearButtonMargin + iMargin + iClearButtonWidth ),
+							  nAnchor::top,			0,		iMargin,
+							  nAnchor::right,		0,		- ( iMargin + iClearButtonMargin ),
+							  nAnchor::top,	    	0,		iMargin + 1 );
+
+	MemosHeadB.hwnd = GetDlgItem ( hwnd, ID_MEMOS_HEAD_B );
+	register_child ( &MemosHeadB,
+
+							  nAnchor::right,		0,		- ( iClearButtonMargin + iMargin + iClearButtonWidth ),
+							  nAnchor::top,			0,		iMargin + iHeadHeight - 1,
+							  nAnchor::right,		0,		- ( iMargin + iClearButtonMargin ),
+							  nAnchor::top,	    	0,		iMargin + iHeadHeight );
+
+	//----------------------------------------
+	//  PROGRAM'S LAST ACTION (MEMOS) CLEAR
+	//----------------------------------------
+
+	Clear.hwnd = GetDlgItem ( hwnd, ID_CLEAR );
+
+	register_child ( &Clear,
+							  nAnchor::right,		0,		- ( iClearButtonMargin + iMargin + iClearButtonWidth ),
+							  nAnchor::top,			0,		iMargin + 1,
+							  nAnchor::right,		0,		- ( iMargin + iClearButtonMargin ),
+							  nAnchor::top,	    	0,		iMargin + iHeadHeight - 1 );
 
 	//-----------------------------------------
 	// PROGRAM'S LAST ACTION (MEMOS) (RICH EDIT CONTROL)
@@ -251,6 +302,70 @@ void cDlgMonitor::wm_initdialog ()
 	SendMessage ( Memos.hwnd, EM_SETRECT, 0, (LPARAM)&rect );
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+// STOP FLICKER
+//----------------------------------------------------------------------------------------------------------------------
+bool cDlgMonitor :: set_region ()
+{
+
+	// ON VISTA, WINDOWS DON'T HAVE REGIONS UNLESS YOU CREATE ONE
+
+	//-----------------------------------
+	// CREATE EXISTING REGION
+	//-----------------------------------
+		
+	RECT rect;
+	GetWindowRect ( MemosHead.hwnd, &rect );
+	rect.right -= rect.left;
+	rect.bottom -= rect.top;
+	rect.left = 0;
+	rect.top = 0;
+    HRGN rgnOld = CreateRectRgnIndirect ( &rect );
+		
+	//-----------------------------------
+	// CREATE REGION FOR NON-DRAW AREA
+	//-----------------------------------
+
+	rect.left  = rect.right - 66;
+	rect.right = rect.right - 6;
+	rect.top   += 1;
+	rect.bottom -= 1;
+
+	HRGN rgnHole = CreateRectRgnIndirect ( &rect );
+
+	//-----------------------------------
+	// MAKE NEW REGION
+	//-----------------------------------
+
+	HRGN rgnNew = CreateRectRgn ( 0, 0, 0, 0 );
+
+	int iResult = CombineRgn ( rgnNew, rgnOld, rgnHole, RGN_DIFF);
+
+	DeleteObject ( rgnHole );
+	DeleteObject ( rgnOld );
+
+	if ( ERROR == iResult )
+	{
+		DeleteObject ( rgnNew );
+		return false;
+	}
+
+	//-----------------------------------
+	// SET NEW REGION
+	//-----------------------------------
+
+	if ( ! SetWindowRgn ( MemosHead.hwnd, rgnNew, TRUE ) )
+	{
+		DeleteObject ( rgnNew );
+		return false;
+	}
+
+	// DON'T DELETE NEW REGION HANDLE -- MSDN SAYS
+	// LEAVE IT, SYSTEM WILL DEAL WITH IT
+
+	return true;
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 // DIALOG PROC
@@ -263,10 +378,33 @@ INT_PTR CALLBACK cDlgMonitor :: dialog_proc ( HWND hDlg, UINT uMessage, WPARAM w
 
 	switch ( uMessage )
 	{
+	case WM_COMMAND:
+		switch ( LOWORD(wParam) )
+		{
+		case ID_CLEAR:
+			Edit_SetSel     ( pThis->Memos.hwnd, 0, -1 );
+			Edit_ReplaceSel ( pThis->Memos.hwnd, "" );
+			break;
+		}
+		break;
+
 	case mojo::uWM_MEMO_READY:
 		if ( pThis )
 			pThis->show_memo ();
 		break;
+
+#if 0
+	case WM_SIZE:
+		{
+			cDlg::dialog_proc ( hDlg, uMessage, wParam, lParam );
+			pThis->set_region ();
+			SetWindowPos ( pThis->Clear.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW); 
+		}
+		return (INT_PTR) TRUE;
+#endif
+
+
+
 		 
 	case WM_PAINT:
 		pThis->wm_paint ();
@@ -286,7 +424,20 @@ INT_PTR CALLBACK cDlgMonitor :: dialog_proc ( HWND hDlg, UINT uMessage, WPARAM w
 			return (INT_PTR)TRUE;
 		}
 
+#if 0
 	case WM_CTLCOLORBTN:
+		if ( lParam == (long) GetDlgItem ( hDlg, ID_CLEAR ) )
+		{
+			HDC hdc = (HDC)wParam;
+			SetTextColor(hdc, RGB(0,0,0));
+			SetBkMode(hdc, TRANSPARENT);
+			SetBkColor( hdc, RGB(0xFF, 0, 0 ) );
+			return (LONG) GetStockObject ( BLACK_BRUSH );
+		}
+		break;
+#endif
+
+#if 0
 	case WM_CTLCOLOREDIT:
 	case WM_CTLCOLORDLG:
 	case WM_CTLCOLORSTATIC:
@@ -301,6 +452,7 @@ INT_PTR CALLBACK cDlgMonitor :: dialog_proc ( HWND hDlg, UINT uMessage, WPARAM w
 			return (LONG) GetStockObject ( WHITE_BRUSH );
 		}
 		break;
+#endif
 
 	case WM_NOTIFY:
 		NMHDR * pN = (NMHDR*)lParam;

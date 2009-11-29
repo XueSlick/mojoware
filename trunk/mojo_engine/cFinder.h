@@ -20,21 +20,27 @@
 // CLASS
 //======================================================================================================================
 
+
 class cFinder
 {
 public:
 
 	cFinder ();
+	~cFinder () { if ( pSig ) delete pSig; }
 
-	bool start_threads ();
+	bool start                  ();
 	static bool					get_local_ip	( DWORD * pdwLocalIP );
 	static bool					is_local_ip		( DWORD dwIP );
 
 private:
-
-	bool						make_socket		( SOCKET * pRet, DWORD dwLocalIP );
-	bool						send			( int iPort, const wchar_t * pTxt );
-	bool						receive			( int iPort );
+	bool                        find_wow ();
+	bool 						make_receive_socket ( SOCKET * pRet );
+	bool						make_send_socket	( SOCKET * pRet, DWORD dwLocalIP );
+	void                        make_remote_socket_address ( SOCKADDR_IN * pRet );
+	bool						send			();
+	bool						send_inner_loop ( SOCKADDR_IN * psaServer );
+	bool						receive			();
+	// bool                        receive_inner_loop ( SOCKET );
 	static unsigned _stdcall	server_thread	( void *p );
 	static unsigned _stdcall	client_thread	( void *p );
 
@@ -42,11 +48,11 @@ private:
 	mojo::cStrW sLocalName;
 	unsigned uServerThreadID;
 	unsigned uClientThreadID;
-	unsigned uPort;
+
 
 	DWORD m_dwLocalIP;
 
-	cSignature Sig;
+	cSignature * pSig;
 };
 
 

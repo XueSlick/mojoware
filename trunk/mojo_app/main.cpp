@@ -156,7 +156,7 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 
 	try  
 	{
-		mojo::initialize_engine ( hInstance, g_hwnd, NULL, NULL, sDataDir.cstr(), & g_Version );
+		mojo::initialize_engine ( hInstance, g_hwnd, g_awAppTitle, NULL, NULL, sDataDir.cstr(), & g_Version );
 	}
 
 	catch ( cException &e ) 

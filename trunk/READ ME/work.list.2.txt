@@ -1,0 +1,46 @@
+==============================================================
+                       BUILD 2 WORK LIST
+==============================================================
+
+
+ 1.  cKeyboard :: verify_table ();
+
+ 2.  Improve reliability of socket close
+
+ 3.  Settings stop/start comm
+
+ 4.  Test for valid cSignature in cFinder                 DONE
+       -- refactored cFinder, simplified logic
+
+ 5.  Save signature and version in cSettingsBase          DONE
+       -- changed cSettingsBase constructor
+       -- removed them from derived classes	
+
+ 6.  Send and receive messages to other PC's              DONE
+       -- enhanced cMessenger
+       -- added cMessage
+
+ 7.  Find instances of World of Warcraft                  DONE
+       -- enhanced cFinder
+       -- added cKeyBroadcaster
+	   -- added cTarget
+
+ 8.  Broadcast keystrokes to World of Warcraft            DONE
+	   -- added cSyringe
+	   -- added pretty_key_event() to cKeyboard
+
+ 9.  Hook service routines were moved into cMessenger     DONE
+
+10.  Return type of tStr.cstr() changed to const C *      DONE
+
+11.  Added Clear button to cDlgMonitor.                   DONE
+
+  
+
+
+
+
+
+
+
+

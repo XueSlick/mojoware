@@ -31,14 +31,15 @@ private:
 
 public:
 
-	static wchar_t *	ex_vk_to_name ( WORD dwExVK );
-	static wchar_t *	ex_vk_to_pretty_name ( WORD dwExVK );
-	static WORD			name_to_ex_vk ( const wchar_t * pName );
+	static const wchar_t *    pretty_key_event ( mojo::cStrW * pRet, const KBDLLHOOKSTRUCT * pHS );
+	static const wchar_t *    ex_vk_to_name ( WORD dwExVK );
+	static const wchar_t *    ex_vk_to_pretty_name ( WORD dwExVK );
+	static WORD               name_to_ex_vk ( const wchar_t * pName );
 
 private:
 
-	static		sExVK aExVK [];
-	bool		verify_table ();
+	static                    sExVK aExVK [];
+	bool                      verify_table ();
 };
 
 } // namespace

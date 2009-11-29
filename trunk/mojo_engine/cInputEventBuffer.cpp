@@ -177,7 +177,7 @@ void cInputEvent :: print ( cStrW * pRet )
 
 #if 0
 			// TEMP 
-			static tArray2<WORD> TempRay;
+			static tArray<WORD> TempRay;
 			TempRay.append(wExVK);
 			// END TEMP
 #endif

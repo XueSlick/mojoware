@@ -23,6 +23,13 @@
 
 
 //=======================================================================================================
+// DEFINES
+//=======================================================================================================
+
+#define                     awENGINE_TITLE L"mojo_engine"
+
+
+//=======================================================================================================
 // DATA
 //=======================================================================================================
 
@@ -30,8 +37,8 @@ extern mojo::cVersion		g_Version;
 extern mojo::cLog			g_Log;
 extern mojo::cStrW			g_sAppTitle;
 extern mojo::cStrW			g_sAppDataDirectory;
-extern wchar_t 				g_awDllTitle [];
-extern mojo::cScribMgr     g_ScribMgr;
+extern const wchar_t * const 				g_pwEngineTitle;
+extern mojo::cScribMgr      g_ScribMgr;
 extern cSettings			g_Settings;
 extern HWND					g_hwndApp;
 extern DWORD 				g_dwHookThreadID;
@@ -43,4 +50,5 @@ extern HINSTANCE			g_hAppInstance;
 extern cMessenger			g_Messenger;
 extern cMemoBuffer			g_MemoBuffer;
 extern const wchar_t * 		g_apDefaultScribs [];
-extern cFinder			g_Discovery;
+extern cFinder              g_Discovery;
+extern cKeyBroadcaster         g_KeyBroadcaster;

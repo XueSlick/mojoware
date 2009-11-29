@@ -1,29 +1,15 @@
-/********************************************************************************************************
+/***********************************************************************************************************************
 /*
 /*    SettingsBase.cpp / mojo_engine
 /*
-/*    Copyright 2009 Robert Sacks
+/*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
-/*    This file is part of Mojo.  You may redistribute and/or modify Mojo under the terms of the GNU 
-/*    General Public License, version 3, as published by the Free Software Foundation.  You should have
-/*    received a copy of the license with mojo.  If you did not, go to http://www.gnu.org.
-/*
-/*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
-/*    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
-/*    FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
-/*    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
-/*    DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
-/*    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
-/*    IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
-/*    OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-/*
-/********************************************************************************************************/
+/**********************************************************************************************************************/
 
 #include "stdafx.h"
 #include "cSettingsBase.h"
 
 using namespace mojo;
-
 
 
 //======================================================================================================================
@@ -42,6 +28,15 @@ using namespace mojo;
 //======================================================================================================================
 // CODE
 //======================================================================================================================
+
+//----------------------------------------------------------------------------------------------------------------------
+//  CONSTRUCTOR
+//----------------------------------------------------------------------------------------------------------------------
+cSettingsBase :: cSettingsBase ( const wchar_t * pSignature, mojo::cVersion * pVersion )
+{
+	CurrentVersion = *pVersion;
+	sSignature = pSignature;
+}
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -133,39 +128,6 @@ bool cSettingsBase :: get_val_from_name ( void ** ppRetVal, _eType * pRetType, c
 }
 
 
-//----------------------------------------------------------------------------------------------------------------------
-//  SET VALUE FROM NAME
-//  Used by cDlgVars
-//----------------------------------------------------------------------------------------------------------------------
-#if 0
-bool  cSettingsBase :: set_val_from_name ( const wchar_t * pName, const void * pNewVal ) // used by cDlgVars
-{
-	assert ( pName );
-
-	sEntry * pEntry = name_to_entry ( pName );
-
-	if ( pRetType )
-		*pRetType = pEntry->type;
-
-	assert ( pEntry );
-
-	if ( ! pEntry )
-		return false;
-
-	void * pStoredVal = entry_to_item ( pEntry );
-
-	assert ( pStoredVal );
-
-	switch ( pEntry->type )
-	{
-	case boolean:
-		(*(bool *)pStoredVal) = (*(bool*)pNewVal);
-	}
-}
-#endif
-
-
-
 //---------------------------------------------------------------------------------------------
 // NAME TO ENTRY
 //---------------------------------------------------------------------------------------------
@@ -188,7 +150,6 @@ cSettingsBase::sEntry * cSettingsBase :: name_to_entry ( const wchar_t * pNameAr
 }
 
 
-
 //---------------------------------------------------------------------------------------------
 // SAVE TO FILE
 //---------------------------------------------------------------------------------------------
@@ -201,6 +162,20 @@ void cSettingsBase :: save_to_file ()
 
 	if ( 0 == h )
 		return;
+
+	//-----------------------------------------
+	//  SAVE VERSION AND SIGNATURE
+	//-----------------------------------------
+	{
+		write_item ( &f, L"sSignature", sSignature.cstr() );
+		cStrW t;
+		CurrentVersion.get_text ( &t );
+		write_item ( &f, L"Version", t.cstr() );
+	}
+
+	//-----------------------------------------
+	//  SAVE THE DERIVED CLASS'S STUFF
+	//-----------------------------------------
 
 	for ( int i = 0; i < qty_entries(); i++ )
 	{
@@ -249,12 +224,13 @@ void cSettingsBase :: save_to_file ()
 }
 
 
-
 //---------------------------------------------------------------------------------------------
 // LOAD FROM FILE
 //---------------------------------------------------------------------------------------------
 bool cSettingsBase :: load_from_file ()
 {
+	sLoadedSignature.erase();
+	LoadedVersion = cVersion ( 0, 0, 0, 0 );
 	init();
 
 	assert ( sPathname.len() );
@@ -271,18 +247,39 @@ bool cSettingsBase :: load_from_file ()
 	for ( ; f.get_line ( &sLine ); sLine.erase() )
 	{
 		match ( aRay, 2, sLine.cstr(), L"(\\S+) = (.+)" );
+		const wchar_t * pKey   = aRay[0].cstr();
+		const wchar_t * pValue = aRay[1].cstr();
+
+		//------------------------------------------
+		//  GET THE TWO BASE CLASS ITEMS FIRST
+		//------------------------------------------
+
+		if ( 0 == wcscmp ( L"sSignature", pKey ) )
+		{
+			sLoadedSignature = pValue;
+			continue;
+		}
+
+		else if ( 0 == wcscmp ( L"Version", pKey ) )
+		{
+			LoadedVersion.set_from_text ( pValue );
+			continue;
+		}
+
+		//------------------------------------------
+		//  GET THE DERIVED CLASS (TABLE) ITEMS
+		//------------------------------------------
+
 		sEntry * e = name_to_entry ( aRay[0].cstr() );
 
 		if ( ! e )
 		{
 			#ifdef _DEBUG
 				assert(e);
-			#else
-				continue;
 			#endif
-		}
 
-		const wchar_t * pValue = aRay[1].cstr();
+			continue;
+		}
 
 		switch ( e->type )
 		{
@@ -310,7 +307,7 @@ bool cSettingsBase :: load_from_file ()
 			break;
 
 		case version:
-			PrevVersion.set_from_text ( aRay[1].cstr() );
+			assert(0); // REPLACED BY BASE CLASS nov 28 2009 // LoadedVersion.set_from_text ( aRay[1].cstr() );
 			break;
 
 		case rect_i:
@@ -352,3 +349,21 @@ void cSettingsBase::write_item ( cFileOut * pFile, const wchar_t * pName, const 
 	fwprintf ( pFile->h, L"%s = %s\n", pName, pValue );
 }
 
+
+/***********************************************************************************************************************
+/*
+/*    This file is part of Mojo.  For more information, see http://mojoware.org.
+/*
+/*    You may redistribute and/or modify Mojo under the terms of the GNU General Public License, version 3, as
+/*    published by the Free Software Foundation.  You should have received a copy of the license with Mojo.  If you
+/*    did not, go to http://www.gnu.org.
+/* 
+/*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+/*    NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+/*    IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+/*    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+/*    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+/*    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+/*    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+/*
+/***********************************************************************************************************************/

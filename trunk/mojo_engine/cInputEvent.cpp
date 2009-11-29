@@ -52,7 +52,7 @@ void cInputEvent :: load_scribs ()
 //---------------------------------------------------------------------------------------------
 // PRINT
 //---------------------------------------------------------------------------------------------
-wchar_t * cInputEvent :: print ( cStrW * pRet )
+const wchar_t * cInputEvent :: print ( cStrW * pRet )
 {
 
 #if 1
@@ -197,7 +197,7 @@ wchar_t * cInputEvent :: print ( cStrW * pRet )
 
 #if 0
 			// TEMP 
-			static tArray2<WORD> TempRay;
+			static tArray<WORD> TempRay;
 			TempRay.append(wExVK);
 			// END TEMP
 #endif

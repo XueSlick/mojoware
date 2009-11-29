@@ -20,18 +20,19 @@ class cSettings : public mojo::cSettingsBase
 {
 public:
 
+	cSettings           ( const wchar_t * pSignature, mojo::cVersion * pVersion ) : cSettingsBase ( pSignature, pVersion ) {}
+
 	//---------------------------------------------------
 	// PUBLIC DATA
 	//---------------------------------------------------
 
-	mojo::cStrW		sSignature;
-	mojo::cVersion		Version;
 	bool				bConnect;
 	bool 				bConnectAutomatically;
 	bool				bUseSpecifiedLocalIP;
 	unsigned			uSpecifiedLocalIP;
 	unsigned			uPort;
 	bool				bUseNagle;
+	bool                bBroadcast;
 
 #if 1
 	mojo::cStrW		sScriptName;

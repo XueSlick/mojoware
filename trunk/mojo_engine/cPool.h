@@ -20,9 +20,6 @@
 // DATA
 //=======================================================================================================
 
-// TEMPORARY
-static const wchar_t awPort [] = L"7238";
-
 //=======================================================================================================
 // CLASSES
 //=======================================================================================================
@@ -36,15 +33,16 @@ struct sSocketInfo
 
 	enum { connect, accept } eType;
 
-	SOCKET				Socket;
-	DWORD				dwLocalIP;
-	DWORD				dwRemoteIP;
-	mojo::cStrW		sRemoteName; // fully q dns name
-	mojo::cVersion		RemoteVersion;
-	class mojo::cMach *		pMach;
-	sSocketInfo *		pNext;
-	sSocketInfo *		pPrev;
-	wchar_t				awRemoteIP [16];
+	SOCKET              Socket;
+	DWORD               dwLocalIP;
+	DWORD               dwRemoteIP;
+	mojo::cStrW         sRemoteName; // fully q dns name
+	mojo::cVersion      RemoteVersion;
+	DWORD 				dwMachHandle;
+	class mojo::cMach * pMach;
+	sSocketInfo *       pNext;
+	sSocketInfo *       pPrev;
+	wchar_t             awRemoteIP [16];
 };
 
 
@@ -60,8 +58,7 @@ public:
 
 	void start (); 
 
-	// void send ( const wchar_t * pAddr, DWORD dwPrefix, const char * pMsg, int iCount );
-	bool send ( DWORD dwIP, const char * pMsg, int iCount );
+	bool send ( DWORD dwIP, const char * pMsg, unsigned uLen );
 	void receive ( class cLapPlus * pLap );
 	void post_initial_receive ( sSocketInfo * pSI );
 
@@ -97,7 +94,7 @@ public:
 
 private:
 
-	cSignature				Sig;
+	cSignature				* pSig;
 
 	// const wchar_t *			make_sig					( cStrW * pRet );
 

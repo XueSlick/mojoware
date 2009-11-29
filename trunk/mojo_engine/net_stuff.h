@@ -40,14 +40,14 @@ struct sNetResource
 	sNetResource * pPrev;
 };
 
-wchar_t * get_full_dns_name ( mojo::cStrW * pRet );
+const wchar_t * get_full_dns_name ( mojo::cStrW * pRet );
 int get_name_info ( mojo::cStrW * pName, wchar_t * pwDottedDec );
 int get_addr_info ( DWORD * puIP, mojo::cStrW * psIP, wchar_t * pNameOrDottedDec );
 int get_ip_from_name ( DWORD * puIP, wchar_t * pName ); // uses getaddrinfo
 int net_server_enum ( tListNI<mojo::cStrW> * pList );
 bool get_net_resources ( mojo::tList<sNetResource> * pListRet, int * piQtyRet ); // this one is the user interface
 BOOL get_net_resources ( mojo::tList<sNetResource> * pListRet, int * piQtyRet,  void * /* LPNETRESOURCE */ lpnr);
-DWORD netbios_name_to_ip ( mojo::cStrW * pNeatNameRet, DWORD * pRet, char acRet[16], wchar_t awRet[16], wchar_t * pName );
+DWORD netbios_name_to_ip ( mojo::cStrW * pNeatNameRet, DWORD * pRet, char acRet[16], wchar_t awRet[16], const wchar_t * pName );
 
 char * ip_dword_to_pc ( DWORD dw );  
 DWORD  ip_pc_to_dword ( char * pc ); 

@@ -43,7 +43,7 @@ public:
 	bool		is_point_in				( mojo::cPtI * pt );
 	void		set_from_local_hardware ();
 	void		calc_mult_virt_rect		( mojo::cRectI * pRet );
-	wchar_t *	text					( mojo::cStrW * pRet );
+	const wchar_t *	text					( mojo::cStrW * pRet );
 	void		set_from_text			( const wchar_t * p );
 };
 

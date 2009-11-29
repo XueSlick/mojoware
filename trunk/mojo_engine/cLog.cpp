@@ -68,7 +68,7 @@ extern		cLog g_Log;
 //  PROTOTYPES
 //=======================================================================================================
 
-wchar_t * 	get_full_dns_name ( mojo::cStrW * pRet );
+const wchar_t * 	get_full_dns_name ( mojo::cStrW * pRet );
 bool 		replace_format_specification_fields ( wchar_t * pRet, int iSize,  const wchar_t * pIn, va_list pVA );
 
 namespace mojo {
@@ -162,7 +162,7 @@ void get_pretty_time ( cStrW * p )
 //-------------------------------------------------------------------------------------------------------
 //  PRINT HEADER
 //-------------------------------------------------------------------------------------------------------
-void cLog::print_header ( wchar_t * p )
+void cLog::print_header ( const wchar_t * p )
 {
 
 	log ( L"-------------------------------------------------------------------------------------" );

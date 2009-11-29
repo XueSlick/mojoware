@@ -47,10 +47,10 @@ const UINT uWM_UNINSTALL_MOUSE_HOOK 	= WM_USER + 3;
 //  PROTOTYPES
 //=======================================================================================================
 
-MOJO_HOOKS_API DWORD start_thread 				( HWND hwndApp, fKEYBOARDHOOKSERVICEROUTINE * pfKB, fMOUSEHOOKSERVICEROUTINE * pfM );
-MOJO_HOOKS_API bool  install_keyboard_hook 	( fKEYBOARDHOOKSERVICEROUTINE * );
-MOJO_HOOKS_API bool  uninstall_keyboard_hook 	();
-MOJO_HOOKS_API bool  install_mouse_hook 		( fMOUSEHOOKSERVICEROUTINE * );
-MOJO_HOOKS_API bool  uninstall_keyboard_hook 	();
+MOJO_HOOKS_API DWORD start_thread               ( HWND hwndApp, fKEYBOARDHOOKSERVICEROUTINE * pfKB, fMOUSEHOOKSERVICEROUTINE * pfM );
+MOJO_HOOKS_API bool  install_keyboard_hook      ( fKEYBOARDHOOKSERVICEROUTINE * );
+MOJO_HOOKS_API bool  uninstall_keyboard_hook    ();
+MOJO_HOOKS_API bool  install_mouse_hook         ( fMOUSEHOOKSERVICEROUTINE * );
+MOJO_HOOKS_API bool  uninstall_keyboard_hook    ();
 MOJO_HOOKS_API void  get_version   			( unsigned *pMaj, unsigned *pMin, unsigned *pPip, unsigned * pBld );
 } // namespace

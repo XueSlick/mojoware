@@ -169,6 +169,12 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Mojo\mojo_app\mojo_app.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\Mojo\mojo_art\mojo-logo-star-150.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="..\mojo_art\mojo-logo-star-150.bmp">
       <Filter>Resource Files</Filter>
     </None>

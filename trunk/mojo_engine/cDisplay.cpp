@@ -89,7 +89,7 @@ void cDisplayList :: set_from_text ( const wchar_t * pTxt )
 //---------------------------------------------------------------------------------------------
 //	GET TEXT
 //---------------------------------------------------------------------------------------------
-wchar_t * cDisplayList :: text ( cStrW * pRet )
+const wchar_t * cDisplayList :: text ( cStrW * pRet )
 {
 	for ( cDisplay * p = first(); p; p = next ( p ) )
 	{

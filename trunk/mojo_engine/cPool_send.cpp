@@ -67,7 +67,7 @@ void cPool::send_cb ( cLapPlus * pLapPlus )
 //----------------------------------------------------------------------------------------------
 //  SEND
 //----------------------------------------------------------------------------------------------
-bool cPool :: send ( DWORD dwIP, const char * pMsg, int iCount )
+bool cPool :: send ( DWORD dwIP, const char * pMsg, unsigned uLen )
 {
 	sSocketInfo * pSI = get_connect_socket_info_by_ip ( dwIP ); // things are laggier with accept sockets
 
@@ -90,7 +90,7 @@ bool cPool :: send ( DWORD dwIP, const char * pMsg, int iCount )
 	pLap->pfCallback = send_cb;
 
 	pLap->sBuf.erase();
-	pLap->sBuf.append ( pMsg, iCount );
+	pLap->sBuf.append ( pMsg, uLen );
 
 	//-------------------------------------
 	//  WSA BUFFER
@@ -103,7 +103,7 @@ bool cPool :: send ( DWORD dwIP, const char * pMsg, int iCount )
 
 	WSABUF * pWsaBuf = & aWsaBuf[iIndexCopy];
 	iWsaBufIndex = ( iWsaBufIndex + 1 ) % iWSABUFQTY;
-	pWsaBuf->buf = pLap->sBuf.cstr();
+	pWsaBuf->buf = (char*) pLap->sBuf.cstr();
 	pWsaBuf->len = pLap->sBuf.len();
 
 	//-------------------------------------

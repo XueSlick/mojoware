@@ -1,9 +1,8 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgMonitor.h / mojo_app
+/*    se_debug_privilege.h
 /*
-/*    Wrapper for the "monitor dialog" which is one of the dialog boxes that fills the main window.  The monitor
-/*    dialog has three sections:  input events, connections, and a scrolling stream of status messages.
+/*    This file is not used in the current build.
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -11,42 +10,12 @@
 
 #pragma once
 
-#include "cDlg.h"
-#include "cListViewConnections.h"
+//======================================================================================================================
+//  PROTOTYPES
+//======================================================================================================================
 
-//----------------------------------------------------------------------------------------------------------------------
-//  CLASS DIALOG EVENT MONITOR
-//----------------------------------------------------------------------------------------------------------------------
-class cDlgMonitor : public cDlg
-{
-	friend class cWinMain;
-
-private:
-
-	bool set_region ();
-
-	cWin InputEvents;
-	cWin InputEventsHead;
-	cWin Memos;
-	cWin MemosHead;
-	cWin MemosHeadT;
-	cWin MemosHeadR;
-	cWin MemosHeadB;
-	cWin Clear;
-	cWin ConnectionsHead;
-	cListViewConnections Connections;
-
-	COLORREF get_memo_color ( cMemo * pM );
-	virtual int idd () { return IDD_MONITOR; }
-	virtual DialogProc * dialog_proc () { return dialog_proc; }
-	static DialogProc dialog_proc;
-	void show_memo ();
-	void wm_paint ();
-	void wm_initdialog ();
-	void draw_head ( cWin * pHead );
-	virtual void set_text();
-};
-
+BOOL set_privilege	  ( HANDLE hToken,  LPCTSTR lpszPrivilege, BOOL bEnablePrivilege  );
+bool get_thread_token ( HANDLE * phToken);
 
 
 /***********************************************************************************************************************
@@ -54,7 +23,7 @@ private:
 /*    This file is part of Mojo.  For more information, see http://mojoware.org.
 /*
 /*    You may redistribute and/or modify Mojo under the terms of the GNU General Public License, version 3, as
-/*    published by the Free Software Foundation.  You should have received a copy of the license with mojo.  If you
+/*    published by the Free Software Foundation.  You should have received a copy of the license with Mojo.  If you
 /*    did not, go to http://www.gnu.org.
 /* 
 /*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT

@@ -106,10 +106,10 @@ public:
 	void log ( const wchar_t * pcFile, int iLine, const wchar_t * pcTxt );
 	void log_system_error ( wchar_t * pcFile, int iLine, wchar_t * pcText, unsigned int dwSystemError );
 	void log ( const wchar_t * pcFile, int iLine, const wchar_t * pcTxt, unsigned int dwX );
-	void print_header ( wchar_t * p);
+	void print_header ( const wchar_t * p);
 	void format_line ( cStrW * pRet, const wchar_t * pcFile, int iLine, const wchar_t * pcTxt );
 	bool test ( cStrW * pError );
-	wchar_t * filename () { return Filename.cstr(); } // complete pathname
+	const wchar_t * filename () { return Filename.cstr(); } // complete pathname
 	void get_text ( cStrW * );
 
 private:

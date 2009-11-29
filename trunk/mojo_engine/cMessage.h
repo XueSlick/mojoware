@@ -1,8 +1,23 @@
 /***********************************************************************************************************************
 /*
-/*    cMachlist.h / mojo_engine
+/*    cMessage.h / mojo_engine
 /*
-/*    List of cMach's.
+/*    All commands executed by Mojo are put in the form of a cMessage (or one of its derived classes)
+/*    regardless of whether they execute locally or remotely.
+/*
+/*    This rule has been adopted in order to help prevent the evolving program from turning into an
+/*    unmanageable mass of spaghetti.
+/*
+/*    I haven't decided yet whether all commands must pass through cMessenger en route to being
+/*    executed, so cMessage plays a vital role in keeping things manageable.
+/*
+/*    cMessages get sent from one computer to another in a very simple way.  Their memory is treated
+/*    as a string of bytes which is shoved into a TCP segment.
+/*
+/*    When the string of bytes arrives at the destination PC, it is cast to be a cMessage, but the
+/*    resulting object isn't complete because it lacks its virtual function table, so be careful about 
+/*    calling functions in these circumstances.  The string of bytes contains type info (in the form
+/*    of enum eType) which can be used to call the correct virtual function with "::" syntax.
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -10,53 +25,40 @@
 
 #pragma once
 
-
-#include "cMach.h"
-#include "tList2.h"
-
-
 //======================================================================================================================
-// CLASSES
+//  CLASS
 //======================================================================================================================
 
-namespace mojo
-{
 
 //----------------------------------------------------------------------------------------------------------------------
-// CLASS MACH
+//  MESSAGE -- BASE
 //----------------------------------------------------------------------------------------------------------------------
-class MOJO_ENGINE_API cMachlist : public tList2<cMach>
+class cMessage
 {
 public:
 
-	cMachlist () : dwLastSerialNumberAssigned ( DWORD(0) ) {}
-
-	DWORD handle_to_ip ( DWORD dwHandle );
-
-	cMach * get_by_ip_or_add ( DWORD dwIP, const wchar_t * pDisplayList = NULL );
-
-	// void receive_new_mach ( cMach * pNew ); // called by outside thread // { receipts.append ( pNew ); SendMessage ( g_hwnd, uWM_MACHLIST_RECEIPTS, 0, 0 ); } // called by outside thread
-	void add_receipts (); // called only by UI thread to transfer new mach's into the list
-	void init_and_insert_local_machine ();
-
-	void save_draw_positions_to_file ();
-	static bool get_draw_position_from_file ( cMach * pMach );
-
-	cMach * local_machine ();
-
-	cMach * get_by_name			( const wchar_t * pName );
-	cMach * get_by_ip			( DWORD dwIP );
-
-private:
-
-	static const wchar_t * file_pathname ( mojo::cStrW * pRet );
-	DWORD dwLastSerialNumberAssigned;
-
-	// tList2<cMach> receipts;
-
+	const enum eType { none, mouseover, broadcast_key_event };
+	cMessage () : Type ( none ), pFromMach(0) {}
+	virtual const wchar_t * print ( mojo::cStrW * pRet );
+	unsigned uLen;
+	mojo::cMach * pFromMach;
+	eType Type;
 };
 
-} // namespace
+
+//----------------------------------------------------------------------------------------------------------------------
+//  MESSAGE -- BROADCAST KEY EVENT
+//----------------------------------------------------------------------------------------------------------------------
+class cMessageBroadcastKeyEvent : public cMessage
+{
+public:
+
+	cMessageBroadcastKeyEvent ( WPARAM wParamArg, KBDLLHOOKSTRUCT * pKbhsArg ) : wParam ( wParamArg ), kbhs ( *pKbhsArg ) { Type = broadcast_key_event; uLen = sizeof(cMessageBroadcastKeyEvent); }
+	virtual const wchar_t * print ( mojo::cStrW * pRet );
+	WPARAM wParam;
+	KBDLLHOOKSTRUCT kbhs;
+};
+
 
 /***********************************************************************************************************************
 /*
@@ -76,4 +78,3 @@ private:
 /*    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 /*
 /***********************************************************************************************************************/
-

@@ -47,7 +47,7 @@ using namespace mojo;
 //----------------------------------------------------------------------------------------------------------------------
 // GET FULL DNS NAME
 //----------------------------------------------------------------------------------------------------------------------
-wchar_t * get_full_dns_name ( mojo::cStrW * pRet )
+const wchar_t * get_full_dns_name ( mojo::cStrW * pRet )
 {
 	pRet->erase();
 
@@ -495,7 +495,7 @@ BOOL get_net_resources ( tList<sNetResource> * pListRet, int * piQtyRet, void * 
 // returns zero on success
 // WinSock error on failure
 //----------------------------------------------------------------------------------------------------------------------
-DWORD netbios_name_to_ip ( cStrW * pNeatNameRet, DWORD * pRetDW, char acRet[16], wchar_t awRet[16], wchar_t * pName )
+DWORD netbios_name_to_ip ( cStrW * pNeatNameRet, DWORD * pRetDW, char acRet[16], wchar_t awRet[16], const wchar_t * pName )
 {
 	WSADATA wsaData;
 

@@ -75,9 +75,9 @@ void cListViewConnections::populate ( mojo::cMachlist * pMachlist )
 
 		lvI.mask = LVIF_TEXT |  LVIF_PARAM | LVIF_STATE ; 
 		lvI.state = 1<<12;
-		lvI.pszText = p->sName.cstr();
+		lvI.pszText = (wchar_t *) p->sName.cstr();
 
-		lvI.pszText = p->sName.cstr();
+		// lvI.pszText = p->sName.cstr();
 			
 		SendMessage ( hwnd, LVM_INSERTITEM, 0, (LPARAM) &lvI );
 
@@ -85,7 +85,7 @@ void cListViewConnections::populate ( mojo::cMachlist * pMachlist )
 		if ( 2 <= iQtyColumns )
 		{
 			assert ( p->sDottedDec.len() );
-			ListView_SetItemText ( hwnd, i, 1, p->sDottedDec.cstr() );
+			ListView_SetItemText ( hwnd, i, 1, (wchar_t*) p->sDottedDec.cstr() );
 		}
 
 		if ( 3 <= iQtyColumns )
@@ -110,7 +110,7 @@ void cListViewConnections::populate ( mojo::cMachlist * pMachlist )
 				sTemp = L" ";
 			}
 
-			ListView_SetItemText ( hwnd, i, 2, sTemp.cstr() );
+			ListView_SetItemText ( hwnd, i, 2, (wchar_t*) sTemp.cstr() );
 		}
 
 		if ( 4 <= iQtyColumns )

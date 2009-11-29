@@ -35,7 +35,7 @@
 #include "files.h"
 #include "tList.h"
 #include "tList2.h"
-#include "tArray2.h"
+#include "tArray.h"
 #include "tCircBuf.h"
 #include "cLog.h"
 #include "cScrib.h"
@@ -52,7 +52,7 @@
 #include "cDisplay.h"
 #include "cMach.h"
 #include "cMachlist.h"
-#include <vector>
+#include "cTarget.h"
 
 
 
@@ -62,9 +62,10 @@ namespace mojo
 //  DATA
 //======================================================================================================================
 
-const UINT uWM_INPUT_EVENT_READY 		= WM_APP + 0xBFFF - 0;
-const UINT uWM_MEMO_READY 				= WM_APP + 0xBFFF - 1;
-const UINT uWM_CONNECTIONS_CHANGED		= WM_APP + 0xBFFF - 2;
+const UINT uWM_INPUT_EVENT_READY             = WM_APP + 0xBFFF - 0;
+const UINT uWM_MEMO_READY                    = WM_APP + 0xBFFF - 1;
+const UINT uWM_CONNECTIONS_CHANGED           = WM_APP + 0xBFFF - 2;
+const UINT uWM_BROADCAST_TARGETS_CHANGED     = WM_APP + 0xBFFF - 3;
 
 namespace nConnectionStatus
 {
@@ -81,7 +82,8 @@ MOJO_ENGINE_API void test					();
 MOJO_ENGINE_API void get_engine_version   ( cVersion * pRetVersion );
 MOJO_ENGINE_API bool load_engine_settings	( const wchar_t * pAppDataDirectory );
 MOJO_ENGINE_API bool initialize_engine 	( HINSTANCE hAppInstance, 
-										  HWND hwndAppMessageLoop, 
+										  HWND hwndAppMessageLoop,
+										  const wchar_t * pAppTitle,
 										  const wchar_t * apScribs [],
 										  const wchar_t * pScribPathname [],
 	                                      const wchar_t * pAppDataDirectory, 
@@ -101,6 +103,7 @@ MOJO_ENGINE_API DWORD ip_pw_to_dword		( const wchar_t * );
 MOJO_ENGINE_API void  get_machlist		( mojo::cMachlist * pRet );
 MOJO_ENGINE_API mojo::nConnectionStatus::eConnectionStatus 
 				get_connection_status 	( DWORD dwMachHandle );
+MOJO_ENGINE_API void get_broadcast_targets ( mojo::cArrayTarget * pRet );
 
 
 
