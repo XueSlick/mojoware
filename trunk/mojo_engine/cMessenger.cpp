@@ -92,15 +92,52 @@ void cMessenger :: broadcast_message ( cMessage * pMsg )
 
 
 //-------------------------------------------------------------------------------------------------------
+// ARE EQUAL (KBDLLHOOKSTRUCT)
+// ignores time
+//-------------------------------------------------------------------------------------------------------
+bool are_equal ( KBDLLHOOKSTRUCT * p1, KBDLLHOOKSTRUCT * p2 )
+{
+	if ( p1->flags   == p2->flags    &&
+		p1->scanCode == p2->scanCode &&
+		p1->vkCode   == p2->vkCode       )
+	{
+		return true;
+	}
+
+	else
+		return false;
+}
+
+
+//-------------------------------------------------------------------------------------------------------
 // KEYBOARD HOOK SERVICE ROUTINE
 //-------------------------------------------------------------------------------------------------------
 bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUCT * p )
 {
+	//-----------------------------------------
+	//  SET "PREVIOUS KEY STATE" BIT WHICH
+	//  IS USED IN WM_KEY* MESSAGES
+	//-----------------------------------------
+
+	static cPreviousKeyState PrevKeyEvent;
+	
+	p->dwExtraInfo = 0;
+
+	if ( PrevKeyEvent.last_event_was_down ( p->vkCode ) ) // DO THIS BEFORE RECEIVE
+		p->dwExtraInfo |= ( 1<<30 );                      // THIS BIT INDICATES PREV KEY STATE
+	                                                      // IT'S USED E.G. BY cSyringe
+
+	PrevKeyEvent.receive ( p ); // DO THIS AFTER RECEIVE
+
+	//----------------------------------------
+	// MAIN BUSINESS
+	//----------------------------------------
+
 	g_EventBuffer.receive ( wParam, p );
 
 	PostMessage ( g_hwndApp, mojo::uWM_INPUT_EVENT_READY, 0, 0 );
 
-	if ( g_Settings.bBroadcast )
+	if ( g_Settings.bBroadcastingIsOn )
 	{
 		g_KeyBroadcaster.receive_from_keyboard_hook ( wParam, p );
 	}

@@ -50,5 +50,5 @@ extern HINSTANCE			g_hAppInstance;
 extern cMessenger			g_Messenger;
 extern cMemoBuffer			g_MemoBuffer;
 extern const wchar_t * 		g_apDefaultScribs [];
-extern cFinder              g_Discovery;
+extern cFinder              g_Finder;
 extern cKeyBroadcaster         g_KeyBroadcaster;

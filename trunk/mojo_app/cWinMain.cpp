@@ -297,6 +297,8 @@ void cWinMain::on_create ( HWND hwndArg )
 
 	set_size ( 800, 600 );
 
+	set_menu_item_text ( g_hwnd, ID_TOGGLE_BROADCASTING, g_Settings.bBroadcastingIsOn ? L"Turn broadcasting off" : L"Turn broadcasting on" );
+
 #if 0
 	DlgCursorBlind.make_dlg();
 	ShowWindow ( DlgCursorBlind.hwnd, SW_HIDE );

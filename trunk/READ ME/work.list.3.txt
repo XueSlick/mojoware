@@ -1,0 +1,51 @@
+==============================================================
+                       BUILD 3 WORK LIST
+==============================================================
+
+
+ 1.  cKeyboard :: verify_table ();
+
+ 2.  Improve reliability of socket close
+
+ 3.  Settings stop/start comm
+
+ 4.  Broadcast on/off                                      DONE
+
+ 5.  Log exceptions from initialize_engine in catch        DONE   
+     block of main().
+
+ 6.   Added trace logging to initialize_engine().          DONE
+
+ 6.  "Debug" added to main window menu.                    DONE
+     -- Show install directory
+	 -- Show logs
+	 -- Show settings
+
+ 7.  Added some const/mutable stuff to tStr.               DONE
+
+ 8.  Refactored cMemo/cScribPack                           DONE
+     -- added head(), body(), key() to cScribPack.
+
+ 9.  "Enable ClickOnce security settings" unchecked        DONE
+     in MojoInstaller/properties/security.
+
+10.  "Prev key state" now gets set in WM_KEY* messages     DONE
+	 -- Added cPreviousKeyState
+	 -- Set a bit in dwExtraInfo in keyboard hook
+	       handler to indicate previous key state
+	 -- Enhanced cSyringe.
+
+11.  Changed way that "Mojo's actions" scrolls.            DONE
+     -- rewrote rich_edit_append_line ()	
+
+
+
+  
+
+
+
+
+
+
+
+

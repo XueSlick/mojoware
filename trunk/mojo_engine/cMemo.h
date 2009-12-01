@@ -33,10 +33,8 @@ public:
 	
 	bool set_ad_lib ( _eSeverity e, const wchar_t * pHeadFormatString, const wchar_t * pBodyFormatString, va_list pArgs );
 	bool set_ad_lib ( _eSeverity e, const wchar_t * pHeadFormatString, const wchar_t * pBodyFormatString, ... );
-	const wchar_t * severity_cstr ();
-	const wchar_t * head (); // { return head.cstr(); }
-	const wchar_t * body (); // { return body.cstr(); }
-	const wchar_t * key  (); // { return key.cstr(); }
+	const wchar_t * severity_cstr () const;
+
 };
 
 } // namespace

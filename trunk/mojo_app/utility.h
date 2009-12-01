@@ -12,6 +12,7 @@
 //  PROTOTYPES
 //======================================================================================================================
 
+void            open_text_file ( const wchar_t * pName );
 void 			init_common_controls ();
 void 			move_win_to_center ( HWND hwnd );
 mojo::cPtI 		get_window_size ( HWND hwnd );
@@ -21,6 +22,8 @@ void 			message_box ( const wchar_t * p );
 void			message_box ( mojo::cMemo * p );
 void			print ( const wchar_t * pTxt, ... ); // prints to monitor
 void			print ( mojo::cMemo::_eSeverity, const wchar_t * pTxt, ... ); // prints to monitor
+void            show_app_data_file ( const wchar_t * pName );
+void            set_menu_item_text ( HWND hwnd, unsigned uID, const wchar_t * pTxt );
 
 /***********************************************************************************************************************
 /*

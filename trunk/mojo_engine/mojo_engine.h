@@ -80,6 +80,7 @@ namespace nConnectionStatus
 MOJO_ENGINE_API void test					();	
 
 MOJO_ENGINE_API void get_engine_version   ( cVersion * pRetVersion );
+// MOJO_ENGINE_API void load_default_engine_scribs ();
 MOJO_ENGINE_API bool load_engine_settings	( const wchar_t * pAppDataDirectory );
 MOJO_ENGINE_API bool initialize_engine 	( HINSTANCE hAppInstance, 
 										  HWND hwndAppMessageLoop,

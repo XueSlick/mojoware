@@ -21,7 +21,7 @@
 Welcome											= Howdy!
 Welcome											= Welcome to %s version %s.
 Welcome											= This is an early alpha build, and only a few features are working.
-Welcome											= For more info, go to www.hotkeynet.com.
+Welcome											= For more info, go to www.mojoware.org.
 
 // ABOUT DIALOG
 
@@ -37,16 +37,7 @@ DlgMonitor.InputEventsHead						= Your last action
 DlgMonitor.MemosHead							= %s's actions on this PC
 DlgMonitor.ConnectionsHead						= Connections
 
-// INPUT EVENTS MONITOR
 
-InputEvents.MouseMotion							= Mouse motion
-InputEvents.ScrnPosition						= scrn position
-InputEvents.WinPosition							= win position
-InputEvents.KeyName								= Key name
-InputEvents.Event								= event
-InputEvents.VirtualKey							= virtual key
-InputEvents.ScanCode							= scan code
-InputEvents.Extended							= extended
 
 // SETTINGS DIALOG
 

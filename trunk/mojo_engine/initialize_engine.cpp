@@ -79,9 +79,7 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	if ( NULL == hwndApp )
 	{
 		LOG ( L"Bad argument:  initialize_engine was called with null window handle." );
-		// TODO TEMP
-		// return false;
-		throw ( cMemo ( cMemo::error, L"BadArgument",  L"initialize_engine." ) );
+		throw ( cException ( L"BadArgument",  L"initialize_engine." ) );
 	}
 
 	else
@@ -91,7 +89,10 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	// LOAD DEFAULT (BUILT-IN) SCRIBS (do this third)
 	//----------------------------------------------
 
-	assert ( g_ScribMgr.load_scribs ( g_apDefaultScribs, false ) );
+	LOG ( L"About to load default scribs." );
+	int iQty = g_ScribMgr.load_scribs ( g_apDefaultScribs, false );
+	LOG_V ( L"Just loaded engine's compiled scribs; qty = %d", iQty );
+	assert (iQty);
 
 	//----------------------------------------------
 	// LOAD USER-SUPPLIED SCRIBS
@@ -115,14 +116,25 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	}
 
 	//----------------------------------------------
+	// INITIALIZE INPUT EVENT SCRIBS
+	//----------------------------------------------
+		// g_ScribMgr.log();
+		LOG ( L"About to call cInputEvent::load_scribs()" );
+		cInputEvent::load_scribs();
+
+	//----------------------------------------------
 	// START MESSENGER THREAD
 	//----------------------------------------------
+
+	LOG ( L"About to start messenger thread." );
 
 	g_Messenger.start_thread ();
 
 	//----------------------------------------------
 	// CHECK VERSION
 	//----------------------------------------------
+
+	LOG ( L"About to check versions." );
 
 	unsigned uHookMaj, uHookMin, uHookPip, uHookBld;
 	mojo_hooks::get_version ( &uHookMaj, &uHookMin, &uHookPip, &uHookBld );
@@ -136,9 +148,9 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 		g_Version.get_text ( &sEngine);
 		pVersionRequiredByApp->get_text ( &sExe );
 		HooksDllVersion.get_text ( &sHooks );
-		// TODO TEMP
-		return false;
-		// throw ( cException ( L"FileVersionMismatch", sExe.cstr(), L"mojo_engine.dll", sEngine.cstr(), L"mojo_hooks.dll", sHooks.cstr() ) );
+		cException e ( L"FileVersionMismatch", sExe.cstr(), L"mojo_engine.dll", sEngine.cstr(), L"mojo_hooks.dll", sHooks.cstr() );
+		LOG ( &e );
+		throw ( e );
 	}
 
 	//----------------------------------------------
@@ -154,11 +166,15 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	// START HOOK THREAD AND INSTALL HOOKS
 	//----------------------------------------------
 
+	LOG ( L"About to start hooks thread." );
+
 	g_dwHookThreadID = mojo_hooks::start_thread ( g_hwndApp, cMessenger::keyboard_hook_service_routine, cMessenger::mouse_hook_service_routine );
 
 	//-------------------------------------
 	// START SOCKET (TCP) COMMUNICATIONS
 	//-------------------------------------
+
+	LOG ( L"About to start g_Pool." );
 
 	g_Pool.start(); 
 
@@ -166,10 +182,13 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	// START Discovery THREADS
 	//----------------------------------------------
 
-	g_Discovery.start();
+	LOG ( L"About to start g_Finder." );
+
+	g_Finder.start();
 
 	return true;
 }
+
 
 /********************************************************************************************************
 /*

@@ -46,6 +46,7 @@ private:
 	static cStrW sVirtualKey;
 	static cStrW sScanCode;
 	static cStrW sExtended;
+	static cStrW sPreviousKeyState;
 };
 
 #pragma warning ( pop )

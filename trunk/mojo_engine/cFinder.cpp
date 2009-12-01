@@ -10,8 +10,7 @@
 #include "cFinder.h"
 #include <process.h>
 #include "cPool.h"
-#include <Psapi.h> // for GetModuleFileNameEx
-#include "se_debug_privilege.h"
+
 using namespace mojo;
 
 //======================================================================================================================

@@ -90,6 +90,9 @@
     <ClCompile Include="cPool_worker_thread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cPreviousKeyState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cScrib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -222,6 +225,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cPreviousKeyState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cScrib.h">

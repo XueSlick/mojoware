@@ -72,6 +72,7 @@
 #include "utility_private.h"
 #include "cKeyBroadcaster.h"
 #include "cSyringe.h"
+#include "cPreviousKeyState.h"
 
 //---------------------------------
 //  GLOBAL DATA (KEEP THIS LAST)

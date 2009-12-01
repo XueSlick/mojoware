@@ -23,30 +23,41 @@ cStrW cInputEvent :: sEvent;
 cStrW cInputEvent :: sVirtualKey;
 cStrW cInputEvent :: sScanCode;
 cStrW cInputEvent :: sExtended;
+cStrW cInputEvent :: sPreviousKeyState;
 
 //=============================================================================================
 // CODE
 //=============================================================================================
 
+
+//---------------------------------------------------------------------------------------------
+//  LOAD SCRIBS SUB
+//---------------------------------------------------------------------------------------------
 void cInputEvent :: load_scribs_sub ( cStrW * pRet, const wchar_t * pKey )
 {
 	cScribPack sp ( pKey );
-	*pRet = sp.head;
+	*pRet = sp.head();
 
-
+	cStrW s;
+	s.f ( L"load_scribs_sub: key=%s, ret=%s", pKey, pRet );
+	LOG ( s.cstr() );
 }
 
 
+//---------------------------------------------------------------------------------------------
+// LOAD SCRIBS
+//---------------------------------------------------------------------------------------------
 void cInputEvent :: load_scribs ()
 {
-	load_scribs_sub ( &sMouseMotion, 	L"InputEvents.MouseMotion" );
-	load_scribs_sub ( &sScrnPosition,	L"InputEvents.ScrnPosition" );
-	load_scribs_sub ( &sWinPosition, 	L"InputEvents.WinPosition" );
-	load_scribs_sub ( &sKeyName, 		L"InputEvents.KeyName" );
-	load_scribs_sub ( &sEvent, 			L"InputEvents.Event" );
-	load_scribs_sub ( &sVirtualKey, 	L"InputEvents.VirtualKey" );
-	load_scribs_sub ( &sScanCode, 		L"InputEvents.ScanCode" );
-	load_scribs_sub ( &sExtended, 		L"InputEvents.Extended" );
+	load_scribs_sub ( &sMouseMotion, 	        L"InputEvents.MouseMotion" );
+	load_scribs_sub ( &sScrnPosition,	        L"InputEvents.ScrnPosition" );
+	load_scribs_sub ( &sWinPosition, 	        L"InputEvents.WinPosition" );
+	load_scribs_sub ( &sKeyName, 		        L"InputEvents.KeyName" );
+	load_scribs_sub ( &sEvent, 			        L"InputEvents.Event" );
+	load_scribs_sub ( &sVirtualKey, 	        L"InputEvents.VirtualKey" );
+	load_scribs_sub ( &sScanCode, 		        L"InputEvents.ScanCode" );
+	load_scribs_sub ( &sExtended, 		        L"InputEvents.Extended" );
+	load_scribs_sub ( &sPreviousKeyState,		L"InputEvents.PreviousKeyState" );
 }
 
 //---------------------------------------------------------------------------------------------
@@ -62,9 +73,12 @@ const wchar_t * cInputEvent :: print ( cStrW * pRet )
 	const wchar_t * pEvent = NULL;
 	wchar_t awTxt [2000];
 
-	// if ( Buf.pop ( &e ) )
-	// while ( Buf.get ( &e ) )
+
 	{
+		//-------------------------------------
+		//  MOUSE
+		//-------------------------------------
+
 		if ( cInputEvent::mouse == e.eType )
 		{
 			WORD wMouseVK = 0;
@@ -187,20 +201,15 @@ const wchar_t * cInputEvent :: print ( cStrW * pRet )
 			}
 		}
 
+		//-------------------------------------
+		//  KEYBOARD
+		//-------------------------------------
+
 		else // keyboard
 		{
-
-
 			wchar_t * pEvent = NULL;
 
 			WORD wExVK = (WORD) e.u.k.vkCode;
-
-#if 0
-			// TEMP 
-			static tArray<WORD> TempRay;
-			TempRay.append(wExVK);
-			// END TEMP
-#endif
 
 			if ( e.u.k.flags & LLKHF_EXTENDED )
 				wExVK += 0x100;
@@ -219,12 +228,18 @@ const wchar_t * cInputEvent :: print ( cStrW * pRet )
 				break;
 			}
 
+			DWORD dwExtra;
+			
+			dwExtra = e.u.k.dwExtraInfo;
+
 			wsprintf ( awTxt,	L"\r\n"
 								L"   %s:\t%s\r\n"
 								L"   %s:\t%s\r\n"
 								L"   %s:\t%d\r\n"
 								L"   %s:\t%d\r\n"
-								L"   %s:\t%s\r\n", 
+								L"   %s:\t%s\r\n"
+								L"   %s:\t%s\r\n"
+								,
 								sKeyName.cstr(),
 								cKeyboard::ex_vk_to_pretty_name(wExVK),
 								sEvent.cstr(),
@@ -234,7 +249,10 @@ const wchar_t * cInputEvent :: print ( cStrW * pRet )
 								sScanCode.cstr(),
 								e.u.k.scanCode,
 								sExtended.cstr(),
-								e.u.k.flags & LLKHF_EXTENDED ? L"yes" : L"no" );
+								e.u.k.flags & LLKHF_EXTENDED ? L"yes" : L"no",
+								sPreviousKeyState.cstr(),
+								( e.u.k.dwExtraInfo & (1<<30) ) ? L"down" : L"up"
+								);
 
 #if 0
 			if ( g_Settings.bShowKeyboardEventsInMonitor )

@@ -53,6 +53,11 @@ void 							make_fonts ();
 //----------------------------------------------------------------------------------------------------------------------
 void test ( )
 {
+
+	SetTimer ( g_hwnd, 0, 30, NULL );
+
+
+
 }
 
 
@@ -149,6 +154,7 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 	mojo::set ( L"uSpecifiedLocalIP",		g_Settings.uSpecifiedLocalIP );
 	mojo::set ( L"bUseNagle",				g_Settings.bUseNagle );
 	mojo::set ( L"uPort",					g_Settings.uPort );
+	mojo::set ( L"bBroadcastingIsOn",       g_Settings.bBroadcastingIsOn );
 
 	//-------------------------------------
 	// INIT ENGINE (after window exists)
@@ -161,10 +167,8 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 
 	catch ( cException &e ) 
 	{
-		UNREFERENCED_PARAMETER(e);
-		int x = 3; x++;
-		// TEMP TO DO
-		// message_box ( e );
+		LOG ( &e );
+		message_box ( &e );
 		return 0;
 	}
 
@@ -173,7 +177,6 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 	//-------------------------------------
 
 	mojo::load_scribs ( g_apDefaultScribs, false );
-	cInputEvent::load_scribs();
 
 	//-------------------------------------
 	//  RE-INITIALIZE SCRIBS IN WINDOW

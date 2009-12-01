@@ -131,6 +131,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="cPreviousKeyState.cpp" />
     <ClCompile Include="cScrib.cpp" />
     <ClCompile Include="cScribMgr.cpp" />
     <ClCompile Include="cScribPack.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="cAdLibMemo.h" />
     <ClInclude Include="cKeyBroadcaster.h" />
     <ClInclude Include="cMessage.h" />
+    <ClInclude Include="cPreviousKeyState.h" />
     <ClInclude Include="cSyringe.h" />
     <ClInclude Include="cTarget.h" />
     <ClInclude Include="cFinder.h" />

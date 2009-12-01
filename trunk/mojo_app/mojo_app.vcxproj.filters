@@ -39,6 +39,9 @@
     <ClCompile Include="cDlgMonitor.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="cDlgMonitor_red_X.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
     <ClCompile Include="cDlgSettingsConnection.cpp">
       <Filter>cWin</Filter>
     </ClCompile>

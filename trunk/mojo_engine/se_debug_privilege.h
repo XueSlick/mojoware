@@ -2,7 +2,7 @@
 /*
 /*    se_debug_privilege.h
 /*
-/*    This file is not used in the current build.
+/*    This file is not used in the current build.  See explanation in se_debug_privilege.cpp.
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*

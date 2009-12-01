@@ -54,6 +54,7 @@
 #include "files.h"
 #include "share.h"
 #include "cVersion.h"
+#include "cMemo.h"
 
 using namespace mojo;
 
@@ -319,6 +320,21 @@ bool cLog::test ( cStrW * pError )
 	_close ( fd );
 
 	return true;
+}
+
+
+//-------------------------------------------------------------------------------------------------------
+//  LOG (MEMO OR EXCEPTION)
+//-------------------------------------------------------------------------------------------------------
+void cLog::log ( const wchar_t * pcFile, int iLine, const mojo::cMemo * pMemo )
+{
+
+	cStrW s = pMemo->severity_cstr();
+	s += L": ";
+	s += pMemo->head();
+	s += L"\n";
+	s += pMemo->body();
+	cLog::log ( pcFile, iLine, s.cstr() );
 }
 
 
