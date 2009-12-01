@@ -44,6 +44,14 @@ cSignature :: cSignature () : pBuf(NULL)
 	DL.text ( &sDisplayList );
 
 	//-----------------------------------
+	//  TEMP
+	//-----------------------------------
+
+	LOG_V ( L"In cSignature::cSignature; get_full_dns_name() returned %s", sHostName.cstr() );
+
+	LOG_V ( L"In cSignature::cSignature; sHostName.len() == %d", sHostName.len() );
+
+	//-----------------------------------
 	// ALLOCATE BUFFER
 	//-----------------------------------
 
@@ -77,9 +85,13 @@ cSignature :: cSignature () : pBuf(NULL)
 	wcscpy_s ( (wchar_t*)(p), sHostName.len() + 1, sHostName.cstr() );
 	p += 2 * sHostName.len() + 2;
 
+#if 0
 	pHead->iHostNameOffset = p - pBuf;
 	wcscpy_s ( (wchar_t*)(p), sHostName.len() + 1, sHostName.cstr() );
 	p += 2 * sHostName.len() + 2;
+#endif
+
+	LOG_V ( L"Bottom of cSignature::cSignature; sHostName == %s", sHostName.cstr() );
 
 	// TO DO:  ADD DISPLAY LIST
 }
@@ -101,6 +113,12 @@ bool cSignature :: parse ( const wchar_t ** ppRetDisplayList, const wchar_t ** p
 	*ppRetAppTitle        = ( wchar_t * ) ( pMsg + pSigHead->iAppTitleOffset );
 	*ppRetHostName        = ( wchar_t * ) ( pMsg + pSigHead->iHostNameOffset ); 
 	*ppRetDisplayList     = 0;  // TEMPORARY
+
+	//-----------------------------------
+	//  TEMP
+	//-----------------------------------
+
+	// LOG_V ( L"In cSignature::parse(); *ppRetHostName ==  %s", *ppRetHostName );
 
 	return true;
 }

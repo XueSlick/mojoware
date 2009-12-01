@@ -53,11 +53,19 @@ const wchar_t * get_full_dns_name ( mojo::cStrW * pRet )
 
 	COMPUTER_NAME_FORMAT cnf = ComputerNameDnsFullyQualified;
 
-	wchar_t acBuf [4096];
+	wchar_t acBuf [8192];
 	DWORD dwSize = sizeof ( acBuf ) / sizeof ( wchar_t );
 
     if ( 0 != GetComputerNameEx ( cnf, acBuf, &dwSize ) )
 		*pRet = acBuf;
+
+	//-----------------------------------
+	//  TEMP
+	//-----------------------------------
+	{
+		LOG_V ( L"In get_full_dns_name(); GetComputerNameExe returned  %s", acBuf );
+		LOG_V ( L"Still in get_full_dns_name(); pRet == %s", acBuf );
+	}
 
 	return pRet->cstr();
 }
