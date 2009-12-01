@@ -1,0 +1,15 @@
+==============================================================
+                       BUILD 5 WORK LIST
+==============================================================
+
+ 1.  Changed cSignature constructor to try to             DONE
+     fix truncation bug.
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,22 @@
+==============================================================
+                          TO DO
+==============================================================
+
+
+ 1.  cKeyboard :: verify_table ();
+
+ 2.  Improve reliability of socket close
+
+ 3.  Settings stop/start comm
+
+ 4.  Remote broadcasted shifted characters
+
+  
+
+
+
+
+
+
+
+

@@ -38,9 +38,11 @@ void cInputEvent :: load_scribs_sub ( cStrW * pRet, const wchar_t * pKey )
 	cScribPack sp ( pKey );
 	*pRet = sp.head();
 
+#if 0
 	cStrW s;
 	s.f ( L"load_scribs_sub: key=%s, ret=%s", pKey, pRet );
 	LOG ( s.cstr() );
+#endif
 }
 
 
