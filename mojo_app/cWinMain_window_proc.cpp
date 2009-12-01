@@ -144,6 +144,10 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 				PostMessage ( pThis->DlgMonitor.hwnd, mojo::uWM_MEMO_READY, 0, 0 );
 		break;
 
+	case WM_TIMER:
+			mojo::put_ad_lib_memo ( cMemo::warning, L"Testing new scroll code", L"Aye I'm testing at rate of 33 messages per second." );
+			break;
+
 #if 0
 	case uWM_SET_MOUSEOVER_DISPLAY_LIST:
 		set_mouseover_display_list();

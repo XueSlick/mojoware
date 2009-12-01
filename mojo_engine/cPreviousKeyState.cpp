@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cSyringe.cpp
+/*    cPreviousKeyState.cpp
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -8,52 +8,42 @@
 
 #include "stdafx.h"
 
-using namespace mojo;
+
+
 
 //======================================================================================================================
 //  DATA
 //======================================================================================================================
 
+
 //======================================================================================================================
 //  PROTOTYPES
 //======================================================================================================================
+
 
 //======================================================================================================================
 //  CODE
 //======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
-//  PRINT
+//  RECEIVE EVENT
 //----------------------------------------------------------------------------------------------------------------------
-const wchar_t * cSyringe :: print ( cStrW * pRet, const KBDLLHOOKSTRUCT * p )
+void cPreviousKeyState :: receive ( const KBDLLHOOKSTRUCT * p )
 {
-	cStrW sEvent;
-	cKeyboard::pretty_key_event ( &sEvent, p );
-	pRet->f ( L"Inject %s into windows.", sEvent.cstr() );
-	return pRet->cstr();
+	if ( p->flags & LLKHF_UP )
+		ayTable [ p->vkCode ] = up;
+
+	else
+		ayTable [ p->vkCode ] = down;
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  POST MESSAGE (FROM HOOK DATA)
+//  CONSTRUCTOR
 //----------------------------------------------------------------------------------------------------------------------
-void cSyringe :: post_message ( HWND hwnd, WPARAM wParamHook, const KBDLLHOOKSTRUCT * p )
+cPreviousKeyState :: cPreviousKeyState ()
 {
-	unsigned uMsg = wParamHook;
-	WPARAM wParam = p->vkCode;
-
-	LPARAM lParam = 1;
-
-	DWORD dwTransition = p->flags & LLKHF_UP;
-	dwTransition;
-
-	lParam |= ( p->scanCode << 16 );
-	lParam |= ( ( p->flags & LLKHF_EXTENDED )  ? ( 1 << 24 ) : 0 ); // extended
-	lParam |= ( ( p->flags & LLKHF_ALTDOWN  )  ? ( 1 << 29 ) : 0 ); // context code
-	lParam |= ( ( p->dwExtraInfo & ( 1<<30 ) ) ? ( 1 << 30 ) : 0 ); // previous key state; our keyboard hook handler inserted this bit
-	lParam |= ( ( p->flags & LLKHF_UP       )  ? ( 1 << 31 ) : 0 ); // transition state
-
-	PostMessage ( hwnd, uMsg, wParam, lParam );
+	memset ( ayTable, virgin, sizeof ( ayTable ) );
 }
 
 

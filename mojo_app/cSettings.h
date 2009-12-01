@@ -37,6 +37,7 @@ public:
 	unsigned			uSpecifiedLocalIP;
 	unsigned			uPort;
 	bool				bUseNagle;
+	bool                bBroadcastingIsOn;
 
 	//-----------------------------------
 	// DEFINE FOLLOWING IN DERIVED CLASS

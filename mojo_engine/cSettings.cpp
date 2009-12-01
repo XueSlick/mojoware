@@ -33,7 +33,7 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( uSpecifiedLocalIP,						uint,					L"uSpecifiedLocalIP"					),
 	ENTRY ( uPort,									uint,					L"uPort"								),
 	ENTRY ( bUseNagle,								boolean,				L"bUseNagle"							),
-	ENTRY ( bBroadcast,                             boolean,                L"bBroadcast"                           ),
+	ENTRY ( bBroadcastingIsOn,                      boolean,                L"bBroadcastingIsOn"                    ),
 
 #if 0
 	ENTRY ( sScriptName,							string,					L"sScriptName"							),
@@ -93,7 +93,7 @@ void cSettings :: init ()
 	uSpecifiedLocalIP					= 0;
 	uPort 								= 7237;
 	bUseNagle							= false;
-	bBroadcast                          = true;
+	bBroadcastingIsOn                   = true;
 
 #if 1
 	WinPos								= mojo::cRectI ( 100, 100, 800, 600 );

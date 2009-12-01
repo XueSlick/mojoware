@@ -55,7 +55,7 @@ public:
 	bool operator== ( const tStr<C> & Rh ); 		// tStr
 	bool operator== ( const C * pRh );        		// null-terminated string
 
-	const C * cstr();
+	const C * cstr() const;
 
 	int bufsize () { return iBufSize; }
 	C * buffer () { return pBuf; } 					// not the same as cstr();
@@ -102,9 +102,9 @@ protected:
 	                            // data in buffer is null-terminated
 	// DATA MEMBERS
 
-	int iBufSize;   // size of buffer in C's -- includes room for terminating NULL
-	int iLen;       // number of C's ... doesn't include terminating NULL
-	C * pBuf;
+	mutable int iBufSize;   // size of buffer in C's -- includes room for terminating NULL
+	mutable int iLen;       // number of C's ... doesn't include terminating NULL
+	mutable C * pBuf;
 };
 
 //-------------------------------------------------------------------------------------------------------
@@ -906,7 +906,7 @@ template<class C> void tStr<C>::erase ()
 // CSTR
 // rewritten april 25 2009
 //-------------------------------------------------------------------------------------------------------
-template<class C> const C * tStr<C>::cstr ()
+template<class C> const C * tStr<C>::cstr () const
 {
 	if ( ! pBuf )
 	{

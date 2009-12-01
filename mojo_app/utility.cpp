@@ -26,6 +26,70 @@
 using namespace mojo;
 
 
+//----------------------------------------------------------------------------------------------------------------------
+//  SET MENU ITEM TEXT
+//----------------------------------------------------------------------------------------------------------------------
+void set_menu_item_text ( HWND hwnd, unsigned uID, const wchar_t * pTxt )
+{
+	HMENU hMenu = GetMenu ( hwnd );
+	MENUITEMINFO mii;
+	memset ( &mii, 0, sizeof ( mii ) );
+	mii.cbSize = sizeof(mii);
+	mii.fMask = MIIM_STRING;
+	mii.dwTypeData = (LPWSTR) pTxt;
+	SetMenuItemInfo ( hMenu, uID, FALSE, &mii );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  SHOW APP DATA FILE
+//----------------------------------------------------------------------------------------------------------------------
+void show_app_data_file ( const wchar_t * pName )
+{
+	cStrW s;
+	mojo::get_our_local_app_data_directory ( &s, g_awAppTitle );
+	s += pName;
+	open_text_file ( s.cstr() );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  SHOW TEXT FILE
+//----------------------------------------------------------------------------------------------------------------------
+void open_text_file ( const wchar_t * pName )
+{
+	HINSTANCE result = ShellExecute ( NULL, L"open", pName,  NULL, NULL, SW_SHOW );
+
+	if ( 32 < (int) result )
+		return;
+
+	switch ( (int) result )
+	{
+	case ERROR_FILE_NOT_FOUND:
+		mojo::put_ad_lib_memo ( cMemo::error,  L"Cannot open file", L"File not found.\n" L"%s", pName );
+		break;
+
+	case ERROR_PATH_NOT_FOUND:
+		mojo::put_ad_lib_memo ( cMemo::error,  L"Cannot open file", L"Path not found.\n" L"%s", pName );
+		break;
+
+	case SE_ERR_ACCESSDENIED:
+		mojo::put_ad_lib_memo ( cMemo::error,  L"Cannot open file", L"The operating system denied access to the file.\n" L"%s", pName );
+		break;
+
+	case SE_ERR_ASSOCINCOMPLETE:
+		mojo::put_ad_lib_memo ( cMemo::error,  L"Cannot open file", L"File name association is incomplete or invalid.\n" L"%s", pName );
+		break;
+
+	default:
+		mojo::put_ad_lib_memo ( cMemo::error,  L"Cannot open file", L"Operating system function ShellExecute cannot open the file.\n" L"%s", pName );
+		break;
+	}
+}
+
+
+
+
 //-------------------------------------------------------------------------------------------------------
 //  GET CURSOR MESSAGE POS
 //  From Raymond Chen's blog

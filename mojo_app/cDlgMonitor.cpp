@@ -19,6 +19,8 @@
 //  CODE
 //======================================================================================================================
 
+
+
 //----------------------------------------------------------------------------------------------------------------------
 //  GET MEMO COLOR
 //----------------------------------------------------------------------------------------------------------------------
@@ -86,6 +88,21 @@ void cDlgMonitor::wm_paint ()
 	draw_head  ( &MemosHeadT       );
 	draw_head  ( &MemosHeadB       );
 	draw_head  ( &ConnectionsHead  );
+
+	if ( g_Settings.bBroadcastingIsOn )
+	{
+		ShowWindow ( Memos.hwnd, SW_SHOW );
+		ShowWindow ( RedX.hwnd,  SW_HIDE );
+
+	}
+
+	else
+	{
+
+		ShowWindow ( RedX.hwnd,  SW_SHOW);
+		this->draw_red_X ();
+		ShowWindow ( Memos.hwnd, SW_HIDE );
+	}
 }
 
 
@@ -300,6 +317,19 @@ void cDlgMonitor::wm_initdialog ()
 	rect.right -= 12;
 	rect.bottom -= 12;
 	SendMessage ( Memos.hwnd, EM_SETRECT, 0, (LPARAM)&rect );
+
+	//-----------------------------------------
+	// RED X
+	//-----------------------------------------
+
+	RedX.hwnd = GetDlgItem ( hwnd, ID_RED_X );
+
+	register_child ( &RedX,
+
+							  nAnchor::left,		0,		iVertDiv + iMargin,
+							  nAnchor::top,			0,		iMargin + iHeadHeight,
+							  nAnchor::right,		0,		-iMargin,
+							  nAnchor::bottom,		0,		-iMargin  );
 }
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -34,7 +34,7 @@ HINSTANCE			g_hAppInstance;
 cMessenger			g_Messenger;
 cMemoBuffer			g_MemoBuffer;
 const wchar_t * 	g_apDefaultScribs [];
-cFinder			    g_Discovery;
+cFinder			    g_Finder;
 cKeyBroadcaster        g_KeyBroadcaster;
 
 

@@ -1,48 +1,42 @@
 /***********************************************************************************************************************
 /*
-/*    cWinMain.h / mojo_app
+/*    cPreviousKeyState.h
 /*
-/*    This class is a wrapper for the program's main window.  The main window does its work by filling 
-/*    its client area with various child dialog boxes.  This class has separate files for its window proc
-/*    and WM_COMMAND handler.
-/* 
+/*    Used by keyboard hook handler to set the previous keystate bit
+/*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
+
+
 #pragma once
 
-#include "cWin.h"
-#include "cDlgMonitor.h"
-#include "cDlgMessageBox.h"
 
+//======================================================================================================================
+//  CLASS
+//======================================================================================================================
 
-//=======================================================================================================
-// CLASS
-//=======================================================================================================
-
-class cWinMain : public cWin
+class cPreviousKeyState
 {
 public:
 
-	cWinMain () { pClassName = L"cWinMain"; }
-	void load_script_sub();
+	cPreviousKeyState ();
 
+	void receive             ( const KBDLLHOOKSTRUCT * p );
+	bool last_event_was_up   ( unsigned uVK ) { return up   == ayTable[uVK]; };
+	bool last_event_was_down ( unsigned uVK ) { return down == ayTable[uVK]; };
 
 private:
 
-	void wm_command ( WPARAM wParam, LPARAM lParam );
-	void on_create ( HWND hwnd );
-
-	wchar_t * pClassName; // = L"cWinMain";
-
-	cDlgMonitor DlgMonitor;
-	cDlgMessageBox MB;
-
-public:
-
-	static LRESULT CALLBACK window_proc ( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
+	enum { virgin, up, down } eEvent;
+	unsigned char ayTable [ 256 ];
 };
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  
+//----------------------------------------------------------------------------------------------------------------------
 
 
 /***********************************************************************************************************************
@@ -50,7 +44,7 @@ public:
 /*    This file is part of Mojo.  For more information, see http://mojoware.org.
 /*
 /*    You may redistribute and/or modify Mojo under the terms of the GNU General Public License, version 3, as
-/*    published by the Free Software Foundation.  You should have received a copy of the license with mojo.  If you
+/*    published by the Free Software Foundation.  You should have received a copy of the license with Mojo.  If you
 /*    did not, go to http://www.gnu.org.
 /* 
 /*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT

@@ -36,6 +36,7 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( uSpecifiedLocalIP,						uint,					L"uSpecifiedLocalIP"					),
 	ENTRY ( uPort,									uint,					L"uPort"								),
 	ENTRY ( bUseNagle,								boolean,				L"bUseNagle"							),
+	ENTRY ( bBroadcastingIsOn,						boolean,				L"bBroadcastingIsOn"					),
 };
 
 
@@ -75,6 +76,7 @@ void cSettings :: init ()
 	uSpecifiedLocalIP					= 0;
 	uPort 								= 7237;
 	bUseNagle							= false;
+	bBroadcastingIsOn                   = true;
 }
 
 

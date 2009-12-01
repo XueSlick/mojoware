@@ -10,7 +10,7 @@
 #include "cFinder.h"
 #include <process.h>
 #include <Psapi.h>
-#include "se_debug_privilege.h"
+#include "se_debug_privilege.h" // not used in current build
 
 using namespace mojo;
 

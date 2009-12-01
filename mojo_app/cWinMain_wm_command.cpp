@@ -18,6 +18,27 @@ void test ();
 //  CODE
 //======================================================================================================================
 
+
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  TOGGLE BROADCASTING
+//----------------------------------------------------------------------------------------------------------------------
+void toggle_broadcasting ()
+{
+	g_Settings.bBroadcastingIsOn = g_Settings.bBroadcastingIsOn ? false : true;
+	mojo::set ( L"bBroadcastingIsOn", g_Settings.bBroadcastingIsOn );
+
+	set_menu_item_text ( g_hwnd, ID_TOGGLE_BROADCASTING, g_Settings.bBroadcastingIsOn ? L"Turn broadcasting off" : L"Turn broadcasting on" );
+	InvalidateRect ( g_hwnd, NULL, TRUE );
+	UpdateWindow ( g_hwnd );
+	// set_tray_icon ();
+}
+
+
+
+
+
 //----------------------------------------------------------------------------------------------------------------------
 // WM_COMMAND
 //----------------------------------------------------------------------------------------------------------------------
@@ -55,11 +76,44 @@ void cWinMain :: wm_command ( WPARAM wParam, LPARAM lParam )
 		DestroyWindow(hwnd);
 		break;
 
+	case ID_SHOW_APP_LOG:
+		show_app_data_file ( L"mojo.log.txt" );
+		break;
+
+	case ID_SHOW_APP_SETTINGS:
+		show_app_data_file ( L"mojo.settings.txt" );
+		break;
+
+	case ID_SHOW_ENGINE_LOG:
+		show_app_data_file ( L"mojo_engine.log.txt" );
+		break;
+
+	case ID_SHOW_ENGINE_SETTINGS:
+		show_app_data_file ( L"mojo_engine.settings.txt" );
+		break;
+
+	case ID_SHOW_INSTALLATION_DIRECTORY:
+		{
+			cStrW s1, s2;
+			
+			s1 = L"Location of Mojo's executable files:\n\n";
+
+			get_module_directory ( & s2 );
+			s1 += s2;
+
+			message_box ( s1.cstr() );
+		}
+		break;
+
 	case ID_SHOW_LICENSE_DIALOG:
 		{
 			cDlgLicense d;
 			d.make_dlg();
 		}
+		break;
+
+	case ID_TOGGLE_BROADCASTING:
+		toggle_broadcasting ();
 		break;
 
 	case ID_TEST:

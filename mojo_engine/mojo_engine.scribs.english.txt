@@ -25,3 +25,15 @@ CannotLoadScribFile				= Loading language file.
 CannotLoadScribFile				= Cannot find file %s.
 CannotLoadScribFile				= The program's text will appear in English.
 CannotLoadScribFile				= Try reinstalling the program.
+
+// INPUT EVENT
+
+InputEvents.MouseMotion							= Mouse motion
+InputEvents.ScrnPosition						= scrn position
+InputEvents.WinPosition							= win position
+InputEvents.KeyName								= Key name
+InputEvents.Event								= event
+InputEvents.VirtualKey							= virtual key
+InputEvents.ScanCode							= scan code
+InputEvents.Extended							= extended
+InputEvents.PreviousKeyState					= prev state

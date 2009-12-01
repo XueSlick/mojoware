@@ -13,6 +13,7 @@
 #include "tStr.h"
 #include <stdio.h>
 #include "cVersion.h"
+#include "cMemo.h"
 
 //=======================================================================================================
 // DEFINES
@@ -94,6 +95,8 @@ void log_system_error ( wchar_t *, int, wchar_t * pcText, unsigned int );
 #pragma warning ( push )
 #pragma warning ( disable : 4251 ) // class 'mojo::cStrW' needs to have dll-interface to be used by clients of class 'mojo::cLog'
 
+
+
 class MOJO_ENGINE_API cLog
 {
 public:
@@ -102,6 +105,7 @@ public:
 
 	void log_v ( const wchar_t * pcFile, int iLine, const wchar_t * pKey, ... );
 
+	void log ( const wchar_t * pcFile, int iLine, const mojo::cMemo * pMemo );
 	void log ( const wchar_t * );
 	void log ( const wchar_t * pcFile, int iLine, const wchar_t * pcTxt );
 	void log_system_error ( wchar_t * pcFile, int iLine, wchar_t * pcText, unsigned int dwSystemError );

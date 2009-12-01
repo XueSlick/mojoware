@@ -20,8 +20,8 @@ using namespace std;
 //----------------------------------------------------------------------------------------------------------------------
 bool cScribPack :: set_ad_lib ( const wchar_t * pHeadFormatString, const wchar_t * pBodyFormatString, va_list pArgs )
 {
-	head = pHeadFormatString;
-	body = pBodyFormatString;
+	sHead = pHeadFormatString;
+	sBody = pBodyFormatString;
 	return replace_format_specifications ( pArgs );
 }
 
@@ -33,9 +33,9 @@ bool cScribPack :: replace_format_specifications ( va_list pArgs )
 {
 	bool bRetVal;
 
-	if ( head.contains ( L'%' ) )
+	if ( sHead.contains ( L'%' ) )
 	{
-		if ( body.contains ( L'%' ) )
+		if ( sBody.contains ( L'%' ) )
 		{
 			//-----------------------------------------------------------------------
 			// COMBINE HEAD AND BODY IN SINGLE STRING, DO REPLACEMENTS, THEN SPLIT 
@@ -43,30 +43,30 @@ bool cScribPack :: replace_format_specifications ( va_list pArgs )
 			//-----------------------------------------------------------------------
 
 			// Use a signature to mark the boundary between the two strings.  Ideally
-			// we'd use a non-Unicode number (0xFFFF) to mark the boundary but that
-			// generates an error from the Microsoft function that does the 
+			// we'd use a non-Unicode number (e.g. 0xFFFF) to mark the boundary but
+			// that generates an error from the Microsoft function that does the 
 			// replacement.  The next-best choice is a combination of code points
 			// that is fantastically unlikely to occur in anybody's strings.   The
 			// four chosen code points are Tamil, Mongolian, Hangul, and Vai.
 
 			const wchar_t awSig []  = L"\x0B90" L"\x1840" L"\x3182" L"\xA530";
-		    head += awSig;
-			head += body;
-			bRetVal = head.replace_format_specification_fields ( pArgs );
-			wchar_t * p = wcsstr ( head.buffer(), awSig );
+		    sHead += awSig;
+			sHead += sBody;
+			bRetVal = sHead.replace_format_specification_fields ( pArgs );
+			wchar_t * p = wcsstr ( sHead.buffer(), awSig );
 			assert(p);
-			body = p + sizeof(awSig)/sizeof(wchar_t)-1;
-			head.truncate ( p - head.buffer() );
+			sBody = p + sizeof(awSig)/sizeof(wchar_t)-1;
+			sHead.truncate ( p - sHead.buffer() );
 		}
 
 		else
-			bRetVal = head.replace_format_specification_fields ( pArgs );
+			bRetVal = sHead.replace_format_specification_fields ( pArgs );
 	}
 
 	else
 	{
-		if ( body.contains ( L'%' ) )
-			bRetVal = body.replace_format_specification_fields ( pArgs );
+		if ( sBody.contains ( L'%' ) )
+			bRetVal = sBody.replace_format_specification_fields ( pArgs );
 
 		else
 			bRetVal = true;
@@ -97,7 +97,7 @@ bool cScribPack :: load_from_multimap ( const wchar_t * pKey, va_list pArgs )
 
 	int iLineQty = 0;
 
-	key = pKey;
+	sKey = pKey;
 
 	cScribMgr::tMap::iterator pBeg = pMap->find ( pKey );
 
@@ -106,26 +106,26 @@ bool cScribPack :: load_from_multimap ( const wchar_t * pKey, va_list pArgs )
 		wchar_t t [1000];
 		wsprintf ( t, L"Unable to find %s in multimap.", pKey );
 		LOG ( t );
-		this->body = L"LANGUAGE FILE ERROR";
-		this->head = L"LANGUAGE FILE ERROR";
+		this->sBody = L"LANGUAGE FILE ERROR";
+		this->sHead = L"LANGUAGE FILE ERROR";
 		return false;
 	}
 
 	cScribMgr::tMap::iterator pEnd = pMap->upper_bound ( pKey );
 
-	body.erase();
+	sBody.erase();
 
 	for ( ; pBeg != pEnd; pBeg++ )
 	{
 		if ( 0 == iLineQty )
-			head = pBeg->second.c_str();
+			sHead = pBeg->second.c_str();
 
 		else 
 		{
 			if ( 1 < iLineQty )
-				body += L"\n";
+				sBody += L"\n";
 
-			body += pBeg->second.c_str();
+			sBody += pBeg->second.c_str();
 		}
 
 		iLineQty ++;		

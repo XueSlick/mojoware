@@ -36,34 +36,36 @@ bool cMemo :: set_ad_lib ( _eSeverity e, const wchar_t * pHeadFormatString, cons
 	return set_ad_lib( e, pHeadFormatString, pBodyFormatString, args );
 }
 
-
+#if 0 // moved to cScribPack
 //----------------------------------------------------------------------------------------------------------------------
 //  HEAD
 //----------------------------------------------------------------------------------------------------------------------
-const wchar_t * cMemo :: head ()
+const wchar_t * cMemo :: head () const
 {
-	return static_cast<cScribPack*>(this)->head.cstr();
+	return head();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //  BODY
 //----------------------------------------------------------------------------------------------------------------------
-const wchar_t * cMemo :: body ()
+const wchar_t * cMemo :: body () const
 {
-	return static_cast<cScribPack*>(this)->body.cstr();
+	return body();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //  KEY
 //----------------------------------------------------------------------------------------------------------------------
-const wchar_t * cMemo :: key ()
+const wchar_t * cMemo :: key () const
 {
-	return static_cast<cScribPack*>(this)->key.cstr();
+	return key();
 }
+#endif
+
 //----------------------------------------------------------------------------------------------------------------------
 //  SEVERITY CSTR
 //----------------------------------------------------------------------------------------------------------------------
-const wchar_t * cMemo :: severity_cstr ()
+const wchar_t * cMemo :: severity_cstr () const
 {
 	switch ( eSeverity )
 	{

@@ -107,6 +107,7 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClCompile Include="cDlgLicense.cpp" />
     <ClCompile Include="cDlgMessageBox.cpp" />
     <ClCompile Include="cDlgMonitor.cpp" />
+    <ClCompile Include="cDlgMonitor_red_X.cpp" />
     <ClCompile Include="cDlgSettingsConnection.cpp" />
     <ClCompile Include="cDlgSettingsConnectionAdvanced.cpp" />
     <ClCompile Include="cDlgVars.cpp" />

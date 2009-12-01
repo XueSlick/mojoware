@@ -28,7 +28,11 @@ public:
 	cScribPack () {};
 	cScribPack ( const wchar_t * pKey, va_list pArgs ); // keep this before constructor (...)
 	cScribPack ( const wchar_t * pKey, ... );           // keep this after constructor (va_list)
-	cScribPack ( const cScribPack * pRH ) { head = pRH->head; body = pRH->body; key = pRH->key; }
+	cScribPack ( const cScribPack * pRH ) { sHead = pRH->sHead; sBody = pRH->sBody; sKey = pRH->sKey; }
+
+	const wchar_t * head () const { return sHead.cstr(); }
+	const wchar_t * body () const { return sBody.cstr(); }
+	const wchar_t * key  () const { return sKey.cstr(); }
 
 
 protected:
@@ -39,11 +43,11 @@ protected:
 
 	bool replace_format_specifications ( va_list pArgs );
 
-public:
+protected:
 
-	cScrib head;
-	cScrib body;
-	cScrib key;
+	cScrib sHead;
+	cScrib sBody;
+	cScrib sKey;
 
 	friend class cMemo;
 };

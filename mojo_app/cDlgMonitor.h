@@ -21,6 +21,8 @@ class cDlgMonitor : public cDlg
 {
 	friend class cWinMain;
 
+
+
 private:
 
 	bool set_region ();
@@ -34,6 +36,7 @@ private:
 	cWin MemosHeadB;
 	cWin Clear;
 	cWin ConnectionsHead;
+	cWin RedX;
 	cListViewConnections Connections;
 
 	COLORREF get_memo_color ( cMemo * pM );
@@ -45,6 +48,7 @@ private:
 	void wm_initdialog ();
 	void draw_head ( cWin * pHead );
 	virtual void set_text();
+	void draw_red_X ();
 };
 
 

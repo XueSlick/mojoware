@@ -74,6 +74,7 @@ public:
 	int load_scribs 	( const wchar_t * p [], 		bool bReplace );
 	int load_scribs		( const wchar_t * pPathname, 	bool bReplace );
 	bool load_sub 		( const wchar_t * pLine, 		bool bReplace );
+	void log            (); // for debugging
 
 private:
 

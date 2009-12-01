@@ -34,10 +34,10 @@ void cWin :: set_item_text ( int iID, const wchar_t * pKey, ... )
 	cScribPack sp ( pKey, args );
 
 	if ( 0 == iID )
-		SetWindowText ( hwnd, sp.head.cstr() );
+		SetWindowText ( hwnd, sp.head() );
 
 	else
-		SetWindowText ( GetDlgItem ( hwnd, iID ),sp.head.cstr() );
+		SetWindowText ( GetDlgItem ( hwnd, iID ),sp.head() );
 }
 
 

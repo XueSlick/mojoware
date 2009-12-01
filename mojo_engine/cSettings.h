@@ -32,7 +32,7 @@ public:
 	unsigned			uSpecifiedLocalIP;
 	unsigned			uPort;
 	bool				bUseNagle;
-	bool                bBroadcast;
+	bool                bBroadcastingIsOn;
 
 #if 1
 	mojo::cStrW		sScriptName;

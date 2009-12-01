@@ -1,59 +1,89 @@
 /***********************************************************************************************************************
 /*
-/*    cSyringe.cpp
-/*   
+/*    cDlgMonitor_red_X.cpp / mojo_app
+/*
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
-#include "stdafx.h"
+#pragma once
 
-using namespace mojo;
+#include "stdafx.h"
 
 //======================================================================================================================
 //  DATA
 //======================================================================================================================
 
-//======================================================================================================================
-//  PROTOTYPES
-//======================================================================================================================
 
 //======================================================================================================================
 //  CODE
 //======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
-//  PRINT
+//  DRAW RED X
 //----------------------------------------------------------------------------------------------------------------------
-const wchar_t * cSyringe :: print ( cStrW * pRet, const KBDLLHOOKSTRUCT * p )
+
+void cDlgMonitor :: draw_red_X ()
 {
-	cStrW sEvent;
-	cKeyboard::pretty_key_event ( &sEvent, p );
-	pRet->f ( L"Inject %s into windows.", sEvent.cstr() );
-	return pRet->cstr();
-}
+	// if ( ! g_Settings.bHotkeysAreOn )
+	{
+		HDC hdc = GetDC ( RedX.hwnd );
+		RECT rect;
+		GetClientRect ( RedX.hwnd, &rect );
 
+		HBRUSH hBrush = (HBRUSH) GetStockObject ( WHITE_BRUSH );
 
-//----------------------------------------------------------------------------------------------------------------------
-//  POST MESSAGE (FROM HOOK DATA)
-//----------------------------------------------------------------------------------------------------------------------
-void cSyringe :: post_message ( HWND hwnd, WPARAM wParamHook, const KBDLLHOOKSTRUCT * p )
-{
-	unsigned uMsg = wParamHook;
-	WPARAM wParam = p->vkCode;
+		// double buffer it
+		{
+			HDC		hdcMem = CreateCompatibleDC ( hdc );
+			HBITMAP hbmMem = CreateCompatibleBitmap(hdc, rect.right, rect.bottom);
+			HANDLE	hOld   = SelectObject(hdcMem, hbmMem);
 
-	LPARAM lParam = 1;
+			// do the drawing 
+	
+			FillRect	( hdcMem, &rect, hBrush );
 
-	DWORD dwTransition = p->flags & LLKHF_UP;
-	dwTransition;
+			rect.top += (LONG) ( .03 * rect.bottom );
 
-	lParam |= ( p->scanCode << 16 );
-	lParam |= ( ( p->flags & LLKHF_EXTENDED )  ? ( 1 << 24 ) : 0 ); // extended
-	lParam |= ( ( p->flags & LLKHF_ALTDOWN  )  ? ( 1 << 29 ) : 0 ); // context code
-	lParam |= ( ( p->dwExtraInfo & ( 1<<30 ) ) ? ( 1 << 30 ) : 0 ); // previous key state; our keyboard hook handler inserted this bit
-	lParam |= ( ( p->flags & LLKHF_UP       )  ? ( 1 << 31 ) : 0 ); // transition state
+			SetBkMode	( hdcMem, TRANSPARENT );
+			SetTextColor    ( hdcMem, RGB ( 255, 233, 233 ) );
 
-	PostMessage ( hwnd, uMsg, wParam, lParam );
+			LOGFONT lf;
+			memset ( &lf, 0, sizeof(lf) );
+			wcscpy_s  ( lf.lfFaceName, sizeof(lf.lfFaceName)/sizeof(wchar_t), L"Arial" );
+			lf.lfHeight = (LONG) (rect.bottom * 1.2) ;
+			lf.lfWeight = 100;
+			lf.lfWidth = (LONG) (rect.right * .55);
+
+			HFONT hFont = CreateFontIndirect(&lf);
+
+			SelectFont ( hdcMem, hFont );
+
+			DrawText	( hdcMem, L"X", 1, &rect,  DT_CENTER | DT_VCENTER | DT_SINGLELINE  );
+
+			DeleteFont ( hFont );
+
+			GetClientRect ( RedX.hwnd, &rect );
+			rect.bottom = LONG ( rect.bottom * .97 );
+
+			hFont = g_hMenuFont;
+			SelectFont ( hdcMem, hFont );
+			SetTextColor ( hdcMem, RGB ( 0, 0, 0 ) );
+
+			DrawText ( hdcMem, L"Broadcasting is off.", -1, &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE );
+
+			// Transfer the off-screen DC to the screen
+			GetClientRect ( RedX.hwnd, &rect );
+			BitBlt(hdc, 0, 0, rect.right, rect.bottom, hdcMem, 0, 0, SRCCOPY);
+
+			// Free-up the off-screen DC
+			SelectObject(hdcMem, hOld);
+			DeleteObject(hbmMem);
+			DeleteDC    (hdcMem);
+		}
+
+		ReleaseDC ( RedX.hwnd, hdc );
+	}
 }
 
 
@@ -62,7 +92,7 @@ void cSyringe :: post_message ( HWND hwnd, WPARAM wParamHook, const KBDLLHOOKSTR
 /*    This file is part of Mojo.  For more information, see http://mojoware.org.
 /*
 /*    You may redistribute and/or modify Mojo under the terms of the GNU General Public License, version 3, as
-/*    published by the Free Software Foundation.  You should have received a copy of the license with Mojo.  If you
+/*    published by the Free Software Foundation.  You should have received a copy of the license with mojo.  If you
 /*    did not, go to http://www.gnu.org.
 /* 
 /*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT

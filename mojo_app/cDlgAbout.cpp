@@ -33,7 +33,7 @@ INT_PTR cDlgAbout::wm_init ( HWND hwnd )
 	//---------------------------------
 
 	cScribPack t1 ( L"DlgAbout.Link", g_awWebsite, g_awAppTitle  );
-	SetWindowText ( GetDlgItem ( hwnd, ID_LINK ), t1.head.cstr() );
+	SetWindowText ( GetDlgItem ( hwnd, ID_LINK ), t1.head() );
 
 	//---------------------------------
 	// WINDOW TITLE
@@ -136,7 +136,7 @@ int cDlgAbout::draw_text ( HWND hwnd, bool bDraw )
 	//-------------------------------------
 
 	HWND hCtrl = GetDlgItem ( hwnd, ID_HEAD );
-	cDlg::draw_text ( hCtrl, NULL, cDlg::head, sp.head.cstr(), bDraw );
+	cDlg::draw_text ( hCtrl, NULL, cDlg::head, sp.head(), bDraw );
 
 
 	//-------------------------------------
@@ -144,7 +144,7 @@ int cDlgAbout::draw_text ( HWND hwnd, bool bDraw )
 	//-------------------------------------
 
 	hCtrl = GetDlgItem ( hwnd, ID_TEXT );
-	iRetVal = cDlg::draw_text ( hCtrl, NULL, cDlg::text, sp.body.cstr(), bDraw );
+	iRetVal = cDlg::draw_text ( hCtrl, NULL, cDlg::text, sp.body(), bDraw );
 
 	return iRetVal;
 }

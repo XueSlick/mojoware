@@ -191,10 +191,10 @@ void rich_edit_append_line ( HWND hwnd, const wchar_t * pText )
 	if ( 0 == pText )
 		return;
 
-	//-----------------------------------------
+	//-----------------------------------------------
 	// DELETE SOME LINES WHEN THERE ARE MORE
 	// THAN 1000
-	//-----------------------------------------
+	//-----------------------------------------------
 
 	if ( 1000 < Edit_GetLineCount(hwnd) )
 	{
@@ -204,28 +204,24 @@ void rich_edit_append_line ( HWND hwnd, const wchar_t * pText )
 	}
 
 	//------------------------------------------------
-	//  APPEND TEXT
+	//  GET TEXT READY
 	//------------------------------------------------
 
 	cStrW s = pText;
-	int len = Edit_GetTextLength ( hwnd );
-	Edit_SetSel ( hwnd, len, len );
 	s += L"\r";
+
+	//------------------------------------------------
+	//  APPEND TEXT
+	//------------------------------------------------
+
+	Edit_SetSel ( hwnd, (WPARAM) -1, -1 );
 	Edit_ReplaceSel ( hwnd, s.cstr() );
-	len = Edit_GetTextLength(hwnd);
-	Edit_SetSel ( hwnd, len, len );
 
 	//------------------------------------------------
-	//  MAKE TEXT SCROLL TO BOTTOM EVEN WHEN
-	//  THE CONTROL DOES NOT HAVE FOCUS
+	//  SCROLL TO BOTTOM
 	//------------------------------------------------
 
-	SendMessage ( hwnd, EM_SCROLL, SB_PAGEDOWN, 1 );
-	POINT ptPos;
-	SendMessage ( hwnd,(UINT) EM_GETSCROLLPOS, 0,(WPARAM) &ptPos );
-	ptPos.x = 0;
-	SendMessage ( hwnd, EM_SETSCROLLPOS, 0, (WPARAM) &ptPos );
-	SendMessage ( hwnd, EM_LINESCROLL, 0, 1 );
+    SendMessage ( hwnd, WM_VSCROLL, SB_BOTTOM, 0 );
 }
 
 
