@@ -53,10 +53,14 @@ void 							make_fonts ();
 //----------------------------------------------------------------------------------------------------------------------
 void test ( )
 {
+	DWORD dwState = SendMessage ( g_WinMain.toolbar(), TB_GETSTATE, ID_TOGGLE_BROADCAST, 0 );
 
-	SetTimer ( g_hwnd, 0, 30, NULL );
+	dwState;
 
+	int x = 3;
+	x++;
 
+	// SetTimer ( g_hwnd, 0, 30, NULL );
 
 }
 
@@ -154,7 +158,7 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 	mojo::set ( L"uSpecifiedLocalIP",		g_Settings.uSpecifiedLocalIP );
 	mojo::set ( L"bUseNagle",				g_Settings.bUseNagle );
 	mojo::set ( L"uPort",					g_Settings.uPort );
-	mojo::set ( L"bBroadcastingIsOn",       g_Settings.bBroadcastingIsOn );
+	mojo::set ( L"bBroadcastIsOn",       g_Settings.bBroadcastIsOn );
 
 	//-------------------------------------
 	// INIT ENGINE (after window exists)
@@ -269,6 +273,13 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 
 	cStrW sVersion;
 	mojo::put_memo ( cMemo::success, L"Welcome", g_awAppTitle, g_Version.get_text ( &sVersion ), g_awWebsite );
+
+
+	//-------------------------------------
+	//  TEMPORARY HOTKEY FOR DEBUGGING
+	//-------------------------------------
+
+	// RegisterHotKey ( g_hwnd, VK_F1, MOD_ALT | MOD_CONTROL | MOD_SHIFT, VK_F1 );
 
 	//-------------------------------------
 	//  ACCELERATOR TABLE
@@ -406,9 +417,9 @@ BOOL init_app ( HINSTANCE hInstance, int nCmdShow )
 #endif
 
 #if 0
-	RegisterHotKey ( g_hwnd, VK_F1, MOD_ALT | MOD_CONTROL | MOD_SHIFT, VK_F1 );
+
 	
-	set_menu_item_text ( g_hwnd, ID_TOGGLE_HOTKEYS, g_Settings.bHotkeysAreOn ? L"Turn hotkeys off" : L"Turn hotkeys on" );
+	// set_menu_item_text ( g_hwnd, ID_TOGGLE_HOTKEYS, g_Settings.bHotkeysAreOn ? L"Turn hotkeys off" : L"Turn hotkeys on" );
 #endif
 
 	// USER ADMIN?

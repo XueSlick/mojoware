@@ -89,7 +89,8 @@ void cDlgMonitor::wm_paint ()
 	draw_head  ( &MemosHeadB       );
 	draw_head  ( &ConnectionsHead  );
 
-	if ( g_Settings.bBroadcastingIsOn )
+#ifdef RED_X
+	if ( g_Settings.bBroadcastIsOn )
 	{
 		ShowWindow ( Memos.hwnd, SW_SHOW );
 		ShowWindow ( RedX.hwnd,  SW_HIDE );
@@ -103,6 +104,7 @@ void cDlgMonitor::wm_paint ()
 		this->draw_red_X ();
 		ShowWindow ( Memos.hwnd, SW_HIDE );
 	}
+#endif
 }
 
 
@@ -184,6 +186,9 @@ void cDlgMonitor::wm_initdialog ()
 	set_text ();
 
 	const int iMargin = 9;
+	// const int iModeButtonHeight = g_NonClientMetrics.iCaptionHeight * 2 + 4;
+	// const int iModeStripBottom = iModeButtonHeight + iMargin * 2;
+	const int iModeStripBottom = iMargin;
 	int iHeadHeight = 2 + g_NonClientMetrics.iCaptionHeight;
 	int iVertDiv = 235;
 	int iClearButtonWidth = 62;
@@ -198,9 +203,9 @@ void cDlgMonitor::wm_initdialog ()
 	register_child ( &InputEventsHead,
 
 							  nAnchor::left,		0,		iMargin,
-							  nAnchor::top,	    	0,		iMargin,
+							  nAnchor::top,	    	0,		iModeStripBottom,
 							  nAnchor::left,		0,		iVertDiv,
-							  nAnchor::top,	   	 	0,		iMargin + iHeadHeight   );
+							  nAnchor::top,	   	 	0,		iModeStripBottom + iHeadHeight   );
 
 	//----------------------------------------
 	//  YOUR LAST ACTION (INPUT EVENTS) 
@@ -216,9 +221,9 @@ void cDlgMonitor::wm_initdialog ()
 	register_child ( &InputEvents,
 
 							  nAnchor::left,		0,		iMargin,
-							  nAnchor::top,	    	0,		iMargin + iHeadHeight,
+							  nAnchor::top,	    	0,		iModeStripBottom + iHeadHeight,
 							  nAnchor::left,		0,		iVertDiv,
-							  nAnchor::top,			45,		-(iMargin/2)     );
+							  nAnchor::top,			45,		(iModeStripBottom/2) - iMargin  );
 
 	//----------------------------------------
 	//  CONNECTIONS HEADER
@@ -229,9 +234,9 @@ void cDlgMonitor::wm_initdialog ()
 	register_child ( &ConnectionsHead,
 
 							  nAnchor::left,		0,		iMargin,
-							  nAnchor::top,			45,		iMargin/2,
+							  nAnchor::top,			45,		iModeStripBottom/2,
 							  nAnchor::left,		0,		iVertDiv,
-							  nAnchor::top,			45,		iMargin/2 + iHeadHeight   );
+							  nAnchor::top,			45,		iModeStripBottom/2 + iHeadHeight   );
 
 	//----------------------------------------
 	//  CONNECTIONS (LISTVIEW CONTROL)
@@ -243,7 +248,7 @@ void cDlgMonitor::wm_initdialog ()
 	register_child ( &Connections,
 	
 							  nAnchor::left,		0,		iMargin,
-							  nAnchor::top,			45,		iMargin/2 + iHeadHeight,
+							  nAnchor::top,			45,		iModeStripBottom/2 + iHeadHeight,
 							  nAnchor::left,		0,		iVertDiv,
 							  nAnchor::bottom,		0,		-iMargin     );
 
@@ -255,33 +260,33 @@ void cDlgMonitor::wm_initdialog ()
 	register_child ( &MemosHead,
 
 							  nAnchor::left,		0,		iVertDiv + iMargin,
-							  nAnchor::top,			0,		iMargin,
+							  nAnchor::top,			0,		iModeStripBottom,
 							  nAnchor::right,		0,		- ( iClearButtonMargin + iMargin + iClearButtonWidth ),
-							  nAnchor::top,	    	0,		iMargin + iHeadHeight   );
+							  nAnchor::top,	    	0,		iModeStripBottom + iHeadHeight   );
 
 	MemosHeadR.hwnd = GetDlgItem ( hwnd, ID_MEMOS_HEAD_R );
 	register_child ( &MemosHeadR,
 
 							  nAnchor::right,		0,		- ( iMargin + iClearButtonMargin ),
-							  nAnchor::top,			0,		iMargin,
+							  nAnchor::top,			0,		iModeStripBottom,
 							  nAnchor::right,		0,		- iMargin,
-							  nAnchor::top,	    	0,		iMargin + iHeadHeight );
+							  nAnchor::top,	    	0,		iModeStripBottom + iHeadHeight );
 
 	MemosHeadT.hwnd = GetDlgItem ( hwnd, ID_MEMOS_HEAD_T );
 	register_child ( &MemosHeadT,
 
 							  nAnchor::right,		0,		- ( iClearButtonMargin + iMargin + iClearButtonWidth ),
-							  nAnchor::top,			0,		iMargin,
+							  nAnchor::top,			0,		iModeStripBottom,
 							  nAnchor::right,		0,		- ( iMargin + iClearButtonMargin ),
-							  nAnchor::top,	    	0,		iMargin + 1 );
+							  nAnchor::top,	    	0,		iModeStripBottom + 1 );
 
 	MemosHeadB.hwnd = GetDlgItem ( hwnd, ID_MEMOS_HEAD_B );
 	register_child ( &MemosHeadB,
 
 							  nAnchor::right,		0,		- ( iClearButtonMargin + iMargin + iClearButtonWidth ),
-							  nAnchor::top,			0,		iMargin + iHeadHeight - 1,
+							  nAnchor::top,			0,		iModeStripBottom + iHeadHeight - 1,
 							  nAnchor::right,		0,		- ( iMargin + iClearButtonMargin ),
-							  nAnchor::top,	    	0,		iMargin + iHeadHeight );
+							  nAnchor::top,	    	0,		iModeStripBottom + iHeadHeight );
 
 	//----------------------------------------
 	//  PROGRAM'S LAST ACTION (MEMOS) CLEAR
@@ -291,9 +296,9 @@ void cDlgMonitor::wm_initdialog ()
 
 	register_child ( &Clear,
 							  nAnchor::right,		0,		- ( iClearButtonMargin + iMargin + iClearButtonWidth ),
-							  nAnchor::top,			0,		iMargin + 1,
+							  nAnchor::top,			0,		iModeStripBottom + 1,
 							  nAnchor::right,		0,		- ( iMargin + iClearButtonMargin ),
-							  nAnchor::top,	    	0,		iMargin + iHeadHeight - 1 );
+							  nAnchor::top,	    	0,		iModeStripBottom + iHeadHeight - 1 );
 
 	//-----------------------------------------
 	// PROGRAM'S LAST ACTION (MEMOS) (RICH EDIT CONTROL)
@@ -304,7 +309,7 @@ void cDlgMonitor::wm_initdialog ()
 	register_child ( &Memos,
 
 							  nAnchor::left,		0,		iVertDiv + iMargin,
-							  nAnchor::top,			0,		iMargin + iHeadHeight,
+							  nAnchor::top,			0,		iModeStripBottom + iHeadHeight,
 							  nAnchor::right,		0,		-iMargin,
 							  nAnchor::bottom,		0,		-iMargin  );
 
@@ -321,15 +326,16 @@ void cDlgMonitor::wm_initdialog ()
 	//-----------------------------------------
 	// RED X
 	//-----------------------------------------
-
+#ifdef RED_X
 	RedX.hwnd = GetDlgItem ( hwnd, ID_RED_X );
 
 	register_child ( &RedX,
 
 							  nAnchor::left,		0,		iVertDiv + iMargin,
-							  nAnchor::top,			0,		iMargin + iHeadHeight,
+							  nAnchor::top,			0,		iModeStripBottom + iHeadHeight,
 							  nAnchor::right,		0,		-iMargin,
 							  nAnchor::bottom,		0,		-iMargin  );
+#endif
 }
 
 //----------------------------------------------------------------------------------------------------------------------

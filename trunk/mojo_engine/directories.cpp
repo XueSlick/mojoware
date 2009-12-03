@@ -32,7 +32,7 @@
 //-------------------------------------------------------------------------------------------------------
 
 #include "mojo_engine.h"
-#include "files.h"
+#include "directories.h"
 #include <shlobj.h>
 
 using namespace mojo;
@@ -42,6 +42,51 @@ using namespace mojo;
 //=======================================================================================================
 
 namespace mojo {
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//   GET DESKTOP DIRECTORY
+//----------------------------------------------------------------------------------------------------------------------
+const wchar_t * get_desktop_directory ( cStrW * s )
+{
+	wchar_t szPath [ MAX_PATH ];
+
+	if ( SUCCEEDED ( SHGetFolderPath ( NULL, 
+								       CSIDL_DESKTOP, 
+									   NULL, 
+									   0, 
+									   szPath ) ) ) 
+	{
+		*s = szPath;
+		*s += L'\\';
+		return s->cstr();
+	}
+
+	return NULL;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//   GET START MENU DIRECTORY
+//----------------------------------------------------------------------------------------------------------------------
+const wchar_t * get_start_menu_directory ( cStrW * s )
+{
+	wchar_t szPath [ MAX_PATH ];
+
+	if ( SUCCEEDED ( SHGetFolderPath ( NULL, 
+								       CSIDL_STARTMENU, 
+									   NULL, 
+									   0, 
+									   szPath ) ) ) 
+	{
+		*s = szPath;
+		*s += L'\\';
+		return s->cstr();
+	}
+
+	return NULL;
+}
+
 
 //-------------------------------------------------------------------------------------------------------
 //   GET MODULE DIRECTORY

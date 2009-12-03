@@ -85,11 +85,11 @@ cSignature :: cSignature () : pBuf(NULL)
 	wcscpy_s ( (wchar_t*)(p), sHostName.len() + 1, sHostName.cstr() );
 	p += 2 * sHostName.len() + 2;
 
-#if 0
-	pHead->iHostNameOffset = p - pBuf;
-	wcscpy_s ( (wchar_t*)(p), sHostName.len() + 1, sHostName.cstr() );
-	p += 2 * sHostName.len() + 2;
-#endif
+
+	pHead->iDisplayListOffset = p - pBuf;
+	wcscpy_s ( (wchar_t*)(p), sDisplayList.len() + 1, sDisplayList.cstr() );
+	p += 2 * sDisplayList.len() + 2;
+
 
 	LOG_V ( L"Bottom of cSignature::cSignature; sHostName == %s", sHostName.cstr() );
 
@@ -110,9 +110,9 @@ bool cSignature :: parse ( const wchar_t ** ppRetDisplayList, const wchar_t ** p
 		return false;
 
 	*ppRetVersion         = &pSigHead->Version;
-	*ppRetAppTitle        = ( wchar_t * ) ( pMsg + pSigHead->iAppTitleOffset );
-	*ppRetHostName        = ( wchar_t * ) ( pMsg + pSigHead->iHostNameOffset ); 
-	*ppRetDisplayList     = 0;  // TEMPORARY
+	*ppRetAppTitle        = ( wchar_t * ) ( pMsg + pSigHead->iAppTitleOffset    );
+	*ppRetHostName        = ( wchar_t * ) ( pMsg + pSigHead->iHostNameOffset    ); 
+	*ppRetDisplayList     = ( wchar_t * ) ( pMsg + pSigHead->iDisplayListOffset );
 
 	//-----------------------------------
 	//  TEMP

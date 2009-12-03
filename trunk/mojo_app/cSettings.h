@@ -37,7 +37,12 @@ public:
 	unsigned			uSpecifiedLocalIP;
 	unsigned			uPort;
 	bool				bUseNagle;
-	bool                bBroadcastingIsOn;
+	bool                bBroadcastIsOn;
+	bool                bShowIpOnMouseoverSettings;
+	bool                bMouseoverDeactivatesScreenSavers;
+	bool                bHideRemoteCursor;
+	bool                bHotkeysAreOn;
+	bool                bMouseoverIsOn;
 
 	//-----------------------------------
 	// DEFINE FOLLOWING IN DERIVED CLASS

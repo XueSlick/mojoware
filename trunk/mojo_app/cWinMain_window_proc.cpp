@@ -109,7 +109,7 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 			set_user_data ( hwnd, pWin );
 			pThis = static_cast<cWinMain*>(pWin);
 			assert(pThis);	
-			pThis->on_create ( hwnd );
+			pThis->wm_create ( hwnd );
 		}
 		break;
 
@@ -128,14 +128,27 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 		}
 		break;
 
+#if 1
+	case uWM_HIDE_OR_SHOW_CURSOR:
+		pThis->hide_or_show_cursor ( wParam );
+		break;
+#endif
+
+	case WM_HOTKEY:
+		if ( VK_F1 == wParam )
+			exit(0);
+		break;
+
 	case mojo::uWM_INPUT_EVENT_READY:
 		{
 			mojo::cInputEvent ie;
-			mojo::get_input_event ( &ie );
 			cStrW m;
-			ie.print ( &m );
-			if ( pThis && pThis->DlgMonitor.InputEvents.hwnd )
-			Edit_SetText ( pThis->DlgMonitor.InputEvents.hwnd, m.cstr() );
+			while ( mojo::get_input_event ( &ie ) )
+			{
+				ie.print ( &m );
+				if ( pThis && pThis->DlgMonitor.InputEvents.hwnd )
+				Edit_SetText ( pThis->DlgMonitor.InputEvents.hwnd, m.cstr() );
+			}
 		}
 		break;
 
@@ -153,14 +166,9 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 		set_mouseover_display_list();
 		break;
 
-	case uWM_HIDE_OR_SHOW_CURSOR:
-		pThis->hide_or_show_cursor ( wParam );
-		break;
 
-	case WM_HOTKEY:
-		if ( VK_F1 == wParam )
-			exit(0);
-		break;
+
+
 
 	case uWM_TRAY_ICON:
 		wm_tray_icon ( wParam, lParam );

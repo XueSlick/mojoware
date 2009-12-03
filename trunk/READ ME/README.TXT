@@ -25,7 +25,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS "AS IS" AND A
 Contact info
 -------------------------------------------------
 
-Questions, suggestions, bug reports, etc., should be posted in the forum at www.mojoware.org.
+Questions, suggestions, bug reports, etc., should be posted in the forum at www.hotkeynet.com.
 
 
 -------------------------------------------------

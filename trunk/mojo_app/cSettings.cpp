@@ -26,9 +26,7 @@ using namespace mojo;
 static const cSettings DefaultSettings ( g_awAppTitle, &g_Version );
 	             
 cSettings::sEntry cSettings::aTable [] =
-{
-	// ENTRY ( sSignature,								string,					L"sSignature"							),
-	// ENTRY ( Version,								version,				L"Version"								),
+{	
 	ENTRY ( bLicenseAccepted,						boolean,				L"bLicenseAccepted"						),
 	ENTRY ( bConnect,								boolean,				L"bConnect"								),
 	ENTRY ( bConnectAutomatically,					boolean,				L"bConnectAutomatically"				),
@@ -36,7 +34,12 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( uSpecifiedLocalIP,						uint,					L"uSpecifiedLocalIP"					),
 	ENTRY ( uPort,									uint,					L"uPort"								),
 	ENTRY ( bUseNagle,								boolean,				L"bUseNagle"							),
-	ENTRY ( bBroadcastingIsOn,						boolean,				L"bBroadcastingIsOn"					),
+	ENTRY ( bBroadcastIsOn,						    boolean,				L"bBroadcastIsOn"					    ),
+	ENTRY ( bShowIpOnMouseoverSettings,             boolean,                L"bShowIpOnMouseoverSettings"           ),
+	ENTRY ( bMouseoverDeactivatesScreenSavers,      boolean,                L"bMouseoverDeactivatesScreenSavers"    ),
+	ENTRY ( bHideRemoteCursor,                      boolean,                L"bHideRemoteCursor"                    ),
+	ENTRY ( bHotkeysAreOn,                          boolean,                L"bHotkeysAreOn"                        ),
+	ENTRY ( bMouseoverIsOn,                         boolean,                L"bMouseoverIsOn"                       ),
 };
 
 
@@ -67,8 +70,8 @@ cSettings::sEntry * cSettings :: table ( int i )
 //----------------------------------------------------------------------------------------------------------------------
 void cSettings :: init ()
 {
-	// sSignature							= L"mojo";
-	// Version								= g_Version;
+	// sSignature						= L"mojo";
+	// Version							= g_Version;
 	bLicenseAccepted					= false;
 	bConnect							= true;
 	bConnectAutomatically				= true;
@@ -76,7 +79,12 @@ void cSettings :: init ()
 	uSpecifiedLocalIP					= 0;
 	uPort 								= 7237;
 	bUseNagle							= false;
-	bBroadcastingIsOn                   = true;
+	bBroadcastIsOn                      = true;
+	bShowIpOnMouseoverSettings          = false;
+	bMouseoverDeactivatesScreenSavers   = true;
+	bHideRemoteCursor                   = true;
+	bHotkeysAreOn                       = false;
+	bMouseoverIsOn                      = true;
 }
 
 

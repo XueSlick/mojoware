@@ -53,7 +53,7 @@ void set_mouseover_display_list ()
 //----------------------------------------------------------------------------------------------------------------------
 // HIDE OR SHOW CURSOR
 //----------------------------------------------------------------------------------------------------------------------
-#if 0
+#if 1
 void cWinMain::hide_or_show_cursor ( WPARAM wParam )
 {
 	static bool bOn = true;
@@ -274,22 +274,40 @@ struct sStuff
 //----------------------------------------------------------------------------------------------------------------------
 // ON CREATE
 //----------------------------------------------------------------------------------------------------------------------
-void cWinMain::on_create ( HWND hwndArg )
+void cWinMain::wm_create ( HWND hwndArg )
 {
 
-	g_hwnd = hwndArg;
-
-	this->hwnd = hwndArg;
+	g_hwnd = this->hwnd = hwndArg;
 
 	LoadLibrary ( L"riched20.dll" );
+
+	//----------------------------------------
+	//  TOOLBAR
+	//----------------------------------------
+
+	this->hwndToolbar = create_toolbar ();
+
+	int iToolbarDimX, iToolbarDimY;
+	get_window_size ( &iToolbarDimX, &iToolbarDimY, hwndToolbar );
+
+	Toolbar.hwnd = hwndToolbar;
+
+	const int iMargin = 0;
+
+	register_child ( &Toolbar,
+							  nAnchor::left,       0, iMargin,
+							  nAnchor::top,        0, iMargin,
+							  nAnchor::right,      0, iMargin,
+							  nAnchor::top,        0, iToolbarDimY + iMargin );
+
 
 	DlgMonitor.make_dlg ();
 
 	register_child ( &DlgMonitor,
-							  nAnchor::left,		0,    0,
-							  nAnchor::top,		0,    0,
-							  nAnchor::right,		0,    0,
-							  nAnchor::bottom,	0,    0 );
+							  nAnchor::left,       0, 0,
+							  nAnchor::top,        0, iToolbarDimY + iMargin,
+							  nAnchor::right,      0, 0,
+							  nAnchor::bottom,     0, 0 );
 
 	SetParent ( DlgMonitor.hwnd, hwndArg );
 
@@ -297,7 +315,15 @@ void cWinMain::on_create ( HWND hwndArg )
 
 	set_size ( 800, 600 );
 
-	set_menu_item_text ( g_hwnd, ID_TOGGLE_BROADCASTING, g_Settings.bBroadcastingIsOn ? L"Turn broadcasting off" : L"Turn broadcasting on" );
+	// set_menu_item_text ( g_hwnd, ID_TOGGLE_BROADCAST, g_Settings.bBroadcastIsOn ? L"Turn broadcast off" : L"Turn broadcast on" );
+
+	g_Settings.bBroadcastIsOn = g_Settings.bBroadcastIsOn ? false : true;
+	g_Settings.bHotkeysAreOn  = g_Settings.bHotkeysAreOn  ? false : true;
+	g_Settings.bMouseoverIsOn = g_Settings.bMouseoverIsOn ? false : true;
+	toggle_broadcast ();
+	toggle_hotkeys   ();
+	toggle_mouseover ();
+
 
 #if 0
 	DlgCursorBlind.make_dlg();

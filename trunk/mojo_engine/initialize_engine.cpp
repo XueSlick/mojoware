@@ -54,8 +54,10 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	assert ( pVersionRequiredByApp );
 	assert ( pAppTitle );
 
-	g_hAppInstance = hAppInstance;
-	g_sAppTitle = pAppTitle;
+	g_hAppInstance      = hAppInstance;
+	g_sAppTitle         = pAppTitle;
+	g_sAppDataDirectory = pAppDataDirectory;
+
 	assert ( g_sAppTitle.len() );
 
 	//----------------------------------------------
@@ -169,6 +171,16 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	LOG ( L"About to start hooks thread." );
 
 	g_dwHookThreadID = mojo_hooks::start_thread ( g_hwndApp, cMessenger::keyboard_hook_service_routine, cMessenger::mouse_hook_service_routine );
+
+	//-------------------------------------
+	// INSERT cMACH FOR LOCAL PC
+	//-------------------------------------
+
+	// do this before g_Finder and g_Pool start
+	// because they need to send the local
+	// machine's DisplayList
+
+	g_Machlist.init_and_insert_local_machine ();
 
 	//-------------------------------------
 	// START SOCKET (TCP) COMMUNICATIONS

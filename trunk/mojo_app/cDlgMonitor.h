@@ -36,7 +36,9 @@ private:
 	cWin MemosHeadB;
 	cWin Clear;
 	cWin ConnectionsHead;
+#ifdef RED_X
 	cWin RedX;
+#endif
 	cListViewConnections Connections;
 
 	COLORREF get_memo_color ( cMemo * pM );
@@ -48,7 +50,10 @@ private:
 	void wm_initdialog ();
 	void draw_head ( cWin * pHead );
 	virtual void set_text();
+
+#ifdef RED_X
 	void draw_red_X ();
+#endif
 };
 
 

@@ -14,6 +14,38 @@ bool get_ip_addresses ( mojo::cArrayU * pRet );
 
 using namespace mojo;
 
+
+//----------------------------------------------------------------------------------------------------------------------
+//  SET MOUSEOVER LAYOUT
+//----------------------------------------------------------------------------------------------------------------------
+void mojo::set_mouseover_layout ( cMachlist * pArgList )
+{
+	g_Machlist.lock();
+	{
+		for ( cMach * pMach = g_Machlist.pHead; pMach; pMach = pMach->pNext )
+		{
+			cMach * pArgMach = pArgList->get_by_ip ( pMach->dwIP );
+
+			if ( ! pArgMach )
+			{
+				assert(0);
+				continue;
+			}
+
+			pMach->DrawPos = pArgMach->DrawPos;
+			pMach->bValidDrawPos = pArgMach->bValidDrawPos;
+		}
+	}
+	g_Machlist.unlock();
+
+	g_Machlist.save_draw_positions_to_file ();
+	// SendMessage	( g_hwndApp, uWM_SET_MOUSEOVER_DISPLAY_LIST, 0, 0 ); //g_Mouseover.set_mega_display_list ( &g_Machlist );
+	g_Mouseover.set_mega_display_list ( &g_Machlist );
+
+}
+
+
+
 //----------------------------------------------------------------------------------------------------------------------
 //  LOAD DEFAULT ENGINE SCRIBS
 //----------------------------------------------------------------------------------------------------------------------
