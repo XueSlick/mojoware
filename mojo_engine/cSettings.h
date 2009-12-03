@@ -32,7 +32,9 @@ public:
 	unsigned			uSpecifiedLocalIP;
 	unsigned			uPort;
 	bool				bUseNagle;
-	bool                bBroadcastingIsOn;
+	bool                bBroadcastIsOn;
+	bool                bHotkeysAreOn;
+	bool                bMouseoverIsOn;
 
 #if 1
 	mojo::cStrW		sScriptName;
@@ -41,7 +43,6 @@ public:
 	bool				bShowTokenizerOutput;
 	bool				bShowCompilerOutput;
 	unsigned			uHeaderColor;
-	bool				bHotkeysAreOn;
 	bool				bMaximumTimerResolution;
 	unsigned			uDiscoveryyBroadcastInterval;
 	bool				bDisableNagle;

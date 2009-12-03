@@ -103,6 +103,7 @@
     <ClCompile Include="cMemoBuffer.cpp" />
     <ClCompile Include="cMessage.cpp" />
     <ClCompile Include="cMessenger.cpp" />
+    <ClCompile Include="cMouseover.cpp" />
     <ClCompile Include="cPool.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -144,7 +145,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="files.cpp">
+    <ClCompile Include="directories.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -193,6 +194,7 @@
     <ClInclude Include="cAdLibMemo.h" />
     <ClInclude Include="cKeyBroadcaster.h" />
     <ClInclude Include="cMessage.h" />
+    <ClInclude Include="cMouseover.h" />
     <ClInclude Include="cPreviousKeyState.h" />
     <ClInclude Include="cSyringe.h" />
     <ClInclude Include="cTarget.h" />
@@ -218,7 +220,7 @@
     <ClInclude Include="cSettingsBase.h" />
     <ClInclude Include="cSignature.h" />
     <ClInclude Include="cVersion.h" />
-    <ClInclude Include="files.h" />
+    <ClInclude Include="directories.h" />
     <ClInclude Include="get_broadcast_addresses.h" />
     <ClInclude Include="global_data.h" />
     <ClInclude Include="hooks.h" />

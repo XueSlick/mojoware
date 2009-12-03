@@ -70,7 +70,7 @@ void log_system_error ( wchar_t *, int, wchar_t * pcText, unsigned int );
 #define LOG_SYSTEM_ERROR_TE(t,e)								\
 	do															\
 	{															\
-		log_system_error ( __WFILE__, __LINE__, t, e );			\
+	g_Log.log_system_error ( __WFILE__, __LINE__, t, e );	    \
 	__pragma ( warning ( push ) ) 								\
 	__pragma ( warning ( disable : 4127 ) )						\
 	} while(0) 													\
@@ -81,10 +81,20 @@ void log_system_error ( wchar_t *, int, wchar_t * pcText, unsigned int );
 	do															\
 	{															\
 		unsigned int dwError = GetLastError();					\
-		log_system_error ( __WFILE__, __LINE__, t, dwError );	\
+    g_Log.log_system_error ( __WFILE__, __LINE__, t, dwError );	\
 	__pragma ( warning ( push ) ) 								\
 	__pragma ( warning ( disable : 4127 ) )						\
 	} while(0) 													\
+	__pragma ( warning ( pop ) )
+
+
+#define LOG_AND_PUT_MEMO(e,t,...) 										\
+	do															        \
+	{																	\
+	g_Log.log_and_put_memo ( __WFILE__, __LINE__, e, t, __VA_ARGS__ );	\
+	__pragma ( warning ( push ) ) 								        \
+	__pragma ( warning ( disable : 4127 ) )						        \
+	} while(0) 													        \
 	__pragma ( warning ( pop ) )
 
 
@@ -104,7 +114,7 @@ public:
 	cLog ( const wchar_t * pAppFolderName, const wchar_t * pAppTitle, cVersion * pVersion );
 
 	void log_v ( const wchar_t * pcFile, int iLine, const wchar_t * pKey, ... );
-
+	void log_and_put_memo ( const wchar_t * pFile, int iLine, mojo::cMemo::_eSeverity e, const wchar_t * pTxt, ... );
 	void log ( const wchar_t * pcFile, int iLine, const mojo::cMemo * pMemo );
 	void log ( const wchar_t * );
 	void log ( const wchar_t * pcFile, int iLine, const wchar_t * pcTxt );

@@ -50,6 +50,7 @@ bool replace_format_specification_fields ( wchar_t * pRet, int iSize,  const wch
 //  LOG AND PUT MEMO
 //  Called by LOG_AND_MEMO macro
 //----------------------------------------------------------------------------------------------------------------------
+#if 0
 void log_and_put_memo ( const wchar_t * pFile, int iLine, mojo::cMemo::_eSeverity e, const wchar_t * pTxt, ... )
 {
 	va_list args;
@@ -79,7 +80,7 @@ void log_and_put_memo ( const wchar_t * pFile, int iLine, mojo::cMemo::_eSeverit
 	s.replace ( L'\n', L' ' );
 	g_Log.log ( s.cstr() );
 }
-
+#endif
 
 /***********************************************************************************************************************
 /*

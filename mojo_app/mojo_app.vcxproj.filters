@@ -30,6 +30,9 @@
     <ClCompile Include="cDlgAbout.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="cDlgCursorBlind.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
     <ClCompile Include="cDlgLicense.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
@@ -42,6 +45,12 @@
     <ClCompile Include="cDlgMonitor_red_X.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="cDlgMouseOver.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgMouseOver2.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
     <ClCompile Include="cDlgSettingsConnection.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
@@ -51,8 +60,20 @@
     <ClCompile Include="cDlgVars.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="click_once.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cListviewConnections.cpp">
       <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cScrobIm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cScrobMgrIm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cScrobMgrImMouseOver.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cSettings.cpp">
       <Filter>Source Files</Filter>
@@ -64,6 +85,12 @@
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cWinMain.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cWinMain_toggle.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cWinMain_toolbar.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cWinMain_window_proc.cpp">
@@ -113,6 +140,9 @@
     <ClInclude Include="cDlgAbout.h">
       <Filter>cWin</Filter>
     </ClInclude>
+    <ClInclude Include="cDlgCursorBlind.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
     <ClInclude Include="cDlgLicense.h">
       <Filter>cWin</Filter>
     </ClInclude>
@@ -120,6 +150,9 @@
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgMonitor.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgMouseOver.h">
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgSettingsConnection.h">
@@ -131,8 +164,20 @@
     <ClInclude Include="cDlgVars.h">
       <Filter>cWin</Filter>
     </ClInclude>
+    <ClInclude Include="click_once.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="cListviewConnections.h">
       <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cScrobIm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cScrobMgrIm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cScrobMgrImMouseOver.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cSettings.h">
       <Filter>Header Files</Filter>
@@ -175,16 +220,19 @@
     <None Include="..\..\Mojo\mojo_app\mojo_app.ico">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\..\mojo\mojo_art\bitmap3.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="..\..\Mojo\mojo_art\mojo-logo-star-150.bmp">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\mojo_art\mojo-logo-star-150.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="gpl3.txt" />
-    <None Include="mojo_app.ico">
+    <None Include="..\mojo_art\toolbar_bitmaps.bmp">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="gpl3.txt" />
     <None Include="mojo_app.scribs.english.txt" />
     <None Include="osbxr.ico">
       <Filter>Resource Files</Filter>

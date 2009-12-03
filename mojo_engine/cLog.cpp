@@ -34,7 +34,7 @@
 #ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x0500
 #endif
-
+#include "stdafx.h"
 #include <Windows.h>
 #include "tStr.h"
 #include <stdio.h>
@@ -51,10 +51,12 @@
 #include <tchar.h>
 #include <time.h>
 #include "cLog.h"
-#include "files.h"
+#include "directories.h"
 #include "share.h"
 #include "cVersion.h"
 #include "cMemo.h"
+
+
 
 using namespace mojo;
 
@@ -344,6 +346,39 @@ void cLog::log ( const wchar_t * pcFile, int iLine, const mojo::cMemo * pMemo )
 void cLog::log ( const wchar_t * p )
 {
 	cLog::write ( p );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  LOG AND PUT MEMO
+//----------------------------------------------------------------------------------------------------------------------
+void cLog::log_and_put_memo ( const wchar_t * pFile, int iLine, mojo::cMemo::_eSeverity e, const wchar_t * pTxt, ... )
+{
+	va_list args;
+  	va_start ( args, pTxt );
+
+	mojo::cMemo m ( e, pTxt, args );
+	put_memo ( &m ); // KEEP THIS BEFORE LOG
+
+	g_Log.log ( pFile, iLine, L"The following cMemo was put:" );
+
+	cStrW s = L"   Key: ";
+	s += m.key();
+	g_Log.log ( s.cstr() );
+
+	s = L"   Severity: ";
+	s += m.severity_cstr();
+	g_Log.log ( s.cstr() );
+
+	s = L"   Head: ";
+	s += m.head();
+	g_Log.log ( s.cstr() );
+
+
+	s = L"   Body: ";
+	s += m.body();
+	s.replace ( L'\n', L' ' );
+	g_Log.log ( s.cstr() );	
 }
 
 

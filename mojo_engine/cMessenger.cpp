@@ -115,6 +115,15 @@ bool are_equal ( KBDLLHOOKSTRUCT * p1, KBDLLHOOKSTRUCT * p2 )
 bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUCT * p )
 {
 	//-----------------------------------------
+	//  KILL SWITCH FOR DEBUGGING MOUSEOVER
+	//-----------------------------------------
+
+#if 0
+	if ( p->vkCode == VK_F1 )
+		exit(0);
+#endif
+
+	//-----------------------------------------
 	//  SET "PREVIOUS KEY STATE" BIT WHICH
 	//  IS USED IN WM_KEY* MESSAGES
 	//-----------------------------------------
@@ -123,24 +132,31 @@ bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUC
 	
 	p->dwExtraInfo = 0;
 
-	if ( PrevKeyEvent.last_event_was_down ( p->vkCode ) ) // DO THIS BEFORE RECEIVE
+	if ( PrevKeyEvent.last_event_was_down ( p->vkCode ) ) // DO THIS BEFORE RECEVIVE
 		p->dwExtraInfo |= ( 1<<30 );                      // THIS BIT INDICATES PREV KEY STATE
 	                                                      // IT'S USED E.G. BY cSyringe
 
 	PrevKeyEvent.receive ( p ); // DO THIS AFTER RECEIVE
 
-	//----------------------------------------
-	// MAIN BUSINESS
-	//----------------------------------------
+	//------------------------------------
+	//  DISPLAY EVENT
+	//------------------------------------
 
 	g_EventBuffer.receive ( wParam, p );
 
-	PostMessage ( g_hwndApp, mojo::uWM_INPUT_EVENT_READY, 0, 0 );
+	//------------------------------------
+	//  FIRST, MOUSEOVER
+	//------------------------------------
 
-	if ( g_Settings.bBroadcastingIsOn )
-	{
+	if ( g_Settings.bMouseoverIsOn )
+		return g_Mouseover.on_keyboard_hook ( wParam, p );
+
+	//------------------------------------
+	//  SECOND, BROADCAST
+	//------------------------------------
+
+	if ( g_Settings.bBroadcastIsOn )
 		g_KeyBroadcaster.receive_from_keyboard_hook ( wParam, p );
-	}
 
 	return true; // true means "call next hook in chain"
 }
@@ -151,9 +167,22 @@ bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUC
 //-------------------------------------------------------------------------------------------------------
 bool cMessenger :: mouse_hook_service_routine ( WPARAM wParam, MSLLHOOKSTRUCT * p )
 {
+	//------------------------------------
+	//  DISPLAY EVENT
+	//------------------------------------
+
 	g_EventBuffer.receive ( wParam, p );
 
-	PostMessage ( g_hwndApp, mojo::uWM_INPUT_EVENT_READY, 0, 0 );
+	//------------------------------------
+	//  FIRST, MOUSEOVER
+	//------------------------------------
+
+	if ( g_Settings.bMouseoverIsOn )
+		return g_Mouseover.on_mouse_hook ( wParam, p );
+
+	//------------------------------------
+	//  LAST, CHAIN NEXT HOOK
+	//------------------------------------
 
 	return true; // true means "call next hook in chain"
 }
@@ -207,11 +236,9 @@ void cMessenger :: receive ( struct sSocketInfo * pSI, const char * pBuffer, uns
 			g_KeyBroadcaster.broadcast_to_local_windows ( ( cMessageBroadcastKeyEvent * ) pMsg );
 			break;
 
-#if 0
-		case sMessage::mouseover:
+		case cMessage::mouseover:
 			g_Mouseover.receive_command ( pMsg );
 			break;
-#endif
 		}
 	}
 }

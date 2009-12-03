@@ -24,6 +24,9 @@ void			print ( const wchar_t * pTxt, ... ); // prints to monitor
 void			print ( mojo::cMemo::_eSeverity, const wchar_t * pTxt, ... ); // prints to monitor
 void            show_app_data_file ( const wchar_t * pName );
 void            set_menu_item_text ( HWND hwnd, unsigned uID, const wchar_t * pTxt );
+bool            file_exists ( const wchar_t * pPathname );
+
+
 
 /***********************************************************************************************************************
 /*

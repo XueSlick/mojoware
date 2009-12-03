@@ -92,6 +92,8 @@
 #include "cDlgLicense.h"
 #include "cDlgSettingsConnection.h"
 #include "cDlgSettingsConnectionAdvanced.h"
+#include "cDlgMouseOver.h"
+#include "cDlgCursorBlind.h"
 
 //---------------------------------
 //  GLOBAL DATA

@@ -85,12 +85,16 @@ cMach * cMachlist::get_by_ip_or_add ( DWORD dwIP, const wchar_t * pDisplayList )
 	{
 		cMessenger::tell_app_that_connections_changed();
 
+		if ( pDisplayList )
+		{
+			// PostMessage	( g_hwnd, uWM_SET_MOUSEOVER_DISPLAY_LIST,	0, 0 );
+			g_Mouseover.set_mega_display_list ( &g_Machlist ); // new dec 3 2009
+		}
+
 #if 0 // MONITOR STUFF
 		PostMessage ( g_hwnd, uWM_MONITOR_CONNECTIONS, 0, 0 );
-
-		if ( pDisplayList )
-			PostMessage	( g_hwnd, uWM_SET_MOUSEOVER_DISPLAY_LIST,	0, 0 );
 #endif
+
 	}
 	
 	return pRetVal;
@@ -140,7 +144,7 @@ bool cMachlist :: get_draw_position_from_file ( cMach * pMach )
 
 	while ( f.get_line ( &sLine ) )
 	{
-		if ( ! match ( aRet, sizeof(aRet)/sizeof(cStrW), pRgx, sLine.cstr() ) )
+		if ( ! match ( aRet, sizeof(aRet)/sizeof(cStrW), sLine.cstr(), pRgx ) )
 		{
 			sLine.erase();
 			continue;

@@ -53,6 +53,7 @@
 #include "cMach.h"
 #include "cMachlist.h"
 #include "cTarget.h"
+#include "directories.h"
 
 
 
@@ -66,6 +67,7 @@ const UINT uWM_INPUT_EVENT_READY             = WM_APP + 0xBFFF - 0;
 const UINT uWM_MEMO_READY                    = WM_APP + 0xBFFF - 1;
 const UINT uWM_CONNECTIONS_CHANGED           = WM_APP + 0xBFFF - 2;
 const UINT uWM_BROADCAST_TARGETS_CHANGED     = WM_APP + 0xBFFF - 3;
+const UINT uWM_HIDE_OR_SHOW_CURSOR           = WM_APP + 0xBFFF - 4;
 
 namespace nConnectionStatus
 {
@@ -96,17 +98,16 @@ MOJO_ENGINE_API void put_memo 			( mojo::cMemo * pMemo );
 MOJO_ENGINE_API void put_ad_lib_memo		( mojo::cMemo::_eSeverity e, const wchar_t * pHeadFormatString, const wchar_t * pBodyFormatString=NULL, ... );
 MOJO_ENGINE_API bool get_memo				( mojo::cMemo * pRetMemo );
 
-MOJO_ENGINE_API int load_scribs			( const wchar_t * apScribs [],  bool bReplace );
-MOJO_ENGINE_API int load_scribs			( const wchar_t * pPathname,	bool bReplace );
-MOJO_ENGINE_API bool get_ip_addresses 	( mojo::cArrayU * pRet );
-MOJO_ENGINE_API void ip_dword_to_cStrW	( cStrW * pRet, DWORD dw );
-MOJO_ENGINE_API DWORD ip_pw_to_dword		( const wchar_t * );
-MOJO_ENGINE_API void  get_machlist		( mojo::cMachlist * pRet );
+MOJO_ENGINE_API int load_scribs                ( const wchar_t * apScribs [],  bool bReplace );
+MOJO_ENGINE_API int load_scribs                ( const wchar_t * pPathname,	bool bReplace );
+MOJO_ENGINE_API bool get_ip_addresses          ( mojo::cArrayU * pRet );
+MOJO_ENGINE_API void ip_dword_to_cStrW         ( cStrW * pRet, DWORD dw );
+MOJO_ENGINE_API DWORD ip_pw_to_dword		   ( const wchar_t * );
+MOJO_ENGINE_API void  get_machlist		       ( mojo::cMachlist * pRet );
 MOJO_ENGINE_API mojo::nConnectionStatus::eConnectionStatus 
-				get_connection_status 	( DWORD dwMachHandle );
-MOJO_ENGINE_API void get_broadcast_targets ( mojo::cArrayTarget * pRet );
-
-
+				get_connection_status 	       ( DWORD dwMachHandle );
+MOJO_ENGINE_API void get_broadcast_targets     ( mojo::cArrayTarget * pRet );
+MOJO_ENGINE_API void set_mouseover_layout      ( mojo::cMachlist * pMachlist );
 
 } // namespace
 

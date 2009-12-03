@@ -1,0 +1,28 @@
+==============================================================
+                       BUILD 6 WORK LIST
+==============================================================
+
+ 1.  Added "Create desktop shortcut" to main menu.        DONE
+
+ 2.  Added Mouseover.                                     DONE
+     -- ported several files and classes from HKN2
+
+ 3.  Added mode buttons to main window                    DONE
+     -- Broadcast is on/off
+	 -- Hotkeys are on/off
+	 -- Mouseover is on/off
+
+4.  Disabled red X for "broadcast is off"                 DONE
+
+ 4.  Added menu items.                                    DONE
+     -- Turn mouseover off/on
+	 -- Turn hotkeys off/on
+
+
+
+
+
+
+
+
+

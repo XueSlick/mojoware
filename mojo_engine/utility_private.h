@@ -26,4 +26,4 @@
 //======================================================================================================================
 
 bool replace_format_specification_fields ( wchar_t * pRet, int iSize,  const wchar_t * pIn, va_list pVA );
-void log_and_put_memo ( const wchar_t * pFile, int iLine, mojo::cMemo::_eSeverity, const wchar_t * pTxt, ... );
+// void log_and_put_memo ( const wchar_t * pFile, int iLine, mojo::cMemo::_eSeverity, const wchar_t * pTxt, ... );

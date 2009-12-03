@@ -13,30 +13,11 @@
 
 
 void test ();
+void create_click_once_shortcut ();
 
 //======================================================================================================================
 //  CODE
 //======================================================================================================================
-
-
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  TOGGLE BROADCASTING
-//----------------------------------------------------------------------------------------------------------------------
-void toggle_broadcasting ()
-{
-	g_Settings.bBroadcastingIsOn = g_Settings.bBroadcastingIsOn ? false : true;
-	mojo::set ( L"bBroadcastingIsOn", g_Settings.bBroadcastingIsOn );
-
-	set_menu_item_text ( g_hwnd, ID_TOGGLE_BROADCASTING, g_Settings.bBroadcastingIsOn ? L"Turn broadcasting off" : L"Turn broadcasting on" );
-	InvalidateRect ( g_hwnd, NULL, TRUE );
-	UpdateWindow ( g_hwnd );
-	// set_tray_icon ();
-}
-
-
-
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -72,8 +53,19 @@ void cWinMain :: wm_command ( WPARAM wParam, LPARAM lParam )
 		}
 		break;
 
+	case ID_CREATE_DESKTOP_SHORTCUT:
+		create_click_once_shortcut ();
+		break;
+
 	case ID_EXIT:
 		DestroyWindow(hwnd);
+		break;
+
+	case ID_MOUSEOVER_SETTINGS:
+		{
+			cDlgMouseOver d;
+			d.make_dlg ();
+		}
 		break;
 
 	case ID_SHOW_APP_LOG:
@@ -95,12 +87,9 @@ void cWinMain :: wm_command ( WPARAM wParam, LPARAM lParam )
 	case ID_SHOW_INSTALLATION_DIRECTORY:
 		{
 			cStrW s1, s2;
-			
 			s1 = L"Location of Mojo's executable files:\n\n";
-
 			get_module_directory ( & s2 );
 			s1 += s2;
-
 			message_box ( s1.cstr() );
 		}
 		break;
@@ -112,8 +101,17 @@ void cWinMain :: wm_command ( WPARAM wParam, LPARAM lParam )
 		}
 		break;
 
-	case ID_TOGGLE_BROADCASTING:
-		toggle_broadcasting ();
+	case ID_TOGGLE_BROADCAST:
+		toggle_broadcast ();
+		break;
+
+	case ID_TOGGLE_HOTKEYS:
+		toggle_hotkeys ();
+		message_box ( L"Hotkeys aren't implemented yet." );
+		break;
+
+	case ID_TOGGLE_MOUSEOVER:
+		toggle_mouseover ();
 		break;
 
 	case ID_TEST:

@@ -15,6 +15,7 @@
 #include "cWin.h"
 #include "cDlgMonitor.h"
 #include "cDlgMessageBox.h"
+#include "cDlgCursorBlind.h"
 
 
 //=======================================================================================================
@@ -27,17 +28,28 @@ public:
 
 	cWinMain () { pClassName = L"cWinMain"; }
 	void load_script_sub();
+	HWND toolbar() { return hwndToolbar; }
 
 
 private:
+	void hide_or_show_cursor ( WPARAM wParam );
+	void toggle_broadcast ();
+	void toggle_hotkeys ();
+	void toggle_mouseover ();
 
 	void wm_command ( WPARAM wParam, LPARAM lParam );
-	void on_create ( HWND hwnd );
+	void wm_create ( HWND hwnd );
+
+	HWND create_toolbar ();
 
 	wchar_t * pClassName; // = L"cWinMain";
 
 	cDlgMonitor DlgMonitor;
 	cDlgMessageBox MB;
+	cDlgCursorBlind DlgCursorBlind;
+
+	cWin Toolbar;
+	HWND hwndToolbar;
 
 public:
 

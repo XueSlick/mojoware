@@ -69,6 +69,9 @@
     <ClCompile Include="cMessenger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cMouseover.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,10 +120,10 @@
     <ClCompile Include="default_scribs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dllmain.cpp">
+    <ClCompile Include="directories.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="files.cpp">
+    <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="get_broadcast_addresses.cpp">
@@ -224,6 +227,9 @@
     <ClInclude Include="cMessenger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cMouseover.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="cPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -257,7 +263,7 @@
     <ClInclude Include="cVersion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="files.h">
+    <ClInclude Include="directories.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="get_broadcast_addresses.h">

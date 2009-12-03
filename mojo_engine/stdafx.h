@@ -73,6 +73,9 @@
 #include "cKeyBroadcaster.h"
 #include "cSyringe.h"
 #include "cPreviousKeyState.h"
+#include "cDisplay.h"
+#include "cMouseover.h"
+
 
 //---------------------------------
 //  GLOBAL DATA (KEEP THIS LAST)
@@ -80,16 +83,6 @@
 
 #include "global_data.h" // keep this last)
 
-//---------------------------------
-//  MACROS
-//---------------------------------
-
-#define LOG_AND_MEMO(e,t,...) 											\
-	for(;;)																\
-	{																	\
-		log_and_put_memo ( __WFILE__, __LINE__, e, t, __VA_ARGS__ );	\
-		break;															\
-	}
 
 
 /***********************************************************************************************************************

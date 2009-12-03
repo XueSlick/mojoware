@@ -71,7 +71,7 @@ public:
 	tStr<C> & append     ( const C * pRh, int iRhLen );
 	tStr<C> & append     ( const C * pRh );
 
-	int len () { return iLen; }; 
+	int len () const { return iLen; }; 
 
 	void set_len_to_str_len () { iLen = strlen ( pBuf); }
 	void truncate ( int iNewLen ) { if ( iNewLen < iBufSize ) { pBuf[iNewLen]=0; iLen=iNewLen; } } 

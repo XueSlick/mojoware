@@ -51,4 +51,5 @@ extern cMessenger			g_Messenger;
 extern cMemoBuffer			g_MemoBuffer;
 extern const wchar_t * 		g_apDefaultScribs [];
 extern cFinder              g_Finder;
-extern cKeyBroadcaster         g_KeyBroadcaster;
+extern cKeyBroadcaster      g_KeyBroadcaster;
+extern cMouseover           g_Mouseover;

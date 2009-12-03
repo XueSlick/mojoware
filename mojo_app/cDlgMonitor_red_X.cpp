@@ -22,7 +22,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 //  DRAW RED X
 //----------------------------------------------------------------------------------------------------------------------
-
+#ifdef RED_X
 void cDlgMonitor :: draw_red_X ()
 {
 	// if ( ! g_Settings.bHotkeysAreOn )
@@ -70,7 +70,7 @@ void cDlgMonitor :: draw_red_X ()
 			SelectFont ( hdcMem, hFont );
 			SetTextColor ( hdcMem, RGB ( 0, 0, 0 ) );
 
-			DrawText ( hdcMem, L"Broadcasting is off.", -1, &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE );
+			DrawText ( hdcMem, L"Broadcast is off.", -1, &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE );
 
 			// Transfer the off-screen DC to the screen
 			GetClientRect ( RedX.hwnd, &rect );
@@ -85,7 +85,7 @@ void cDlgMonitor :: draw_red_X ()
 		ReleaseDC ( RedX.hwnd, hdc );
 	}
 }
-
+#endif
 
 /***********************************************************************************************************************
 /*
