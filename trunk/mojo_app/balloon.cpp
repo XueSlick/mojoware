@@ -40,7 +40,7 @@ LRESULT CALLBACK balloon_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 //  DISPLAY BALLOON
 //  test is limited to 80 bytes (40 wchar_t's)
 //----------------------------------------------------------------------------------------------------------------------
-HWND display_balloon ( HWND hCtrl, const wchar_t * pText )
+HWND display_balloon ( HWND hCtrl, const wchar_t * pTitle, const wchar_t * pBody )
 {
 	HWND hParent = GetParent ( hCtrl );
 
@@ -75,17 +75,17 @@ HWND display_balloon ( HWND hCtrl, const wchar_t * pText )
     ti.uFlags 	= TTF_IDISHWND | TTF_TRACK | TTF_ABSOLUTE;
     ti.hwnd 	= hParent;
     ti.hinst 	= g_hInstance;
-    ti.lpszText = (LPWSTR) pText;
+    ti.lpszText = (LPWSTR) pBody;
     ti.uId 		= (UINT_PTR)hParent;
     GetClientRect ( hParent, &ti.rect );
 
     SendMessage ( hTip, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &ti);	
 
 	//-------------------------------------------------
-	//  SET ICON WITH BLANK TITLE
+	//  SET ICON WITH TITLE
 	//-------------------------------------------------
 
-	SendMessage ( hTip, TTM_SETTITLE, (WPARAM) TTI_INFO, (LPARAM) L" " );
+	SendMessage ( hTip, TTM_SETTITLE, (WPARAM) TTI_INFO, (LPARAM) pTitle );
  
 	//-------------------------------------------------
 	//  ACTIVATE AND DISPLAY IT IN CENTER OF

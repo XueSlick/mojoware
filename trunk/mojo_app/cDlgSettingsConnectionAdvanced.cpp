@@ -51,7 +51,7 @@ bool cDlgSettingsConnectionAdvanced :: 	on_okay ()
 		if ( CB_ERR == iIndex ) // ERROR
 		{
 			cScribPack sp ( L"DlgSettingsConnectionAdvanced.SpecifyLocalIP.Error" );
-			this->display_balloon ( hCtrl, sp.head() );
+			this->balloon ( hCtrl, L"Missing info.", sp.head() );
 			return false;
 		}
 

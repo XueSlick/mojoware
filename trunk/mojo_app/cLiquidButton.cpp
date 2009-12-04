@@ -20,9 +20,88 @@ using namespace Gdiplus;
 //  PROTOTYPES
 //======================================================================================================================
 
+void create_round_rectangle ( GraphicsPath * p, int x, int y, int width, int height, int radius ) ;
+void paint_gradient ( Graphics *g, RectF * r, GraphicsPath * gp, Color cTop, Color cBot );
+
 //======================================================================================================================
 //  CODE
 //======================================================================================================================
+
+//----------------------------------------------------------------------------------------------------------------------
+// PAINT 
+//----------------------------------------------------------------------------------------------------------------------
+void cLiquidButton::paint ( DRAWITEMSTRUCT* pDI, Gdiplus::Color cOutTop, Gdiplus::Color cOutBot, Gdiplus::Color cInTop, Gdiplus::Color cInBot, const wchar_t * pText, COLORREF clrTxt )
+{
+	cInBot, cInTop;
+	Graphics g ( pDI->hDC );
+	g.SetSmoothingMode ( SmoothingModeAntiAlias );
+
+	// paths
+	GraphicsPath gpIn, gpOut;
+	create_round_rectangle ( & gpOut, pDI->rcItem.left,  pDI->rcItem.top,   pDI->rcItem.right - pDI->rcItem.left - 1 , pDI->rcItem.bottom - pDI->rcItem.top - 1, 5 );
+	create_round_rectangle ( & gpIn, pDI->rcItem.left,   pDI->rcItem.top,   pDI->rcItem.right - pDI->rcItem.left - 1, (( pDI->rcItem.bottom - pDI->rcItem.top ) / 2 ) - 1, 5 );
+
+	// lower gradient
+
+	RectF rOut (  (float) pDI->rcItem.left, (float) pDI->rcItem.top, (float) pDI->rcItem.right - pDI->rcItem.left, (float) pDI->rcItem.bottom - pDI->rcItem.top );
+	::paint_gradient ( &g, &rOut, &gpOut, cOutTop, cOutBot );
+
+#if 1
+
+	// top gradient
+	RectF rIn = rOut;
+	rIn.Height /= 2;
+	::paint_gradient ( &g, &rIn, &gpIn, cInTop, cInBot );
+#endif
+
+	// border
+
+	draw_rounded_rectangle ( &g, &gpOut, Color ( 127, 127, 127 ) ); 
+
+	// text
+
+	SetTextColor    ( pDI->hDC, clrTxt );
+	SetBkMode		( pDI->hDC, TRANSPARENT );
+	// HFONT hOldFont = (HFONT ) SelectObject ( pDI->hDC, g_hCaptionFont );
+	DrawText ( pDI->hDC, pText, -1, &pDI->rcItem, DT_CENTER | DT_VCENTER | DT_SINGLELINE );
+	// SelectObject ( pDI->hDC, (HGDIOBJ) hOldFont );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// PAINT GREEN
+//----------------------------------------------------------------------------------------------------------------------
+void cLiquidButton::paint_green ( DRAWITEMSTRUCT* pDI, const wchar_t * pText )
+{
+	Color Border ( 0, 235, 0 );
+	// paint ( pDI, Color ( 200, 235, 200 ), Color ( 0, 100, 0 ), Color ( 100, 185, 100 ), Color ( 215, 235, 215 ), pText );
+	// paint ( pDI, Color ( 180, 220, 180 ), Color ( 44,  60, 44 ), Color ( 100, 120,100 ), Color ( 211, 234, 211 ), pText );
+	// paint ( pDI, Color ( 111, 255, 111 ), Color ( 0, 234, 0 ), Color ( 190, 244, 190 ), Color ( 222, 255, 222 ), pText, RGB ( 0, 0, 0 ) );
+	// paint ( pDI, Color ( 211, 255, 211 ), Color ( 111, 255, 111 ), Color ( 199, 255, 199 ), Color ( 232, 255, 232 ), pText, RGB ( 0, 0, 0 ) );
+	Color c1 ( 178, 245, 178 );
+	Color c2 ( 222, 255, 222 );
+	paint ( pDI, c1, c1, c2, c2, pText, RGB ( 0, 0, 0 ) );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// PAINT RED
+//----------------------------------------------------------------------------------------------------------------------
+void cLiquidButton::paint_red ( DRAWITEMSTRUCT* pDI, const wchar_t * pText )
+{
+	Color  Border ( 235, 0, 0 );
+	// paint ( pDI, Color ( 255, 200, 200 ), Color ( 0, 0, 0 ), Color ( 255, 245, 245 ), Color ( 255, 105, 105 ), pText );
+	// paint ( pDI, Color ( 255, 200, 200 ), Color ( 100, 0, 0 ), Color ( 205, 100, 100 ), Color ( 255, 235, 235 ), pText, RGB ( 255, 255, 255 ) );
+	// paint ( pDI, Color ( 235, 180, 180 ), Color ( 80, 0, 0 ), Color ( 185, 80, 80 ), Color ( 235, 215, 215 ), pText, RGB ( 235, 235, 235 ) );
+	// paint ( pDI, Color ( 211, 130, 130 ), Color ( 70, 20, 20 ), Color ( 180, 100, 130 ), Color ( 225, 155, 155 ), pText, RGB ( 255, 255, 255 ) );
+	// paint ( pDI, Color ( 60,60, 60 ), Color ( 0, 0, 0 ), Color ( 160, 160, 160 ), Color ( 180, 180, 180 ), pText, RGB ( 255, 255, 255 ) );
+	Color ot ( 230, 230, 230 );
+	Color ob ( 210, 210, 210 );
+	Color it ( 230, 230, 230 );
+	Color ib ( 240, 240, 240 );
+	paint ( pDI, ot, ob, it, ib, pText, RGB ( 0, 0, 0 ) );
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 // CREATE ROUND RECTANGLE
@@ -50,88 +129,24 @@ void create_round_rectangle ( GraphicsPath * p, int x, int y, int width, int hei
 //----------------------------------------------------------------------------------------------------------------------
 // DRAW ROUNDED RECTANGLE
 //----------------------------------------------------------------------------------------------------------------------
-void cLiquidButton :: draw_rounded_rectangle ( DRAWITEMSTRUCT* pDI, GraphicsPath * pGP, Color c )
+void cLiquidButton :: draw_rounded_rectangle ( Graphics * g, GraphicsPath * pGP, Color c )
 {
-	Graphics g ( pDI->hDC );
-	g.SetSmoothingMode ( SmoothingModeAntiAlias );
+
 	Pen p ( c, 1.0f ); 
-    g.DrawPath ( &p, pGP );
+    g->DrawPath ( &p, pGP );
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 // PAINT GRADIENT
 //----------------------------------------------------------------------------------------------------------------------
-void cLiquidButton::paint_gradient ( DRAWITEMSTRUCT* pDI, GraphicsPath * pGP, Color aC[4] )
+void paint_gradient ( Graphics *g, RectF * r, GraphicsPath * gp, Color cTop, Color cBot )
 {
-	//------------------------------------
-	//  GRADIENT
-	//------------------------------------
-	
-	HDC hdc = pDI->hDC;
-	RECT rCli = pDI->rcItem;
-	RectF r;
-	r.X =      (Gdiplus::REAL) rCli.left;
-	r.Y =      (Gdiplus::REAL) rCli.top;
-	r.Width =  (Gdiplus::REAL) rCli.right;
-	r.Height = (Gdiplus::REAL) rCli.bottom;
-
-	RectF rTop  = r;
-	RectF rBot  = r;
-	rTop.Height = r.Height / 2;
-	rBot.Y      =  r.Y + rTop.Height;
-	rBot.Height =  r.Height - rTop.Height;
-
-	//------------------------------------
-	//  GRADIENT BRUSH
-	//------------------------------------
-
-	LinearGradientBrush b ( r,  Color ( 255, 0, 0 ), Color ( 111, 0 , 0 ), LinearGradientModeVertical );
-	REAL aPositions [] = { 0.0f, .45f, .45f, 1.0f };
-	b.SetInterpolationColors ( aC, aPositions, sizeof(aPositions)/sizeof(REAL) );
-	Graphics g ( hdc );
-	g.FillPath ( &b, pGP );
+	LinearGradientBrush b ( *r,  cTop, cBot, LinearGradientModeVertical );
+	g->SetSmoothingMode ( SmoothingModeAntiAlias );
+	g->FillPath ( &b, gp );
 }
 
-
-//----------------------------------------------------------------------------------------------------------------------
-// PAINT GREEN
-//----------------------------------------------------------------------------------------------------------------------
-void cLiquidButton::paint_green ( DRAWITEMSTRUCT* pDI, const wchar_t * pText )
-{
-	Color Border ( 0, 235, 0 );
-	// Color aColors [] = { Color ( 243, 255, 243 ), Color ( 200, 235, 200 ), Color ( 100, 222, 100 ), Color ( 100, 212, 100 ) };
-	Color aColors [] = { Color ( 243, 255, 243 ), Color ( 210, 245, 210 ), Color ( 190, 235, 190 ), Color ( 100, 212, 100 ) };
-	paint ( pDI, Border, aColors, pText );
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-// PAINT RED
-//----------------------------------------------------------------------------------------------------------------------
-void cLiquidButton::paint_red ( DRAWITEMSTRUCT* pDI, const wchar_t * pText )
-{
-	Color  Border ( 235, 0, 0 );
-	// Color aColors [] =    { Color ( 255, 245, 245 ), Color ( 255, 195, 195 ), Color ( 242, 100, 100 ), Color ( 232, 100, 100 ) };
-	Color aColors [] =    { Color ( 255, 245, 245 ), Color ( 255, 195, 195 ), Color ( 252, 140, 140 ), Color ( 222, 90, 90 ) };
-	paint ( pDI, Border, aColors, pText );
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-// PAINT 
-//----------------------------------------------------------------------------------------------------------------------
-void cLiquidButton::paint ( DRAWITEMSTRUCT* pDI, Color cBorder, Color aC [4], const wchar_t * pText )
-{
-	pText;
-	GraphicsPath gp;
-	create_round_rectangle ( &gp, pDI->rcItem.left, pDI->rcItem.top, pDI->rcItem.right - pDI->rcItem.left - 1 , pDI->rcItem.bottom - pDI->rcItem.top - 1, 9 );
-	paint_gradient ( pDI, &gp, aC );
-	draw_rounded_rectangle ( pDI, &gp, cBorder );
-	SetBkMode		( pDI->hDC, TRANSPARENT );
-	DrawText ( pDI->hDC, pText, -1, &pDI->rcItem, DT_CENTER | DT_VCENTER | DT_SINGLELINE );
-}
-	
 
 /***********************************************************************************************************************
 /*

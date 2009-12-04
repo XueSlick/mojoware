@@ -22,7 +22,11 @@ public:
 	virtual DialogProc * dialog_proc () { return dialog_proc; }
 	static DialogProc dialog_proc;
 
+	int get_height ();
+
 	mojo::cStrW sText;
+
+	void redraw_buttons (); // can be called by parent window
 
 private:
 

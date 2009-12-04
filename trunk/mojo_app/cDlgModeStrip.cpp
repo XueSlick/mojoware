@@ -14,6 +14,9 @@
 // DATA
 //======================================================================================================================
 
+const int iButtonHeight = 27;
+const int iMargin = 9;
+
 //======================================================================================================================
 // PROTOTYPES
 //======================================================================================================================
@@ -22,15 +25,65 @@
 // CODE
 //======================================================================================================================
 
+
+//----------------------------------------------------------------------------------------------------------------------
+// WM INIT
+//----------------------------------------------------------------------------------------------------------------------
+int cDlgModeStrip::get_height ()
+{
+	return ( 1 * iMargin ) + iButtonHeight;
+}
+
+
 //----------------------------------------------------------------------------------------------------------------------
 // WM INIT
 //----------------------------------------------------------------------------------------------------------------------
 void cDlgModeStrip::wm_init ()
 {
+
+	const int iButtonWidth = 130;
+
 	ToggleMouseover.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_MOUSEOVER );
-	ToggleHotkeys.hwnd   = GetDlgItem ( hwnd, ID_TOGGLE_HOTKEYS  );
+	register_child ( &ToggleMouseover,
+
+							  nAnchor::left,		0,		iMargin,
+							  nAnchor::top,			0,		iMargin,
+							  nAnchor::left,		0,		iMargin + iButtonWidth,
+							  nAnchor::top,			0,      iMargin + iButtonHeight );
+
+	ToggleHotkeys.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_HOTKEYS );
+	register_child ( &ToggleHotkeys,
+
+							  nAnchor::left,		0,		iMargin * 2 + iButtonWidth,
+							  nAnchor::top,			0,		iMargin,
+							  nAnchor::left,		0,		iMargin * 2 + iButtonWidth * 2,
+							  nAnchor::top,			0,      iMargin + iButtonHeight );
+
 	ToggleBroadcast.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_BROADCAST );
+	register_child ( &ToggleBroadcast,
+
+							  nAnchor::left,		0,		iMargin * 3 + iButtonWidth * 2,
+							  nAnchor::top,			0,		iMargin,
+							  nAnchor::left,		0,		iMargin * 3 + iButtonWidth * 3,
+							  nAnchor::top,			0,      iMargin + iButtonHeight );
 }
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  REDRAW BUTTONS
+//----------------------------------------------------------------------------------------------------------------------
+void cDlgModeStrip::redraw_buttons ()
+{
+	InvalidateRect ( ToggleMouseover.hwnd, NULL, TRUE );
+	UpdateWindow   ( ToggleMouseover.hwnd );
+
+	InvalidateRect ( ToggleHotkeys.hwnd, NULL, TRUE );
+	UpdateWindow   ( ToggleHotkeys.hwnd );
+
+	InvalidateRect ( ToggleBroadcast.hwnd, NULL, TRUE );
+	UpdateWindow   ( ToggleBroadcast.hwnd );
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 // WM DRAWITEM
@@ -76,15 +129,34 @@ INT_PTR CALLBACK cDlgModeStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 
 	switch ( uMessage )
 	{
+	case WM_COMMAND:
+		{
+			if ( BN_CLICKED == HIWORD ( wParam ) )
+			{
+				switch 	( LOWORD ( wParam ) )
+				{
+				case ID_TOGGLE_MOUSEOVER:
+					PostMessage ( g_hwnd, WM_COMMAND, ID_TOGGLE_MOUSEOVER, ID_TOGGLE_MOUSEOVER );
+					break;
+
+				case ID_TOGGLE_HOTKEYS:
+					pThis->cWin::balloon ( GetDlgItem ( hwnd, ID_TOGGLE_HOTKEYS ), L"Sorry.", L"Hotkeys aren't implemented yet." );
+					break;
+
+				case ID_TOGGLE_BROADCAST:
+					PostMessage ( g_hwnd, WM_COMMAND, ID_TOGGLE_BROADCAST, ID_TOGGLE_BROADCAST );
+					break;
+				}
+			}
+		}
+		break;
 
 	case WM_DRAWITEM:
 		if ( pThis )
 			pThis->wm_drawitem ( (int) wParam, (DRAWITEMSTRUCT*) lParam );
 		break;
 
-	case WM_PAINT:
-		// pThis->draw_text ( hwnd );
-		break;
+
 
 	case WM_INITDIALOG:
 		{
@@ -114,7 +186,7 @@ INT_PTR CALLBACK cDlgModeStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 		break;
 #endif
 
-#if 1
+#if 0
 	case WM_NOTIFY:
 		{
 			switch( wParam )

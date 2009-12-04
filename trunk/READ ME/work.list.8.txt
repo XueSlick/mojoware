@@ -1,0 +1,19 @@
+==============================================================
+                       BUILD 8 WORK LIST
+==============================================================
+
+ 1.  Added maximize button to Mouseover Settings          DONE
+
+ 2.  Improved artwork for main window's toggle buttons    DONE
+     -- added cLiquidButton
+     -- added cDlgModeStrip
+     -- removed main window's toolbar  
+
+
+
+
+
+
+
+
+
