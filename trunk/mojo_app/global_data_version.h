@@ -22,9 +22,10 @@ namespace mojo
 const unsigned uVERSION_MAJ = 0;
 const unsigned uVERSION_MIN = 0;
 const unsigned uVERSION_PIP = 1;
-const unsigned uVERSION_BLD = 6;
+const unsigned uVERSION_BLD = 7;
 
 } // namespace
+
 
 /***********************************************************************************************************************
 /*

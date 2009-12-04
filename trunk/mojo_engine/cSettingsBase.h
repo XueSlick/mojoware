@@ -2,6 +2,9 @@
 /*
 /*    SettingsBase.h / mojo_engine
 /*
+/*    This is the base class for persistent settings.  This class holds settings during runtime, saves them to files,
+/*    and loads them when the program restarts.
+/*
 /*    Don't include members called Version or sSignature in derived classes.  Those two entries
 /*    are supplied and handled by the base class.
 /*

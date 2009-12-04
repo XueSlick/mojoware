@@ -40,6 +40,7 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( bHideRemoteCursor,                      boolean,                L"bHideRemoteCursor"                    ),
 	ENTRY ( bHotkeysAreOn,                          boolean,                L"bHotkeysAreOn"                        ),
 	ENTRY ( bMouseoverIsOn,                         boolean,                L"bMouseoverIsOn"                       ),
+	ENTRY ( uFinderBroadcastInterval,               uint,                   L"uFinderBroadcastInterval"             ),
 };
 
 
@@ -85,6 +86,8 @@ void cSettings :: init ()
 	bHideRemoteCursor                   = true;
 	bHotkeysAreOn                       = false;
 	bMouseoverIsOn                      = true;
+	uFinderBroadcastInterval            = 5000;
+
 }
 
 

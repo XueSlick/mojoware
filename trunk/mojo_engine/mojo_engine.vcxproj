@@ -170,7 +170,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="set.cpp" />
-    <ClCompile Include="se_debug_privilege.cpp" />
+    <ClCompile Include="set_privilege.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -228,7 +228,7 @@
     <ClInclude Include="mojo_engine.h" />
     <ClInclude Include="regex.h" />
     <ClInclude Include="set.h" />
-    <ClInclude Include="se_debug_privilege.h" />
+    <ClInclude Include="set_privilege.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="tArray.h" />

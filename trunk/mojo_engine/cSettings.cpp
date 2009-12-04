@@ -36,6 +36,7 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( bBroadcastIsOn,                         boolean,                L"bBroadcastIsOn"                       ),
 	ENTRY ( bHotkeysAreOn,                          boolean,                L"bHotkeysAreOn"                        ),
 	ENTRY ( bMouseoverIsOn,                         boolean,                L"bMouseoverIsOn"                       ),
+	ENTRY ( uFinderBroadcastInterval,               uint,                   L"uFinderBroadcastInterval"             ),
 
 #if 0
 	ENTRY ( sScriptName,							string,					L"sScriptName"							),
@@ -46,7 +47,6 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( uHeaderColor,							uint,					L"uHeaderColor"							),
 	ENTRY ( bHotkeysAreOn,							boolean,				L"bHotkeysAreOn"						),
 	ENTRY ( bMaximumTimerResolution,				boolean,				L"bMaximumTimerResolution"				),
-	ENTRY ( uDiscoveryyBroadcastInterval,			uint,					L"uDiscoveryyBroadcastInterval"			),
 	ENTRY ( bDisableNagle,							boolean,				L"bDisableNagle"						),
 	ENTRY ( bShowTrayIcon,							boolean,				L"bShowTrayIcon"						),
 	ENTRY ( bStartMinimizedToTray,					boolean,				L"bStartMinimizedToTray"				),
@@ -98,6 +98,8 @@ void cSettings :: init ()
 	bBroadcastIsOn                      = true;
 	bHotkeysAreOn                       = true;
 	bMouseoverIsOn                      = true;
+	uFinderBroadcastInterval            = 5000;
+
 
 #if 1
 	WinPos								= mojo::cRectI ( 100, 100, 800, 600 );
@@ -109,7 +111,6 @@ void cSettings :: init ()
 	uHeaderColor						= (unsigned) RGB ( 44, 44, 110 );
 	bHotkeysAreOn						= true;
 	bMaximumTimerResolution				= true;
-	uDiscoveryyBroadcastInterval			= 5000;
 	bDisableNagle						= true;
 	bShowTrayIcon						= true;
 	bStartMinimizedToTray				= false;

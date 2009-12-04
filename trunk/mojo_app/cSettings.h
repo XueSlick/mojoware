@@ -43,6 +43,7 @@ public:
 	bool                bHideRemoteCursor;
 	bool                bHotkeysAreOn;
 	bool                bMouseoverIsOn;
+	unsigned            uFinderBroadcastInterval;
 
 	//-----------------------------------
 	// DEFINE FOLLOWING IN DERIVED CLASS

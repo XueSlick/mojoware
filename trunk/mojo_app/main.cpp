@@ -53,15 +53,11 @@ void 							make_fonts ();
 //----------------------------------------------------------------------------------------------------------------------
 void test ( )
 {
-	DWORD dwState = SendMessage ( g_WinMain.toolbar(), TB_GETSTATE, ID_TOGGLE_BROADCAST, 0 );
-
-	dwState;
-
-	int x = 3;
-	x++;
-
+#ifdef _DEBUG
+	cDlgModeStrip d;
+	d.make_dlg();
+#endif
 	// SetTimer ( g_hwnd, 0, 30, NULL );
-
 }
 
 

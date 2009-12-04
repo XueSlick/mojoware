@@ -35,6 +35,7 @@ public:
 	bool                bBroadcastIsOn;
 	bool                bHotkeysAreOn;
 	bool                bMouseoverIsOn;
+	unsigned            uFinderBroadcastInterval;
 
 #if 1
 	mojo::cStrW		sScriptName;
@@ -44,7 +45,6 @@ public:
 	bool				bShowCompilerOutput;
 	unsigned			uHeaderColor;
 	bool				bMaximumTimerResolution;
-	unsigned			uDiscoveryyBroadcastInterval;
 	bool				bDisableNagle;
 	bool				bShowTrayIcon;
 	bool				bStartMinimizedToTray;

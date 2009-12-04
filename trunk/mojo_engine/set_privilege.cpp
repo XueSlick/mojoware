@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    se_debug_privilege.cpp
+/*    set_privilege.cpp
 /*
 /*    This file is not used in the current build.
 /*   

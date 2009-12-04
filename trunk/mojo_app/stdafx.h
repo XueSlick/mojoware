@@ -82,6 +82,7 @@
 #include "cWinLabel.h"
 #include "cDlg.h"
 #include "cDlgVars.h"
+#include "cLiquidButton.h"
 
 // specific
 
@@ -94,6 +95,7 @@
 #include "cDlgSettingsConnectionAdvanced.h"
 #include "cDlgMouseOver.h"
 #include "cDlgCursorBlind.h"
+#include "cDlgModeStrip.h"
 
 //---------------------------------
 //  GLOBAL DATA
