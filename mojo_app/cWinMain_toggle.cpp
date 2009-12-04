@@ -9,7 +9,6 @@
 #include "stdafx.h"
 
 
-
 //======================================================================================================================
 // PROTOTYPES
 //======================================================================================================================
@@ -72,16 +71,20 @@ void cWinMain :: toggle_mouseover ()
 //----------------------------------------------------------------------------------------------------------------------
 //  TOGGLE SUB
 //----------------------------------------------------------------------------------------------------------------------
-void             toggle_sub ( bool * pbSetting, const wchar_t * pSettingName, 
+void cWinMain :: toggle_sub ( bool * pbSetting, const wchar_t * pSettingName, 
                               const wchar_t * pMenuTxtOn, const wchar_t * pMenuTxtOff,
 							  const wchar_t * pToolbarTxtOn, const wchar_t * pToolbarTxtOff,
                               int iCtrlID )
 
 {
+	pToolbarTxtOff, pToolbarTxtOn, pMenuTxtOff, pMenuTxtOn;
+
 	*pbSetting = *pbSetting ? false : true;
 	mojo::set ( pSettingName, *pbSetting );
 
-	wchar_t * pMenuTxt;
+	const wchar_t * pMenuTxt = *pbSetting ? pMenuTxtOn : pMenuTxtOff;
+
+#if 0 // TOOLBAR STUFF HAS BEEN REPLACED BY DLG MODE STRIP
 
 	TBBUTTONINFO tbbi;
 	tbbi.cbSize = sizeof ( tbbi );
@@ -105,8 +108,11 @@ void             toggle_sub ( bool * pbSetting, const wchar_t * pSettingName,
 
 	SendMessage ( g_WinMain.toolbar(), TB_SETBUTTONINFO, iCtrlID, (LPARAM) &tbbi );
 
+#endif
+
 	set_menu_item_text ( g_hwnd, iCtrlID, pMenuTxt );
 
+	DlgModeStrip.redraw_buttons();
 	InvalidateRect ( g_hwnd, NULL, TRUE );
 	UpdateWindow ( g_hwnd );
 

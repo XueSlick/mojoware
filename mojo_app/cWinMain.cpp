@@ -272,7 +272,7 @@ struct sStuff
 
 
 //----------------------------------------------------------------------------------------------------------------------
-// ON CREATE
+// WM CREATE
 //----------------------------------------------------------------------------------------------------------------------
 void cWinMain::wm_create ( HWND hwndArg )
 {
@@ -282,9 +282,25 @@ void cWinMain::wm_create ( HWND hwndArg )
 	LoadLibrary ( L"riched20.dll" );
 
 	//----------------------------------------
+	//  MODE STRIP
+	//----------------------------------------
+
+	DlgModeStrip.make_dlg();
+	register_child ( &DlgModeStrip,
+							  nAnchor::left,       0, 0,
+							  nAnchor::top,        0, 0,
+							  nAnchor::right,      0, 0,
+							  nAnchor::top,        0, DlgModeStrip.get_height() );
+
+	SetParent ( DlgModeStrip.hwnd, hwndArg );
+
+	ShowWindow ( DlgModeStrip.hwnd, SW_SHOW );
+
+	//----------------------------------------
 	//  TOOLBAR
 	//----------------------------------------
 
+#if 0
 	this->hwndToolbar = create_toolbar ();
 
 	int iToolbarDimX, iToolbarDimY;
@@ -299,13 +315,17 @@ void cWinMain::wm_create ( HWND hwndArg )
 							  nAnchor::top,        0, iMargin,
 							  nAnchor::right,      0, iMargin,
 							  nAnchor::top,        0, iToolbarDimY + iMargin );
+#endif
 
+	//----------------------------------------
+	//  MONITOR DIALOG
+	//----------------------------------------
 
 	DlgMonitor.make_dlg ();
 
 	register_child ( &DlgMonitor,
 							  nAnchor::left,       0, 0,
-							  nAnchor::top,        0, iToolbarDimY + iMargin,
+							  nAnchor::top,        0, DlgModeStrip.get_height(),
 							  nAnchor::right,      0, 0,
 							  nAnchor::bottom,     0, 0 );
 

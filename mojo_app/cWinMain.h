@@ -16,6 +16,7 @@
 #include "cDlgMonitor.h"
 #include "cDlgMessageBox.h"
 #include "cDlgCursorBlind.h"
+#include "cDlgModeStrip.h"
 
 
 //=======================================================================================================
@@ -28,7 +29,7 @@ public:
 
 	cWinMain () { pClassName = L"cWinMain"; }
 	void load_script_sub();
-	HWND toolbar() { return hwndToolbar; }
+	// HWND toolbar() { return hwndToolbar; }
 
 
 private:
@@ -36,6 +37,10 @@ private:
 	void toggle_broadcast ();
 	void toggle_hotkeys ();
 	void toggle_mouseover ();
+	void toggle_sub ( bool * pbSetting, const wchar_t * pSettingName, 
+                              const wchar_t * pMenuTxtOn, const wchar_t * pMenuTxtOff,
+							  const wchar_t * pToolbarTxtOn, const wchar_t * pToolbarTxtOff,
+                              int iCtrlID );
 
 	void wm_command ( WPARAM wParam, LPARAM lParam );
 	void wm_create ( HWND hwnd );
@@ -45,11 +50,13 @@ private:
 	wchar_t * pClassName; // = L"cWinMain";
 
 	cDlgMonitor DlgMonitor;
+	cDlgModeStrip DlgModeStrip;
 	cDlgMessageBox MB;
 	cDlgCursorBlind DlgCursorBlind;
 
-	cWin Toolbar;
-	HWND hwndToolbar;
+
+	// cWin Toolbar;
+	// HWND hwndToolbar;
 
 public:
 

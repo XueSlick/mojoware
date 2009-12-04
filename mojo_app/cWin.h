@@ -92,7 +92,7 @@ public:
 
 protected:
 
-	void display_balloon ( HWND hCtrl, const wchar_t * pText );
+	void balloon ( HWND hCtrl, const wchar_t * pTitle, const wchar_t * pBody );
 	HWND hBalloon; // new nov 20 2009
 
 	static cWin *	user_data_to_pWin	( HWND hwnd );

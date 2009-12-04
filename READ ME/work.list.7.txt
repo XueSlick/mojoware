@@ -1,5 +1,5 @@
 ==============================================================
-                       BUILD 7 WORK LIST
+                       BUILD 8 WORK LIST
 ==============================================================
 
  1.  Added maximize button to Mouseover Settings          DONE      

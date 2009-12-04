@@ -21,10 +21,11 @@ public:
 	void paint_red   ( DRAWITEMSTRUCT* pDI, const wchar_t * pText );
 
 private:
-
-	void paint                  ( DRAWITEMSTRUCT* pDI, Gdiplus::Color cBorder, Gdiplus::Color aC [4], const wchar_t * pText );
-	void draw_rounded_rectangle ( DRAWITEMSTRUCT* pDI, Gdiplus::GraphicsPath * pGP, Gdiplus::Color c );
-	void paint_gradient         ( DRAWITEMSTRUCT* pDI, Gdiplus::GraphicsPath * pGP, Gdiplus::Color aC [4] ); 
+	void paint                  ( DRAWITEMSTRUCT* pDI, Gdiplus::Color cOutTop, Gdiplus::Color cOutBot, Gdiplus::Color cInTop, Gdiplus::Color cInBot, const wchar_t * pText, COLORREF clrTxt  );
+	// void paint_old              ( DRAWITEMSTRUCT* pDI, Gdiplus::Color cBorder, Gdiplus::Color aC [4], const wchar_t * pText );
+	void draw_rounded_rectangle ( Gdiplus::Graphics * g, Gdiplus::GraphicsPath * pGP, Gdiplus::Color c );
+	// void paint_gradient         ( DRAWITEMSTRUCT* pDI, Gdiplus::GraphicsPath * pGP, Gdiplus::Color aC [4] ); 
+	void paint_gradient         ( Gdiplus::Graphics *g, Gdiplus::RectF * r, Gdiplus::GraphicsPath * gp, Gdiplus::Color cTop, Gdiplus::Color cBot );
 };
 
 

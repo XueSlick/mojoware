@@ -13,12 +13,12 @@
 //  CODE
 //======================================================================================================================
 
-void cWin :: display_balloon ( HWND hCtrl, const wchar_t * pText )
+void cWin :: balloon ( HWND hCtrl, const wchar_t * pTitle, const wchar_t * pBody )
 {
 	if ( hBalloon )
 		DestroyWindow ( hBalloon );
 
-	hBalloon = ::display_balloon ( hCtrl, pText );
+	hBalloon = ::display_balloon ( hCtrl, pTitle, pBody );
 }
 
 

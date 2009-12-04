@@ -113,6 +113,8 @@ void cDlgMonitor::wm_paint ()
 //----------------------------------------------------------------------------------------------------------------------
 void cDlgMonitor::draw_head ( cWin * pHead )
 {
+
+	const COLORREF clrCOLOR = RGB ( 44, 44, 110 );
 	cStrW sText;
 	get_window_text ( &sText, pHead->hwnd );
 
@@ -140,7 +142,7 @@ void cDlgMonitor::draw_head ( cWin * pHead )
 	HDC hdc = hdcOriginal;
 #endif
 
-	HBRUSH hBrush	= CreateSolidBrush ( RGB ( 44, 44, 110 ) ); // /* (COLORREF) g_Settings.uHeaderColor */  );
+	HBRUSH hBrush	= CreateSolidBrush ( clrCOLOR ); // /* (COLORREF) g_Settings.uHeaderColor */  );
 	SelectObject	( hdc, HGDIOBJ ( hBrush ) );
 	FillRect		( hdc, &rect, hBrush );
 	DeleteObject	( (HGDIOBJ)  hBrush );
@@ -189,7 +191,7 @@ void cDlgMonitor::wm_initdialog ()
 	// const int iModeButtonHeight = g_NonClientMetrics.iCaptionHeight * 2 + 4;
 	// const int iModeStripBottom = iModeButtonHeight + iMargin * 2;
 	const int iModeStripBottom = iMargin;
-	int iHeadHeight = 2 + g_NonClientMetrics.iCaptionHeight;
+	int iHeadHeight = 0 + g_NonClientMetrics.iCaptionHeight;
 	int iVertDiv = 235;
 	int iClearButtonWidth = 62;
 	int iClearButtonMargin = 4;
