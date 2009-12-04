@@ -1,8 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    se_debug_privilege.h
-/*
-/*    This file is not used in the current build.  See explanation in se_debug_privilege.cpp.
+/*    set_privilege.h
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*

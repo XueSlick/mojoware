@@ -10,7 +10,7 @@
 #include "cFinder.h"
 #include <process.h>
 #include <Psapi.h>
-#include "se_debug_privilege.h" // not used in current build
+#include "set_privilege.h" // not used in current build
 
 using namespace mojo;
 
@@ -128,7 +128,7 @@ bool cFinder::find_wow ()
 {
 
 
-#ifdef SE_DEBUG
+#ifdef SE_DEBUG // NOT USED IN CURRENT BUILD
 	HANDLE hToken;
 
 	if ( get_thread_token ( &hToken ) )
@@ -139,7 +139,7 @@ bool cFinder::find_wow ()
 
 	EnumWindows ( find_wow_cb, (LPARAM) &aTarget );
 
-#ifdef SE_DEBUG
+#ifdef SE_DEBUG // NOT USED IN CURRENT BUILD
 
 	set_privilege ( hToken, SE_DEBUG_NAME, FALSE );
 

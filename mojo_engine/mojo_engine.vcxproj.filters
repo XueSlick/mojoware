@@ -153,7 +153,7 @@
     <ClCompile Include="set.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="se_debug_privilege.cpp">
+    <ClCompile Include="set_privilege.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
@@ -287,7 +287,7 @@
     <ClInclude Include="set.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="se_debug_privilege.h">
+    <ClInclude Include="set_privilege.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">

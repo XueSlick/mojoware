@@ -148,7 +148,7 @@ bool cFinder :: send ()
 	{
 		find_wow ();
 		send_inner_loop( &saServer );
-		Sleep ( g_Settings.uDiscoveryyBroadcastInterval );
+		Sleep ( g_Settings.uFinderBroadcastInterval );
 
 	}
 }
@@ -292,9 +292,13 @@ bool cFinder::start ()
 	{
 		if ( 0 == SetThreadPriority ( hServer, THREAD_PRIORITY_BELOW_NORMAL ) )
 			LOG_SYSTEM_ERROR_T ( L"SetThreadPriority" );
+		else
+			LOG ( L"cFinder server thread set to below normal priority." );
 
 		if ( 0 == SetThreadPriority ( hClient, THREAD_PRIORITY_BELOW_NORMAL ) )
 			LOG_SYSTEM_ERROR_T ( L"SetThreadPriority" );
+		else
+			LOG ( L"cFinder client thread set to below normal priority." );
 	}
 
 	return true;

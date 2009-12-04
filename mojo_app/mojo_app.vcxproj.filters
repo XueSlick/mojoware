@@ -39,6 +39,9 @@
     <ClCompile Include="cDlgMessageBox.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="cDlgModeStrip.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
     <ClCompile Include="cDlgMonitor.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
@@ -62,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="click_once.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cLiquidButton.cpp">
+      <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cListviewConnections.cpp">
       <Filter>cWin</Filter>
@@ -149,6 +155,9 @@
     <ClInclude Include="cDlgMessageBox.h">
       <Filter>cWin</Filter>
     </ClInclude>
+    <ClInclude Include="cDlgModeStrip.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
     <ClInclude Include="cDlgMonitor.h">
       <Filter>cWin</Filter>
     </ClInclude>
@@ -166,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="click_once.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cLiquidButton.h">
+      <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cListviewConnections.h">
       <Filter>cWin</Filter>
