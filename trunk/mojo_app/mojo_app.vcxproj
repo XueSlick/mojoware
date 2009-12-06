@@ -102,8 +102,10 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
   <ItemGroup>
     <ClCompile Include="balloon.cpp" />
     <ClCompile Include="cCrashHandler.cpp" />
+    <ClCompile Include="cListViewComputers.cpp" />
     <ClCompile Include="cDlg.cpp" />
     <ClCompile Include="cDlgAbout.cpp" />
+    <ClCompile Include="cDlgComputers.cpp" />
     <ClCompile Include="cDlgCursorBlind.cpp" />
     <ClCompile Include="cDlgLicense.cpp" />
     <ClCompile Include="cDlgMessageBox.cpp" />
@@ -114,7 +116,10 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClCompile Include="cDlgMouseOver2.cpp" />
     <ClCompile Include="cDlgSettingsConnection.cpp" />
     <ClCompile Include="cDlgSettingsConnectionAdvanced.cpp" />
+    <ClCompile Include="cDlgSettingsPerformance.cpp" />
     <ClCompile Include="cDlgVars.cpp" />
+    <ClCompile Include="cDlgViewStrip.cpp" />
+    <ClCompile Include="cDlgWoWs.cpp" />
     <ClCompile Include="click_once.cpp" />
     <ClCompile Include="cLiquidButton.cpp" />
     <ClCompile Include="cListviewConnections.cpp" />
@@ -151,8 +156,10 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
   <ItemGroup>
     <ClInclude Include="balloon.h" />
     <ClInclude Include="cCrashHandler.h" />
+    <ClInclude Include="cListViewComputers.h" />
     <ClInclude Include="cDlg.h" />
     <ClInclude Include="cDlgAbout.h" />
+    <ClInclude Include="cDlgComputers.h" />
     <ClInclude Include="cDlgCursorBlind.h" />
     <ClInclude Include="cDlgLicense.h" />
     <ClInclude Include="cDlgMessageBox.h" />
@@ -161,7 +168,10 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClInclude Include="cDlgMouseOver.h" />
     <ClInclude Include="cDlgSettingsConnection.h" />
     <ClInclude Include="cDlgSettingsConnectionAdvanced.h" />
+    <ClInclude Include="cDlgSettingsPerformance.h" />
     <ClInclude Include="cDlgVars.h" />
+    <ClInclude Include="cDlgViewStrip.h" />
+    <ClInclude Include="cDlgWoWs.h" />
     <ClInclude Include="click_once.h" />
     <ClInclude Include="cLiquidButton.h" />
     <ClInclude Include="cListviewConnections.h" />
@@ -185,7 +195,13 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <None Include="..\..\Mojo\mojo_app\mojo_app.ico" />
     <None Include="..\..\mojo\mojo_art\bitmap3.bmp" />
     <None Include="..\..\Mojo\mojo_art\mojo-logo-star-150.bmp" />
+    <None Include="..\mojo_art\icon1.ico" />
+    <None Include="..\mojo_art\list_view_computers_blue.ico" />
+    <None Include="..\mojo_art\list_view_computers_gold.ico" />
+    <None Include="..\mojo_art\list_view_computers_gray.ico" />
     <None Include="..\mojo_art\mojo-logo-star-150.bmp" />
+    <None Include="..\mojo_art\state-icon-blue.ico" />
+    <None Include="..\mojo_art\state-icon-gold.ico" />
     <None Include="..\mojo_art\toolbar_bitmaps.bmp" />
     <None Include="gpl3.txt" />
     <None Include="mojo_app.scribs.english.txt" />

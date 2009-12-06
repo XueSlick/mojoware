@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgModeStrip.h / mojo_app
+/*    cDlgCornerLogo.h / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -9,34 +9,21 @@
 #pragma once
 
 #include "cDlg.h"
-#include "cLiquidButton.h"
+
 
 //----------------------------------------------------------------------------------------------------------------------
-//  CLASS cDlgAbout
+//  CLASS 
 //----------------------------------------------------------------------------------------------------------------------
-class cDlgModeStrip : public cDlg
+class cDlgCornerLogo : public cDlg
 {
 public:
 
-	virtual int idd () { return IDD_MODE_STRIP; }
-	virtual DialogProc * dialog_proc () { return dialog_proc; }
-	static DialogProc dialog_proc;
-
-	int get_height ();
-
-	mojo::cStrW sText;
-
-	void redraw_buttons (); // can be called by parent window
+	virtual int idd () { return IDD_CORNER_LOGO; }
 
 private:
 
-	cLiquidButton ToggleMouseover;
-	cLiquidButton ToggleHotkeys;
-	cLiquidButton ToggleBroadcast;
+	cWin Logo;
 
-
-	void wm_init ();
-	void wm_drawitem ( int iID, DRAWITEMSTRUCT* pDI );
 };
 
 

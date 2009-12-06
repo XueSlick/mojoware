@@ -11,8 +11,8 @@ FileVersionMismatch                  = %s is:\t%s.
 FileVersionMismatch                  = %s is:\t%s.
 FileVersionMismatch					= Hint: Try reinstalling the program.
 
-BadOsVersion					= The program can't run on this version of Windows.
-BadOsVersion					= The program requires Windows XP service pack 1 or higher.
+BadOsVersion					= Sorry, %s can't run on this version of Windows.
+BadOsVersion					= %s requires Windows XP service pack 1 or higher.
 
 BadArgument						= Invalid argument in function call.
 BadArgument						= Function: %s.

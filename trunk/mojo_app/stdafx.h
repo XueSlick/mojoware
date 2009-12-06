@@ -96,6 +96,12 @@
 #include "cDlgMouseOver.h"
 #include "cDlgCursorBlind.h"
 #include "cDlgModeStrip.h"
+#include "cDlgWoWs.h"
+#include "cDlgSettingsPerformance.h"
+#include "cDlgViewStrip.h"
+#include "cDlgCornerLogo.h"
+#include "cDlgComputers.h"
+#include "cListViewComputers.h"
 
 //---------------------------------
 //  GLOBAL DATA

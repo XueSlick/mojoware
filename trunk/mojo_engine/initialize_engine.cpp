@@ -124,6 +124,17 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 		LOG ( L"About to call cInputEvent::load_scribs()" );
 		cInputEvent::load_scribs();
 
+	//-------------------------------------
+	// CHECK REQUIRED OS VERSION
+	//-------------------------------------
+
+	if ( ! os_version_or_higher ( 5, 1 ) )
+	{
+		cException e ( L"BadOsVersion", g_sAppTitle, g_sAppTitle );
+		LOG ( &e );
+		throw ( e );
+	}
+
 	//----------------------------------------------
 	// START MESSENGER THREAD
 	//----------------------------------------------
@@ -181,6 +192,7 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	// machine's DisplayList
 
 	g_Machlist.init_and_insert_local_machine ();
+	cMessenger::tell_app_that_machlist_changed(); 
 
 	//-------------------------------------
 	// START SOCKET (TCP) COMMUNICATIONS

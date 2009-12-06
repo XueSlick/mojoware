@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgModeStrip.h / mojo_app
+/*    cDlgComputers.h / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -9,34 +9,26 @@
 #pragma once
 
 #include "cDlg.h"
-#include "cLiquidButton.h"
+#include "cListViewComputers.h"
+
 
 //----------------------------------------------------------------------------------------------------------------------
 //  CLASS cDlgAbout
 //----------------------------------------------------------------------------------------------------------------------
-class cDlgModeStrip : public cDlg
+class cDlgComputers : public cDlg
 {
 public:
 
-	virtual int idd () { return IDD_MODE_STRIP; }
+	virtual int idd () { return IDD_COMPUTERS; }
 	virtual DialogProc * dialog_proc () { return dialog_proc; }
-	static DialogProc dialog_proc;
-
-	int get_height ();
-
-	mojo::cStrW sText;
-
-	void redraw_buttons (); // can be called by parent window
+	static  DialogProc dialog_proc;
 
 private:
 
-	cLiquidButton ToggleMouseover;
-	cLiquidButton ToggleHotkeys;
-	cLiquidButton ToggleBroadcast;
-
-
+	cListViewComputers ListView;
+	// cWin List;
+	// cWin Pictures;
 	void wm_init ();
-	void wm_drawitem ( int iID, DRAWITEMSTRUCT* pDI );
 };
 
 

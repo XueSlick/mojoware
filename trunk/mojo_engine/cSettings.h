@@ -36,6 +36,10 @@ public:
 	bool                bHotkeysAreOn;
 	bool                bMouseoverIsOn;
 	unsigned            uFinderBroadcastInterval;
+	bool				bRaiseProcessPriority;
+	bool				bMaximizeTimerResolution;
+
+
 
 #if 1
 	mojo::cStrW		sScriptName;
@@ -44,12 +48,12 @@ public:
 	bool				bShowTokenizerOutput;
 	bool				bShowCompilerOutput;
 	unsigned			uHeaderColor;
-	bool				bMaximumTimerResolution;
+
 	bool				bDisableNagle;
 	bool				bShowTrayIcon;
 	bool				bStartMinimizedToTray;
 	bool				bRunDiscoveryyThreadsAtLowPriority;
-	bool				bRaiseProcessPriority;
+
 	bool				bShowIpOnMouseoverSettings;
 	bool				bHideRemoteCursor;
 	bool				bShowKeyboardEventsInMonitor;

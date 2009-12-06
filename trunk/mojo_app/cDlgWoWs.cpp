@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgModeStrip.cpp / mojo_app
+/*    cDlgWoWs.cpp / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -16,7 +16,6 @@
 
 const int iButtonHeight = 27;
 const int iMargin = 9;
-const int iLeftMargin = 0;
 
 //======================================================================================================================
 // PROTOTYPES
@@ -27,120 +26,37 @@ const int iLeftMargin = 0;
 //======================================================================================================================
 
 
-//----------------------------------------------------------------------------------------------------------------------
-// WM INIT
-//----------------------------------------------------------------------------------------------------------------------
-int cDlgModeStrip::get_height ()
-{
-	return ( 1 * iMargin ) + iButtonHeight;
-}
-
 
 //----------------------------------------------------------------------------------------------------------------------
 // WM INIT
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgModeStrip::wm_init ()
+void cDlgWoWs::wm_init ()
 {
-	//--------------------------------------------
-	//  IF WE'RE ON XP, REMOVE COMPOSITED STYLE
-	//  BECAUSE IT MAKES THE OWNER DRAWN BUTTONS
-	//  INVISIBLE
-	//--------------------------------------------
-	if ( ! os_version_or_higher ( 6, 0 ) )
-	{
-		LONG_PTR dwStyle = GetWindowLongPtr ( hwnd, GWL_EXSTYLE );
-		dwStyle &= ~WS_EX_COMPOSITED;
-		SetWindowLongPtr ( hwnd, GWL_EXSTYLE, dwStyle );
-	}
+	const int iMargin = 9;
+	const int iLeftMargin = 0;
 
-	const int iButtonWidth = 130;
-
-	ToggleMouseover.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_MOUSEOVER );
-	register_child ( &ToggleMouseover,
+	ListView.hwnd = GetDlgItem ( hwnd, ID_LIST_VIEW );
+	register_child ( &ListView,
 
 							  nAnchor::left,		0,		iLeftMargin,
 							  nAnchor::top,			0,		iMargin,
-							  nAnchor::left,		0,		iLeftMargin + iButtonWidth,
-							  nAnchor::top,			0,      iMargin + iButtonHeight );
-
-	ToggleHotkeys.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_HOTKEYS );
-	register_child ( &ToggleHotkeys,
-
-							  nAnchor::left,		0,		iLeftMargin + iMargin + iButtonWidth,
-							  nAnchor::top,			0,		iMargin,
-							  nAnchor::left,		0,		iLeftMargin + iMargin + iButtonWidth * 2,
-							  nAnchor::top,			0,      iMargin + iButtonHeight );
-
-	ToggleBroadcast.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_BROADCAST );
-	register_child ( &ToggleBroadcast,
-
-							  nAnchor::left,		0,		iLeftMargin + iMargin * 2 + iButtonWidth * 2,
-							  nAnchor::top,			0,		iMargin,
-							  nAnchor::left,		0,		iLeftMargin + iMargin * 2 + iButtonWidth * 3,
-							  nAnchor::top,			0,      iMargin + iButtonHeight );
-
-
-
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  REDRAW BUTTONS
-//----------------------------------------------------------------------------------------------------------------------
-void cDlgModeStrip::redraw_buttons ()
-{
-	InvalidateRect ( ToggleMouseover.hwnd, NULL, TRUE );
-	UpdateWindow   ( ToggleMouseover.hwnd );
-
-	InvalidateRect ( ToggleHotkeys.hwnd, NULL, TRUE );
-	UpdateWindow   ( ToggleHotkeys.hwnd );
-
-	InvalidateRect ( ToggleBroadcast.hwnd, NULL, TRUE );
-	UpdateWindow   ( ToggleBroadcast.hwnd );
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-// WM DRAWITEM
-//----------------------------------------------------------------------------------------------------------------------
-void cDlgModeStrip::wm_drawitem ( int iID, DRAWITEMSTRUCT* pDI )
-{
-	switch ( iID )
-	{
-	case ID_TOGGLE_MOUSEOVER:
-		if ( g_Settings.bMouseoverIsOn )
-			ToggleMouseover.paint_green ( pDI, L"Mouseover is on" );
-		else
-			ToggleMouseover.paint_red   ( pDI, L"Mouseover is off" );
-		break;
-
-	case ID_TOGGLE_HOTKEYS:
-		if ( g_Settings.bHotkeysAreOn )
-			ToggleHotkeys.paint_green ( pDI, L"Hotkeys are on" );
-		else
-			ToggleHotkeys.paint_red   ( pDI, L"Hotkeys are off" );
-		break;
-
-	case ID_TOGGLE_BROADCAST:
-		if ( g_Settings.bBroadcastIsOn )
-			ToggleBroadcast.paint_green ( pDI, L"Broadcast is on" );
-		else
-			ToggleBroadcast.paint_red   ( pDI, L"Broadcast is off" );
-		break;
-	}
+							  nAnchor::right,		0,		-iMargin,
+							  nAnchor::bottom,		0,      -iMargin );
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 // DEFAULT PROC
 //----------------------------------------------------------------------------------------------------------------------
-INT_PTR CALLBACK cDlgModeStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK cDlgWoWs::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
 	cWin * pWin = user_data_to_pWin ( hwnd );
-	cDlgModeStrip * pThis = static_cast<cDlgModeStrip*>(pWin);
+	cDlgWoWs * pThis = static_cast<cDlgWoWs*>(pWin);
 
 	switch ( uMessage )
 	{
+
+
 	case WM_COMMAND:
 		{
 			if ( BN_CLICKED == HIWORD ( wParam ) )
@@ -171,18 +87,12 @@ INT_PTR CALLBACK cDlgModeStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 		}
 		break;
 
-	case WM_DRAWITEM:
-		if ( pThis )
-			pThis->wm_drawitem ( (int) wParam, (DRAWITEMSTRUCT*) lParam );
-		break;
-
-
 
 	case WM_INITDIALOG:
 		{
 			set_user_data ( hwnd, lParam );
 			cWin * pWin = lParam_to_pWin ( hwnd, lParam );
-			pThis = static_cast<cDlgModeStrip*>(pWin);
+			pThis = static_cast<cDlgWoWs*>(pWin);
 			pThis->hwnd = hwnd;
 			pThis->wm_init ();
 		}

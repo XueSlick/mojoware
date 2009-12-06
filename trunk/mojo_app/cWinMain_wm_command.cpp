@@ -68,6 +68,13 @@ void cWinMain :: wm_command ( WPARAM wParam, LPARAM lParam )
 		}
 		break;
 
+	case ID_PERFORMANCE_SETTINGS:
+		{
+			cDlgSettingsPerformance d;
+			d.make_dlg ();
+		}
+		break;
+
 	case ID_SHOW_APP_LOG:
 		show_app_data_file ( L"mojo.log.txt" );
 		break;
@@ -118,7 +125,20 @@ void cWinMain :: wm_command ( WPARAM wParam, LPARAM lParam )
 		::test ();
 		break;
 
+	case ID_VIEW_COMPUTERS:
+		g_Settings.uView = computers;
+		set_view();
+		break;
 
+	case ID_VIEW_MONITOR:
+		g_Settings.uView = monitor;
+		set_view();
+		break;
+
+	case ID_VIEW_WOWS:
+		g_Settings.uView = wows;
+		set_view();
+		break;
 
 #if 0
 		case ID_RESTORE_DEFAULT_SETTINGS:

@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgModeStrip.h / mojo_app
+/*    cListViewPC.h / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -8,44 +8,39 @@
 
 #pragma once
 
-#include "cDlg.h"
-#include "cLiquidButton.h"
+#include "cWin.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-//  CLASS cDlgAbout
+// CLASS CTRL LIST VIEW PC
 //----------------------------------------------------------------------------------------------------------------------
-class cDlgModeStrip : public cDlg
+class cListViewComputers : public cWin
 {
 public:
 
-	virtual int idd () { return IDD_MODE_STRIP; }
-	virtual DialogProc * dialog_proc () { return dialog_proc; }
-	static DialogProc dialog_proc;
-
-	int get_height ();
-
-	mojo::cStrW sText;
-
-	void redraw_buttons (); // can be called by parent window
+	cListViewComputers ();
+	void               init ();
+	void               populate ( cMachlist * pMachList );
+	void               set_item ( int iIndex, cMach * pMach );
+	int                mach_to_icon_index ( cMach * pM );
+	void               insert_image_lists ( HWND hwnd );
+	void               set_view ( DWORD dwView );
+	const wchar_t *    mach_to_connection_state_text ( cMach * p );
 
 private:
 
-	cLiquidButton ToggleMouseover;
-	cLiquidButton ToggleHotkeys;
-	cLiquidButton ToggleBroadcast;
+	HIMAGELIST	hImageListLarge;
+	HIMAGELIST	hImageListState;
 
-
-	void wm_init ();
-	void wm_drawitem ( int iID, DRAWITEMSTRUCT* pDI );
+	int iQtyColumns;
+	bool bStateImages;
 };
-
 
 /***********************************************************************************************************************
 /*
 /*    This file is part of Mojo.  For more information, see http://mojoware.org.
 /*
 /*    You may redistribute and/or modify Mojo under the terms of the GNU General Public License, version 3, as
-/*    published by the Free Software Foundation.  You should have received a copy of the license with mojo.  If you
+/*    published by the Free Software Foundation.  You should have received a copy of the license with Mojo.  If you
 /*    did not, go to http://www.gnu.org.
 /* 
 /*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT

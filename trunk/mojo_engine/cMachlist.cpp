@@ -16,6 +16,7 @@ using namespace mojo;
 // CODE
 //======================================================================================================================
 
+
 //----------------------------------------------------------------------------------------------------------------------
 //  HANDLE TO IP
 //----------------------------------------------------------------------------------------------------------------------
@@ -27,16 +28,16 @@ DWORD cMachlist :: handle_to_ip ( DWORD dwHandle )
 	DWORD dwRet = 0;
 
 	lock();
-
-	for ( cMach * p = first(); p; p = next(p) )
 	{
-		if ( dwHandle == p->dwSerialNumber )
+		for ( cMach * p = first(); p; p = next(p) )
 		{
-			dwRet = p->dwIP;
-			break;
+			if ( dwHandle == p->dwSerialNumber )
+			{
+				dwRet = p->dwIP;
+				break;
+			}
 		}
 	}
-
 	unlock();
 
 	return dwRet;
@@ -83,7 +84,7 @@ cMach * cMachlist::get_by_ip_or_add ( DWORD dwIP, const wchar_t * pDisplayList )
 
 	if ( bAdded )
 	{
-		cMessenger::tell_app_that_connections_changed();
+		cMessenger::tell_app_that_machlist_changed();
 
 		if ( pDisplayList )
 		{

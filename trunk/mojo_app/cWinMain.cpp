@@ -35,20 +35,36 @@ void set_mouseover_display_list ();
 
 extern unsigned uWM_ARE_YOU_ME; // defined in single_instance
 
-
 //======================================================================================================================
 // CODE
 //======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
-// SET MOUSEOVER DISPLAY LIST
+// SET VIEW
 //----------------------------------------------------------------------------------------------------------------------
-#if 0
-void set_mouseover_display_list ()
+void cWinMain :: set_view ()
 {
-	g_Mouseover.set_mega_display_list ( &g_Machlist );
+
+	ShowWindow ( DlgComputers.hwnd, SW_HIDE );
+	ShowWindow ( DlgWoWs.hwnd, SW_HIDE );
+	ShowWindow ( DlgMonitor.hwnd, SW_HIDE );
+
+	switch ( ( _eView ) ( g_Settings.uView ) )
+	{
+	case computers:
+		ShowWindow ( DlgComputers.hwnd, SW_SHOW );
+		break;
+
+	case wows:
+		ShowWindow ( DlgWoWs.hwnd, SW_SHOW );
+		break;
+
+	case monitor:
+		ShowWindow ( DlgMonitor.hwnd, SW_SHOW );
+		break;
+	}
 }
-#endif
+
 
 //----------------------------------------------------------------------------------------------------------------------
 // HIDE OR SHOW CURSOR
@@ -84,6 +100,7 @@ void cWinMain::hide_or_show_cursor ( WPARAM wParam )
 	}
 }
 #endif
+
 
 //----------------------------------------------------------------------------------------------------------------------
 // INSTALLATION OPTIONS
@@ -276,10 +293,26 @@ struct sStuff
 //----------------------------------------------------------------------------------------------------------------------
 void cWinMain::wm_create ( HWND hwndArg )
 {
-
 	g_hwnd = this->hwnd = hwndArg;
 
 	LoadLibrary ( L"riched20.dll" );
+
+
+
+	const int iViewStripWidth = 98;
+
+	//----------------------------------------
+	//  CORNER LOGO
+	//----------------------------------------
+
+	DlgCornerLogo.make_dlg();
+	register_child ( &DlgCornerLogo,
+							  nAnchor::left,       0, 0,
+							  nAnchor::top,        0, 0,
+							  nAnchor::left,       0, iViewStripWidth,
+							  nAnchor::top,        0, DlgModeStrip.get_height() );
+
+	SetParent ( DlgCornerLogo.hwnd, hwndArg );
 
 	//----------------------------------------
 	//  MODE STRIP
@@ -287,7 +320,7 @@ void cWinMain::wm_create ( HWND hwndArg )
 
 	DlgModeStrip.make_dlg();
 	register_child ( &DlgModeStrip,
-							  nAnchor::left,       0, 0,
+							  nAnchor::left,       0, iViewStripWidth,
 							  nAnchor::top,        0, 0,
 							  nAnchor::right,      0, 0,
 							  nAnchor::top,        0, DlgModeStrip.get_height() );
@@ -297,25 +330,19 @@ void cWinMain::wm_create ( HWND hwndArg )
 	ShowWindow ( DlgModeStrip.hwnd, SW_SHOW );
 
 	//----------------------------------------
-	//  TOOLBAR
+	//  VIEW STRIP
 	//----------------------------------------
 
-#if 0
-	this->hwndToolbar = create_toolbar ();
+	DlgViewStrip.make_dlg();
+	register_child ( &DlgViewStrip,
+							  nAnchor::left,       0, 0,
+							  nAnchor::top,        0, DlgModeStrip.get_height(),
+							  nAnchor::left,       0, iViewStripWidth,
+							  nAnchor::bottom,     0, 0 );
 
-	int iToolbarDimX, iToolbarDimY;
-	get_window_size ( &iToolbarDimX, &iToolbarDimY, hwndToolbar );
+	SetParent ( DlgModeStrip.hwnd, hwndArg );
 
-	Toolbar.hwnd = hwndToolbar;
-
-	const int iMargin = 0;
-
-	register_child ( &Toolbar,
-							  nAnchor::left,       0, iMargin,
-							  nAnchor::top,        0, iMargin,
-							  nAnchor::right,      0, iMargin,
-							  nAnchor::top,        0, iToolbarDimY + iMargin );
-#endif
+	ShowWindow ( DlgModeStrip.hwnd, SW_SHOW );
 
 	//----------------------------------------
 	//  MONITOR DIALOG
@@ -324,16 +351,53 @@ void cWinMain::wm_create ( HWND hwndArg )
 	DlgMonitor.make_dlg ();
 
 	register_child ( &DlgMonitor,
-							  nAnchor::left,       0, 0,
+							  nAnchor::left,       0, iViewStripWidth,
 							  nAnchor::top,        0, DlgModeStrip.get_height(),
 							  nAnchor::right,      0, 0,
 							  nAnchor::bottom,     0, 0 );
 
 	SetParent ( DlgMonitor.hwnd, hwndArg );
 
-	ShowWindow ( DlgMonitor.hwnd, SW_SHOW );
+	//----------------------------------------
+	//  WOWS DIALOG
+	//----------------------------------------
+
+	DlgWoWs.make_dlg ();
+
+	register_child ( &DlgWoWs,
+							  nAnchor::left,       0, iViewStripWidth,
+							  nAnchor::top,        0, DlgModeStrip.get_height(),
+							  nAnchor::right,      0, 0,
+							  nAnchor::bottom,     0, 0 );
+
+	SetParent ( DlgWoWs.hwnd, hwndArg );
+
+	//----------------------------------------
+	//  COMPUTERS DIALOG
+	//----------------------------------------
+
+	DlgComputers.make_dlg ();
+
+	register_child ( &DlgComputers,
+							  nAnchor::left,       0, iViewStripWidth,
+							  nAnchor::top,        0, DlgModeStrip.get_height(),
+							  nAnchor::right,      0, 0,
+							  nAnchor::bottom,     0, 0 );
+
+	SetParent ( DlgComputers.hwnd, hwndArg );
+
+	//----------------------------------------
+	//  CURSOR BLIND (HIDES CURSOR WHILE
+	//  IT'S MOUSED OVER TO A REMOTE
+	//----------------------------------------
+
+	DlgCursorBlind.make_dlg();
+	ShowWindow ( DlgCursorBlind.hwnd, SW_HIDE );
+	SetParent ( DlgCursorBlind.hwnd, NULL ); // NO PARENT TO FACILITATE POSITIONING IN CENTER OF SCREEN
 
 	set_size ( 800, 600 );
+
+	set_view ();
 
 	// set_menu_item_text ( g_hwnd, ID_TOGGLE_BROADCAST, g_Settings.bBroadcastIsOn ? L"Turn broadcast off" : L"Turn broadcast on" );
 
@@ -345,11 +409,6 @@ void cWinMain::wm_create ( HWND hwndArg )
 	toggle_mouseover ();
 
 
-#if 0
-	DlgCursorBlind.make_dlg();
-	ShowWindow ( DlgCursorBlind.hwnd, SW_HIDE );
-	SetParent ( DlgCursorBlind.hwnd, NULL ); // NO PARENT TO FACILITATE POSITIONING IN CENTER OF SCREEN
-#endif
 }	
 
 	

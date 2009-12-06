@@ -37,7 +37,8 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( bHotkeysAreOn,                          boolean,                L"bHotkeysAreOn"                        ),
 	ENTRY ( bMouseoverIsOn,                         boolean,                L"bMouseoverIsOn"                       ),
 	ENTRY ( uFinderBroadcastInterval,               uint,                   L"uFinderBroadcastInterval"             ),
-
+	ENTRY ( bRaiseProcessPriority,					boolean,				L"bRaiseProcessPriority"				),
+	ENTRY ( bMaximizeTimerResolution,				boolean,				L"bMaximizeTimerResolution"				),
 #if 0
 	ENTRY ( sScriptName,							string,					L"sScriptName"							),
 	ENTRY ( WinPos,									rect_i,					L"WinPos"								),	
@@ -46,12 +47,11 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( bShowCompilerOutput,					boolean,				L"bShowCompilerOutput"					),
 	ENTRY ( uHeaderColor,							uint,					L"uHeaderColor"							),
 	ENTRY ( bHotkeysAreOn,							boolean,				L"bHotkeysAreOn"						),
-	ENTRY ( bMaximumTimerResolution,				boolean,				L"bMaximumTimerResolution"				),
 	ENTRY ( bDisableNagle,							boolean,				L"bDisableNagle"						),
 	ENTRY ( bShowTrayIcon,							boolean,				L"bShowTrayIcon"						),
 	ENTRY ( bStartMinimizedToTray,					boolean,				L"bStartMinimizedToTray"				),
 	ENTRY ( bRunDiscoveryyThreadsAtLowPriority,		boolean,				L"bRunDiscoveryyThreadsAtLowPriority"	),
-	ENTRY ( bRaiseProcessPriority,					boolean,				L"bRaiseProcessPriority"				),
+
 	ENTRY ( bShowIpOnMouseoverSettings,				boolean,				L"bShowIpOnMouseoverSettings"			),
 	ENTRY ( bHideRemoteCursor,						boolean,				L"bHideRemoteCursor"					),
 	ENTRY ( bShowKeyboardEventsInMonitor,			boolean,				L"bShowKeyboardEventsInMonitor"			),
@@ -99,7 +99,8 @@ void cSettings :: init ()
 	bHotkeysAreOn                       = true;
 	bMouseoverIsOn                      = true;
 	uFinderBroadcastInterval            = 5000;
-
+	bRaiseProcessPriority				= true;
+	bMaximizeTimerResolution            = true;
 
 #if 1
 	WinPos								= mojo::cRectI ( 100, 100, 800, 600 );
@@ -110,12 +111,12 @@ void cSettings :: init ()
 	bShowCompilerOutput					= false;
 	uHeaderColor						= (unsigned) RGB ( 44, 44, 110 );
 	bHotkeysAreOn						= true;
-	bMaximumTimerResolution				= true;
+
 	bDisableNagle						= true;
 	bShowTrayIcon						= true;
 	bStartMinimizedToTray				= false;
 	bRunDiscoveryyThreadsAtLowPriority	= true;
-	bRaiseProcessPriority				= true;
+
 	bShowIpOnMouseoverSettings			= false;
 	bHideRemoteCursor					= true;
 	bShowKeyboardEventsInMonitor		= false;

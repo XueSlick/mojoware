@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgModeStrip.cpp / mojo_app
+/*    cDlgViewStrip.cpp / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -14,9 +14,8 @@
 // DATA
 //======================================================================================================================
 
-const int iButtonHeight = 27;
+const int iButtonHeight = 44;
 const int iMargin = 9;
-const int iLeftMargin = 0;
 
 //======================================================================================================================
 // PROTOTYPES
@@ -27,117 +26,49 @@ const int iLeftMargin = 0;
 //======================================================================================================================
 
 
-//----------------------------------------------------------------------------------------------------------------------
-// WM INIT
-//----------------------------------------------------------------------------------------------------------------------
-int cDlgModeStrip::get_height ()
-{
-	return ( 1 * iMargin ) + iButtonHeight;
-}
-
 
 //----------------------------------------------------------------------------------------------------------------------
 // WM INIT
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgModeStrip::wm_init ()
+void cDlgViewStrip::wm_init ()
 {
-	//--------------------------------------------
-	//  IF WE'RE ON XP, REMOVE COMPOSITED STYLE
-	//  BECAUSE IT MAKES THE OWNER DRAWN BUTTONS
-	//  INVISIBLE
-	//--------------------------------------------
-	if ( ! os_version_or_higher ( 6, 0 ) )
-	{
-		LONG_PTR dwStyle = GetWindowLongPtr ( hwnd, GWL_EXSTYLE );
-		dwStyle &= ~WS_EX_COMPOSITED;
-		SetWindowLongPtr ( hwnd, GWL_EXSTYLE, dwStyle );
-	}
 
-	const int iButtonWidth = 130;
 
-	ToggleMouseover.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_MOUSEOVER );
-	register_child ( &ToggleMouseover,
+	
+	ViewComputers.hwnd = GetDlgItem ( hwnd, ID_VIEW_COMPUTERS );
+	register_child ( &ViewComputers,
 
-							  nAnchor::left,		0,		iLeftMargin,
+							  nAnchor::left,		0,		iMargin,
 							  nAnchor::top,			0,		iMargin,
-							  nAnchor::left,		0,		iLeftMargin + iButtonWidth,
+							  nAnchor::right,		0,		-iMargin,
 							  nAnchor::top,			0,      iMargin + iButtonHeight );
 
-	ToggleHotkeys.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_HOTKEYS );
-	register_child ( &ToggleHotkeys,
+	ViewWoWs.hwnd = GetDlgItem ( hwnd, ID_VIEW_WOWS );
+	register_child ( &ViewWoWs,
 
-							  nAnchor::left,		0,		iLeftMargin + iMargin + iButtonWidth,
-							  nAnchor::top,			0,		iMargin,
-							  nAnchor::left,		0,		iLeftMargin + iMargin + iButtonWidth * 2,
-							  nAnchor::top,			0,      iMargin + iButtonHeight );
+							  nAnchor::left,		0,		iMargin,
+							  nAnchor::top,			0,		iMargin * 2 + iButtonHeight,
+							  nAnchor::right,		0,		-iMargin,
+							  nAnchor::top,			0,      iMargin * 2 + iButtonHeight * 2 );
 
-	ToggleBroadcast.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_BROADCAST );
-	register_child ( &ToggleBroadcast,
+	ViewMonitor.hwnd = GetDlgItem ( hwnd, ID_VIEW_MONITOR );
+	register_child ( &ViewMonitor,
 
-							  nAnchor::left,		0,		iLeftMargin + iMargin * 2 + iButtonWidth * 2,
-							  nAnchor::top,			0,		iMargin,
-							  nAnchor::left,		0,		iLeftMargin + iMargin * 2 + iButtonWidth * 3,
-							  nAnchor::top,			0,      iMargin + iButtonHeight );
+							  nAnchor::left,		0,		iMargin,
+							  nAnchor::top,			0,		iMargin * 3 + iButtonHeight * 2,
+							  nAnchor::right,		0,		-iMargin,
+							  nAnchor::top,			0,      iMargin * 3 + iButtonHeight * 3 );
 
-
-
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  REDRAW BUTTONS
-//----------------------------------------------------------------------------------------------------------------------
-void cDlgModeStrip::redraw_buttons ()
-{
-	InvalidateRect ( ToggleMouseover.hwnd, NULL, TRUE );
-	UpdateWindow   ( ToggleMouseover.hwnd );
-
-	InvalidateRect ( ToggleHotkeys.hwnd, NULL, TRUE );
-	UpdateWindow   ( ToggleHotkeys.hwnd );
-
-	InvalidateRect ( ToggleBroadcast.hwnd, NULL, TRUE );
-	UpdateWindow   ( ToggleBroadcast.hwnd );
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-// WM DRAWITEM
-//----------------------------------------------------------------------------------------------------------------------
-void cDlgModeStrip::wm_drawitem ( int iID, DRAWITEMSTRUCT* pDI )
-{
-	switch ( iID )
-	{
-	case ID_TOGGLE_MOUSEOVER:
-		if ( g_Settings.bMouseoverIsOn )
-			ToggleMouseover.paint_green ( pDI, L"Mouseover is on" );
-		else
-			ToggleMouseover.paint_red   ( pDI, L"Mouseover is off" );
-		break;
-
-	case ID_TOGGLE_HOTKEYS:
-		if ( g_Settings.bHotkeysAreOn )
-			ToggleHotkeys.paint_green ( pDI, L"Hotkeys are on" );
-		else
-			ToggleHotkeys.paint_red   ( pDI, L"Hotkeys are off" );
-		break;
-
-	case ID_TOGGLE_BROADCAST:
-		if ( g_Settings.bBroadcastIsOn )
-			ToggleBroadcast.paint_green ( pDI, L"Broadcast is on" );
-		else
-			ToggleBroadcast.paint_red   ( pDI, L"Broadcast is off" );
-		break;
-	}
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 // DEFAULT PROC
 //----------------------------------------------------------------------------------------------------------------------
-INT_PTR CALLBACK cDlgModeStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK cDlgViewStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
 	cWin * pWin = user_data_to_pWin ( hwnd );
-	cDlgModeStrip * pThis = static_cast<cDlgModeStrip*>(pWin);
+	cDlgViewStrip * pThis = static_cast<cDlgViewStrip*>(pWin);
 
 	switch ( uMessage )
 	{
@@ -147,16 +78,8 @@ INT_PTR CALLBACK cDlgModeStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 			{
 				switch 	( LOWORD ( wParam ) )
 				{
-				case ID_TOGGLE_MOUSEOVER:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_TOGGLE_MOUSEOVER, ID_TOGGLE_MOUSEOVER );
-					break;
-
-				case ID_TOGGLE_HOTKEYS:
-					pThis->cWin::balloon ( GetDlgItem ( hwnd, ID_TOGGLE_HOTKEYS ), L"Sorry.", L"Hotkeys aren't implemented yet." );
-					break;
-
-				case ID_TOGGLE_BROADCAST:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_TOGGLE_BROADCAST, ID_TOGGLE_BROADCAST );
+				case ID_VIEW_COMPUTERS:
+					PostMessage ( g_hwnd, WM_COMMAND, ID_VIEW_COMPUTERS, 0 );
 					break;
 
 				case ID_VIEW_MONITOR:
@@ -171,18 +94,11 @@ INT_PTR CALLBACK cDlgModeStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 		}
 		break;
 
-	case WM_DRAWITEM:
-		if ( pThis )
-			pThis->wm_drawitem ( (int) wParam, (DRAWITEMSTRUCT*) lParam );
-		break;
-
-
-
 	case WM_INITDIALOG:
 		{
 			set_user_data ( hwnd, lParam );
 			cWin * pWin = lParam_to_pWin ( hwnd, lParam );
-			pThis = static_cast<cDlgModeStrip*>(pWin);
+			pThis = static_cast<cDlgViewStrip*>(pWin);
 			pThis->hwnd = hwnd;
 			pThis->wm_init ();
 		}

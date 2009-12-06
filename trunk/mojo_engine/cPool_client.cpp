@@ -190,7 +190,7 @@ void cPool::connectex_cb ( cLapPlus * pLapPlus )
 	//  Update display
 	//------------------------------------------------
 
-	cMessenger::tell_app_that_connections_changed ();
+	cMessenger::tell_app_that_machlist_changed ();
 
 	pLapPlus->pPool->post_initial_receive ( pSI );
 
@@ -314,7 +314,8 @@ bool cPool :: connect_to ( const wchar_t * pAddr )
 	if ( ! pfConnectEx )
 	{
 		closesocket ( Socket );
-		LOG ( L"Failed to get pointer to ConnectEx." );
+		LOG ( L"Failed to get pointer to ConnectEx.  (This may not be implemented in Wine.)" );
+		put_ad_lib_memo ( cMemo::error, L"System function call failed.", L"Unable to get pointer to ConnectEx.\n" L"This may not be implemented in Wine." );
 		return false;
 	}
 
