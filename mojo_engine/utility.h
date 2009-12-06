@@ -15,7 +15,7 @@ namespace mojo
 
 void	MOJO_ENGINE_API 	format_system_error 	( mojo::cStrW * pRet, unsigned int dwError );
 bool	MOJO_ENGINE_API 	get_system_version 		( mojo::cStrW * pRet );
-bool    MOJO_ENGINE_API   version_or_higher 		( DWORD  dwMaj, DWORD dwMin );
+bool    MOJO_ENGINE_API     os_version_or_higher       ( DWORD  dwMaj, DWORD dwMin ); 
 
 
 } // namespace

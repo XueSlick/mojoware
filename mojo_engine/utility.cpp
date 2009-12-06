@@ -29,7 +29,7 @@ using namespace mojo;
 //-------------------------------------------------------------------------------------------------------
 //   VERSION OR HIGHER (OF OPERATING SYSTEM)
 //-------------------------------------------------------------------------------------------------------
-bool MOJO_ENGINE_API mojo::version_or_higher ( DWORD  dwMaj, DWORD dwMin )
+bool MOJO_ENGINE_API mojo::os_version_or_higher ( DWORD  dwMaj, DWORD dwMin )
 {
 	bool bRetVal = false;
 

@@ -17,6 +17,10 @@
 #include "cDlgMessageBox.h"
 #include "cDlgCursorBlind.h"
 #include "cDlgModeStrip.h"
+#include "cDlgViewStrip.h"
+#include "cDlgWoWs.h"
+#include "cDlgCornerLogo.h"
+#include "cDlgComputers.h"
 
 
 //=======================================================================================================
@@ -29,10 +33,13 @@ public:
 
 	cWinMain () { pClassName = L"cWinMain"; }
 	void load_script_sub();
-	// HWND toolbar() { return hwndToolbar; }
 
+	enum _eView { computers, wows, monitor }; // used to cast cSettings::uView
 
 private:
+
+	void set_view ();
+
 	void hide_or_show_cursor ( WPARAM wParam );
 	void toggle_broadcast ();
 	void toggle_hotkeys ();
@@ -47,16 +54,16 @@ private:
 
 	HWND create_toolbar ();
 
-	wchar_t * pClassName; // = L"cWinMain";
+	wchar_t * pClassName;
 
-	cDlgMonitor DlgMonitor;
-	cDlgModeStrip DlgModeStrip;
-	cDlgMessageBox MB;
+	cDlgComputers   DlgComputers;
+	cDlgMonitor     DlgMonitor;
+	cDlgModeStrip   DlgModeStrip;
+	cDlgViewStrip   DlgViewStrip;
+	cDlgCornerLogo  DlgCornerLogo;
+	cDlgWoWs        DlgWoWs;
+	cDlgMessageBox  MB;
 	cDlgCursorBlind DlgCursorBlind;
-
-
-	// cWin Toolbar;
-	// HWND hwndToolbar;
 
 public:
 

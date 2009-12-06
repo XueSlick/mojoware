@@ -259,9 +259,9 @@ void cMessenger :: send ( DWORD hMachHandle, cMessage * pMessage )
 //----------------------------------------------------------------------------------------------------------------------
 //  TELL APP THAT CONNECTIONS CHANGED
 //----------------------------------------------------------------------------------------------------------------------
-void cMessenger :: tell_app_that_connections_changed ()
+void cMessenger :: tell_app_that_machlist_changed ()
 {
-	PostMessage ( g_hwndApp, mojo::uWM_CONNECTIONS_CHANGED, 0, 0 );
+	PostMessage ( g_hwndApp, mojo::uWM_MACHLIST_CHANGED, 0, 0 );
 }
 
 

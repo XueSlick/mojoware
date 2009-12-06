@@ -91,7 +91,10 @@ void mojo :: get_machlist ( mojo::cMachlist * pRet )
 //----------------------------------------------------------------------------------------------------------------------
 mojo::nConnectionStatus::eConnectionStatus mojo::get_connection_status ( DWORD dwMachHandle )
 {
+	// g_Machlist.handle_to
 	DWORD dwIP = g_Machlist.handle_to_ip ( dwMachHandle );
+
+	
 
 	return (mojo::nConnectionStatus::eConnectionStatus) g_Pool.get_connection_status ( dwIP );
 }

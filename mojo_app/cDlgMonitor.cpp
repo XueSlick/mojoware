@@ -15,6 +15,7 @@
 //======================================================================================================================
 
 
+
 //======================================================================================================================
 //  CODE
 //======================================================================================================================
@@ -188,9 +189,9 @@ void cDlgMonitor::wm_initdialog ()
 	set_text ();
 
 	const int iMargin = 9;
-	// const int iModeButtonHeight = g_NonClientMetrics.iCaptionHeight * 2 + 4;
-	// const int iModeStripBottom = iModeButtonHeight + iMargin * 2;
+	const int iLeftMargin = 0;
 	const int iModeStripBottom = iMargin;
+
 	int iHeadHeight = 0 + g_NonClientMetrics.iCaptionHeight;
 	int iVertDiv = 235;
 	int iClearButtonWidth = 62;
@@ -204,7 +205,7 @@ void cDlgMonitor::wm_initdialog ()
 
 	register_child ( &InputEventsHead,
 
-							  nAnchor::left,		0,		iMargin,
+							  nAnchor::left,		0,		iLeftMargin,
 							  nAnchor::top,	    	0,		iModeStripBottom,
 							  nAnchor::left,		0,		iVertDiv,
 							  nAnchor::top,	   	 	0,		iModeStripBottom + iHeadHeight   );
@@ -222,7 +223,7 @@ void cDlgMonitor::wm_initdialog ()
 
 	register_child ( &InputEvents,
 
-							  nAnchor::left,		0,		iMargin,
+							  nAnchor::left,		0,		iLeftMargin,
 							  nAnchor::top,	    	0,		iModeStripBottom + iHeadHeight,
 							  nAnchor::left,		0,		iVertDiv,
 							  nAnchor::top,			45,		(iModeStripBottom/2) - iMargin  );
@@ -235,7 +236,7 @@ void cDlgMonitor::wm_initdialog ()
 
 	register_child ( &ConnectionsHead,
 
-							  nAnchor::left,		0,		iMargin,
+							  nAnchor::left,		0,		iLeftMargin,
 							  nAnchor::top,			45,		iModeStripBottom/2,
 							  nAnchor::left,		0,		iVertDiv,
 							  nAnchor::top,			45,		iModeStripBottom/2 + iHeadHeight   );
@@ -249,7 +250,7 @@ void cDlgMonitor::wm_initdialog ()
 
 	register_child ( &Connections,
 	
-							  nAnchor::left,		0,		iMargin,
+							  nAnchor::left,		0,		iLeftMargin,
 							  nAnchor::top,			45,		iModeStripBottom/2 + iHeadHeight,
 							  nAnchor::left,		0,		iVertDiv,
 							  nAnchor::bottom,		0,		-iMargin     );

@@ -32,8 +32,20 @@ void paint_gradient ( Graphics *g, RectF * r, GraphicsPath * gp, Color cTop, Col
 //----------------------------------------------------------------------------------------------------------------------
 void cLiquidButton::paint ( DRAWITEMSTRUCT* pDI, Gdiplus::Color cOutTop, Gdiplus::Color cOutBot, Gdiplus::Color cInTop, Gdiplus::Color cInBot, const wchar_t * pText, COLORREF clrTxt )
 {
+
+// #define DOUBLE_BUFFER
+	HDC hdcOriginal = pDI->hDC;
+#ifdef DOUBLE_BUFFER
+	HDC		hdcMem	= CreateCompatibleDC ( hdcOriginal );
+	HBITMAP hbmMem	= CreateCompatibleBitmap(hdcOriginal, pDI->rcItem.right, pDI->rcItem.bottom);
+	HANDLE	hOld	= SelectObject(hdcMem, hbmMem);
+	HDC hdc			= hdcMem;
+#else
+	HDC hdc = hdcOriginal;
+#endif
+
 	cInBot, cInTop;
-	Graphics g ( pDI->hDC );
+	Graphics g ( hdc );
 	g.SetSmoothingMode ( SmoothingModeAntiAlias );
 
 	// paths
@@ -60,11 +72,18 @@ void cLiquidButton::paint ( DRAWITEMSTRUCT* pDI, Gdiplus::Color cOutTop, Gdiplus
 
 	// text
 
-	SetTextColor    ( pDI->hDC, clrTxt );
-	SetBkMode		( pDI->hDC, TRANSPARENT );
-	// HFONT hOldFont = (HFONT ) SelectObject ( pDI->hDC, g_hCaptionFont );
-	DrawText ( pDI->hDC, pText, -1, &pDI->rcItem, DT_CENTER | DT_VCENTER | DT_SINGLELINE );
-	// SelectObject ( pDI->hDC, (HGDIOBJ) hOldFont );
+	SetTextColor    ( hdc, clrTxt );
+	SetBkMode		( hdc, TRANSPARENT );
+	// HFONT hOldFont = (HFONT ) SelectObject ( hdc, g_hCaptionFont );
+	DrawText ( hdc, pText, -1, &pDI->rcItem, DT_CENTER | DT_VCENTER | DT_SINGLELINE );
+	// SelectObject ( hdc, (HGDIOBJ) hOldFont );
+
+#ifdef DOUBLE_BUFFER
+	BitBlt ( hdcOriginal, pDI->rcItem.left, pDI->rcItem.top, pDI->rcItem.right, pDI->rcItem.bottom, hdcMem, 0, 0, SRCCOPY);
+	SelectObject ( hdcMem, hOld );
+	DeleteObject ( hbmMem );
+	DeleteDC     ( hdcMem );
+#endif
 }
 
 
@@ -106,21 +125,21 @@ void cLiquidButton::paint_red ( DRAWITEMSTRUCT* pDI, const wchar_t * pText )
 //----------------------------------------------------------------------------------------------------------------------
 // CREATE ROUND RECTANGLE
 //----------------------------------------------------------------------------------------------------------------------
-void create_round_rectangle ( GraphicsPath * p, int x, int y, int width, int height, int radius )  
+void create_round_rectangle ( GraphicsPath * p, int x, int y, int dx, int dy, int r )  
 {  
- 	if (radius == 0)  
-		p->AddRectangle ( Rect( x, y, width, height ) );  
+ 	if ( 0 == r )  
+		p->AddRectangle ( Rect( x, y, dx, dy ) );  
 
 	else
 	{  
-		p->AddLine ( x + radius, y, x + width - radius, y );  
-		p->AddArc  ( x + width - radius, y, radius, radius, 270, 90 );  
-		p->AddLine ( x + width, y + radius, x + width, y + height - radius );  
-		p->AddArc  ( x + width - radius, y + height - radius, radius, radius, 0, 90 );  
-		p->AddLine ( x + width - radius, y + height, x + radius, y + height );  
-		p->AddArc  ( x, y + height - radius, radius, radius, 90, 90 );  
-		p->AddLine ( x, y + height - radius, x, y + radius );  
-		p->AddArc  ( x, y, radius, radius, 180, 90 );  
+		p->AddLine ( x + r, y, x + dx - r, y );  
+		p->AddArc  ( x + dx - r, y, r, r, 270, 90 );  
+		p->AddLine ( x + dx, y + r, x + dx, y + dy - r );  
+		p->AddArc  ( x + dx - r, y + dy - r, r, r, 0, 90 );  
+		p->AddLine ( x + dx - r, y + dy, x + r, y + dy );  
+		p->AddArc  ( x, y + dy - r, r, r, 90, 90 );  
+		p->AddLine ( x, y + dy - r, x, y + r );  
+		p->AddArc  ( x, y, r, r, 180, 90 );  
 		p->CloseFigure();  
 	}
 } 

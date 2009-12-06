@@ -41,6 +41,10 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( bHotkeysAreOn,                          boolean,                L"bHotkeysAreOn"                        ),
 	ENTRY ( bMouseoverIsOn,                         boolean,                L"bMouseoverIsOn"                       ),
 	ENTRY ( uFinderBroadcastInterval,               uint,                   L"uFinderBroadcastInterval"             ),
+	ENTRY ( bRaiseProcessPriority,					boolean,				L"bRaiseProcessPriority"				),
+	ENTRY ( bMaximizeTimerResolution,				boolean,				L"bMaximizeTimerResolution"				),
+	ENTRY ( uView,									uint,				    L"uView"				                ),
+
 };
 
 
@@ -87,6 +91,9 @@ void cSettings :: init ()
 	bHotkeysAreOn                       = false;
 	bMouseoverIsOn                      = true;
 	uFinderBroadcastInterval            = 5000;
+	bRaiseProcessPriority				= true;
+	bMaximizeTimerResolution            = true;
+	uView                               = cWinMain::computers;
 
 }
 

@@ -240,7 +240,7 @@ void cPool::acceptex_cb ( cLapPlus * pLapPlus )
 	//------------------------------------------------
 	//  Update display
 	//------------------------------------------------
-	cMessenger::tell_app_that_connections_changed ();
+	cMessenger::tell_app_that_machlist_changed ();
 
 	// delete pLapPlus;
 
@@ -273,6 +273,7 @@ bool cPool::get_accept_ex_pointer ( SOCKET s )
 	if ( 0 != iResult )
 	{
 		LOG_SYSTEM_ERROR_TE ( L"WSAIoctl while getting AcceptEx", iResult );
+		put_ad_lib_memo ( cMemo::error, L"System function call failed.", L"Unable to get pointer to AcceptEx.\n" L"This may not be implemented in Wine." );
 		return false;
 	}
 
@@ -286,6 +287,13 @@ bool cPool::get_accept_ex_pointer ( SOCKET s )
 //----------------------------------------------------------------------------------------------
 bool cPool :: post_accept_ex ( cLapPlus * pLapPlus ) 
 {
+	//-----------------------------------------
+	// MAKE SURE POINTER IS SET
+	//-----------------------------------------
+
+	if ( NULL == s_pfAcceptEx )
+		return false;
+
 	//-----------------------------------------
 	// CREATE ACCEPT SOCKET
 	//-----------------------------------------

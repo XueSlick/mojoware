@@ -44,6 +44,9 @@ public:
 	bool                bHotkeysAreOn;
 	bool                bMouseoverIsOn;
 	unsigned            uFinderBroadcastInterval;
+	bool				bRaiseProcessPriority;
+	bool				bMaximizeTimerResolution;
+	unsigned            uView;
 
 	//-----------------------------------
 	// DEFINE FOLLOWING IN DERIVED CLASS

@@ -94,11 +94,12 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 		}
 		break;
 
-	case mojo::uWM_CONNECTIONS_CHANGED:
+	case mojo::uWM_MACHLIST_CHANGED:
 		{
 			cMachlist l;
 			mojo::get_machlist ( &l );
 			pThis->DlgMonitor.Connections.populate ( &l );
+			PostMessage ( pThis->DlgComputers.hwnd, uWM_MACHLIST_CHANGED, 0, 0 );
 		}
 		break;
 

@@ -30,6 +30,9 @@
     <ClCompile Include="cDlgAbout.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="cDlgComputers.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
     <ClCompile Include="cDlgCursorBlind.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
@@ -60,13 +63,25 @@
     <ClCompile Include="cDlgSettingsConnectionAdvanced.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="cDlgSettingsPerformance.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
     <ClCompile Include="cDlgVars.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgViewStrip.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgWoWs.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="click_once.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cLiquidButton.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cListViewComputers.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cListviewConnections.cpp">
@@ -146,6 +161,9 @@
     <ClInclude Include="cDlgAbout.h">
       <Filter>cWin</Filter>
     </ClInclude>
+    <ClInclude Include="cDlgComputers.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
     <ClInclude Include="cDlgCursorBlind.h">
       <Filter>cWin</Filter>
     </ClInclude>
@@ -170,13 +188,25 @@
     <ClInclude Include="cDlgSettingsConnectionAdvanced.h">
       <Filter>cWin</Filter>
     </ClInclude>
+    <ClInclude Include="cDlgSettingsPerformance.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
     <ClInclude Include="cDlgVars.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgViewStrip.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgWoWs.h">
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="click_once.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cLiquidButton.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cListViewComputers.h">
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cListviewConnections.h">
@@ -238,7 +268,25 @@
     <None Include="..\..\Mojo\mojo_art\mojo-logo-star-150.bmp">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\mojo_art\icon1.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\mojo_art\list_view_computers_blue.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\mojo_art\list_view_computers_gold.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\mojo_art\list_view_computers_gray.ico">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="..\mojo_art\mojo-logo-star-150.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\mojo_art\state-icon-blue.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\mojo_art\state-icon-gold.ico">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\mojo_art\toolbar_bitmaps.bmp">

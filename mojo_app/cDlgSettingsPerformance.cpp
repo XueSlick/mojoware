@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgModeStrip.cpp / mojo_app
+/*    cDlgSettingsPerformance.cpp / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -8,205 +8,181 @@
 
 #include "stdafx.h"
 
-
-
 //======================================================================================================================
-// DATA
+//  DATA
 //======================================================================================================================
 
-const int iButtonHeight = 27;
-const int iMargin = 9;
-const int iLeftMargin = 0;
-
-//======================================================================================================================
-// PROTOTYPES
-//======================================================================================================================
-
-//======================================================================================================================
-// CODE
-//======================================================================================================================
-
-
-//----------------------------------------------------------------------------------------------------------------------
-// WM INIT
-//----------------------------------------------------------------------------------------------------------------------
-int cDlgModeStrip::get_height ()
+sDlgDatum cDlgSettingsPerformance :: aDlgData [] = 
 {
-	return ( 1 * iMargin ) + iButtonHeight;
+	sDlgDatum ( ID_RAISE_PROCESS_PRIORITY,              L"bRaiseProcessPriority"        ),
+	sDlgDatum ( ID_MAXIMIZE_TIMER_RESOLUTION,           L"bMaximizeTimerResolution"     ),
+	sDlgDatum ( 0,                                      NULL                            ),
+};
+
+
+//======================================================================================================================
+//  PROTOTYPES
+//======================================================================================================================
+
+//======================================================================================================================
+//  CODE
+//======================================================================================================================
+
+//----------------------------------------------------------------------------------------------------------------------
+//  REGISTER CHILDREN
+//----------------------------------------------------------------------------------------------------------------------
+void cDlgSettingsPerformance :: register_children ()
+{
+	const int iBigMargin	= 32;
+	const int iMargin 		= 10;
+	const int iButtonHeight = 25;
+	const int iButtonWidth	= 90;
+
+	MojoLabel.hwnd          = GetDlgItem ( hwnd, ID_MOJO_LABEL );
+	SystemLabel.hwnd        = GetDlgItem ( hwnd, ID_SYSTEM_LABEL );
+
+	OK.hwnd = GetDlgItem ( hwnd, ID_OK );
+	register_child ( &OK,
+								nAnchor::right,		0,		- ( iMargin + iBigMargin + 2 * iButtonWidth ),
+								nAnchor::bottom,	0,		- ( iMargin + iButtonHeight ),
+								nAnchor::right,		0,	    - ( iMargin + iBigMargin + iButtonWidth ),
+								nAnchor::bottom,	0,		- iMargin );
+
+
+	Cancel.hwnd = GetDlgItem ( hwnd, ID_CANCEL );
+	register_child ( &Cancel,
+								nAnchor::right,		0,		- ( iBigMargin + iButtonWidth ),
+								nAnchor::bottom,	0,		- ( iMargin + iButtonHeight ),
+								nAnchor::right,		0,	    - iBigMargin,
+								nAnchor::bottom,	0,		- iMargin );
+
+	reposition_children ();
+}
+
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  SET TEXT
+//----------------------------------------------------------------------------------------------------------------------
+void cDlgSettingsPerformance :: set_text ()
+{
+	set_item_text ( 0, 							   L"DlgSettingsPerformance.Title", g_awAppTitle );
+
+	set_item_text ( ID_MOJO_LABEL, 			       L"DlgSettingsPerformance.Mojo.Label", g_awAppTitle );
+	set_item_text ( ID_SYSTEM_LABEL, 			   L"DlgSettingsPerformance.System.Label" );
+	set_item_text ( ID_RAISE_PROCESS_PRIORITY,     L"DlgSettingsPerformance.RaiseProcessPriority" );
+	set_item_text ( ID_MAXIMIZE_TIMER_RESOLUTION,  L"DlgSettingsPerformance.MaximizeTimerResolution" );
+	set_item_text ( ID_LINK,                       L"DlgSettingsPerformance.Link", L"http://mojoware.org" );
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
-// WM INIT
+//  SET STATE
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgModeStrip::wm_init ()
+void cDlgSettingsPerformance :: set_state ()
 {
-	//--------------------------------------------
-	//  IF WE'RE ON XP, REMOVE COMPOSITED STYLE
-	//  BECAUSE IT MAKES THE OWNER DRAWN BUTTONS
-	//  INVISIBLE
-	//--------------------------------------------
-	if ( ! os_version_or_higher ( 6, 0 ) )
-	{
-		LONG_PTR dwStyle = GetWindowLongPtr ( hwnd, GWL_EXSTYLE );
-		dwStyle &= ~WS_EX_COMPOSITED;
-		SetWindowLongPtr ( hwnd, GWL_EXSTYLE, dwStyle );
-	}
-
-	const int iButtonWidth = 130;
-
-	ToggleMouseover.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_MOUSEOVER );
-	register_child ( &ToggleMouseover,
-
-							  nAnchor::left,		0,		iLeftMargin,
-							  nAnchor::top,			0,		iMargin,
-							  nAnchor::left,		0,		iLeftMargin + iButtonWidth,
-							  nAnchor::top,			0,      iMargin + iButtonHeight );
-
-	ToggleHotkeys.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_HOTKEYS );
-	register_child ( &ToggleHotkeys,
-
-							  nAnchor::left,		0,		iLeftMargin + iMargin + iButtonWidth,
-							  nAnchor::top,			0,		iMargin,
-							  nAnchor::left,		0,		iLeftMargin + iMargin + iButtonWidth * 2,
-							  nAnchor::top,			0,      iMargin + iButtonHeight );
-
-	ToggleBroadcast.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_BROADCAST );
-	register_child ( &ToggleBroadcast,
-
-							  nAnchor::left,		0,		iLeftMargin + iMargin * 2 + iButtonWidth * 2,
-							  nAnchor::top,			0,		iMargin,
-							  nAnchor::left,		0,		iLeftMargin + iMargin * 2 + iButtonWidth * 3,
-							  nAnchor::top,			0,      iMargin + iButtonHeight );
-
-
 
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  REDRAW BUTTONS
+//  WM INIT
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgModeStrip::redraw_buttons ()
+void cDlgSettingsPerformance :: wm_init ()
 {
-	InvalidateRect ( ToggleMouseover.hwnd, NULL, TRUE );
-	UpdateWindow   ( ToggleMouseover.hwnd );
 
-	InvalidateRect ( ToggleHotkeys.hwnd, NULL, TRUE );
-	UpdateWindow   ( ToggleHotkeys.hwnd );
 
-	InvalidateRect ( ToggleBroadcast.hwnd, NULL, TRUE );
-	UpdateWindow   ( ToggleBroadcast.hwnd );
+
+	set_text();
+	cDlgVars::wm_init ( this->hwnd, &aDlgData[0] );
+
+	register_children ();
+
+	//--------------------------------------
+	//  MAKE SURE GROUPED RADIO BUTTONS 
+	//  GOT SET
+	//--------------------------------------
+
+	MojoLabel.wm_init();
+	SystemLabel.wm_init();
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
-// WM DRAWITEM
+//  DIALOG PROC
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgModeStrip::wm_drawitem ( int iID, DRAWITEMSTRUCT* pDI )
-{
-	switch ( iID )
-	{
-	case ID_TOGGLE_MOUSEOVER:
-		if ( g_Settings.bMouseoverIsOn )
-			ToggleMouseover.paint_green ( pDI, L"Mouseover is on" );
-		else
-			ToggleMouseover.paint_red   ( pDI, L"Mouseover is off" );
-		break;
-
-	case ID_TOGGLE_HOTKEYS:
-		if ( g_Settings.bHotkeysAreOn )
-			ToggleHotkeys.paint_green ( pDI, L"Hotkeys are on" );
-		else
-			ToggleHotkeys.paint_red   ( pDI, L"Hotkeys are off" );
-		break;
-
-	case ID_TOGGLE_BROADCAST:
-		if ( g_Settings.bBroadcastIsOn )
-			ToggleBroadcast.paint_green ( pDI, L"Broadcast is on" );
-		else
-			ToggleBroadcast.paint_red   ( pDI, L"Broadcast is off" );
-		break;
-	}
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-// DEFAULT PROC
-//----------------------------------------------------------------------------------------------------------------------
-INT_PTR CALLBACK cDlgModeStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK cDlgSettingsPerformance :: dialog_proc ( HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam )
 {
 	cWin * pWin = user_data_to_pWin ( hwnd );
-	cDlgModeStrip * pThis = static_cast<cDlgModeStrip*>(pWin);
+	cDlgSettingsPerformance * pThis = static_cast<cDlgSettingsPerformance*>(pWin);
 
 	switch ( uMessage )
 	{
-	case WM_COMMAND:
+#if 0
+	case WM_CTLCOLORBTN:
+	case WM_CTLCOLOREDIT:
+	case WM_CTLCOLORDLG:
+	case WM_CTLCOLORSTATIC:
 		{
-			if ( BN_CLICKED == HIWORD ( wParam ) )
-			{
-				switch 	( LOWORD ( wParam ) )
-				{
-				case ID_TOGGLE_MOUSEOVER:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_TOGGLE_MOUSEOVER, ID_TOGGLE_MOUSEOVER );
-					break;
+			HDC hdc = (HDC) wParam;
+			HWND hCtrl = (HWND) lParam;
 
-				case ID_TOGGLE_HOTKEYS:
-					pThis->cWin::balloon ( GetDlgItem ( hwnd, ID_TOGGLE_HOTKEYS ), L"Sorry.", L"Hotkeys aren't implemented yet." );
-					break;
+			if ( hCtrl == GetDlgItem ( hwnd, ID_CONNECT_HEAD ) ||
+				 hCtrl == GetDlgItem ( hwnd, ID_AUTO_FIND_HEAD ) )
+				SetTextColor	( hdc, RGB ( 0x44, 0x44, 0xdd ) );
 
-				case ID_TOGGLE_BROADCAST:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_TOGGLE_BROADCAST, ID_TOGGLE_BROADCAST );
-					break;
-
-				case ID_VIEW_MONITOR:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_VIEW_MONITOR, 0 );
-					break;
-
-				case ID_VIEW_WOWS:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_VIEW_WOWS, 0 );
-					break;
-				}
-			}
+			SetBkMode		( hdc, OPAQUE );
+			SetBkColor		( hdc, RGB ( 0xFF, 0xFF, 0xFF ) );
+			return 			reinterpret_cast<INT_PTR> ( GetStockObject ( WHITE_BRUSH ) );
 		}
 		break;
-
-	case WM_DRAWITEM:
-		if ( pThis )
-			pThis->wm_drawitem ( (int) wParam, (DRAWITEMSTRUCT*) lParam );
-		break;
-
-
+#endif
 
 	case WM_INITDIALOG:
 		{
 			set_user_data ( hwnd, lParam );
 			cWin * pWin = lParam_to_pWin ( hwnd, lParam );
-			pThis = static_cast<cDlgModeStrip*>(pWin);
+			pThis = static_cast<cDlgSettingsPerformance*>(pWin);
 			pThis->hwnd = hwnd;
 			pThis->wm_init ();
 		}
 		break;
 
-#if 0
-	case WM_CTLCOLORDLG:
-	case WM_CTLCOLORSTATIC:
-			return (INT_PTR) GetStockObject ( WHITE_BRUSH );
-			break;
-
 	case WM_COMMAND:
 		{
-			int iID = LOWORD(wParam);
-
-			if ( iID == ID_OK )
+			switch ( LOWORD ( wParam ) ) // ID
 			{
+			case ID_CANCEL:
+				break;
 
-			}
-		}
-		break;
-#endif
+			case ID_RESTORE_DEFAULTS:
+				if ( pThis )
+				{
+					cSettings Defaults;
+					Defaults.init();
+					pThis->settings_to_dlg ( hwnd, &Defaults );
+					pThis->set_state();
+				}
+				break;
 
-#if 0
+			case ID_OK:
+				assert ( pThis );
+				if ( pThis )
+				{
+					pThis->dlg_to_settings ( &g_Settings, hwnd );
+					g_Settings.save_to_file ();
+					mojo::set ( L"bRaiseProcessPriority",    g_Settings.bRaiseProcessPriority );
+					mojo::set ( L"bMaximizeTimerResolution", g_Settings.bMaximizeTimerResolution );
+				}
+				break;
+
+			default:
+				break;
+			} // end ID switch
+
+			break;
+		} // end WM_COMMAND
+
 	case WM_NOTIFY:
 		{
 			switch( wParam )
@@ -227,14 +203,15 @@ INT_PTR CALLBACK cDlgModeStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 			}
         }
 		break;
-#endif
 
 	default:
-		break;
+		break; // end WM_COMMAND switch
 	}
 
 	return cDlgModal::dialog_proc ( hwnd, uMessage, wParam, lParam );
 }
+
+
 
 /***********************************************************************************************************************
 /*

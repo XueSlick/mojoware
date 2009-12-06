@@ -105,7 +105,7 @@ void cPool :: on_socket_close_notification ( WPARAM wParam, LPARAM lParam )
 	}
 #endif
 
-	cMessenger::tell_app_that_connections_changed(); 
+	cMessenger::tell_app_that_machlist_changed(); 
 }
 
 #else // prior to july 7 2009

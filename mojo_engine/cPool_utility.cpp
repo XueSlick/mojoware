@@ -67,11 +67,11 @@ extern cPool g_Pool;
 
 //----------------------------------------------------------------------------------------------
 // GET CONNECTION STATUS
-// return values match mono::nConnectionStatus::eConnectionStatus enum.
+// return values match mojo::nConnectionStatus::eConnectionStatus enum.
 //----------------------------------------------------------------------------------------------
 int cPool :: get_connection_status ( DWORD dwIP )
 {
-	if ( 0 == dwIP )
+	if ( 0 == dwIP ) // ERROR OR LOCAL IP?
 		return 0;
 
 	int iRetVal = 0;

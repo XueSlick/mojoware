@@ -76,3 +76,13 @@ DlgSettingsConnectionAdvanced.OK						= OK
 DlgSettingsConnectionAdvanced.Cancel					= Cancel
 DlgSettingsConnectionAdvanced.RestoreDefaults			= Restore Defaults
 DlgSettingsConnectionAdvanced.SpecifyLocalIP.Error		= Please select an IP address. You need to do this because\nyou checked \"I'll choose from the following list.\"
+
+
+// PERFORMANCE SETTINGS DIALOG
+
+DlgSettingsPerformance.Title                           = %s: Performance settings
+DlgSettingsPerformance.Mojo.Label                      = %s's settings
+DlgSettingsPerformance.System.Label                    = System settings
+DlgSettingsPerformance.Link                            = <a href=\"%s\">Learn more about these choices</a>
+DlgSettingsPerformance.RaiseProcessPriority            = Raise process priority
+DlgSettingsPerformance.MaximizeTimerResolution         = Maximize timer resolution

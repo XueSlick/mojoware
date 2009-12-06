@@ -19,7 +19,7 @@ using namespace Gdiplus;
 // DATA
 //======================================================================================================================
 
-static const wchar_t			s_awWindowClass [] =	L"mojoWindowClass";
+static const wchar_t			s_awWindowClass [] =	L"MojoWindowClass";
 Gdiplus::GdiplusStartupInput	s_GdiplusStartupInput;
 ULONG_PTR						s_GdiplusToken;
 
@@ -154,7 +154,8 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 	mojo::set ( L"uSpecifiedLocalIP",		g_Settings.uSpecifiedLocalIP );
 	mojo::set ( L"bUseNagle",				g_Settings.bUseNagle );
 	mojo::set ( L"uPort",					g_Settings.uPort );
-	mojo::set ( L"bBroadcastIsOn",       g_Settings.bBroadcastIsOn );
+	mojo::set ( L"bBroadcastIsOn",          g_Settings.bBroadcastIsOn );
+	mojo::set ( L"bRaiseProcessPriority",   g_Settings.bRaiseProcessPriority );
 
 	//-------------------------------------
 	// INIT ENGINE (after window exists)
@@ -187,7 +188,8 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 	//-------------------------------------
 	// CHECK REQUIRED OS VERSION
 	//-------------------------------------
-
+#if 0
+	// moved to mojo::init_engine()
 	if ( ! version_or_higher ( 5, 1 ) )
 	{
 		// TO DO -- use scribs for this for international support
@@ -196,6 +198,7 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 		message_box ( &m );
 		return 0;
 	}
+#endif
 
 	//-------------------------------------
 	// INIT GDIPLUS
@@ -382,91 +385,6 @@ bool create_window ( HINSTANCE hInstance )
 }
 
 
-
-//----------------------------------------------------------------------------------------------------------------------
-// INIT APP
-//----------------------------------------------------------------------------------------------------------------------
-BOOL init_app ( HINSTANCE hInstance, int nCmdShow )
-{
-	UNREFERENCED_PARAMETER ( hInstance );
-	UNREFERENCED_PARAMETER ( nCmdShow );
-
-	g_WinMain.hwnd = g_hwnd;
-
-	//-------------------------------------
-	// INSERT cMACH FOR LOCAL PC
-	//-------------------------------------
-#if 0
-	// do this before cFinderyBroadcast and g_Pool start
-	// because they need to send the local
-	// machine's DisplayList
-	g_Machlist.init_and_insert_local_machine ();
-#endif
-
-	//-------------------------------------
-	// INSTALL MOUSE AND KEYBOARD HOOKS
-	//-------------------------------------
-	// do this after g_Pool.start(), otherwise
-	// mouse lags during firewall popup
-#if 0
-	s_Hook.init();
-#endif
-
-#if 0
-
-	
-	// set_menu_item_text ( g_hwnd, ID_TOGGLE_HOTKEYS, g_Settings.bHotkeysAreOn ? L"Turn hotkeys off" : L"Turn hotkeys on" );
-#endif
-
-	// USER ADMIN?
-
-	if ( version_or_higher ( 6, 0 ) )
-	{
-#if 0
-		LOG ( is_user_admin() ? L"Running as admin." : L"Not running as admin." );
-
-		if ( ! g_Settings.bDoNotShowRunAsAdminDialog )
-			if ( ! is_user_admin () )
-			{
-				cDlgRunAsAdmin d;
-				d.make_dlg();
-			}
-#endif
-	}
-
-#if 0
-	WINDOWPLACEMENT wp;
-
-	wp.length = sizeof(wp);
-	wp.rcNormalPosition.left = g_Settings.WinPos.x;
-	wp.rcNormalPosition.top = g_Settings.WinPos.y;
-	wp.rcNormalPosition.right = g_Settings.WinPos.x + g_Settings.WinPos.dx;
-	wp.rcNormalPosition.bottom = g_Settings.WinPos.y + g_Settings.WinPos.dy;
-
-	wp.showCmd = g_Settings.bStartMinimizedToTray ? SW_HIDE : SW_SHOWNORMAL;
-
-	SetWindowPlacement ( g_hwnd, &wp );
-#endif
-
-	return TRUE;
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-// SETTINGS FILE EXISTS
-//----------------------------------------------------------------------------------------------------------------------
-#if 0
-bool settings_file_exists ()
-{
-	cStrW sTemp;
-	bool bSettingsFileExists = false;
-	g_Settings.file_pathname ( &sTemp );
-	bSettingsFileExists = file_exists ( sTemp.cstr() );
-	return bSettingsFileExists;
-}
-#endif
-
-
 //----------------------------------------------------------------------------------------------------------------------
 // MAKE FONTS
 //----------------------------------------------------------------------------------------------------------------------
@@ -502,7 +420,7 @@ void make_fonts ()
 	// CAPTION FONT
 	//-------------------------------
 
-	if ( version_or_higher ( 6, 0 ) )
+	if ( os_version_or_higher ( 6, 0 ) )
 	{
 		LOGFONT f = g_NonClientMetrics.lfCaptionFont;
 		f.lfWeight = 700;

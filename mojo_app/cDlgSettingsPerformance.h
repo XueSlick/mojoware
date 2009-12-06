@@ -1,6 +1,8 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgModeStrip.h / mojo_app
+/*    cDlgSettingsPerformance.h / mojo_app
+/*
+/*    Wrapper for the Connection Settings dialog box. 
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -8,35 +10,31 @@
 
 #pragma once
 
-#include "cDlg.h"
-#include "cLiquidButton.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-//  CLASS cDlgAbout
+//  CLASS DLG SETTINGS CONNECTION
 //----------------------------------------------------------------------------------------------------------------------
-class cDlgModeStrip : public cDlg
+class cDlgSettingsPerformance : public cDlgModal, public cDlgVars
 {
 public:
 
-	virtual int idd () { return IDD_MODE_STRIP; }
-	virtual DialogProc * dialog_proc () { return dialog_proc; }
-	static DialogProc dialog_proc;
-
-	int get_height ();
-
-	mojo::cStrW sText;
-
-	void redraw_buttons (); // can be called by parent window
+	void 				wm_init ();
+	virtual int 		idd () { return IDD_SETTINGS_PERFORMANCE; }
+	virtual 			DialogProc * dialog_proc () { return dialog_proc; }
+	static 				DialogProc dialog_proc;
+	static sDlgDatum 	aDlgData[];
+	virtual void 		set_text ();
+	void				set_state ();
 
 private:
 
-	cLiquidButton ToggleMouseover;
-	cLiquidButton ToggleHotkeys;
-	cLiquidButton ToggleBroadcast;
+	void				register_children ();
+	cWin				RestoreDefaults;
+	cWin 				OK;
+	cWin 				Cancel;
+	cWinLabel			MojoLabel;
+	cWinLabel			SystemLabel;
 
-
-	void wm_init ();
-	void wm_drawitem ( int iID, DRAWITEMSTRUCT* pDI );
 };
 
 

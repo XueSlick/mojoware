@@ -65,7 +65,7 @@ namespace mojo
 
 const UINT uWM_INPUT_EVENT_READY             = WM_APP + 0xBFFF - 0;
 const UINT uWM_MEMO_READY                    = WM_APP + 0xBFFF - 1;
-const UINT uWM_CONNECTIONS_CHANGED           = WM_APP + 0xBFFF - 2;
+const UINT uWM_MACHLIST_CHANGED              = WM_APP + 0xBFFF - 2;
 const UINT uWM_BROADCAST_TARGETS_CHANGED     = WM_APP + 0xBFFF - 3;
 const UINT uWM_HIDE_OR_SHOW_CURSOR           = WM_APP + 0xBFFF - 4;
 

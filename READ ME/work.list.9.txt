@@ -1,0 +1,42 @@
+==============================================================
+                      BUILD 9 WORK LIST                      
+==============================================================
+
+ 1.  Added maximize button to Mouseover Settings. 
+
+ 2.  Improved artwork for main window's toggle buttons.
+     -- added cLiquidButton.
+     -- added cDlgModeStrip.
+     -- removed main window's toolbar.
+
+ 3.  Performance Settings added.
+     -- Raise process priority added.
+	 -- Maximize tmer resolution added but disabled.
+ 
+ 4.  mojo::set() enhanced.
+     -- now takes action based on changed settings.
+
+ 5.  View Wows added (but non-functional).
+
+ 6.  View computers added.
+     -- black/gold/blue icons indicate connection status.
+	 -- defaults to icon view.
+	 -- report view is implemented but is not displayed.
+
+ 6.  Added cDlgViewStrip.
+
+ 7.  Cursor hiding added to mouseover (was accidentally
+     commented out).
+
+ 8.  Toggle mode items removed from main menu.
+
+                     
+
+
+
+
+
+
+
+
+
