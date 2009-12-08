@@ -101,7 +101,12 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="balloon.cpp" />
+    <ClCompile Include="cConfig.cpp" />
+    <ClCompile Include="cConfigItem.cpp" />
     <ClCompile Include="cCrashHandler.cpp" />
+    <ClCompile Include="cDlgSettingsAppearance.cpp" />
+    <ClCompile Include="cDlgToons.cpp" />
+    <ClCompile Include="cGdiPlus.cpp" />
     <ClCompile Include="cListViewComputers.cpp" />
     <ClCompile Include="cDlg.cpp" />
     <ClCompile Include="cDlgAbout.cpp" />
@@ -123,10 +128,14 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClCompile Include="click_once.cpp" />
     <ClCompile Include="cLiquidButton.cpp" />
     <ClCompile Include="cListviewConnections.cpp" />
+    <ClCompile Include="cListViewToons.cpp" />
+    <ClCompile Include="cListViewWoWs.cpp" />
     <ClCompile Include="cScrobIm.cpp" />
     <ClCompile Include="cScrobMgrIm.cpp" />
     <ClCompile Include="cScrobMgrImMouseOver.cpp" />
     <ClCompile Include="cSettings.cpp" />
+    <ClCompile Include="cToon.cpp" />
+    <ClCompile Include="cToonList.cpp" />
     <ClCompile Include="cWin.cpp" />
     <ClCompile Include="cWinLabel.cpp" />
     <ClCompile Include="cWinMain.cpp" />
@@ -152,10 +161,16 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     </ClCompile>
     <ClCompile Include="utility.cpp" />
     <ClCompile Include="window_stuff.cpp" />
+    <ClCompile Include="xml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="balloon.h" />
+    <ClInclude Include="cConfig.h" />
+    <ClInclude Include="cConfigItem.h" />
     <ClInclude Include="cCrashHandler.h" />
+    <ClInclude Include="cDlgSettingsAppearance.h" />
+    <ClInclude Include="cDlgToons.h" />
+    <ClInclude Include="cGdiPlus.h" />
     <ClInclude Include="cListViewComputers.h" />
     <ClInclude Include="cDlg.h" />
     <ClInclude Include="cDlgAbout.h" />
@@ -175,10 +190,14 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClInclude Include="click_once.h" />
     <ClInclude Include="cLiquidButton.h" />
     <ClInclude Include="cListviewConnections.h" />
+    <ClInclude Include="cListViewToons.h" />
+    <ClInclude Include="cListViewWoWs.h" />
     <ClInclude Include="cScrobIm.h" />
     <ClInclude Include="cScrobMgrIm.h" />
     <ClInclude Include="cScrobMgrImMouseOver.h" />
     <ClInclude Include="cSettings.h" />
+    <ClInclude Include="cToon.h" />
+    <ClInclude Include="cToonList.h" />
     <ClInclude Include="cWin.h" />
     <ClInclude Include="cWinLabel.h" />
     <ClInclude Include="cWinMain.h" />
@@ -190,6 +209,8 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClInclude Include="targetver.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="window_stuff.h" />
+    <ClInclude Include="wm_constants.h" />
+    <ClInclude Include="xml.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Mojo\mojo_app\mojo_app.ico" />

@@ -15,6 +15,7 @@
 
 extern cCrashHandler		g_CrashHandler;
 extern cLog					g_Log;
+extern cGdiPlus             g_GdiPlus;
 extern HINSTANCE 			g_hInstance;
 extern HWND					g_hwnd;
 extern wchar_t 				g_awAppTitle [];
@@ -29,6 +30,7 @@ extern HFONT				g_hHeadFont;
 extern NONCLIENTMETRICS		g_NonClientMetrics;
 extern const wchar_t * 		g_apDefaultScribs [];
 extern cSettings			g_Settings;
+extern cConfig              g_Config;
 
 /***********************************************************************************************************************
 /*

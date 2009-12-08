@@ -29,10 +29,10 @@ class MOJO_ENGINE_API cMachlist : public tList2<cMach>
 {
 public:
 
-	cMachlist () : dwLastSerialNumberAssigned ( DWORD(0) ) {}
+	cMachlist () : dwLastSerialNumberAssigned ( DWORD(0) ) {} // zero is local machine
 
 	DWORD handle_to_ip ( DWORD dwHandle );
-
+	bool get_mach ( mojo::cMach * pRet, DWORD dwHandle );
 	cMach * get_by_ip_or_add ( DWORD dwIP, const wchar_t * pDisplayList = NULL );
 
 	// void receive_new_mach ( cMach * pNew ); // called by outside thread // { receipts.append ( pNew ); SendMessage ( g_hwnd, uWM_MACHLIST_RECEIPTS, 0, 0 ); } // called by outside thread

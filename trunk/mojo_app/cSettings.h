@@ -47,6 +47,8 @@ public:
 	bool				bRaiseProcessPriority;
 	bool				bMaximizeTimerResolution;
 	unsigned            uView;
+	unsigned			uToonIconWidth;
+	unsigned			uToonIconHeight;
 
 	//-----------------------------------
 	// DEFINE FOLLOWING IN DERIVED CLASS

@@ -25,12 +25,12 @@
 // CLASSES
 //======================================================================================================================
 
-class cFileIn;
-class cFileOut;
+
 
 namespace mojo
 {
-
+class cFileOut;
+class cFileIn;
 #pragma warning ( push )
 #pragma warning ( disable : 4251 ) // class 'mojo::cVersion' needs to have dll-interface to be used by clients of class 'mojo::cSettingsBase'
 
@@ -65,7 +65,7 @@ protected:
 		const wchar_t *	name;   
 	};
 
-	void				write_item ( cFileOut * pFile, const wchar_t * pName, const wchar_t * pValue );
+	void				write_item ( mojo::cFileOut * pFile, const wchar_t * pName, const wchar_t * pValue );
 	void *				entry_to_item ( sEntry * e ) { return (void *) ( (BYTE*)this + e->offset ); }
 	sEntry * 			name_to_entry ( const wchar_t * pName );
 	mojo::cStrW         sPathname; // fully qualified name of file

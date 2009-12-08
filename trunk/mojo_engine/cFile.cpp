@@ -23,6 +23,7 @@
 #include "cFile.h"
 #include "wchar.h"
 
+using namespace mojo;
 
 //=======================================================================================================
 // PROTOTYPES
@@ -34,6 +35,51 @@ static FILE * open_text_file_for_writing ( const wchar_t * pwFile );
 //=======================================================================================================
 // CODE
 //=======================================================================================================
+
+//-------------------------------------------------------------------------------------------------------
+// GET WHOLE THING
+//-------------------------------------------------------------------------------------------------------
+bool cFileIn :: get_whole_thing ( mojo::cStrW * pRet )
+{
+	wint_t c;
+	unsigned uQtyRead = 0;
+
+	while ( WEOF != ( c = getwc ( h ) ) )
+	{
+		uQtyRead ++;
+		*pRet += static_cast<wchar_t> ( c );
+	}
+
+	return uQtyRead ? true : false;
+}
+
+//-------------------------------------------------------------------------------------------------------
+// GET WHOLE THING 
+//-------------------------------------------------------------------------------------------------------
+bool cFileIn :: get_whole_thing_without_line_breaks ( mojo::cStrW * pRet )
+{
+	wint_t c;
+	unsigned uQtyRead = 0;
+
+	while ( WEOF != ( c = getwc ( h ) ) )
+	{
+		uQtyRead ++;
+
+		if ( 0x2028 == c )  // unicode line separator
+			continue;
+
+		else if ( 0x0A == c )
+			continue;
+
+		else if ( 0x0D == c )
+			continue;
+
+		else
+			*pRet += static_cast<wchar_t> ( c );
+	}
+
+	return uQtyRead ? true : false;
+}
 
 
 //-------------------------------------------------------------------------------------------------------

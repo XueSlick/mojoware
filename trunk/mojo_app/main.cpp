@@ -13,15 +13,15 @@
 #include "stdafx.h"
 
 using namespace mojo;
-using namespace Gdiplus;
+// using namespace Gdiplus;
 
 //======================================================================================================================
 // DATA
 //======================================================================================================================
 
 static const wchar_t			s_awWindowClass [] =	L"MojoWindowClass";
-Gdiplus::GdiplusStartupInput	s_GdiplusStartupInput;
-ULONG_PTR						s_GdiplusToken;
+// Gdiplus::GdiplusStartupInput	s_GdiplusStartupInput;
+// ULONG_PTR						s_GdiplusToken;
 
 
 //======================================================================================================================
@@ -53,10 +53,18 @@ void 							make_fonts ();
 //----------------------------------------------------------------------------------------------------------------------
 void test ( )
 {
-#ifdef _DEBUG
-	cDlgModeStrip d;
-	d.make_dlg();
-#endif
+	cStrW s = L"<MyTag>This is the contents</MyTag><Tag2>Contents2</Tag2>"; // <Tag2>Contents2</Tag2>";
+	const wchar_t * pNext = s.cstr();
+	cStrW sContent;
+
+	bool b = xml_name_to_content ( &sContent, &pNext, L"MyTag" );
+	 b = xml_name_to_content ( &sContent, &pNext, L"Tag2" );
+	 b = xml_name_to_content ( &sContent, &pNext, L"Tag2" );
+	b;
+
+	int x = 3;
+	x++;
+	
 	// SetTimer ( g_hwnd, 0, 30, NULL );
 }
 
@@ -87,14 +95,7 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 	if ( previous_instance_is_running () )
 		return 0;
 
-	//-------------------------------------
-	// BUILD TYPE
-	//-------------------------------------
-	#ifdef _DEBUG
-		LOG ( L"This is a debug build." );
-	#else
-		LOG ( L"This is a release build." );
-	#endif
+
 
 	//-------------------------------------
 	// COMMON CONTROLS
@@ -204,7 +205,7 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 	// INIT GDIPLUS
 	//-------------------------------------
 
-	GdiplusStartup ( &s_GdiplusToken, &s_GdiplusStartupInput, NULL );
+	// GdiplusStartup ( &s_GdiplusToken, &s_GdiplusStartupInput, NULL );
 
 	//-------------------------------------
 	//  LICENSE AGREEMENT
@@ -320,7 +321,7 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 void clean_up_for_exit ()
 {
 	mojo::shut_down_engine ();
-	Gdiplus::GdiplusShutdown ( s_GdiplusToken );
+	// Gdiplus::GdiplusShutdown ( s_GdiplusToken );
 	g_Settings.save_to_file ();
 
 #if 0

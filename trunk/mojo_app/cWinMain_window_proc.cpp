@@ -103,6 +103,12 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 		}
 		break;
 
+	case uWM_TOON_LIST_CHANGED:
+		{
+			PostMessage ( pThis->DlgToons.hwnd, uWM_TOON_LIST_CHANGED, 0, 0 );
+		}
+		break;
+
 	case WM_CREATE:
 		{
 			CREATESTRUCT * pCS = reinterpret_cast<CREATESTRUCT*>(lParam);
@@ -129,11 +135,9 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 		}
 		break;
 
-#if 1
 	case uWM_HIDE_OR_SHOW_CURSOR:
 		pThis->hide_or_show_cursor ( wParam );
 		break;
-#endif
 
 	case WM_HOTKEY:
 		if ( VK_F1 == wParam )
@@ -161,6 +165,8 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 	case WM_TIMER:
 			mojo::put_ad_lib_memo ( cMemo::warning, L"Testing new scroll code", L"Aye I'm testing at rate of 33 messages per second." );
 			break;
+	
+
 
 #if 0
 	case uWM_SET_MOUSEOVER_DISPLAY_LIST:

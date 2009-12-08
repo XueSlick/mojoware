@@ -86,3 +86,12 @@ DlgSettingsPerformance.System.Label                    = System settings
 DlgSettingsPerformance.Link                            = <a href=\"%s\">Learn more about these choices</a>
 DlgSettingsPerformance.RaiseProcessPriority            = Raise process priority
 DlgSettingsPerformance.MaximizeTimerResolution         = Maximize timer resolution
+
+
+// APPEARANCE SETTINGS DIALOG
+
+DlgSettingsAppearance.Title                            = %s: Appearance settings
+DlgSettingsAppearance.ToonIcon.Label                   = Toon icons
+DlgSettingsAppearance.ToonIconHeightLabel              = Height
+DlgSettingsAppearance.ToonIconWidthLabel               = Width
+DlgSettingsAppearance.Link                             = <a href=\"%s\">Learn more about these choices</a>

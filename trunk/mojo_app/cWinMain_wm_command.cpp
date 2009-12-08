@@ -42,6 +42,13 @@ void cWinMain :: wm_command ( WPARAM wParam, LPARAM lParam )
 		}
 		break;
 
+	case ID_APPEARANCE_SETTINGS:
+		{
+			cDlgSettingsAppearance d;
+			d.make_dlg ();
+		}
+		break;
+
 	case ID_CLEAR:
 		PostMessage ( DlgMonitor.hwnd, WM_COMMAND, ID_CLEAR, ID_CLEAR );
 		break;
@@ -108,6 +115,10 @@ void cWinMain :: wm_command ( WPARAM wParam, LPARAM lParam )
 		}
 		break;
 
+	case ID_TEST:
+		::test ();
+		break;
+
 	case ID_TOGGLE_BROADCAST:
 		toggle_broadcast ();
 		break;
@@ -121,9 +132,7 @@ void cWinMain :: wm_command ( WPARAM wParam, LPARAM lParam )
 		toggle_mouseover ();
 		break;
 
-	case ID_TEST:
-		::test ();
-		break;
+
 
 	case ID_VIEW_COMPUTERS:
 		g_Settings.uView = computers;
@@ -132,6 +141,11 @@ void cWinMain :: wm_command ( WPARAM wParam, LPARAM lParam )
 
 	case ID_VIEW_MONITOR:
 		g_Settings.uView = monitor;
+		set_view();
+		break;
+
+	case ID_VIEW_TOONS:
+		g_Settings.uView = toons;
 		set_view();
 		break;
 

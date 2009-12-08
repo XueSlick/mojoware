@@ -44,6 +44,8 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( bRaiseProcessPriority,					boolean,				L"bRaiseProcessPriority"				),
 	ENTRY ( bMaximizeTimerResolution,				boolean,				L"bMaximizeTimerResolution"				),
 	ENTRY ( uView,									uint,				    L"uView"				                ),
+	ENTRY ( uToonIconWidth,							uint,				    L"uToonIconWidth"				        ),
+	ENTRY ( uToonIconHeight,						uint,				    L"uToonIconHeight"				        ),
 
 };
 
@@ -94,6 +96,8 @@ void cSettings :: init ()
 	bRaiseProcessPriority				= true;
 	bMaximizeTimerResolution            = true;
 	uView                               = cWinMain::computers;
+	uToonIconWidth                      = 50;
+	uToonIconHeight                     = 50;
 
 }
 

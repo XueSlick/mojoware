@@ -46,13 +46,18 @@ void cWinMain :: set_view ()
 {
 
 	ShowWindow ( DlgComputers.hwnd, SW_HIDE );
-	ShowWindow ( DlgWoWs.hwnd, SW_HIDE );
-	ShowWindow ( DlgMonitor.hwnd, SW_HIDE );
+	ShowWindow ( DlgWoWs.hwnd,      SW_HIDE );
+	ShowWindow ( DlgMonitor.hwnd,   SW_HIDE );
+	ShowWindow ( DlgToons.hwnd,     SW_HIDE );
 
 	switch ( ( _eView ) ( g_Settings.uView ) )
 	{
 	case computers:
 		ShowWindow ( DlgComputers.hwnd, SW_SHOW );
+		break;
+
+	case toons:
+		ShowWindow ( DlgToons.hwnd, SW_SHOW );
 		break;
 
 	case wows:
@@ -387,6 +392,20 @@ void cWinMain::wm_create ( HWND hwndArg )
 	SetParent ( DlgComputers.hwnd, hwndArg );
 
 	//----------------------------------------
+	//  TOONS DIALOG
+	//----------------------------------------
+
+	DlgToons.make_dlg ();
+
+	register_child ( &DlgToons,
+							  nAnchor::left,       0, iViewStripWidth,
+							  nAnchor::top,        0, DlgModeStrip.get_height(),
+							  nAnchor::right,      0, 0,
+							  nAnchor::bottom,     0, 0 );
+
+	SetParent ( DlgToons.hwnd, hwndArg );
+
+	//----------------------------------------
 	//  CURSOR BLIND (HIDES CURSOR WHILE
 	//  IT'S MOUSED OVER TO A REMOTE
 	//----------------------------------------
@@ -407,8 +426,6 @@ void cWinMain::wm_create ( HWND hwndArg )
 	toggle_broadcast ();
 	toggle_hotkeys   ();
 	toggle_mouseover ();
-
-
 }	
 
 	

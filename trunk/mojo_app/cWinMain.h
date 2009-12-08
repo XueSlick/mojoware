@@ -21,6 +21,7 @@
 #include "cDlgWoWs.h"
 #include "cDlgCornerLogo.h"
 #include "cDlgComputers.h"
+#include "cDlgToons.h"
 
 
 //=======================================================================================================
@@ -34,7 +35,7 @@ public:
 	cWinMain () { pClassName = L"cWinMain"; }
 	void load_script_sub();
 
-	enum _eView { computers, wows, monitor }; // used to cast cSettings::uView
+	enum _eView { computers, wows, monitor, toons, teams }; // used to cast cSettings::uView
 
 private:
 
@@ -62,6 +63,7 @@ private:
 	cDlgViewStrip   DlgViewStrip;
 	cDlgCornerLogo  DlgCornerLogo;
 	cDlgWoWs        DlgWoWs;
+	cDlgToons       DlgToons;
 	cDlgMessageBox  MB;
 	cDlgCursorBlind DlgCursorBlind;
 

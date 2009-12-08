@@ -30,7 +30,7 @@ class MOJO_ENGINE_API cMach
 {
 public:
 
-	cMach () : pPrev(0), pNext(0), dwSerialNumber(DWORD(0)), dwIP(0), bThisPC (false), DrawPos(-1,-1), bValidDrawPos(false) { InitializeCriticalSectionAndSpinCount(&this->cs, 4000 ); }
+	cMach () : pPrev(0), pNext(0), dwSerialNumber(DWORD(-1)), dwIP(0), bThisPC (false), DrawPos(-1,-1), bValidDrawPos(false) { InitializeCriticalSectionAndSpinCount(&this->cs, 4000 ); }
 	cMach ( const cMach & rh );
 	~cMach () { DeleteCriticalSection ( & cs ); }
 

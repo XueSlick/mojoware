@@ -39,8 +39,8 @@
     <SuiteName>Mojo</SuiteName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>download.html</WebPage>
-    <ApplicationRevision>9</ApplicationRevision>
-    <ApplicationVersion>0.0.1.9</ApplicationVersion>
+    <ApplicationRevision>10</ApplicationRevision>
+    <ApplicationVersion>0.0.1.10</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>

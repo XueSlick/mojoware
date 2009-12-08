@@ -54,6 +54,7 @@
 #include "cMachlist.h"
 #include "cTarget.h"
 #include "directories.h"
+#include "cFile.h"
 
 
 
@@ -104,6 +105,7 @@ MOJO_ENGINE_API bool get_ip_addresses          ( mojo::cArrayU * pRet );
 MOJO_ENGINE_API void ip_dword_to_cStrW         ( cStrW * pRet, DWORD dw );
 MOJO_ENGINE_API DWORD ip_pw_to_dword		   ( const wchar_t * );
 MOJO_ENGINE_API void  get_machlist		       ( mojo::cMachlist * pRet );
+MOJO_ENGINE_API bool  get_mach                 ( mojo::cMach * pRet, DWORD dwHandle );
 MOJO_ENGINE_API mojo::nConnectionStatus::eConnectionStatus 
 				get_connection_status 	       ( DWORD dwMachHandle );
 MOJO_ENGINE_API void get_broadcast_targets     ( mojo::cArrayTarget * pRet );

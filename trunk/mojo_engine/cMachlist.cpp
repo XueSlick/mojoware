@@ -16,6 +16,37 @@ using namespace mojo;
 // CODE
 //======================================================================================================================
 
+//----------------------------------------------------------------------------------------------------------------------
+//  GET MACH
+//  Gets a copy of machine
+//----------------------------------------------------------------------------------------------------------------------
+bool cMachlist :: get_mach ( cMach * pRet, DWORD dwHandle )
+{
+	if ( DWORD(-1) == dwHandle )
+	{
+		assert(0);
+		return false;
+	}
+
+	bool bFound = false;
+
+	lock();
+	{
+		for ( cMach * p = first(); p; p = next(p) )
+		{
+			if ( dwHandle == p->dwSerialNumber )
+			{
+				*pRet = *p;
+				bFound = true;
+				break;
+			}
+		}
+	}
+	unlock();
+
+	return bFound;
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 //  HANDLE TO IP
@@ -236,7 +267,8 @@ void cMachlist :: init_and_insert_local_machine ()
 	::get_full_dns_name ( &p->sName );
 	p->DisplayList.set_from_local_hardware ();
 	append ( p );
-	p->dwSerialNumber = ++this->dwLastSerialNumberAssigned;
+	// p->dwSerialNumber = ++this->dwLastSerialNumberAssigned;
+	p->dwSerialNumber = 0; // LOCAL MACHINE IS MACHINE ZERO
 	get_draw_position_from_file ( p );
 }
 

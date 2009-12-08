@@ -1,0 +1,28 @@
+==============================================================
+                      BUILD 10 WORK LIST                      
+==============================================================
+
+ 1.  Added cConfig, cToon, cConfigItem.
+
+ 2.  Added Team (non-functional) to View Strip.
+
+ 3.  Added xml.cpp.
+
+ 4.  Added Mojo.config.xml.
+
+ 5.  Added cGdiPlus.
+
+ 6.  Added cListViewToons.
+
+ 7.  Added Toons to View Strip.
+
+                     
+
+
+
+
+
+
+
+
+
