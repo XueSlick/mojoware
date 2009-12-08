@@ -32,6 +32,8 @@ private:
 	cWin          ViewMonitor;
 	cWin          ViewWoWs;
 	cWin          ViewComputers;
+	cWin          ViewToons;
+	cWin          ViewTeams;
 
 	void wm_init ();
 

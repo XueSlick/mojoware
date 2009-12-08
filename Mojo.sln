@@ -16,22 +16,20 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mojo_hooks", "mojo_hooks\mojo_hooks.vcxproj", "{91FA5218-F24E-4DAE-AB9D-23DBB5217B16}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scrib_compiler", "scrib_compiler\scrib_compiler.vcxproj", "{13F64981-CF6E-4E02-969D-D1AD834968BC}"
-	ProjectSection(ProjectDependencies) = postProject
-		{BD9DAFF2-5907-4112-B036-A5D110C1D442} = {BD9DAFF2-5907-4112-B036-A5D110C1D442}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "READ ME", "READ ME", "{D1BECCFA-57CF-434C-9A94-D1240F851B58}"
 	ProjectSection(SolutionItems) = preProject
 		READ ME\bugs.txt = READ ME\bugs.txt
 		READ ME\cpp_template.txt = READ ME\cpp_template.txt
 		READ ME\gpl.txt = READ ME\gpl.txt
+		C:\Users\Admin\AppData\Local\mojo\Mojo.config.xml = C:\Users\Admin\AppData\Local\mojo\Mojo.config.xml
 		C:\Users\Admin\AppData\Local\mojo\Mojo.draw_positions.txt = C:\Users\Admin\AppData\Local\mojo\Mojo.draw_positions.txt
 		C:\Users\Admin\AppData\Local\mojo\mojo.log.txt = C:\Users\Admin\AppData\Local\mojo\mojo.log.txt
 		C:\Users\Admin\AppData\Local\mojo\Mojo.settings.txt = C:\Users\Admin\AppData\Local\mojo\Mojo.settings.txt
 		C:\Users\Admin\AppData\Local\mojo\mojo_engine.log.txt = C:\Users\Admin\AppData\Local\mojo\mojo_engine.log.txt
 		READ ME\README.TXT = READ ME\README.TXT
 		READ ME\to.do.txt = READ ME\to.do.txt
-		READ ME\work.list.9.txt = READ ME\work.list.9.txt
+		READ ME\work.list.10.txt = READ ME\work.list.10.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MojoInstaller", "MojoInstaller\MojoInstaller.csproj", "{FD2CFEE6-05DC-49EF-8C78-4C373C660D07}"

@@ -187,6 +187,12 @@ void cLog::print_header ( const wchar_t * p )
 	s += t;
 	log ( s.cstr() );
 
+	#ifdef _DEBUG
+		log ( L"This is a debug build." );
+	#else
+		log ( L"This is a release build." );
+	#endif
+
 	cStrW sName;
 	::get_full_dns_name ( &sName );
 	s = L"DNS name: ";
@@ -200,6 +206,16 @@ void cLog::print_header ( const wchar_t * p )
 		s += sOsVer;
 		log ( s.cstr() );
 	}
+
+	{
+		wchar_t b [4000];
+		_wgetcwd ( b, sizeof(b)/sizeof(wchar_t) );
+		s = L"Current working directory: ";
+		s += b;
+		log ( s.cstr() );
+	}
+
+
 
 	log ( L"" );
 	log ( L"-------------------------------------------------------------------------------------" );

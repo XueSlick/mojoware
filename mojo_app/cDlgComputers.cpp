@@ -88,37 +88,6 @@ INT_PTR CALLBACK cDlgComputers::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 		}
 		break;
 
-	case WM_COMMAND:
-		{
-			if ( BN_CLICKED == HIWORD ( wParam ) )
-			{
-				switch 	( LOWORD ( wParam ) )
-				{
-				case ID_TOGGLE_MOUSEOVER:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_TOGGLE_MOUSEOVER, ID_TOGGLE_MOUSEOVER );
-					break;
-
-				case ID_TOGGLE_HOTKEYS:
-					pThis->cWin::balloon ( GetDlgItem ( hwnd, ID_TOGGLE_HOTKEYS ), L"Sorry.", L"Hotkeys aren't implemented yet." );
-					break;
-
-				case ID_TOGGLE_BROADCAST:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_TOGGLE_BROADCAST, ID_TOGGLE_BROADCAST );
-					break;
-
-				case ID_VIEW_MONITOR:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_VIEW_MONITOR, 0 );
-					break;
-
-				case ID_VIEW_WOWS:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_VIEW_WOWS, 0 );
-					break;
-				}
-			}
-		}
-		break;
-
-
 	case WM_INITDIALOG:
 		{
 			set_user_data ( hwnd, lParam );
@@ -129,46 +98,30 @@ INT_PTR CALLBACK cDlgComputers::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 		}
 		break;
 
-#if 0
-	case WM_CTLCOLORDLG:
-	case WM_CTLCOLORSTATIC:
-			return (INT_PTR) GetStockObject ( WHITE_BRUSH );
-			break;
-
-	case WM_COMMAND:
+	case WM_NOTIFY:
+		if ( pThis )
 		{
-			int iID = LOWORD(wParam);
+			NMHDR * pN = (NMHDR*)lParam;
 
-			if ( iID == ID_OK )
+			if ( pN->code == NM_RCLICK )
 			{
+				DWORD dwHandle = pThis->ListView.hot_mach();
 
+				if ( (DWORD)-1 != dwHandle )
+				{
+					cMach m;
+					if ( mojo::get_mach ( &m, dwHandle ) )
+					{
+						cStrW s;
+						s.f ( L"You right-clicked a computer.\n\nHandle = %d.\nName = %s\n", dwHandle, m.sName.cstr() );
+						message_box ( s.cstr() );
+
+						// do_pc_context_menu ( hwnd, pM );
+					}
+				}
 			}
 		}
 		break;
-#endif
-
-#if 0
-	case WM_NOTIFY:
-		{
-			switch( wParam )
-			{
-			case ID_LINK:
-
-				switch ( ((LPNMHDR)lParam)->code )
-				{
-					case NM_CLICK:
-					case NM_RETURN:
-					{
-						wchar_t * pURL = PNMLINK(lParam)->item.szUrl;
-						ShellExecute ( NULL, L"open", pURL, NULL, NULL, SW_SHOW );
-					}
-					break;
-				}
-				break;
-			}
-        }
-		break;
-#endif
 
 	default:
 		break;
@@ -176,6 +129,7 @@ INT_PTR CALLBACK cDlgComputers::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 
 	return cDlgModal::dialog_proc ( hwnd, uMessage, wParam, lParam );
 }
+
 
 /***********************************************************************************************************************
 /*

@@ -8,8 +8,6 @@
 
 #include "stdafx.h"
 
-
-
 //======================================================================================================================
 // DATA
 //======================================================================================================================
@@ -25,16 +23,11 @@ const int iMargin = 9;
 // CODE
 //======================================================================================================================
 
-
-
 //----------------------------------------------------------------------------------------------------------------------
 // WM INIT
 //----------------------------------------------------------------------------------------------------------------------
 void cDlgViewStrip::wm_init ()
-{
-
-
-	
+{	
 	ViewComputers.hwnd = GetDlgItem ( hwnd, ID_VIEW_COMPUTERS );
 	register_child ( &ViewComputers,
 
@@ -51,14 +44,29 @@ void cDlgViewStrip::wm_init ()
 							  nAnchor::right,		0,		-iMargin,
 							  nAnchor::top,			0,      iMargin * 2 + iButtonHeight * 2 );
 
+	ViewToons.hwnd = GetDlgItem ( hwnd, ID_VIEW_TOONS );
+	register_child ( &ViewToons,
+
+							  nAnchor::left,		0,		iMargin,
+							  nAnchor::top,			0,		iMargin * 3 + 2 * iButtonHeight,
+							  nAnchor::right,		0,		-iMargin,
+							  nAnchor::top,			0,      iMargin * 3 + iButtonHeight * 3 );
+
+	ViewTeams.hwnd = GetDlgItem ( hwnd, ID_VIEW_TEAMS );
+	register_child ( &ViewTeams,
+
+							  nAnchor::left,		0,		iMargin,
+							  nAnchor::top,			0,		iMargin * 4 + 3 * iButtonHeight,
+							  nAnchor::right,		0,		-iMargin,
+							  nAnchor::top,			0,      iMargin * 4 + iButtonHeight * 4 );
+
 	ViewMonitor.hwnd = GetDlgItem ( hwnd, ID_VIEW_MONITOR );
 	register_child ( &ViewMonitor,
 
 							  nAnchor::left,		0,		iMargin,
-							  nAnchor::top,			0,		iMargin * 3 + iButtonHeight * 2,
+							  nAnchor::top,			0,		iMargin * 5 + iButtonHeight * 4,
 							  nAnchor::right,		0,		-iMargin,
-							  nAnchor::top,			0,      iMargin * 3 + iButtonHeight * 3 );
-
+							  nAnchor::top,			0,      iMargin * 5 + iButtonHeight * 5 );
 }
 
 
@@ -88,6 +96,10 @@ INT_PTR CALLBACK cDlgViewStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 
 				case ID_VIEW_WOWS:
 					PostMessage ( g_hwnd, WM_COMMAND, ID_VIEW_WOWS, 0 );
+					break;
+
+				case ID_VIEW_TOONS:
+					PostMessage ( g_hwnd, WM_COMMAND, ID_VIEW_TOONS, 0 );
 					break;
 				}
 			}

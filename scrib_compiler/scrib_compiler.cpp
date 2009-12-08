@@ -8,7 +8,7 @@
 
 
 #include "stdafx.h"
-#include "..\\mojo_engine\\cLog.h"
+// #include "..\\mojo_engine\\cLog.h"
 
 using namespace mojo;
 
@@ -18,8 +18,8 @@ using namespace mojo;
 //  PROTOTYPES
 //======================================================================================================================
 
-void print_header ( cFileOut * pOut );
-void print_footer ( cFileOut * pOut );
+void print_header ( ::cFileOut * pOut );
+void print_footer ( ::cFileOut * pOut );
 void do_it ( const wchar_t * pIn, const wchar_t * pOut );
 
 
@@ -55,7 +55,7 @@ void _tmain(int iArgQty, _TCHAR * apArg[])
 void do_it ( const wchar_t * pIn, const wchar_t * pOut )
 {
 
-	cFileIn In ( pIn );
+	::cFileIn In ( pIn );
 
 	if ( ! In.h )
 	{
@@ -63,7 +63,7 @@ void do_it ( const wchar_t * pIn, const wchar_t * pOut )
 		return;
 	}
 
-	cFileOut Out ( pOut );
+	::cFileOut Out ( pOut );
 
 	if ( ! Out.h )
 	{
@@ -117,7 +117,7 @@ void do_it ( const wchar_t * pIn, const wchar_t * pOut )
 //----------------------------------------------------------------------------------------------------------------------
 //  PRINT HEADER
 //----------------------------------------------------------------------------------------------------------------------
-void print_header ( cFileOut * pOut )
+void print_header ( ::cFileOut * pOut )
 {
 
 	cStrW sDate ( __WDATE__ );
@@ -140,7 +140,7 @@ void print_header ( cFileOut * pOut )
 //----------------------------------------------------------------------------------------------------------------------
 //  PRINT FOOTER
 //----------------------------------------------------------------------------------------------------------------------
-void print_footer( cFileOut * pOut )
+void print_footer( ::cFileOut * pOut )
 {
 	fwprintf ( pOut->h, L"   0\n" );
 	fwprintf ( pOut->h, L"};\n\n" );

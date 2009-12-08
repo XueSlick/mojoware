@@ -25,8 +25,11 @@ public:
 	void               insert_image_lists ( HWND hwnd );
 	void               set_view ( DWORD dwView );
 	const wchar_t *    mach_to_connection_state_text ( cMach * p );
+	DWORD              hot_mach ();
 
 private:
+
+
 
 	HIMAGELIST	hImageListLarge;
 	HIMAGELIST	hImageListState;

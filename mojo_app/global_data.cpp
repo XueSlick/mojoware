@@ -18,6 +18,7 @@
 cVersion			g_Version ( mojo::uVERSION_MAJ, mojo::uVERSION_MIN, mojo::uVERSION_PIP, mojo::uVERSION_BLD );
 cCrashHandler		g_CrashHandler;
 cLog				g_Log ( L"mojo", L"mojo", &g_Version );
+cGdiPlus			g_GdiPlus;
 HINSTANCE			g_hInstance;
 HWND				g_hwnd;
 wchar_t				g_awAppTitle[] = L"Mojo";
@@ -31,6 +32,7 @@ HFONT				g_hHeadFont;
 NONCLIENTMETRICS    g_NonClientMetrics;
 const wchar_t * 	g_apDefaultScribs [];
 cSettings			g_Settings ( g_awAppTitle, & g_Version );
+cConfig				g_Config;
 
 
 /***********************************************************************************************************************

@@ -63,6 +63,7 @@
 //  THIS PROJECT
 //---------------------------------
 
+#include "wm_constants.h"
 #include "cCrashHandler.h"
 #include "resource.h"
 #include "utility.h"
@@ -71,6 +72,12 @@
 #include "global_data_version.h"
 #include "cSettings.h"
 #include "balloon.h"
+#include "cConfigItem.h"
+#include "cToon.h"
+#include "xml.h"
+#include "cConfig.h"
+#include "cToonList.h"
+#include "cGdiPlus.h"
 
 //---------------------------------
 //  THIS PROJECT'S WINDOW CLASSES
@@ -102,6 +109,9 @@
 #include "cDlgCornerLogo.h"
 #include "cDlgComputers.h"
 #include "cListViewComputers.h"
+#include "cListViewWoWs.h"
+#include "cDlgToons.h"
+#include "cDlgSettingsAppearance.h"
 
 //---------------------------------
 //  GLOBAL DATA
