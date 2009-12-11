@@ -38,7 +38,7 @@ public:
 	static 	DialogProc dialog_proc;
 	virtual int idd () { return 0; }
 
-	enum _eType { text, note, subhead, head, caption }; // determines displayed text font, size, color
+	enum _eType { text, note, subhead, head, dialog_box_head, caption }; // determines displayed text font, size, color
 
 	static int draw_text ( HDC hdc,   RECT *pR, _eType eType, const wchar_t * pTxt, bool bDraw, DWORD dwStyles = 0 );
 	static int draw_text ( HWND hwnd, RECT *pR, _eType eType, const wchar_t * pTxt, bool bDraw, DWORD dwStyles = 0 );

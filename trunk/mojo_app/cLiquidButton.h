@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*   cLiquidButton.h / mojo_app
+/*    cLiquidButton.h / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*

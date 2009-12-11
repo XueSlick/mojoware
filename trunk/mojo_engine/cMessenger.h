@@ -9,7 +9,6 @@
 #pragma once
 
 #include "cMessage.h"
-#include "cPreviousKeyState.h"
 
 //======================================================================================================================
 //  DATA
@@ -26,7 +25,7 @@ class cMessenger
 {
 public:
 
-	cMessenger             () : hwnd(0) {}
+	cMessenger             () : hwnd(0), hwndSwallow(0), hKeyEventNotificand(0) {}
 
 	static bool keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUCT * p );
 	static bool mouse_hook_service_routine    ( WPARAM wParam, MSLLHOOKSTRUCT * p );
@@ -38,19 +37,24 @@ public:
 	static void broadcast_message ( cMessage * pMsg );
 	static void send_message      ( mojo::cMach * pMach, cMessage * pMsg );
 
-
-
 	static const UINT uWM_SOCKET_HAS_CLOSED = WM_USER + 0;
 
 	static void tell_app_that_machlist_changed ();
 	static void tell_app_that_broadcast_targets_changed ();
 
+	void start_swallowing_key_events ( HWND hwndSwallow );
+	void stop_swallowing_key_events  ();
+
+	void register_for_key_events     ( HWND hNotifyMe );
+	void unregister_for_key_events   ( HWND hNotifyMe );
+
 	DWORD start_thread 	();
 	DWORD dwThreadID;
 	HWND hwnd;
+	HWND hwndSwallow; // swallow keystrokes if this window has focus
 
 private:
-
+	HWND hKeyEventNotificand;
 	static unsigned _stdcall thread ( void * pArg );
 };
 

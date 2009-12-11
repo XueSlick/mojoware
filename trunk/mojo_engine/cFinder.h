@@ -37,12 +37,11 @@ private:
 	bool 						make_receive_socket ( SOCKET * pRet );
 	bool						make_send_socket	( SOCKET * pRet, DWORD dwLocalIP );
 	void                        make_remote_socket_address ( SOCKADDR_IN * pRet );
-	bool						send			();
-	bool						send_inner_loop ( SOCKADDR_IN * psaServer );
+	bool						periodic_stuff ();
+	bool						send ( SOCKADDR_IN * psaServer );
 	bool						receive			();
-	// bool                        receive_inner_loop ( SOCKET );
 	static unsigned _stdcall	server_thread	( void *p );
-	static unsigned _stdcall	client_thread	( void *p );
+	static unsigned _stdcall	periodic_thread	( void *p ); // formerly called client_thread	( void *p );
 
 
 	mojo::cStrW sLocalName;

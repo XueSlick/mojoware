@@ -56,7 +56,7 @@ public:
 	cWin () 		: hwnd(0), pUserData(0), hBalloon(0) {}
 	cWin ( HWND a ) : hwnd(a), pUserData(0), hBalloon(0) {}
 
-	void wm_size ( int x, int y );
+	virtual void wm_size ( int x, int y );
 	void wm_move ( int x, int y );
 
 	virtual void set_text () {};

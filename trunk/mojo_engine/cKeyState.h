@@ -1,36 +1,80 @@
 /***********************************************************************************************************************
 /*
-/*    cPreviousKeyState.h
+/*    cKeyState.h
 /*
-/*    Used by keyboard hook handler to set the previous keystate bit
+/*    Stores EXTENDED virtual key codes, i.e., virtual key code + (if extended) 0x100.
+/*    Used by keyboard hook handler to set the previous keystate bit.
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
-
-
 #pragma once
 
+#include "cTrigger.h"
+
+//======================================================================================================================
+//  DATA
+//======================================================================================================================
+#if 0
+namespace nTrigger
+{
+	// following bit flags are used to match the trigger
+	// against the keyboard DLL's keyboard state:
+
+	const DWORD dwNSHIFT        =	1<< 0; // no shift key pressed
+	const DWORD dwLSHIFT        =   1<< 1;
+	const DWORD dwRSHIFT        =   1<< 2;
+	const DWORD dwSHIFT         =   1<< 3;
+
+	const DWORD dwNCTRL         =	1<< 4;
+	const DWORD dwLCTRL         =   1<< 5;
+	const DWORD dwRCTRL         =   1<< 6;
+	const DWORD dwCTRL          =   1<< 7;
+
+	const DWORD dwNALT          =	1<< 8;
+	const DWORD dwLALT          =   1<< 9;
+	const DWORD dwRALT          =   1<<10;
+	const DWORD dwALT           =   1<<11;
+
+	const DWORD dwNUMLOCKON		=   1<<26;
+	const DWORD dwNUMLOCKOFF	=   1<<27;
+	const DWORD dwCAPSLOCKON	=   1<<28;
+	const DWORD dwCAPSLOCKOFF	=   1<<29;
+	const DWORD dwSCROLLLOCKON	=   1<<30;
+	const DWORD dwSCROLLLOCKOFF	=   (DWORD) 1<<31;
+}
+#endif
 
 //======================================================================================================================
 //  CLASS
 //======================================================================================================================
 
-class cPreviousKeyState
+class cKeyState
 {
 public:
 
-	cPreviousKeyState ();
+	cKeyState ();
 
-	void receive             ( const KBDLLHOOKSTRUCT * p );
-	bool last_event_was_up   ( unsigned uVK ) { return up   == ayTable[uVK]; };
-	bool last_event_was_down ( unsigned uVK ) { return down == ayTable[uVK]; };
+	void           get_key_state_as_trigger  ( mojo::cTrigger * pRet );
+
+
+
+	static WORD    ex_vk                     ( const KBDLLHOOKSTRUCT * p ) { return (WORD) p->vkCode + ( p->flags & LLKHF_EXTENDED ? 0x100 : 0 ); }
+	DWORD          mod_state                 () const;
+
+	void           receive                   ( const KBDLLHOOKSTRUCT * p );
+	bool           is_up                     ( unsigned uExVK ) { return up   == ayTable[uExVK]; };
+	bool           is_down                   ( unsigned uExVK ) { return down == ayTable[uExVK]; };
+
+	friend mojo::cTrigger::cTrigger          ( const cKeyState * );
 
 private:
 
+	WORD wMostRecentPressedExVK;
 	enum { virgin, up, down } eEvent;
-	unsigned char ayTable [ 256 ];
+	unsigned char ayTable [ 512 ];
+	HWND hNotificand;
 };
 
 

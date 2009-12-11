@@ -20,6 +20,542 @@ using namespace mojo;
 //  If the key is extended, the wExVK equals VK + 256
 //  Otherwise the wExVK is the same as the VK
 
+
+
+cKeyboard::sExVK cKeyboard::aExVK [] =       
+{
+	{ NULL,					NULL,				0x00	},	// I put this in to make the indices work out
+    { L"LBUTTON",			L"LButton",			0x01	},
+    { L"RBUTTON",			L"RButton",			0x02	},
+	{ NULL,					NULL,				0x03	}, // Ctrl-break == Cancel, handled as extended
+    { L"MBUTTON",			L"MButton",			0x04	},	/* NOT contiguous with L & RBUTTON */
+    { L"BUTTON4",			L"Button4",			0x05	},	/* NOT contiguous with L & RBUTTON */
+    { L"BUTTON5",			L"Button5",			0x06	},	/* NOT contiguous with L & RBUTTON */
+	{ NULL,					NULL,				0x07	},	// UNASSIGEND
+    { L"BACKSPACE",			L"Backspace",		0x08	},
+    { L"TAB",				L"Tab",				0x09	},
+	{ L"WHEELFORWARD",		L"WheelForward",	0x0A	},	// reserved  -- I ADDED THIS
+	{ L"WHEELBACKWARD",		L"WheelBackward",	0x0B	},	// reserved  -- I ADDED THIS
+    { L"CLEAR",				L"Clear",			0x0C	},
+    { L"ENTER",				L"Enter",			0x0D	},	// MS CALLS THIS RETURN
+	{ NULL,					NULL,				0x0E	},	// I put this in to make the indices work out
+	{ NULL,					NULL,				0x0F	},	// I put this in to make the indices work out
+    { L"SHIFT",				L"Shift",			0x10	},
+    { L"CTRL",				L"Ctrl",			0x11	},	// MS CALLS THIS CONTROL
+    { L"ALT",				L"Alt",				0x12	},	// MS CALLS THIS MENU
+    { L"PAUSE",				L"Pause",			0x13	},
+    { L"CAPSLOCK",			L"CapsLock",		0x14	},	// MS CALLS THIS CAPITAL
+    { L"KANA",				L"Kana",			0x15	},
+    { L"HANGUL",			L"Hangul",			0x15	},	// no x16 after hangul
+    { L"JUNJA",				L"Junja",			0x17	},
+    { L"FINAL",				L"Final",			0x18	},
+    { L"HANJA",				L"Hanja",			0x19	},
+    { L"KANJI",				L"Kanji",			0x19	},	// no x1A after kanji
+    { L"ESC",				L"Esc",				0x1B	},	// MICROSOFT CALLS THIS ESCAPE
+    { L"CONVERT",        	L"Convert",			0x1C	},	// not sure i matched VK and DIK properly
+    { L"NOCONVERT",      	L"NoConvert",		0x1D	},	// ms calls this NONCONVERT
+    { L"ACCEPT",         	L"Accept",			0x1E	},
+    { L"MODECHANGE",     	L"ModeChange",		0x1F	},
+    { L"SPACE",				L"Space",			0x20	},
+    { L"NUMPADPGUP",		L"NumpadPgUp",		0x21	}, // MICROSOFT CALLS THIS PRIOR
+    { L"NUMPADPGDN",		L"NumpadPgDn",		0x22	}, // MICROSOFT CALLS THIS NEXT
+    { L"NUMPADEND",			L"NumpadEnd",		0x23	},
+    { L"NUMPADHOME",		L"NumpadHome",		0x24	},
+    { L"NUMPADLEFT",		L"NumpadLeft",		0x25	},
+    { L"NUMPADUP",			L"NumpadUp",		0x26	},
+    { L"NUMPADRIGHT",		L"NumpadRight",		0x27	},
+    { L"NUMPADDOWN",		L"NumpadDown",		0x28	},
+    { L"SELECT",			L"Select",			0x29	},
+    { L"PRINT",				L"Print",			0x2A	},
+    { L"EXECUTE",			L"Execute",			0x2B	},
+    { NULL,					NULL,				0x2C	}, // PRINTSCREEN MOVED TO EXTENDED
+    { L"NUMPADINSERT",		L"NumpadInsert",	0x2D	}, // MICROSOFT CALLS THIS INSERT
+    { L"NUMPADDELETE",		L"NumpadDelete",	0x2E	}, // MICROSOFT CALLS THIS DELETE
+    { L"HELP",				L"Help",			0x2F	},
+	{ L"0",					L"0",				0x30	},
+	{ L"1",					L"1",				0x31	},
+	{ L"2",					L"2",				0x32	},
+	{ L"3",					L"3",				0x33	},
+	{ L"4",					L"4",				0x34	},
+	{ L"5",					L"5",				0x35	},
+	{ L"6",					L"6",				0x36	},
+	{ L"7",					L"7",				0x37	},
+	{ L"8",					L"8",				0x38	},
+	{ L"9",					L"9",				0x39	},
+	{ NULL,					NULL,				0x3A	}, // I put this in to make the indices work out
+	{ NULL,					NULL,				0x3B	}, // I put this in to make the indices work out
+	{ NULL,					NULL,				0x3C	}, // I put this in to make the indices work out
+	{ NULL,					NULL,				0x3D	}, // I put this in to make the indices work out
+	{ NULL,					NULL,				0x3E	}, // I put this in to make the indices work out
+	{ NULL,					NULL,				0x3F	}, // I put this in to make the indices work out
+	{ NULL,					NULL,				0x40	}, // UNASSIGNED
+	{ L"A",					L"A",				0x41	},
+	{ L"B",					L"B",				0x42	},
+	{ L"C",					L"C",				0x43	},
+	{ L"D",					L"D",				0x44	},
+	{ L"E",					L"E",				0x45	},
+	{ L"F",					L"F",				0x46	},
+	{ L"G",					L"G",				0x47	},
+	{ L"H",					L"H",				0x48	},
+	{ L"I",					L"I",				0x49	},
+	{ L"J",					L"J",				0x4A	},
+	{ L"K",					L"K",				0x4B	},
+	{ L"L",					L"L",				0x4C	},
+	{ L"M",					L"M",				0x4D	},
+	{ L"N",					L"N",				0x4E	},
+	{ L"O",					L"O",				0x4F	},
+	{ L"P",					L"P",				0x50	}, 
+	{ L"Q",					L"Q",				0x51	},
+	{ L"R",					L"R",				0x52	},
+	{ L"S",					L"S",				0x53	},
+	{ L"T",					L"T",				0x54	},
+	{ L"U",					L"U",				0x55	},
+	{ L"V",					L"V",				0x56	},
+	{ L"W",					L"W",				0x57	},
+	{ L"X",					L"X",				0x58	},
+	{ L"Y",					L"Y",				0x59	},
+	{ L"Z",					L"Z",				0x5A	}, // LWin extended
+	{ NULL,					NULL,				0x5B	},
+	{ NULL,					NULL,				0x5C	}, // RWin extended
+	{ NULL,					NULL,				0x5D	}, // APPS extended
+	{ NULL,					NULL,				0x5E 	}, // RESERVED
+	{ NULL,					NULL,				0x5F 	}, // SLEEP EXTENDED
+    { L"NUMPAD0",			L"Numpad0",			0x60 	},
+    { L"NUMPAD1",			L"Numpad1",			0x61 	},
+    { L"NUMPAD2",			L"Numpad2",			0x62 	},
+    { L"NUMPAD3",			L"Numpad3",			0x63 	},
+    { L"NUMPAD4",			L"Numpad4",			0x64 	},
+    { L"NUMPAD5",			L"Numpad5",			0x65 	},
+    { L"NUMPAD6",			L"Numpad6",			0x66 	},
+    { L"NUMPAD7",			L"Numpad7",			0x67 	},
+    { L"NUMPAD8",			L"Numpad8",			0x68 	},
+    { L"NUMPAD9",			L"Numpad9",			0x69 	},
+    { L"MULTIPLY",			L"Multiply",		0x6A 	},
+    { L"NUMPADPLUS",		L"NumpadPlus",		0x6B 	},
+    { L"SEPARATOR",			L"Separator",		0x6C 	},
+    { L"NUMPADMINUS",		L"NumpadMinus",		0x6D 	},
+    { L"DECIMAL",			L"Decimal",			0x6E 	}, 
+	{ NULL,					NULL,				0x6F 	},   // DIVIDE extended
+    { L"F1",				L"F1",				0x70 	},
+    { L"F2",				L"F2",				0x71 	},
+    { L"F3",				L"F3",				0x72 	},
+    { L"F4",				L"F4",				0x73 	},
+    { L"F5",				L"F5",				0x74 	},
+    { L"F6",             	L"F6",				0x75 	},
+    { L"F7",             	L"F7",				0x76 	},
+    { L"F8",             	L"F8",				0x77 	},
+    { L"F9",             	L"F9",				0x78 	},
+    { L"F10",            	L"F10",				0x79 	},
+    { L"F11",            	L"F11",				0x7A 	},
+    { L"F12",            	L"F12",				0x7B 	},
+    { L"F13",            	L"F13",				0x7C 	},
+    { L"F14",            	L"F14",				0x7D 	},
+    { L"F15",            	L"F15",				0x7E 	},
+    { L"F16",            	L"F16",				0x7F 	},
+    { L"F17",            	L"F17",				0x80 	},
+    { L"F18",            	L"F18",				0x81 	},
+    { L"F19",            	L"F19",				0x82 	},
+    { L"F20",            	L"F20",				0x83 	},
+    { L"F21",            	L"F21",				0x84 	},
+    { L"F22",            	L"F22",				0x85 	},
+    { L"F23",            	L"F23",				0x86 	},
+    { L"F24",            	L"F24",				0x87 	},
+	{ NULL,               	NULL,				0x88 }, // UNASSIGNED
+	{ NULL,               	NULL,				0x89 }, // UNASSIGNED
+	{ NULL,               	NULL,				0x8A }, // UNASSIGNED
+	{ NULL,               	NULL,				0x8B }, // UNASSIGNED
+	{ NULL,               	NULL,				0x8C }, // UNASSIGNED
+	{ NULL,               	NULL,				0x8D }, // UNASSIGNED
+	{ NULL,               	NULL,				0x8E }, // UNASSIGNED
+	{ NULL,               	NULL,				0x8F }, // UNASSIGNED
+	{ NULL,               	NULL,				0x90 },
+    { L"SCROLLLOCK",     	L"ScrollLock",		0x91 },
+    { L"OEMNECEQUAL",		L"OemNecEqual",		0x92 },   // '=' key on numpad -- THIS IS EXTRA 92 SO I COMMENTED IT OUT
+//  { 	L"OEMFJJISHO",							0x92 },   // 'Dictionary' key
+    { L"OEMFJMASSHOU",		L"OemFjMasshou",	0x93 },   // 'Unregister word' key
+    { L"OEMFJTOUROKU",		L"OemFjTouroku",	0x94 },   // 'Register word' key
+    { L"OEMFJLOYA",			L"OemFjLoya",		0x95 },   // 'Left OYAYUBI' key
+    { L"OEMFJROYA",			L"OemFjRoya",		0x96 },   // 'Right OYAYUBI' key
+	{ NULL,               	NULL,				0x97 }, // UNASSIGNED
+	{ NULL,               	NULL,				0x98 }, // UNASSIGNED
+	{ NULL,               	NULL,				0x99 }, // UNASSIGNED
+	{ NULL,               	NULL,				0x9A }, // UNASSIGNED
+	{ NULL,               	NULL,				0x9B }, // UNASSIGNED
+	{ NULL,               	NULL,				0x9C }, // UNASSIGNED
+	{ NULL,               	NULL,				0x9D }, // UNASSIGNED
+	{ NULL,               	NULL,				0x9E }, // UNASSIGNED
+	{ NULL,               	NULL,				0x9F }, // UNASSIGNED
+/*
+ * VKL* & VKR* - left and right Alt, Ctrl and Shift virtual keys.
+ * Used only as parameters to GetAsyncKeyState() and GetKeyState().
+ * No other API or message will distinguish left and right keys in this way.
+ */
+    { L"LSHIFT",         	L"LShift",			0xA0 },
+    { L"RSHIFT",         	L"RShift",			0xA1 },
+    { L"LCTRL",          	L"LCtrl",			0xA2 }, // MICROSOFT CALLS THIS LCONTROL
+    { L"RCTRL",          	L"RCtrl",			0xA3 }, // MICROSOFT CALLS THIS RCONTROL
+    { L"LALT",           	L"LAlt",			0xA4 }, // MICROSOFT CALLS THIS LMENU
+    { L"RALT",           	L"RAlt",			0xA5 }, // MICROSOFT CALLS THIS RMENU
+
+	{ NULL,					NULL,				0xA6 }, // A6 - B7 are extended keys listed below with 0x100 added to them
+	{ NULL,					NULL,				0xA7 },
+	{ NULL,					NULL,				0xA8 },
+	{ NULL,					NULL,				0xA9 },
+	{ NULL,					NULL,				0xAA },
+	{ NULL,					NULL,				0xAB },
+	{ NULL,					NULL,				0xAC },
+	{ NULL,					NULL,				0xAD },
+	{ NULL,					NULL,				0xAE },
+	{ NULL,					NULL,				0xAF },
+	{ NULL,					NULL,				0xB0 },
+	{ NULL,					NULL,				0xB1 },
+	{ NULL,					NULL,				0xB2 },
+	{ NULL,					NULL,				0xB3 },
+	{ NULL,					NULL,				0xB4 },
+	{ NULL,					NULL,				0xB5 },
+	{ NULL,					NULL,				0xB6 },
+	{ NULL,					NULL,				0xB7 },
+	{ NULL,               	NULL,				0xB8 },  // RESERVED
+	{ NULL,               	NULL,				0xB9 },  // RESERVED
+    { L"OEM1",				L"Oem1",			0xBA },  // ';:' for US
+    { L"PLUS",				L"Plus",			0xBB },  // ms calls this OEMPLUS is + on main kb  // '+' any country
+    { L"COMMA",				L"Comma",			0xBC },  // ',' any country
+    { L"MINUS",				L"Minus",			0xBD },  // ms calls this OEMMINUS'-' on main kb - any country
+    { L"PERIOD",			L"Period",			0xBE },  // '.' any country
+    { L"OEM2",				L"Oem2",			0xBF },  // '/?' for US
+    { L"OEM3",				L"Oem3",			0xC0 },  // MS CALLS THIS OEM3'`~' for US
+    { NULL,               	NULL,				0xC1 },  // RESERVED
+    { NULL,               	NULL,				0xC2 },  // RESERVED
+    { NULL,               	NULL,				0xC3 },  // RESERVED
+    { NULL,               	NULL,				0xC4 },  // RESERVED
+    { NULL,               	NULL,				0xC5 },  // RESERVED
+    { NULL,               	NULL,				0xC6 },  // RESERVED
+    { NULL,               	NULL,				0xC7 },  // RESERVED
+    { NULL,               	NULL,				0xC8 },  // RESERVED
+    { NULL,               	NULL,				0xC9 },  // RESERVED
+    { NULL,               	NULL,				0xCA },  // RESERVED
+    { NULL,               	NULL,				0xCB },  // RESERVED
+    { NULL,               	NULL,				0xCC },  // RESERVED
+    { NULL,               	NULL,				0xCD },  // RESERVED
+    { NULL,               	NULL,				0xCE },  // RESERVED
+    { NULL,               	NULL,				0xCF },  // RESERVED
+	{ NULL,               	NULL,				0xD0 },  // RESERVED
+    { NULL,               	NULL,				0xD1 },  // RESERVED
+    { NULL,              	NULL,				0xD2 },  // RESERVED
+    { NULL,               	NULL,				0xD3 },  // RESERVED
+    { NULL,               	NULL,				0xD4 },  // RESERVED
+    { NULL,               	NULL,				0xD5 },  // RESERVED
+    { NULL,               	NULL,				0xD6 },  // RESERVED
+    { NULL,               	NULL,				0xD7 },  // RESERVED
+    { NULL,               	NULL,				0xD8 },  // UNASSIGNED
+    { NULL,               	NULL,				0xD9 },  // UNASSIGNED
+    { NULL,               	NULL,				0xDA },  // UNASSIGNED
+    { L"OEM4",           	L"Oem4",			0xDB },  //  MS CALLS THIS OEM4'[{' for US
+    { L"OEM5",		    	L"Oem5",			0xDC },  // BACKSLASH ON US KEYBOARDS
+    { L"OEM6",				L"Oem6",			0xDD },  //  ']}' for US
+    { L"OEM7",				L"Oem7",			0xDE },  //  ''"' for US
+    { L"OEM8",				L"Oem8",			0xDF },
+    { NULL,               	NULL,				0xE0 },  // RESERVED
+/*
+ * Various extended or enhanced keyboards
+ */
+    { L"OEMAX",				L"OemAx",			0xE1 },  //  'AX' key on Japanese AX kbd
+    { L"OEM102",			L"Oem102",			0xE2 },  //  "<>" or "\|" on RT 102-key kbd.
+    { L"ICOHELP",			L"IcoHelp",			0xE3 },  //  Help key on ICO
+    { L"ICO00",				L"Ico00",			0xE4 },  //  00 key on ICO
+    { L"PROCESSKEY",     	L"ProcessKey",		0xE5 },
+    { L"ICOCLEAR",			L"IcoClear",		0xE6 },
+    { L"PACKET",         	L"Packet",			0xE7 },
+    { NULL,               	NULL,				0xE8 }, // UNASSIGNED
+/*
+ * Nokia/Ericsson definitions
+ */
+    { L"OEMRESET",			L"OemReset",		0xE9 },
+    { L"OEMJUMP",			L"OemJump",			0xEA },
+    { L"OEMPA1",			L"OemPa1",			0xEB },
+    { L"OEMPA2",			L"OemPa2",			0xEC },
+    { L"OEMPA3",			L"OemPa3",			0xED },
+    { L"OEMWSCTRL",			L"OemWsCtrl",		0xEE },
+    { L"OEMCUSEL",			L"OemCuSel",		0xEF },
+    { L"OEMATTN",			L"OemAttn",			0xF0 },
+    { L"OEMFINISH",			L"OemFinish",		0xF1 },
+    { L"OEMCOPY",			L"OemCopy",			0xF2 },
+    { L"OEMAUTO",			L"OemAuto",			0xF3 },
+    { L"OEMENLW",			L"OemEnlw",			0xF4 },
+    { L"OEMBACKTAB",		L"OemBackTab",		0xF5 },
+    { L"ATTN",           	L"Attn",			0xF6 },
+    { L"CRSEL",          	L"CrSel",			0xF7 },
+    { L"EXSEL",          	L"ExSel",			0xF8 },
+    { L"EREOF",          	L"EREOF",			0xF9 },
+    { L"PLAY",           	L"Play",			0xFA },
+    { L"ZOOM",           	L"Zoom",			0xFB },
+    { L"NONAME",			L"NoName",			0xFC },
+    { L"PA1",            	L"Pa1",				0xFD },
+    { L"OEMCLEAR",			L"OemClear",		0xFE },
+	{ NULL,					NULL,				0xFF },
+
+	// EXTENDED KEYS FOLLOW
+
+	{ NULL,					NULL,				0x100 + 0x0 },
+	{ NULL,					NULL,				0x100 + 0x1 },
+	{ NULL,					NULL,				0x100 + 0x2 },
+	{ L"CANCEL",			L"Cancel",			0x100 + 0x3 },
+	{ NULL,					NULL,				0x100 + 0x4 },
+	{ NULL,					NULL,				0x100 + 0x5 },
+	{ NULL,					NULL,				0x100 + 0x6 },
+	{ NULL,					NULL,				0x100 + 0x7 },
+	{ NULL,					NULL,				0x100 + 0x8 },
+	{ NULL,					NULL,				0x100 + 0x9 },
+	{ NULL,					NULL,				0x100 + 0xA },
+	{ NULL,					NULL,				0x100 + 0xB },
+	{ NULL,					NULL,				0x100 + 0xC },
+	{ L"NUMPADENTER",		L"NumpadEnter",		0x100 + 0xD },
+	{ NULL,					NULL,				0x100 + 0xE },
+	{ NULL,					NULL,				0x100 + 0xF },
+	{ NULL,					NULL,				0x100 + 0x10 },
+	{ NULL,					NULL,				0x100 + 0x11 },
+	{ NULL,					NULL,				0x100 + 0x12 },
+	{ NULL,					NULL,				0x100 + 0x13 },
+	{ NULL,					NULL,				0x100 + 0x14 },
+	{ NULL,					NULL,				0x100 + 0x15 },
+	{ NULL,					NULL,				0x100 + 0x16 },
+	{ NULL,					NULL,				0x100 + 0x17 },
+	{ NULL,					NULL,				0x100 + 0x18 },
+	{ NULL,					NULL,				0x100 + 0x19 },
+	{ NULL,					NULL,				0x100 + 0x1A },
+	{ NULL,					NULL,				0x100 + 0x1B },
+	{ NULL,					NULL,				0x100 + 0x1C },
+	{ NULL,					NULL,				0x100 + 0x1D },
+	{ NULL,					NULL,				0x100 + 0x1E },
+	{ NULL,					NULL,				0x100 + 0x1F },
+	{ NULL,					NULL,				0x100 + 0x20 },
+	{ L"PGUP",				L"PgUp",			0x100 + 0x21 },
+	{ L"PGDN",				L"PgDn",			0x100 + 0x22 },
+	{ L"END",				L"End",				0x100 + 0x23 },
+	{ L"HOME",				L"Home",			0x100 + 0x24 },
+	{ L"LEFT",				L"Left",			0x100 + 0x25 },
+	{ L"UP",				L"Up",				0x100 + 0x26 },
+	{ L"RIGHT",				L"Right",			0x100 + 0x27 },
+	{ L"DOWN",				L"Down",			0x100 + 0x28 },
+	{ NULL,					NULL,				0x100 + 0x29 },
+	{ NULL,					NULL,				0x100 + 0x2A },
+	{ NULL,					NULL,				0x100 + 0x2B },
+	{ L"PRINTSCREEN",		L"PrintScreen",		0x100 + 0x2C },
+	{ L"INSERT",			L"Insert",			0x100 + 0x2D },
+	{ L"DELETE",			L"Delete",			0x100 + 0x2E },
+	{ NULL,					NULL,				0x100 + 0x2F },
+	{ NULL,					NULL,				0x100 + 0x30 },
+	{ NULL,					NULL,				0x100 + 0x31 },
+	{ NULL,					NULL,				0x100 + 0x32 },
+	{ NULL,					NULL,				0x100 + 0x33 },
+	{ NULL,					NULL,				0x100 + 0x34 },
+	{ NULL,					NULL,				0x100 + 0x35 }, 
+	{ NULL,					NULL,				0x100 + 0x36 },
+	{ NULL,					NULL,				0x100 + 0x37 },
+	{ NULL,					NULL,				0x100 + 0x38 },
+	{ NULL,					NULL,				0x100 + 0x39 },
+	{ NULL,					NULL,				0x100 + 0x3A },
+	{ NULL,					NULL,				0x100 + 0x3B },
+	{ NULL,					NULL,				0x100 + 0x3C },
+	{ NULL,					NULL,				0x100 + 0x3D },
+	{ NULL,					NULL,				0x100 + 0x3E },
+	{ NULL,					NULL,				0x100 + 0x3F },
+	{ NULL,					NULL,				0x100 + 0x40 },
+	{ NULL,					NULL,				0x100 + 0x41 },
+	{ NULL,					NULL,				0x100 + 0x42 },
+	{ NULL,					NULL,				0x100 + 0x43 },
+	{ NULL,					NULL,				0x100 + 0x44 },
+	{ NULL,					NULL,				0x100 + 0x45 },
+	{ NULL,					NULL,				0x100 + 0x46 },
+	{ NULL,					NULL,				0x100 + 0x47 },
+	{ NULL,					NULL,				0x100 + 0x48 },
+	{ NULL,					NULL,				0x100 + 0x49 },
+	{ NULL,					NULL,				0x100 + 0x4A },
+	{ NULL,					NULL,				0x100 + 0x4B },
+	{ NULL,					NULL,				0x100 + 0x4C },
+	{ NULL,					NULL,				0x100 + 0x4D },
+	{ NULL,					NULL,				0x100 + 0x4E },
+	{ NULL,					NULL,				0x100 + 0x4F },
+	{ NULL,					NULL,				0x100 + 0x50 },
+	{ NULL,					NULL,				0x100 + 0x51 },
+	{ NULL,					NULL,				0x100 + 0x52 },
+	{ NULL,					NULL,				0x100 + 0x53 },
+	{ NULL,					NULL,				0x100 + 0x54 },
+	{ NULL,					NULL,				0x100 + 0x55 },
+	{ NULL,					NULL,				0x100 + 0x56 },
+	{ NULL,					NULL,				0x100 + 0x57 },
+	{ NULL,					NULL,				0x100 + 0x58 },
+	{ NULL,					NULL,				0x100 + 0x59 },
+	{ NULL,					NULL,				0x100 + 0x5A },
+	{ L"LWIN",				L"LWin",			0x100 + 0x5B },
+	{ L"RWIN",				L"RWin",			0x100 + 0x5C },
+	{ L"APPS",				L"Apps",			0x100 + 0x5D },
+	{ NULL,					NULL,				0x100 + 0x5E },
+	{ L"SLEEP",				L"Sleep",			0x100 + 0x5F },
+	{ NULL,					NULL,				0x100 + 0x60 },
+	{ NULL,					NULL,				0x100 + 0x61 },
+	{ NULL,					NULL,				0x100 + 0x62 },
+	{ NULL,					NULL,				0x100 + 0x63 },
+	{ NULL,					NULL,				0x100 + 0x64 },
+	{ NULL,					NULL,				0x100 + 0x65 },
+	{ NULL,					NULL,				0x100 + 0x66 },
+	{ NULL,					NULL,				0x100 + 0x67 },
+	{ NULL,					NULL,				0x100 + 0x68 },
+	{ NULL,					NULL,				0x100 + 0x69 },
+	{ NULL,					NULL,				0x100 + 0x6A },
+	{ NULL,					NULL,				0x100 + 0x6B },
+	{ NULL,					NULL,				0x100 + 0x6C },
+	{ NULL,					NULL,				0x100 + 0x6D },
+	{ NULL,					NULL,				0x100 + 0x6E },
+	{ L"DIVIDE",			L"Divide",			0x100 + 0x6F },
+	{ NULL,					NULL,				0x100 + 0x70 },
+	{ NULL,					NULL,				0x100 + 0x71 },
+	{ NULL,					NULL,				0x100 + 0x72 },
+	{ NULL,					NULL,				0x100 + 0x73 },
+	{ NULL,					NULL,				0x100 + 0x74 },
+	{ NULL,					NULL,				0x100 + 0x75 },
+	{ NULL,					NULL,				0x100 + 0x76 },
+	{ NULL,					NULL,				0x100 + 0x77 },
+	{ NULL,					NULL,				0x100 + 0x78 },
+	{ NULL,					NULL,				0x100 + 0x79 },
+	{ NULL,					NULL,				0x100 + 0x7A },
+	{ NULL,					NULL,				0x100 + 0x7B },
+	{ NULL,					NULL,				0x100 + 0x7C },
+	{ NULL,					NULL,				0x100 + 0x7D },
+	{ NULL,					NULL,				0x100 + 0x7E },
+	{ NULL,					NULL,				0x100 + 0x7F },
+	{ NULL,					NULL,				0x100 + 0x80 },
+	{ NULL,					NULL,				0x100 + 0x81 },
+	{ NULL,					NULL,				0x100 + 0x82 },
+	{ NULL,					NULL,				0x100 + 0x83 },
+	{ NULL,					NULL,				0x100 + 0x84 },
+	{ NULL,					NULL,				0x100 + 0x85 },
+	{ NULL,					NULL,				0x100 + 0x86 },
+	{ NULL,					NULL,				0x100 + 0x87 },
+	{ NULL,					NULL,				0x100 + 0x88 },
+	{ NULL,					NULL,				0x100 + 0x89 },
+	{ NULL,					NULL,				0x100 + 0x8A },
+	{ NULL,					NULL,				0x100 + 0x8B },
+	{ NULL,					NULL,				0x100 + 0x8C },
+	{ NULL,					NULL,				0x100 + 0x8D },
+	{ NULL,					NULL,				0x100 + 0x8E },
+	{ NULL,					NULL,				0x100 + 0x8F },
+	{ L"NUMLOCK",			L"NumLock",			0x100 + 0x90 },
+	{ NULL,					NULL,				0x100 + 0x91 },
+	{ NULL,					NULL,				0x100 + 0x92 },
+	{ NULL,					NULL,				0x100 + 0x93 },
+	{ NULL,					NULL,				0x100 + 0x94 },
+	{ NULL,					NULL,				0x100 + 0x95 },
+	{ NULL,					NULL,				0x100 + 0x96 },
+	{ NULL,					NULL,				0x100 + 0x97 },
+	{ NULL,					NULL,				0x100 + 0x98 },
+	{ NULL,					NULL,				0x100 + 0x99 },
+	{ NULL,					NULL,				0x100 + 0x9A },
+	{ NULL,					NULL,				0x100 + 0x9B },
+	{ NULL,					NULL,				0x100 + 0x9C },
+	{ NULL,					NULL,				0x100 + 0x9D },
+	{ NULL,					NULL,				0x100 + 0x9E },
+	{ NULL,					NULL,				0x100 + 0x9F },
+	{ NULL,					NULL,				0x100 + 0xA0 },
+	{ L"RSHIFT",			L"RShift",			0x100 + 0xA1 }, // my hardware says this is extended, but MS doesn't say so
+	{ NULL,					NULL,				0x100 + 0xA2 },
+	{ L"RCTRL",				L"RCtrl",			0x100 + 0xA3 },
+	{ NULL,					NULL,				0x100 + 0xA4 },
+	{ L"RALT",				L"RAlt",			0x100 + 0xA5 },
+	{ L"BROWSERBACK",		L"BrowserBack",		0x100 + 0xA6 },
+	{ L"BROWSERFORWARD",	L"BrowserForward",	0x100 + 0xA7 },
+	{ L"BROWSERREFRESH",	L"BrowserRefresh",	0x100 + 0xA8 },
+	{ L"BROWSERSTOP",		L"BrowserStop",		0x100 + 0xA9 },
+	{ L"BROWSERSEARCH",		L"BrowserSearch",	0x100 + 0xAA },
+	{ L"BROWSERFAVORITES",	L"BrowserFavorites", 0x100 + 0xAB },
+	{ L"BROWSERHOME",		L"BrowserHome",		0x100 + 0xAC },
+    { L"MUTE",				L"Mute",			0x100 +	0xAD }, // ms calls this VOLUME MUTE
+	{ L"VOLUMEDOWN",		L"VolumeDown",		0x100 + 0xAE },
+	{ L"VOLUMEUP",			L"VolumeUp",		0x100 + 0xAF },
+	{ L"MEDIANEXTTRACK",	L"MediaNextTrack",	0x100 + 0xB0 },
+	{ L"MEDIAPREVTRACK",	L"MediaPrevTrack",	0x100 + 0xB1 },
+	{ L"MEDIASTOP",			L"MediaStop",		0x100 + 0xB2 },
+	{ L"MEDIAPLAYPAUSE",	L"MediaPlayPause",	0x100 + 0xB3 },
+	{ L"MAIL",				L"Mail",			0x100 + 0xB4 },
+	{ L"MEDIASELECT",		L"MediaSelect",		0x100 + 0xB5 },
+	{ L"LAUNCHAPP1",		L"LaunchApp1",		0x100 + 0xB6 },
+	{ L"LAUNCHAPP2",		L"LaunchApp2",		0x100 + 0xB7 },
+	{ NULL,					NULL,				0x100 + 0xB8 },
+	{ NULL,					NULL,				0x100 + 0xB9 },
+	{ NULL,					NULL,				0x100 + 0xBA },
+	{ NULL,					NULL,				0x100 + 0xBB },
+	{ NULL,					NULL,				0x100 + 0xBC },
+	{ NULL,					NULL,				0x100 + 0xBD },
+	{ NULL,					NULL,				0x100 + 0xBE },
+	{ NULL,					NULL,				0x100 + 0xBF },
+	{ NULL,					NULL,				0x100 + 0xC0 },
+	{ NULL,					NULL,				0x100 + 0xC1 },
+	{ NULL,					NULL,				0x100 + 0xC2 },
+	{ NULL,					NULL,				0x100 + 0xC3 },
+	{ NULL,					NULL,				0x100 + 0xC4 },
+	{ NULL,					NULL,				0x100 + 0xC5 },
+	{ NULL,					NULL,				0x100 + 0xC6 },
+	{ NULL,					NULL,				0x100 + 0xC7 },
+	{ NULL,					NULL,				0x100 + 0xC8 },
+	{ NULL,					NULL,				0x100 + 0xC9 },
+	{ NULL,					NULL,				0x100 + 0xCA },
+	{ NULL,					NULL,				0x100 + 0xCB },
+	{ NULL,					NULL,				0x100 + 0xCC },
+	{ NULL,					NULL,				0x100 + 0xCD },
+	{ NULL,					NULL,				0x100 + 0xCE },
+	{ NULL,					NULL,				0x100 + 0xCF },
+	{ NULL,					NULL,				0x100 + 0xD0 },
+	{ NULL,					NULL,				0x100 + 0xD1 },
+	{ NULL,					NULL,				0x100 + 0xD2 },
+	{ NULL,					NULL,				0x100 + 0xD3 },
+	{ NULL,					NULL,				0x100 + 0xD4 },
+	{ NULL,					NULL,				0x100 + 0xD5 },
+	{ NULL,					NULL,				0x100 + 0xD6 },
+	{ NULL,					NULL,				0x100 + 0xD7 },
+	{ NULL,					NULL,				0x100 + 0xD8 },
+	{ NULL,					NULL,				0x100 + 0xD9 },
+	{ NULL,					NULL,				0x100 + 0xDA },
+	{ NULL,					NULL,				0x100 + 0xDB },
+	{ NULL,					NULL,				0x100 + 0xDC },
+	{ NULL,					NULL,				0x100 + 0xDD },
+	{ NULL,					NULL,				0x100 + 0xDE },
+	{ NULL,					NULL,				0x100 + 0xDF },
+	{ NULL,					NULL,				0x100 + 0xE0 },
+	{ NULL,					NULL,				0x100 + 0xE1 },
+	{ NULL,					NULL,				0x100 + 0xE2 },
+	{ NULL,					NULL,				0x100 + 0xE3 },
+	{ NULL,					NULL,				0x100 + 0xE4 },
+	{ NULL,					NULL,				0x100 + 0xE5 },
+	{ NULL,					NULL,				0x100 + 0xE6 },
+	{ NULL,					NULL,				0x100 + 0xE7 },
+	{ NULL,					NULL,				0x100 + 0xE8 },
+	{ NULL,					NULL,				0x100 + 0xE9 },
+	{ NULL,					NULL,				0x100 + 0xEA },
+	{ NULL,					NULL,				0x100 + 0xEB },
+	{ NULL,					NULL,				0x100 + 0xEC },
+	{ NULL,					NULL,				0x100 + 0xED },
+	{ NULL,					NULL,				0x100 + 0xEE },
+	{ NULL,					NULL,				0x100 + 0xEF },
+	{ NULL,					NULL,				0x100 + 0xF0 },
+	{ NULL,					NULL,				0x100 + 0xF1 },
+	{ NULL,					NULL,				0x100 + 0xF2 },
+	{ NULL,					NULL,				0x100 + 0xF3 },
+	{ NULL,					NULL,				0x100 + 0xF4 },
+	{ NULL,					NULL,				0x100 + 0xF5 },
+	{ NULL,					NULL,				0x100 + 0xF6 },
+	{ NULL,					NULL,				0x100 + 0xF7 },
+	{ NULL,					NULL,				0x100 + 0xF8 },
+	{ NULL,					NULL,				0x100 + 0xF9 },
+	{ NULL,					NULL,				0x100 + 0xFA },
+	{ NULL,					NULL,				0x100 + 0xFB },
+	{ NULL,					NULL,				0x100 + 0xFC },
+	{ NULL,					NULL,				0x100 + 0xFD },
+	{ NULL,					NULL,				0x100 + 0xFE },
+	{ NULL,					NULL,				0x100 + 0xFF },
+};
+
+#if 0
+
 cKeyboard::sExVK cKeyboard::aExVK [] =       
 {
 	{ L"",					L"",				0x00	},	// I put this in to make the indices work out
@@ -551,20 +1087,69 @@ cKeyboard::sExVK cKeyboard::aExVK [] =
 	{ L"",					L"",				0x100 + 0xFE },
 	{ L"",					L"",				0x100 + 0xFF },
 };
+#endif
 
 //=======================================================================================================
 // CODE
 //=======================================================================================================
+
+//----------------------------------------------------------------------------------------------------------------------
+//  IS MODIFIER
+//----------------------------------------------------------------------------------------------------------------------
+bool cKeyboard :: is_modifier ( WORD wExVK )
+{
+	switch ( wExVK & 0xFF )
+	{
+	case VK_LSHIFT:
+	case VK_RSHIFT:
+	case VK_SHIFT:
+	case VK_LCONTROL:
+	case VK_RCONTROL:
+	case VK_CONTROL:
+	case VK_LMENU:
+	case VK_RMENU:
+	case VK_MENU:
+		return true;
+	}
+
+	return false;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//  IS MOUSE BUTTON
+//----------------------------------------------------------------------------------------------------------------------
+bool cKeyboard :: is_mouse_button ( WORD wExVK )
+{
+	switch ( wExVK & 0xFF )
+	{
+	case 1:
+	case 2:
+	case 4:
+	case 5:
+	case 6:
+	case 10:
+	case 11:
+		return true;
+	}
+
+	return false;
+}
 
 //-------------------------------------------------------------------------------------------------------
 //  NAME TO EXTENDED VK
 //-------------------------------------------------------------------------------------------------------
 WORD cKeyboard :: name_to_ex_vk ( const wchar_t * pName )
 {
+	if ( ! pName )
+		return 0;
+
 	const int iTableSize = sizeof(aExVK)/sizeof(sExVK);
 
 	for ( unsigned i = 0; i < iTableSize; i ++ )
 	{
+		if ( 0 == aExVK[i].pwName )
+			continue;
+
 		if ( 0 == _wcsicmp ( pName, aExVK[i].pwName ) )
 		{
 			return aExVK[i].wExVK;
@@ -575,12 +1160,38 @@ WORD cKeyboard :: name_to_ex_vk ( const wchar_t * pName )
 }
 
 
+//-------------------------------------------------------------------------------------------------------
+//  PRETTY NAME TO EXTENDED VK
+//-------------------------------------------------------------------------------------------------------
+WORD cKeyboard :: pretty_name_to_ex_vk ( const wchar_t * pName )
+{
+	if ( ! pName )
+		return 0;
+
+	const int iTableSize = sizeof(aExVK)/sizeof(sExVK);
+
+	for ( unsigned i = 0; i < iTableSize; i ++ )
+	{
+		if ( 0 == aExVK[i].pwPrettyName )
+			continue;
+
+		else if ( 0 == _wcsicmp ( pName, aExVK[i].pwPrettyName ) )
+		{
+			return aExVK[i].wExVK;
+		}
+	}
+
+	return 0;
+}
+
 
 //-------------------------------------------------------------------------------------------------------
 // EXTENDED VK TO NAME
 //-------------------------------------------------------------------------------------------------------
 const wchar_t * cKeyboard::ex_vk_to_name ( WORD dwExVK )
 {
+	assert ( dwExVK < sizeof(aExVK)/sizeof(sExVK) );
+
 	return aExVK[dwExVK].pwName;
 }
 
@@ -590,6 +1201,8 @@ const wchar_t * cKeyboard::ex_vk_to_name ( WORD dwExVK )
 //-------------------------------------------------------------------------------------------------------
 const wchar_t * cKeyboard::ex_vk_to_pretty_name ( WORD dwExVK )
 {
+	assert ( dwExVK < sizeof(aExVK)/sizeof(sExVK) );
+
 	return aExVK[dwExVK].pwPrettyName;
 }
 
@@ -599,8 +1212,16 @@ const wchar_t * cKeyboard::ex_vk_to_pretty_name ( WORD dwExVK )
 const wchar_t * cKeyboard :: pretty_key_event ( mojo::cStrW * pRet, const KBDLLHOOKSTRUCT * pHS )
 {
 	WORD wExVK = (WORD) pHS->vkCode + (( pHS->flags & LLKHF_EXTENDED ) ? 0x100 : 0 );
+
+	if ( 0 == wExVK )
+		LOG ( L"Bad KBDLLHOOKSTRUCT" );
+
 	const wchar_t * pwTrans = pHS->flags & LLKHF_UP ? L"Up" : L"Down" ;
 	const wchar_t * pwName = mojo :: cKeyboard :: ex_vk_to_pretty_name ( wExVK );
+
+	if ( ! pwName )
+		pwName = L"ERROR";
+
 	pRet->f ( L"%s %s", pwName, pwTrans );
 	return pRet->cstr();
 }

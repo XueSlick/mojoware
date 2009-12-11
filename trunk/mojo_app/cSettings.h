@@ -28,8 +28,6 @@ public:
 	// PUBLIC DATA
 	//---------------------------------------------------
 
-	// mojo::cStrW		    sSignature;
-	// mojo::cVersion		Version;
 	bool				bLicenseAccepted;
 	bool				bConnect;
 	bool 				bConnectAutomatically;

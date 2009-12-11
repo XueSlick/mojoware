@@ -26,9 +26,48 @@ using namespace mojo;
 // CODE
 //======================================================================================================================
 
-//-------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+//  REGISTER FOR KEY EVENTS
+//----------------------------------------------------------------------------------------------------------------------
+void cMessenger :: register_for_key_events   ( HWND hNotifyMe )
+{
+	hKeyEventNotificand = hNotifyMe;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  UNREGISTER FOR KEY EVENTS
+//----------------------------------------------------------------------------------------------------------------------
+void cMessenger :: unregister_for_key_events   ( HWND hNotifyMe )
+{
+	if ( hKeyEventNotificand == hNotifyMe )
+	   hKeyEventNotificand = 0;
+
+	else
+		assert ( 0 );
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//  START SWALLOWING KEY EVENTS
+//----------------------------------------------------------------------------------------------------------------------
+void cMessenger :: start_swallowing_key_events ( HWND hwndSwallowArg )
+{
+	hwndSwallow = hwndSwallowArg;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  STOP SWALLOWING KEY EVENTS
+//----------------------------------------------------------------------------------------------------------------------
+void cMessenger :: stop_swallowing_key_events ()
+{
+	hwndSwallow = 0;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
 // PRINT FROM MACH
-//-------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 const wchar_t * cMessenger :: print_from_mach ( mojo::cStrW * pRet, const cMach * pMach )
 {
 	if ( 0 == pMach )
@@ -41,11 +80,14 @@ const wchar_t * cMessenger :: print_from_mach ( mojo::cStrW * pRet, const cMach 
 }
 
 
-//-------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // SEND MESSAGE (TO ONE PC)
-//-------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 void cMessenger :: send_message ( cMach * pMach, cMessage * pMsg )
 {
+	if ( ! g_Settings.bConnect )
+		return;
+
 	g_Pool.send ( pMach->dwIP, (char *) pMsg, pMsg->uLen );
 
 	cStrW m;
@@ -59,17 +101,25 @@ void cMessenger :: send_message ( cMach * pMach, cMessage * pMsg )
 }
 
 
-//-------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // BROADCAST MESSAGE (TO ALL PCS)
-//-------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 void cMessenger :: broadcast_message ( cMessage * pMsg )
 {
+	assert ( pMsg );
+
+	if ( ! g_Settings.bConnect )
+		return;
+
 	cStrW sBody1;
 
 	g_Machlist.lock();
 	{
 		for ( cMach * pMach = g_Machlist.pHead; pMach; pMach = pMach->pNext )
 		{
+			if ( pMach->bThisPC )
+				continue;
+
 			g_Pool.send ( pMach->dwIP, (char *) pMsg, pMsg->uLen );
 
 			sBody1 += L"To ";
@@ -79,22 +129,20 @@ void cMessenger :: broadcast_message ( cMessage * pMsg )
 			sBody1 += L".\n";
 		}
 	}
+
 	g_Machlist.unlock();
 
 	cStrW sBody2;
 	pMsg->print ( & sBody2 );
 
-	put_ad_lib_memo ( cMemo::success, L"Message sent", 
-		                                              L"%s%s",
-													  sBody1.cstr(),
-													  sBody2.cstr() );
+	put_ad_lib_memo ( cMemo::success, L"Message sent", L"%s%s", sBody1.cstr(), sBody2.cstr() );
 }
 
 
-//-------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // ARE EQUAL (KBDLLHOOKSTRUCT)
 // ignores time
-//-------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 bool are_equal ( KBDLLHOOKSTRUCT * p1, KBDLLHOOKSTRUCT * p2 )
 {
 	if ( p1->flags   == p2->flags    &&
@@ -109,9 +157,9 @@ bool are_equal ( KBDLLHOOKSTRUCT * p1, KBDLLHOOKSTRUCT * p2 )
 }
 
 
-//-------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // KEYBOARD HOOK SERVICE ROUTINE
-//-------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUCT * p )
 {
 	//-----------------------------------------
@@ -127,16 +175,20 @@ bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUC
 	//  SET "PREVIOUS KEY STATE" BIT WHICH
 	//  IS USED IN WM_KEY* MESSAGES
 	//-----------------------------------------
-
-	static cPreviousKeyState PrevKeyEvent;
 	
 	p->dwExtraInfo = 0;
 
-	if ( PrevKeyEvent.last_event_was_down ( p->vkCode ) ) // DO THIS BEFORE RECEVIVE
-		p->dwExtraInfo |= ( 1<<30 );                      // THIS BIT INDICATES PREV KEY STATE
-	                                                      // IT'S USED E.G. BY cSyringe
+	WORD wExVK = cKeyState :: ex_vk ( p );
 
-	PrevKeyEvent.receive ( p ); // DO THIS AFTER RECEIVE
+	if ( g_KeyState.is_down ( wExVK ) )   // DO THIS BEFORE RECEIVE
+		p->dwExtraInfo |= ( 1<<30 );      // THIS BIT INDICATES PREV KEY STATE
+	                                      // IT'S USED E.G. BY cSyringe
+
+	//------------------------------------
+	//  GIVE cKEYSTATE FIRST CRACK AT IT
+	//------------------------------------
+
+	g_KeyState.receive ( p );
 
 	//------------------------------------
 	//  DISPLAY EVENT
@@ -145,26 +197,58 @@ bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUC
 	g_EventBuffer.receive ( wParam, p );
 
 	//------------------------------------
-	//  FIRST, MOUSEOVER
+	//  NOTIFY IF IT WAS REQUESTED
+	//------------------------------------
+
+	if ( g_Messenger.hKeyEventNotificand )
+	{
+		//---------------------------------
+		//  OMIT TYPEMATICS
+		//---------------------------------
+
+		LPARAM lParam = p->flags & LLKHF_UP ? 1 : 0;
+
+		if ( lParam || ! ( p->dwExtraInfo & (1<<30) )  )
+			PostMessage ( g_Messenger.hKeyEventNotificand, mojo::uWM_KEY_EVENT_OCCURRED, wExVK, lParam );
+	}
+
+	//------------------------------------
+	//  FIRST, SWALLOW IF A PARTICULAR
+	//  APP WINDOW (PRESUMABLY MODAL)
+	//  ASKED FOR KEYSTROKES TO BE
+	//  BLOCKED.  (THE "GET TRIGGER"
+	//  DIALOG DOES THIS.)
+	//------------------------------------
+
+	if ( g_Messenger.hwndSwallow )
+		if ( g_Messenger.hwndSwallow == GetForegroundWindow() )
+			return false;
+
+	//------------------------------------
+	//  SEDOND, MOUSEOVER
 	//------------------------------------
 
 	if ( g_Settings.bMouseoverIsOn )
 		return g_Mouseover.on_keyboard_hook ( wParam, p );
 
 	//------------------------------------
-	//  SECOND, BROADCAST
+	//  THIRD, BROADCAST
 	//------------------------------------
 
 	if ( g_Settings.bBroadcastIsOn )
 		g_KeyBroadcaster.receive_from_keyboard_hook ( wParam, p );
 
+	//------------------------------------
+	//  FOURTH, CHAIN NEXT HOOK
+	//------------------------------------
+
 	return true; // true means "call next hook in chain"
 }
 
 
-//-------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // MOUSE HOOK SERVICE ROUTINE
-//-------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 bool cMessenger :: mouse_hook_service_routine ( WPARAM wParam, MSLLHOOKSTRUCT * p )
 {
 	//------------------------------------
@@ -188,9 +272,9 @@ bool cMessenger :: mouse_hook_service_routine ( WPARAM wParam, MSLLHOOKSTRUCT * 
 }
 
 
-//---------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // PUT RECEIVE MEMO
-//---------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 void cMessenger :: put_receive_memo ( cMessage * pMsg, const wchar_t * pBody2 )
 {
 	put_ad_lib_memo ( cMemo::success, L"Message received", L"From %s at %s.\n%s",
@@ -201,9 +285,9 @@ void cMessenger :: put_receive_memo ( cMessage * pMsg, const wchar_t * pBody2 )
 }
 
 
-//---------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // RECEIVE
-//---------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 void cMessenger :: receive ( struct sSocketInfo * pSI, const char * pBuffer, unsigned uLen )
 {
 	pSI;

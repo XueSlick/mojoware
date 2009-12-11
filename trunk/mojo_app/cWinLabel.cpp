@@ -13,6 +13,71 @@
 //  CODE
 //======================================================================================================================
 
+//----------------------------------------------------------------------------------------------------------------------
+//  WM SIZE
+//----------------------------------------------------------------------------------------------------------------------
+void cWinLabel::wm_size ( int x, int y )
+{
+	UNREFERENCED_PARAMETER(x);
+	UNREFERENCED_PARAMETER(y);
+
+	const int iRIGHT_PADDING = 3; // in pixels
+	SendMessage ( hwnd, EM_SETMARGINS, EC_LEFTMARGIN, 0 );
+	wchar_t t [4096];
+	GetWindowText ( hwnd, t, sizeof(t)/sizeof(wchar_t ) );
+	RECT r;
+	SendMessage ( hwnd, EM_GETRECT, 0, LPARAM ( &r ) );
+	HDC hdc = GetDC ( hwnd );
+	HFONT hFont = (HFONT) SendMessage ( hwnd, WM_GETFONT, 0, 0 );
+	SelectObject ( hdc, (HGDIOBJ) hFont );
+	DrawText ( hdc, t, (int) wcslen ( t ), &r, DT_CALCRECT );
+
+	//-----------------------------------------
+	// GET NEW RECT OF EDIT CONTROL IN
+	// PARENT CLIENT COORDINATES
+	//-----------------------------------------
+
+	HWND hParent = GetParent ( hwnd );
+	HWND hChild  = hwnd;
+	POINT ul = { 0, 0 };
+	ClientToScreen ( hChild, &ul );
+	ScreenToClient ( hParent, & ul );
+
+	//-----------------------------------
+	// MOVE RULE
+	//-----------------------------------
+
+	if ( hwndRule )
+		SetWindowPos ( hwndRule, HWND_BOTTOM, ul.x, ul.y + y / 2 - 3, x, 1, SWP_NOACTIVATE );
+
+	SetWindowPos ( hwnd, hwndRule, ul.x, ul.y, r.right - r.left + iRIGHT_PADDING, r.bottom - r.top,
+		SWP_NOACTIVATE );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  INIT
+//----------------------------------------------------------------------------------------------------------------------
+void cWinLabel :: init ()
+{
+	HWND hParent = GetParent ( hwnd );
+	assert ( hParent );
+
+	hwndRule = CreateWindow ( L"Static",
+		                      L"Name",
+							  WS_CHILD | WS_VISIBLE | SS_ETCHEDFRAME,
+							  0, 0, 0 , 0,
+							  hParent,
+							  NULL,
+							  g_hInstance,
+							  0 );
+
+	assert ( hwndRule );
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//  WM INIT
+//----------------------------------------------------------------------------------------------------------------------
 void cWinLabel :: wm_init ()
 {
 	const int iRIGHT_PADDING = 3; // in pixels

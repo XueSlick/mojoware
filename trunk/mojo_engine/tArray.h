@@ -36,7 +36,7 @@ public:
 	void push   ( const C & a ) { append (a); }
 	C & last () const { assert ( 0 < uQty ); return pBuf [ uQty-1 ]; }
 	C & pop () { assert ( 0 < uQty ); uQty--; return pBuf[uQty]; }
-	C & operator [] ( unsigned a ); // ( unsigned a ) const { return pBuf [ a ]; }
+	C & operator [] ( unsigned a );
 	unsigned qty () const { return uQty; }
 	void erase () { uQty = 0; } // this doesn't clear anything, so be careful
 	void truncate ( unsigned u ) { uQty = u; }  // everything from [u] onward inclusive is erased
@@ -77,6 +77,20 @@ public:
 };
 
 
+//----------------------------------------------------------------------------------------------------------------------
+//  tARRAY OF UNSIGNED
+//  This is defined so it performs its allocations and deletions in the DLL regardless of whether
+//  the code is called in the EXE or DLL.  This allows the class to be used to return values from
+//  mojo_engine to mojo_app.
+//----------------------------------------------------------------------------------------------------------------------
+class MOJO_ENGINE_API cArrayW : public tArray<WORD>
+{
+public:
+
+	typedef tArray<WORD> B; // base
+	cArrayW ( WORD a ) : B ( a ) {}
+	cArrayW () {}
+};
 
 //======================================================================================================================
 // CODE
@@ -85,13 +99,15 @@ public:
 //----------------------------------------------------------------------------------------------------------------------
 //  OPERATOR EQUAL
 //----------------------------------------------------------------------------------------------------------------------
-template<class C> tArray<C> & tArray<C>::operator= ( const tArray<C> & rh )
+template<class C> tArray<C> & tArray<C>::operator= ( const tArray<C> & r )
 {
-	if ( uBufLen < rh.uQty )
-		resize( rh.uQty );
+	if ( uBufLen < r.uQty )
+		resize( r.uQty );
 
-	for ( unsigned i = 0; i < rh.uQty; i++ )
-		pBuf[i] = rh.pBuf[i]; 
+	for ( unsigned i = 0; i < r.uQty; i++ )
+		pBuf[i] = r.pBuf[i];
+
+		uQty = r.uQty;
 
 	return *this;
 }

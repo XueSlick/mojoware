@@ -2,6 +2,10 @@
 /*
 /*    mojo_engine.cpp / mojo_engine
 /*
+/*    This file implements the interface between the engine and the application.  The functions in this file are 
+/*    the ones that the application calls to indirectly get its hands on the engine's data.  Most of them consist
+/*    of wrappers around similar functions implemented by the engine's objects.
+/*
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /***********************************************************************************************************************/
@@ -18,6 +22,54 @@ using namespace mojo;
 //  CODE
 //======================================================================================================================
 
+
+//----------------------------------------------------------------------------------------------------------------------
+//  START SWALLOWING KEY EVENTS
+//----------------------------------------------------------------------------------------------------------------------
+void mojo :: start_swallowing_key_events ( HWND hwndSwallow )
+{
+	g_Messenger.start_swallowing_key_events ( hwndSwallow );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  STOP SWALLOWING KEY EVENTS
+//----------------------------------------------------------------------------------------------------------------------
+void mojo :: stop_swallowing_key_events ()
+{
+	g_Messenger.stop_swallowing_key_events ();
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  REGISTER FOR KEY EVENTS
+//----------------------------------------------------------------------------------------------------------------------
+void mojo::register_for_key_events   ( HWND hNotifyMe )
+{
+	g_Messenger.register_for_key_events ( hNotifyMe );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  UNREGISTER FOR KEY EVENTS
+//----------------------------------------------------------------------------------------------------------------------
+void mojo::unregister_for_key_events   ( HWND hNotifyMe )
+{
+	g_Messenger.unregister_for_key_events ( hNotifyMe );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  GET KEY STATE AS TRIGGER
+//----------------------------------------------------------------------------------------------------------------------
+void mojo :: get_key_state_as_trigger ( mojo::cTrigger * pRet )
+{
+	cTrigger Trig ( & g_KeyState );
+
+	*pRet = Trig;
+}
+
+
 //----------------------------------------------------------------------------------------------------------------------
 //  GET MACH
 //----------------------------------------------------------------------------------------------------------------------
@@ -25,7 +77,6 @@ bool mojo :: get_mach ( mojo::cMach * pRet, DWORD dwHandle )
 {
 	return g_Machlist.get_mach ( pRet, dwHandle );	
 }
-
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -52,9 +103,7 @@ void mojo::set_mouseover_layout ( cMachlist * pArgList )
 	g_Machlist.unlock();
 
 	g_Machlist.save_draw_positions_to_file ();
-	// SendMessage	( g_hwndApp, uWM_SET_MOUSEOVER_DISPLAY_LIST, 0, 0 ); //g_Mouseover.set_mega_display_list ( &g_Machlist );
 	g_Mouseover.set_mega_display_list ( &g_Machlist );
-
 }
 
 
@@ -90,6 +139,7 @@ void mojo :: test ()
 
 //----------------------------------------------------------------------------------------------------------------------
 //  GET MACHLIST
+//  Gets a copy of the real g_Machlist.
 //----------------------------------------------------------------------------------------------------------------------
 void mojo :: get_machlist ( mojo::cMachlist * pRet )
 {
@@ -104,10 +154,7 @@ void mojo :: get_machlist ( mojo::cMachlist * pRet )
 //----------------------------------------------------------------------------------------------------------------------
 mojo::nConnectionStatus::eConnectionStatus mojo::get_connection_status ( DWORD dwMachHandle )
 {
-	// g_Machlist.handle_to
 	DWORD dwIP = g_Machlist.handle_to_ip ( dwMachHandle );
-
-	
 
 	return (mojo::nConnectionStatus::eConnectionStatus) g_Pool.get_connection_status ( dwIP );
 }

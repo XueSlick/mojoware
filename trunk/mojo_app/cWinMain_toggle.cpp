@@ -13,15 +13,16 @@
 // PROTOTYPES
 //======================================================================================================================
 
+
 void             toggle_sub ( bool * pbSetting, const wchar_t * pSettingName, 
                               const wchar_t * pMenuTxtOn, const wchar_t * pMenuTxtOff,
 							  const wchar_t * pToolbarTxtOn, const wchar_t * pToolbarTxtOff,
                               int iCtrlID );
 
+
 //======================================================================================================================
 //  CODE
 //======================================================================================================================
-
 
 //----------------------------------------------------------------------------------------------------------------------
 //  TOGGLE BROADCAST
@@ -36,6 +37,7 @@ void cWinMain :: toggle_broadcast ()
 				 L"Broadcast is off",
 				 ID_TOGGLE_BROADCAST );
 }
+
 
 //----------------------------------------------------------------------------------------------------------------------
 //  TOGGLE HOTKEYS
@@ -52,6 +54,7 @@ void cWinMain :: toggle_hotkeys ()
 				 L"Hotkeys are off",
 				 ID_TOGGLE_HOTKEYS );
 }
+
 
 //----------------------------------------------------------------------------------------------------------------------
 //  TOGGLE MOUSEOVER
@@ -84,32 +87,6 @@ void cWinMain :: toggle_sub ( bool * pbSetting, const wchar_t * pSettingName,
 
 	const wchar_t * pMenuTxt = *pbSetting ? pMenuTxtOn : pMenuTxtOff;
 
-#if 0 // TOOLBAR STUFF HAS BEEN REPLACED BY DLG MODE STRIP
-
-	TBBUTTONINFO tbbi;
-	tbbi.cbSize = sizeof ( tbbi );
-	tbbi.dwMask = TBIF_IMAGE | TBIF_STATE | TBIF_TEXT;
-
-	if ( *pbSetting )
-	{
-		tbbi.fsState = TBSTATE_ENABLED | TBSTATE_CHECKED;
-		pMenuTxt     = (wchar_t*) pMenuTxtOn;
-		tbbi.pszText = (wchar_t*) pToolbarTxtOn;
-		tbbi.iImage  = 1;
-	}
-
-	else
-	{
-		tbbi.fsState = TBSTATE_ENABLED;
-		pMenuTxt     = (wchar_t*) pMenuTxtOff;
-		tbbi.pszText = (wchar_t*) pToolbarTxtOff;
-		tbbi.iImage  = 0;
-	}
-
-	SendMessage ( g_WinMain.toolbar(), TB_SETBUTTONINFO, iCtrlID, (LPARAM) &tbbi );
-
-#endif
-
 	set_menu_item_text ( g_hwnd, iCtrlID, pMenuTxt );
 
 	DlgModeStrip.redraw_buttons();
@@ -119,48 +96,6 @@ void cWinMain :: toggle_sub ( bool * pbSetting, const wchar_t * pSettingName,
 	mojo::set ( pSettingName, *pbSetting );
 	// set_tray_icon ();
 }
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  TOGGLE BROADCAST
-//----------------------------------------------------------------------------------------------------------------------
-#if 0
-void cWinMain :: toggle_broadcast ()
-{
-	g_Settings.bBroadcastIsOn = g_Settings.bBroadcastIsOn ? false : true;
-	mojo::set ( L"bBroadcastIsOn", g_Settings.bBroadcastIsOn );
-
-	wchar_t * pMenuTxt;
-
-	TBBUTTONINFO tbbi;
-	tbbi.cbSize = sizeof ( tbbi );
-	tbbi.dwMask = TBIF_IMAGE | TBIF_STATE | TBIF_TEXT;
-
-	if ( g_Settings.bBroadcastIsOn )
-	{
-		tbbi.fsState = TBSTATE_ENABLED | TBSTATE_CHECKED;
-		pMenuTxt = L"Turn broadcast off";
-		tbbi.pszText = L"Broadcast is on";
-		tbbi.iImage = 1;
-	}
-
-	else
-	{
-		tbbi.fsState = TBSTATE_ENABLED;
-		pMenuTxt = L"Turn broadcast on";
-		tbbi.pszText = L"Broadcast is off";
-		tbbi.iImage = 0;
-	}
-
-	SendMessage ( hwndToolbar, TB_SETBUTTONINFO, ID_TOGGLE_BROADCAST, (LPARAM) &tbbi );
-
-	set_menu_item_text ( g_hwnd, ID_TOGGLE_BROADCAST, pMenuTxt );
-
-	InvalidateRect ( g_hwnd, NULL, TRUE );
-	UpdateWindow ( g_hwnd );
-	// set_tray_icon ();
-}
-#endif
 
 
 /***********************************************************************************************************************

@@ -42,6 +42,18 @@
     <ClCompile Include="cDlgCursorBlind.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="cDlgGetTrigger.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgGetTrigger_combo.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgGetTrigger_test_mods.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgGetTrigger_trigger.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
     <ClCompile Include="cDlgLicense.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
@@ -138,9 +150,6 @@
     <ClCompile Include="cWinMain_toggle.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
-    <ClCompile Include="cWinMain_toolbar.cpp">
-      <Filter>cWin</Filter>
-    </ClCompile>
     <ClCompile Include="cWinMain_window_proc.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
@@ -201,6 +210,9 @@
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgCursorBlind.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgGetTrigger.h">
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgLicense.h">
@@ -322,15 +334,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Mojo\mojo_app\mojo_app.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\..\mojo\mojo_art\bitmap3.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\..\Mojo\mojo_art\mojo-logo-star-150.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="..\mojo_art\icon1.ico">
       <Filter>Resource Files</Filter>
     </None>
@@ -356,6 +359,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="gpl3.txt" />
+    <None Include="mojo_app.ico">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="mojo_app.scribs.english.txt" />
     <None Include="osbxr.ico">
       <Filter>Resource Files</Filter>

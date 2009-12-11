@@ -60,7 +60,6 @@
 
 #include "cSettings.h"
 #include "cFile.h"
-#include "hooks.h"
 #include "cInputEventBuffer.h"
 #include "cFinder.h"
 #include "cSignature.h"
@@ -72,9 +71,10 @@
 #include "utility_private.h"
 #include "cKeyBroadcaster.h"
 #include "cSyringe.h"
-#include "cPreviousKeyState.h"
 #include "cDisplay.h"
 #include "cMouseover.h"
+#include "cKeyState.h"
+
 
 
 //---------------------------------

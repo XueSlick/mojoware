@@ -124,7 +124,7 @@ void cWin::wm_move ( int x, int y )
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  ON SIZE
+//  WM SIZE
 //----------------------------------------------------------------------------------------------------------------------
 void cWin::wm_size ( int x, int y )
 {
@@ -150,9 +150,18 @@ void cWin::wm_size ( int x, int y )
 		MoveWindow ( p->hwnd, iPosX, iPosY, iDimX, iDimY, TRUE );
 		InvalidateRect ( p->hwnd, NULL, FALSE );
 		UpdateWindow ( p->hwnd );
-
 		p->wm_size ( iDimX, iDimY );
 	}
+
+	//-----------------------------------------------
+	// SOME WINDOWS REQUIRE THE FOLLOWING.  IF SO,
+	// HANDLE WM_SIZE IN THEIR WINDOW PROCS.  CALL
+	// THIS FUNCTION, THEN DO THE FOLLOWING:
+	//------------------------------------------------
+	#if 0
+		InvalidateRect ( hwnd, NULL, FALSE );
+		UpdateWindow ( hwnd );
+	#endif
 }
 
 

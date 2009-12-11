@@ -95,3 +95,7 @@ DlgSettingsAppearance.ToonIcon.Label                   = Toon icons
 DlgSettingsAppearance.ToonIconHeightLabel              = Height
 DlgSettingsAppearance.ToonIconWidthLabel               = Width
 DlgSettingsAppearance.Link                             = <a href=\"%s\">Learn more about these choices</a>
+
+// GET TRIGGERS DIALOG
+
+DlgGetTrigger.Link                                     = <a href=\"%s\">Learn more about hotkey triggers</a>

@@ -112,6 +112,7 @@
 #include "cListViewWoWs.h"
 #include "cDlgToons.h"
 #include "cDlgSettingsAppearance.h"
+#include "cDlgGetTrigger.h"
 
 //---------------------------------
 //  GLOBAL DATA

@@ -62,6 +62,11 @@ int cDlg::draw_text ( HDC hdc, RECT *pR, _eType eType, const wchar_t * pTxt, boo
 		hFont = g_hSubheadFont;
 		break;
 
+	case dialog_box_head:
+		hFont = g_hDialogBoxHeadFont;
+		color = RGB ( 50, 64, 150 );
+		break;
+
 	case caption:
 		hFont = g_hCaptionFont;
 		color = RGB ( 255, 255, 255 );

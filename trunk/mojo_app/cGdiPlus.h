@@ -2,7 +2,7 @@
 /*
 /*    GdiPlus.h
 /*
-/*    The only reason for bothering with this class is because it's an easy way to ensure that Gdiplus gets
+/*    The only reason for bothering with this teensy class is because it's an easy way to ensure that Gdiplus gets
 /*    initialized before other objects that use it.  (E.g. cListViewToons.)
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
@@ -23,8 +23,8 @@ class cGdiPlus
 {
 public:
 
-	cGdiPlus (); //  { GdiplusStartup ( &Token, &StartupInput, NULL );
-	~cGdiPlus (); // { Gdiplus::GdiplusShutdown ( Token ); }
+	cGdiPlus ();
+	~cGdiPlus ();
 
 private:
 

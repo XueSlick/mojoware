@@ -13,15 +13,13 @@
 #include "stdafx.h"
 
 using namespace mojo;
-// using namespace Gdiplus;
+
 
 //======================================================================================================================
 // DATA
 //======================================================================================================================
 
-static const wchar_t			s_awWindowClass [] =	L"MojoWindowClass";
-// Gdiplus::GdiplusStartupInput	s_GdiplusStartupInput;
-// ULONG_PTR						s_GdiplusToken;
+static const wchar_t			s_awWindowClass [] = L"MojoWindowClass";
 
 
 //======================================================================================================================
@@ -53,18 +51,9 @@ void 							make_fonts ();
 //----------------------------------------------------------------------------------------------------------------------
 void test ( )
 {
-	cStrW s = L"<MyTag>This is the contents</MyTag><Tag2>Contents2</Tag2>"; // <Tag2>Contents2</Tag2>";
-	const wchar_t * pNext = s.cstr();
-	cStrW sContent;
-
-	bool b = xml_name_to_content ( &sContent, &pNext, L"MyTag" );
-	 b = xml_name_to_content ( &sContent, &pNext, L"Tag2" );
-	 b = xml_name_to_content ( &sContent, &pNext, L"Tag2" );
-	b;
-
-	int x = 3;
-	x++;
-	
+	cDlgGetTrigger d;
+	mojo::cTrigger Trigger;
+	d.make_dlg ( &Trigger );
 	// SetTimer ( g_hwnd, 0, 30, NULL );
 }
 
@@ -94,8 +83,6 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 
 	if ( previous_instance_is_running () )
 		return 0;
-
-
 
 	//-------------------------------------
 	// COMMON CONTROLS
@@ -187,27 +174,6 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 	g_WinMain.set_text_recursive();
 
 	//-------------------------------------
-	// CHECK REQUIRED OS VERSION
-	//-------------------------------------
-#if 0
-	// moved to mojo::init_engine()
-	if ( ! version_or_higher ( 5, 1 ) )
-	{
-		// TO DO -- use scribs for this for international support
-		cMemo m;
-		m.set_ad_lib ( cMemo::error, L"BadOsVersion", NULL );
-		message_box ( &m );
-		return 0;
-	}
-#endif
-
-	//-------------------------------------
-	// INIT GDIPLUS
-	//-------------------------------------
-
-	// GdiplusStartup ( &s_GdiplusToken, &s_GdiplusStartupInput, NULL );
-
-	//-------------------------------------
 	//  LICENSE AGREEMENT
 	//-------------------------------------
 
@@ -217,15 +183,6 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 		if ( ID_ACCEPT != dl.make_dlg() )
 			return 0;
 	}
-
-	//-------------------------------------
-	// RAISE PRIORITY
-	//-------------------------------------
-#if 0
-	if ( g_Settings.bRaiseProcessPriority )
-		if ( ! SetPriorityClass ( GetCurrentProcess(), HIGH_PRIORITY_CLASS ) )
-			LOG_SYSTEM_ERROR_T ( L"SetPriorityClass" );
-#endif
 
 	//-------------------------------------
 	//  TIMER RESOLUTION
@@ -251,21 +208,18 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 #endif
 
 	//-------------------------------------
+	//  ACCELERATOR TABLE
+	//-------------------------------------
+	HACCEL hAccelTable;
+	hAccelTable = LoadAccelerators ( hInstance, MAKEINTRESOURCE ( IDC_mojo ) );
+
+	//-------------------------------------
 	//  SHOW WINDOW
 	//-------------------------------------
-#if 0
-	if ( g_Settings.bStartMinimizedToTray )
-	{
-		ShowWindow ( g_hwnd, SW_HIDE );
-	}
 
-	else
-#endif
-	{
-		g_WinMain.move_to_center();
-		ShowWindow   ( g_hwnd, iCmdShow);
-		UpdateWindow ( g_hwnd );
-	}
+	g_WinMain.move_to_center();
+	ShowWindow   ( g_hwnd, iCmdShow);
+	UpdateWindow ( g_hwnd );
 
 	//-------------------------------------
 	//  PRINT WELCOME
@@ -274,18 +228,11 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 	cStrW sVersion;
 	mojo::put_memo ( cMemo::success, L"Welcome", g_awAppTitle, g_Version.get_text ( &sVersion ), g_awWebsite );
 
-
 	//-------------------------------------
 	//  TEMPORARY HOTKEY FOR DEBUGGING
 	//-------------------------------------
 
 	// RegisterHotKey ( g_hwnd, VK_F1, MOD_ALT | MOD_CONTROL | MOD_SHIFT, VK_F1 );
-
-	//-------------------------------------
-	//  ACCELERATOR TABLE
-	//-------------------------------------
-	HACCEL hAccelTable;
-	hAccelTable = LoadAccelerators ( hInstance, MAKEINTRESOURCE ( IDC_mojo ) );
 
 	//-------------------------------------
 	//  MESSAGE LOOP
@@ -307,7 +254,6 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 
 	clean_up_for_exit ();
 
-
 	//-------------------------------------
 	// EXIT
 	//-------------------------------------
@@ -321,25 +267,16 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 void clean_up_for_exit ()
 {
 	mojo::shut_down_engine ();
-	// Gdiplus::GdiplusShutdown ( s_GdiplusToken );
 	g_Settings.save_to_file ();
 
 #if 0
 	if ( g_pLoader )
 		delete g_pLoader;
-#endif
 
-
-
-
-
-#if 0
 	restore_timer_resolution ();
 	remove_tray_icon ();
-
 #endif
 }
-
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -396,7 +333,6 @@ void make_fonts ()
 	//-------------------------------
 	// SUBHEAD FONT
 	//-------------------------------
-
 	{
 		LOGFONT lf = g_NonClientMetrics.lfCaptionFont;
 		lf.lfWeight = 400;
@@ -405,16 +341,23 @@ void make_fonts ()
 	}
 
 	//-------------------------------
+	// DIALOG BOX HEAD FONT
+	//-------------------------------
+	{
+		LOGFONT lf = g_NonClientMetrics.lfCaptionFont;
+		lf.lfWeight = 700;
+		lf.lfHeight = (long) ( 1.3 * lf.lfHeight );
+		g_hDialogBoxHeadFont = CreateFontIndirect ( &lf );
+	}
+
+	//-------------------------------
 	// HEAD FONT
 	//-------------------------------
-
 	{
 		LOGFONT lfHead = g_NonClientMetrics.lfCaptionFont;
-		// lfHead.lfWeight = 700;
 		lfHead.lfHeight = (long) ( 1.8 * lfHead.lfHeight );
 		wcscpy_s ( lfHead.lfFaceName, sizeof ( lfHead.lfFaceName)/sizeof(wchar_t), L"Verdana" );
 		g_hHeadFont = CreateFontIndirect ( &lfHead ) ;	
-
 	}
 
 	//-------------------------------

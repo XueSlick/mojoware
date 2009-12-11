@@ -20,7 +20,14 @@
 class cWinLabel : public cWin
 {
 public:
+
+	cWinLabel () : hwndRule ( 0 ) {}
+
+	virtual void wm_size ( int x, int y );
+	void init ();
+	HWND hwndRule;
 	void wm_init ();
+
 };
 
 

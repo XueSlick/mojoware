@@ -1,10 +1,10 @@
-/*************************************************************************************************
+/***********************************************************************************************************************
 /*
-/*   cPool_utility.cpp / mojo_engine
+/*    cPool_utility.cpp / mojo_engine
 /*   
-/*   started May 24, 2009
-/*   
-/*************************************************************************************************/
+/*    Copyright 2009 Robert Sacks.  See end of file for more info.
+/*
+/**********************************************************************************************************************/
 
 //-------------------------------------------------------------------------------------------------------
 //  MEMORY DEBUG
@@ -40,17 +40,9 @@ using namespace mojo;
 #include "net_stuff.h"
 
 
-
 //==============================================================================================
 // PROTOTYPES
 //==============================================================================================
-
-// wchar_t * get_full_dns_name ( mojo::cStrW * pRet );
-// bool match ( mojo::cStrW aRet[], int iArrayQty, const wchar_t * pHaystack, const wchar_t * pRegex );
-
-
-
-
 
 //==============================================================================================
 // DATA
@@ -58,8 +50,6 @@ using namespace mojo;
 
 extern cVersion g_Version;
 extern cPool g_Pool;
-// extern cMonitor  g_Monitor;
-
 
 //==============================================================================================
 // CODE
@@ -83,7 +73,6 @@ int cPool :: get_connection_status ( DWORD dwIP )
 		iRetVal += 2;
 
 	return iRetVal;
-
 }
 
 
@@ -141,6 +130,7 @@ sSocketInfo * cPool :: get_socket_info_by_address ( const wchar_t * pAddr )
 	return pRetVal;
 }
 
+
 //----------------------------------------------------------------------------------------------
 // SET NAGLE
 //----------------------------------------------------------------------------------------------
@@ -180,10 +170,10 @@ sSocketInfo * cPool :: get_socket_info_by_socket ( SOCKET s )
 	for ( sSocketInfo * p = this->SocketInfoList.first(); p; p = SocketInfoList.next ( p ) )
 	{
 		if ( p->Socket == s )
-			{
-				pRetVal = p;
-				break;
-			}
+		{
+			pRetVal = p;
+			break;
+		}
 	}
 
 	SocketInfoList.unlock();
@@ -438,3 +428,22 @@ bool cPool :: parse_sig ( cStrW *pRetExtra, cStrW * pRetName, ::cVersion * pRetV
 	return true;
 }
 #endif
+
+
+/***********************************************************************************************************************
+/*
+/*    This file is part of Mojo.  For more information, see http://mojoware.org.
+/*
+/*    You may redistribute and/or modify Mojo under the terms of the GNU General Public License, version 3, as
+/*    published by the Free Software Foundation.  You should have received a copy of the license with Mojo.  If you
+/*    did not, go to http://www.gnu.org.
+/* 
+/*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+/*    NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+/*    IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+/*    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+/*    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+/*    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+/*    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+/*
+/***********************************************************************************************************************/

@@ -222,6 +222,9 @@ bool cPool :: connect_to ( DWORD dwIP )
 bool cPool :: connect_to ( const wchar_t * pAddr )
 {
 
+	if ( ! g_Settings.bConnect )
+		return false;
+
 #ifdef TRACE_CONNECT
 	// g_Monitor.rcv ( sMon ( L"Requesting connection.", 0, black, bold ), sMon ( pAddr, 1, purple, bold ) );
 #endif

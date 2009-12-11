@@ -29,6 +29,7 @@ HFONT				g_hMenuFont;
 HFONT				g_hCaptionFont;
 HFONT				g_hSubheadFont;
 HFONT				g_hHeadFont;
+HFONT				g_hDialogBoxHeadFont;
 NONCLIENTMETRICS    g_NonClientMetrics;
 const wchar_t * 	g_apDefaultScribs [];
 cSettings			g_Settings ( g_awAppTitle, & g_Version );
