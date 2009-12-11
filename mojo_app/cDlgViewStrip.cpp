@@ -71,7 +71,7 @@ void cDlgViewStrip::wm_init ()
 
 
 //----------------------------------------------------------------------------------------------------------------------
-// DEFAULT PROC
+//  DIALOG PROC
 //----------------------------------------------------------------------------------------------------------------------
 INT_PTR CALLBACK cDlgViewStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
@@ -116,53 +116,13 @@ INT_PTR CALLBACK cDlgViewStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 		}
 		break;
 
-#if 0
-	case WM_CTLCOLORDLG:
-	case WM_CTLCOLORSTATIC:
-			return (INT_PTR) GetStockObject ( WHITE_BRUSH );
-			break;
-
-	case WM_COMMAND:
-		{
-			int iID = LOWORD(wParam);
-
-			if ( iID == ID_OK )
-			{
-
-			}
-		}
-		break;
-#endif
-
-#if 0
-	case WM_NOTIFY:
-		{
-			switch( wParam )
-			{
-			case ID_LINK:
-
-				switch ( ((LPNMHDR)lParam)->code )
-				{
-					case NM_CLICK:
-					case NM_RETURN:
-					{
-						wchar_t * pURL = PNMLINK(lParam)->item.szUrl;
-						ShellExecute ( NULL, L"open", pURL, NULL, NULL, SW_SHOW );
-					}
-					break;
-				}
-				break;
-			}
-        }
-		break;
-#endif
-
 	default:
 		break;
 	}
 
 	return cDlgModal::dialog_proc ( hwnd, uMessage, wParam, lParam );
 }
+
 
 /***********************************************************************************************************************
 /*

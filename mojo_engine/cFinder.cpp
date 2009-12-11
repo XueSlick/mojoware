@@ -133,9 +133,9 @@ void cFinder :: make_remote_socket_address ( SOCKADDR_IN * pRet )
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  SEND
+//  PERIODIC STUFF
 //----------------------------------------------------------------------------------------------------------------------
-bool cFinder :: send ()
+bool cFinder :: periodic_stuff ()
 {
 	//----------------------------------
 	// REMOTE ADDRESS
@@ -147,67 +147,64 @@ bool cFinder :: send ()
 	for (;;)
 	{
 		find_wow ();
-		send_inner_loop( &saServer );
-		Sleep ( g_Settings.uFinderBroadcastInterval );
 
+		if ( g_Settings.bConnect )
+			send ( &saServer );
+
+		Sleep ( g_Settings.uFinderBroadcastInterval );
 	}
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  SEND INNER LOOP
+//  SEND
 //----------------------------------------------------------------------------------------------------------------------
-bool cFinder :: send_inner_loop ( SOCKADDR_IN * psaServer )
+bool cFinder :: send ( SOCKADDR_IN * psaServer )
 {
-	//----------------------------------
-	// INNER LOOP -- SEND TO
-	//----------------------------------
-	// for ( ;; )
+	SOCKET s;
+
+	if ( ! get_local_ip ( &m_dwLocalIP ) )
+		return false;
+
+	if (  ! is_local_ip ( m_dwLocalIP ) )
 	{
-		SOCKET s;
+		wchar_t awIP[16];
+		ip_dword_to_aw ( awIP, m_dwLocalIP );
 
-		if ( ! get_local_ip ( &m_dwLocalIP ) )
-			return false;
+		mojo::put_ad_lib_memo ( mojo::cMemo::error, L"Auto Find", L"Specified IP address %s does not exist on this computer.\nChange IP address in connection settings.", awIP );
+		LOG_V ( L"Bad local ip: %s", awIP );
+	}
 
-		if (  ! is_local_ip ( m_dwLocalIP ) )
-		{
-			wchar_t awIP[16];
-			ip_dword_to_aw ( awIP, m_dwLocalIP );
+	if ( ! make_send_socket ( &s, m_dwLocalIP ) )
+	{
+		LOG ( L"Unable to make socket in cFinder::send." );
+	}
 
-			mojo::put_ad_lib_memo ( mojo::cMemo::error, L"Auto Find", L"Specified IP address %s does not exist on this computer.\nChange IP address in connection settings.", awIP );
-			LOG_V ( L"Bad local ip: %s", awIP );
-		}
+	int iError = sendto ( s,
+						  ( const char * ) pSig->buf(), 
+						  pSig->len(),
+						  0,
+						  (SOCKADDR *) psaServer,
+						  (int)sizeof ( SOCKADDR_IN )
+						);
 
-		if ( ! make_send_socket ( &s, m_dwLocalIP ) )
-		{
-			LOG ( L"Unable to make socket in cFinder::send." );
-		}
+	if ( SOCKET_ERROR == iError )
+	{
+		LOG_SYSTEM_ERROR_TE ( L"sendto", WSAGetLastError () );
+	}
 
-		int iError = sendto (	s,
-								( const char * ) pSig->buf(), 
-								pSig->len(),
-								0,
-								(SOCKADDR *) psaServer,
-								(int)sizeof ( SOCKADDR_IN )
-							);
+	//------------------------------------------
+	//  CHECK FOR ERROR
+	//------------------------------------------
 
-		if ( SOCKET_ERROR == iError )
-		{
-			LOG_SYSTEM_ERROR_TE ( L"sendto", WSAGetLastError () );
-		}
+	SOCKADDR_IN saTemp = {0};
+	int iRetSize = sizeof(saTemp);
+	if ( SOCKET_ERROR == getsockname ( s, (SOCKADDR*) &saTemp, &iRetSize ) )
+		LOG_SYSTEM_ERROR_TE ( L"getsockname", WSAGetLastError() );
 
-		//------------------------------------------
-		//  CHECK FOR ERROR
-		//------------------------------------------
-
-		SOCKADDR_IN saTemp = {0};
-		int iRetSize = sizeof(saTemp);
-		if ( SOCKET_ERROR == getsockname ( s, (SOCKADDR*) &saTemp, &iRetSize ) )
-			LOG_SYSTEM_ERROR_TE ( L"getsockname", WSAGetLastError() );
-
-		//------------------------------------------
-		//  DISPLAY WHAT WE JUST DID
-		//------------------------------------------
+	//------------------------------------------
+	//  DISPLAY WHAT WE JUST DID
+	//------------------------------------------
 
 #if 0
 		DWORD dwLocalIP = *(DWORD*) &saTemp.sin_addr;
@@ -216,8 +213,7 @@ bool cFinder :: send_inner_loop ( SOCKADDR_IN * psaServer )
 		mojo::put_ad_lib_memo ( mojo::cMemo::success, L"cFinder", L"Send from %s", awIP );
 #endif
 
-		closesocket ( s );
-	}
+	closesocket ( s );
 
 	return true;
 }
@@ -239,13 +235,11 @@ unsigned _stdcall cFinder::server_thread ( void * pArg )
 //----------------------------------------------------------------------------------------------------------------------
 //  CLIENT THREAD
 //----------------------------------------------------------------------------------------------------------------------
-unsigned _stdcall cFinder::client_thread ( void * pArg )
+unsigned _stdcall cFinder::periodic_thread ( void * pArg )
 {
-	// Memory leak is in here
-
 	cFinder * pThis = reinterpret_cast<cFinder*>(pArg);
 
-	pThis->send ();
+	pThis->periodic_stuff ();
 
 	return 0;
 }
@@ -261,22 +255,6 @@ bool cFinder::start ()
 	get_full_dns_name 	( &sLocalName );
 	get_local_ip 		( &m_dwLocalIP );
 
-#if 0
-	if ( ! is_local_ip ( m_dwLocalIP ) )
-	{
-		wchar_t awIP[16], t[1000];
-		ip_dword_to_aw ( awIP, m_dwLocalIP );
-		wsprintf ( t, L"%s is not assigned to this computer.", awIP );
-
-		g_Monitor.rcv ( sMon ( L"Invalid IP address.", 0, red, bold ),
-						sMon ( t, 1, red, regular ),
-						sMon ( L"Change IP address on Connection Settings Panel.", 1, red ) );
-
-		LOG ( L"is_local_ip failed in cFinder::start_threads." );
-		LOG ( t );
-	}
-#endif
-
 	WSADATA wsad;
 
     if ( 0 != WSAStartup ( MAKEWORD ( 2, 2 ), &wsad ) )
@@ -285,20 +263,20 @@ bool cFinder::start ()
         return false;
     }
 
-	HANDLE hServer = (HANDLE) _beginthreadex (  NULL, 0, &server_thread, reinterpret_cast<void*>(this), 0, &uServerThreadID );
-	HANDLE hClient = (HANDLE) _beginthreadex (  NULL, 0, &client_thread, reinterpret_cast<void*>(this), 0, &uClientThreadID );
+	HANDLE hServer   = (HANDLE) _beginthreadex (  NULL, 0, &server_thread,   reinterpret_cast<void*>(this), 0, &uServerThreadID );
+	HANDLE hPeriodic = (HANDLE) _beginthreadex (  NULL, 0, &periodic_thread, reinterpret_cast<void*>(this), 0, &uClientThreadID );
 
 	if ( g_Settings.bRunDiscoveryyThreadsAtLowPriority )
 	{
-		if ( 0 == SetThreadPriority ( hServer, THREAD_PRIORITY_BELOW_NORMAL ) )
+		if ( 0 == SetThreadPriority ( hServer,    THREAD_PRIORITY_BELOW_NORMAL ) )
 			LOG_SYSTEM_ERROR_T ( L"SetThreadPriority" );
 		else
 			LOG ( L"cFinder server thread set to below normal priority." );
 
-		if ( 0 == SetThreadPriority ( hClient, THREAD_PRIORITY_BELOW_NORMAL ) )
+		if ( 0 == SetThreadPriority ( hPeriodic, THREAD_PRIORITY_BELOW_NORMAL ) )
 			LOG_SYSTEM_ERROR_T ( L"SetThreadPriority" );
 		else
-			LOG ( L"cFinder client thread set to below normal priority." );
+			LOG ( L"cFinder periodic thread set to below normal priority." );
 	}
 
 	return true;

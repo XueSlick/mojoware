@@ -32,7 +32,6 @@
 #include "regex.h"
 #include "tRect.h"
 #include "cVersion.h"
-#include "files.h"
 #include "tList.h"
 #include "tList2.h"
 #include "tArray.h"
@@ -55,7 +54,7 @@
 #include "cTarget.h"
 #include "directories.h"
 #include "cFile.h"
-
+#include "cTrigger.h"
 
 
 namespace mojo
@@ -69,6 +68,7 @@ const UINT uWM_MEMO_READY                    = WM_APP + 0xBFFF - 1;
 const UINT uWM_MACHLIST_CHANGED              = WM_APP + 0xBFFF - 2;
 const UINT uWM_BROADCAST_TARGETS_CHANGED     = WM_APP + 0xBFFF - 3;
 const UINT uWM_HIDE_OR_SHOW_CURSOR           = WM_APP + 0xBFFF - 4;
+const UINT uWM_KEY_EVENT_OCCURRED            = WM_APP + 0xBFFF - 5;
 
 namespace nConnectionStatus
 {
@@ -92,24 +92,29 @@ MOJO_ENGINE_API bool initialize_engine 	( HINSTANCE hAppInstance,
 										  const wchar_t * pScribPathname [],
 	                                      const wchar_t * pAppDataDirectory, 
 										  const cVersion * pVersionRequiredByApp );
-MOJO_ENGINE_API void shut_down_engine 	();
-MOJO_ENGINE_API bool get_input_event 		( mojo::cInputEvent * pRetInputEvent );
-MOJO_ENGINE_API void put_memo				( mojo::cMemo::_eSeverity e, const wchar_t * pKey, ... );
-MOJO_ENGINE_API void put_memo 			( mojo::cMemo * pMemo );
-MOJO_ENGINE_API void put_ad_lib_memo		( mojo::cMemo::_eSeverity e, const wchar_t * pHeadFormatString, const wchar_t * pBodyFormatString=NULL, ... );
-MOJO_ENGINE_API bool get_memo				( mojo::cMemo * pRetMemo );
+MOJO_ENGINE_API void shut_down_engine 	         ();
+MOJO_ENGINE_API bool get_input_event 		     ( mojo::cInputEvent * pRetInputEvent );
+MOJO_ENGINE_API void put_memo				     ( mojo::cMemo::_eSeverity e, const wchar_t * pKey, ... );
+MOJO_ENGINE_API void put_memo 			         ( mojo::cMemo * pMemo );
+MOJO_ENGINE_API void put_ad_lib_memo		     ( mojo::cMemo::_eSeverity e, const wchar_t * pHeadFormatString, const wchar_t * pBodyFormatString=NULL, ... );
+MOJO_ENGINE_API bool get_memo				     ( mojo::cMemo * pRetMemo );
 
-MOJO_ENGINE_API int load_scribs                ( const wchar_t * apScribs [],  bool bReplace );
-MOJO_ENGINE_API int load_scribs                ( const wchar_t * pPathname,	bool bReplace );
-MOJO_ENGINE_API bool get_ip_addresses          ( mojo::cArrayU * pRet );
-MOJO_ENGINE_API void ip_dword_to_cStrW         ( cStrW * pRet, DWORD dw );
-MOJO_ENGINE_API DWORD ip_pw_to_dword		   ( const wchar_t * );
-MOJO_ENGINE_API void  get_machlist		       ( mojo::cMachlist * pRet );
-MOJO_ENGINE_API bool  get_mach                 ( mojo::cMach * pRet, DWORD dwHandle );
+MOJO_ENGINE_API int load_scribs                  ( const wchar_t * apScribs [],  bool bReplace );
+MOJO_ENGINE_API int load_scribs                  ( const wchar_t * pPathname,	bool bReplace );
+MOJO_ENGINE_API bool get_ip_addresses            ( mojo::cArrayU * pRet );
+MOJO_ENGINE_API void ip_dword_to_cStrW           ( cStrW * pRet, DWORD dw );
+MOJO_ENGINE_API DWORD ip_pw_to_dword		     ( const wchar_t * );
+MOJO_ENGINE_API void  get_machlist		         ( mojo::cMachlist * pRet );
+MOJO_ENGINE_API bool  get_mach                   ( mojo::cMach * pRet, DWORD dwHandle );
 MOJO_ENGINE_API mojo::nConnectionStatus::eConnectionStatus 
-				get_connection_status 	       ( DWORD dwMachHandle );
-MOJO_ENGINE_API void get_broadcast_targets     ( mojo::cArrayTarget * pRet );
-MOJO_ENGINE_API void set_mouseover_layout      ( mojo::cMachlist * pMachlist );
+				get_connection_status 	         ( DWORD dwMachHandle );
+MOJO_ENGINE_API void get_broadcast_targets       ( mojo::cArrayTarget * pRet );
+MOJO_ENGINE_API void set_mouseover_layout        ( mojo::cMachlist * pMachlist );
+MOJO_ENGINE_API void get_key_state_as_trigger    ( mojo::cTrigger * pRet );
+MOJO_ENGINE_API void register_for_key_events     ( HWND hNotifyMe );
+MOJO_ENGINE_API void unregister_for_key_events   ( HWND hNotifyMe );
+MOJO_ENGINE_API void start_swallowing_key_events ( HWND hwndSwallow );
+MOJO_ENGINE_API void stop_swallowing_key_events  ();
 
 } // namespace
 

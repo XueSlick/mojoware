@@ -139,7 +139,7 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	// START MESSENGER THREAD
 	//----------------------------------------------
 
-	LOG ( L"About to start messenger thread." );
+	// LOG ( L"About to start messenger thread." );
 
 	g_Messenger.start_thread ();
 
@@ -147,7 +147,7 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	// CHECK VERSION
 	//----------------------------------------------
 
-	LOG ( L"About to check versions." );
+	// LOG ( L"About to check versions." );
 
 	unsigned uHookMaj, uHookMin, uHookPip, uHookBld;
 	mojo_hooks::get_version ( &uHookMaj, &uHookMin, &uHookPip, &uHookBld );
@@ -179,7 +179,7 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	// START HOOK THREAD AND INSTALL HOOKS
 	//----------------------------------------------
 
-	LOG ( L"About to start hooks thread." );
+	// LOG ( L"About to start hooks thread." );
 
 	g_dwHookThreadID = mojo_hooks::start_thread ( g_hwndApp, cMessenger::keyboard_hook_service_routine, cMessenger::mouse_hook_service_routine );
 
@@ -198,7 +198,7 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	// START SOCKET (TCP) COMMUNICATIONS
 	//-------------------------------------
 
-	LOG ( L"About to start g_Pool." );
+	// LOG ( L"About to start g_Pool." );
 
 	g_Pool.start(); 
 
@@ -206,7 +206,7 @@ bool mojo :: initialize_engine ( HINSTANCE hAppInstance,
 	// START Discovery THREADS
 	//----------------------------------------------
 
-	LOG ( L"About to start g_Finder." );
+	// LOG ( L"About to start g_Finder." );
 
 	g_Finder.start();
 

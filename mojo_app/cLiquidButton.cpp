@@ -93,12 +93,14 @@ void cLiquidButton::paint ( DRAWITEMSTRUCT* pDI, Gdiplus::Color cOutTop, Gdiplus
 void cLiquidButton::paint_green ( DRAWITEMSTRUCT* pDI, const wchar_t * pText )
 {
 	Color Border ( 0, 235, 0 );
-	// paint ( pDI, Color ( 200, 235, 200 ), Color ( 0, 100, 0 ), Color ( 100, 185, 100 ), Color ( 215, 235, 215 ), pText );
-	// paint ( pDI, Color ( 180, 220, 180 ), Color ( 44,  60, 44 ), Color ( 100, 120,100 ), Color ( 211, 234, 211 ), pText );
-	// paint ( pDI, Color ( 111, 255, 111 ), Color ( 0, 234, 0 ), Color ( 190, 244, 190 ), Color ( 222, 255, 222 ), pText, RGB ( 0, 0, 0 ) );
-	// paint ( pDI, Color ( 211, 255, 211 ), Color ( 111, 255, 111 ), Color ( 199, 255, 199 ), Color ( 232, 255, 232 ), pText, RGB ( 0, 0, 0 ) );
+#if 0
 	Color c1 ( 178, 245, 178 );
 	Color c2 ( 222, 255, 222 );
+#endif
+
+	Color c1 ( 210, 245, 210 );
+	Color c2 ( 233, 255, 233 );
+
 	paint ( pDI, c1, c1, c2, c2, pText, RGB ( 0, 0, 0 ) );
 }
 

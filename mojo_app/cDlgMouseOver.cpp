@@ -1,10 +1,10 @@
-/*************************************************************************************************
+/***********************************************************************************************************************
 /*
 /*   cDlgMouseOver.cpp
 /*   
-/*   started October 16, 2008
-/*   
-/*************************************************************************************************/
+/*    Copyright 2009 Robert Sacks.  See end of file for more info.
+/*
+/**********************************************************************************************************************/
 
 #include "stdafx.h"
 #include "cDlgMouseOver.h"
@@ -218,6 +218,14 @@ void cDlgMouseOver::save_draw_positions ()
 //----------------------------------------------------------------------------------------------
 INT_PTR cDlgMouseOver::on_init ( HWND hwnd )
 {
+
+	const int iMarginY = 12;
+	const int iGutterX = 6;
+	const int iGutterY = 0;
+	const int iMarginX = 12;
+	const int iCtrlDimY = 23;
+	const int iButtonDimX = 90;
+
 	HICON hIcon = (HICON)LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE ( IDI_ICON ), IMAGE_ICON, 16, 16, 0);
 	SendMessage ( hwnd, WM_SETICON, ICON_BIG, (LPARAM) hIcon );
 
@@ -276,6 +284,8 @@ INT_PTR cDlgMouseOver::on_init ( HWND hwnd )
 #endif
 
 
+
+
 	//--------------------------------
 	// REGISTER CHECKBOXES
 	//--------------------------------
@@ -283,10 +293,10 @@ INT_PTR cDlgMouseOver::on_init ( HWND hwnd )
 	ShowIP.hwnd = GetDlgItem ( hwnd, ID_SHOW_IP_ON_MOUSEOVER_SETTINGS );
 
 	register_child ( &ShowIP,
-							  nAnchor::left,		0,   20,
-							  nAnchor::bottom,	0,  -79,
-							  nAnchor::left,		0,  200,
-							  nAnchor::bottom,	0,  -57 );
+							  nAnchor::left,		0,   iMarginX,
+							  nAnchor::bottom,	    0,  - ( iMarginY + 5 * iCtrlDimY + 4 * iGutterY ),
+							  nAnchor::left,		0,  iMarginX + 300,
+							  nAnchor::bottom,	    0,  - ( iMarginY + 4 * iCtrlDimY + 4 * iGutterY ) );
 
 	CheckDlgButton ( hwnd, ID_SHOW_IP_ON_MOUSEOVER_SETTINGS,
 		g_Settings.bShowIpOnMouseoverSettings ? BST_CHECKED : BST_UNCHECKED );
@@ -296,10 +306,10 @@ INT_PTR cDlgMouseOver::on_init ( HWND hwnd )
 	ScreenSaver.hwnd = GetDlgItem ( hwnd, ID_MOUSEOVER_DEACTIVATES_SCREEN_SAVERS );
 
 	register_child ( &ScreenSaver,
-							  nAnchor::left,		0,   20,
-							  nAnchor::bottom,	0,  -58,
-							  nAnchor::left,		0,  360,
-							  nAnchor::bottom,	0,  -36 );
+							  nAnchor::left,		0,   iMarginX,
+							  nAnchor::bottom,	    0,  - ( iMarginY + 4 * iCtrlDimY + 3 * iGutterY ),
+							  nAnchor::left,		0,  iMarginX + 300,
+							  nAnchor::bottom,	    0,  - ( iMarginY + 3 * iCtrlDimY + 3 * iGutterY ) );
 
 	CheckDlgButton ( hwnd, ID_MOUSEOVER_DEACTIVATES_SCREEN_SAVERS,
 		g_Settings.bMouseoverDeactivatesScreenSavers ? BST_CHECKED : BST_UNCHECKED );
@@ -309,13 +319,41 @@ INT_PTR cDlgMouseOver::on_init ( HWND hwnd )
 	HideRemoteCursor.hwnd = GetDlgItem ( hwnd, ID_HIDE_REMOTE_CURSOR );
 
 	register_child ( &HideRemoteCursor,
-							  nAnchor::left,		0,   20,
-							  nAnchor::bottom,	0,  -37,
-							  nAnchor::left,		0,  360,
-							  nAnchor::bottom,	0,  -15 );
+							  nAnchor::left,		0,   iMarginX,
+							  nAnchor::bottom,	    0,  - ( iMarginY + 3 * iCtrlDimY + 2 * iGutterY ),
+							  nAnchor::left,		0,  iMarginX + 300,
+							  nAnchor::bottom,	    0,  - ( iMarginY + 2 * iCtrlDimY + 2 * iGutterY ) );
 
 	CheckDlgButton ( hwnd, ID_HIDE_REMOTE_CURSOR,
 		g_Settings.bHideRemoteCursor ? BST_CHECKED : BST_UNCHECKED );
+
+	//--------------------------------
+	// REGISTER HOTKEY STUFF
+	//--------------------------------
+
+	SetHotkey.hwnd = GetDlgItem ( hwnd, ID_SET_HOTKEY );
+	register_child ( &SetHotkey,
+							  nAnchor::left,		0,   iMarginX + 300 + iGutterX,
+							  nAnchor::bottom,	    0,   - ( iMarginY + iCtrlDimY ),
+							  
+							  nAnchor::left,		0,   iMarginX + 300 + iGutterX + iButtonDimX,
+							  nAnchor::bottom,	    0,   - iMarginY );
+
+	HotkeyLabel.hwnd = GetDlgItem ( hwnd, ID_HOTKEY_LABEL );
+	register_child ( &HotkeyLabel,
+							  nAnchor::left,		0,   iMarginX,
+							  nAnchor::bottom,	    0,   - ( iMarginY + 2 * iCtrlDimY + iGutterY),
+							  
+							  nAnchor::left,		0,   iMarginX + 300,
+							  nAnchor::bottom,	    0,   - ( iMarginY + iGutterY + iCtrlDimY ) );
+
+	Hotkey.hwnd = GetDlgItem ( hwnd, ID_HOTKEY );
+	register_child ( &Hotkey,
+							  nAnchor::left,		0,   iMarginX,
+							  nAnchor::bottom,	    0,   - ( iMarginY + iCtrlDimY ),
+							  nAnchor::left,		0,   iMarginX + 300,
+							  nAnchor::bottom,	    0,   - iMarginY );
+
 
 	//--------------------------------
 	// REGISTER PUSH BUTTONS
@@ -323,18 +361,18 @@ INT_PTR cDlgMouseOver::on_init ( HWND hwnd )
 	OkayButton.hwnd = GetDlgItem ( hwnd, IDOK );
 
 	register_child ( &OkayButton,
-							  nAnchor::right,	  0, -170,
-							  nAnchor::bottom,	  0,  -40,
-							  nAnchor::right,    0,  -100,
-							  nAnchor::bottom,   0,  -18 );
+							  nAnchor::right,	    0,  - ( iMarginX + iButtonDimX  * 2 + iGutterX ),
+							  nAnchor::bottom,	    0,  - ( iMarginY + iCtrlDimY ),
+							  nAnchor::right,       0,  - ( iMarginX + iButtonDimX  * 1 + iGutterX ),
+							  nAnchor::bottom,      0,  - iMarginY );
 
 	CancelButton.hwnd = GetDlgItem ( hwnd, IDCANCEL );
 
 	register_child ( &CancelButton,
-							  nAnchor::right,	  0, -90,
-							  nAnchor::bottom,	  0,  -40,
-							  nAnchor::right,    0,  -20,
-							  nAnchor::bottom,   0,  -18 );
+							  nAnchor::right,	    0,  - ( iMarginX + iButtonDimX  ),
+							  nAnchor::bottom,	    0,  - ( iMarginY + iCtrlDimY ),
+							  nAnchor::right,       0,  - ( iMarginX ),
+							  nAnchor::bottom,      0,  - iMarginY );
 
 
 	RECT rect;
@@ -419,10 +457,31 @@ INT_PTR CALLBACK cDlgMouseOver::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 		}
 		break;
 
+	case WM_GETMINMAXINFO:
+		{
+			MINMAXINFO * p    = (MINMAXINFO*) lParam;
+			POINT pt          = { 700, 500 };
+			p->ptMinTrackSize = pt;
+		}
+		break;
+
 	case WM_COMMAND:
 		{
 			switch ( LOWORD(wParam) )
 			{
+			case ID_SET_HOTKEY:
+				{
+					cTrigger Trigger;
+					cDlgGetTrigger d;
+					if ( 0 < d.make_dlg ( &Trigger ) )
+					{
+						cStrW s;
+						Trigger.print ( &s );
+						SetWindowText ( pThis->Hotkey.hwnd, s.cstr() );
+					}
+				}
+				break;
+
 			case ID_SHOW_IP_ON_MOUSEOVER_SETTINGS:
 				if ( BN_CLICKED == HIWORD(wParam) )
 				{
@@ -469,84 +528,20 @@ INT_PTR CALLBACK cDlgMouseOver::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 }
 
 
-////////////////////////////////////////  DEAD CODE
-
-#if 0
-//----------------------------------------------------------------------------------------------
-// MAKE IMAGE LIST SUB
-//----------------------------------------------------------------------------------------------
-HBITMAP make_image_list_sub (  HWND hwnd, int x, int y, wchar_t * pText, 
-							   wchar_t * pImageFilename, bool bBlackText )
-{
-	cStrW sPath;
-	j::get_module_path ( & sPath );
-	sPath += pImageFilename;
-	Bitmap bmOriginalSize ( sPath.cstr() );
-	Graphics gOld ( &bmOriginalSize );
-
-	FontFamily  fontFamily ( L"Verdana" );
-	Font        font ( &fontFamily, 15, FontStyleRegular, UnitPixel);
-	// PointF      pointF ( 30.0f, 10.0f );
-
-	SolidBrush  solidBrush ( Color ( 0, 0, 0, 255 ) );
-	
-	if ( bBlackText )
-		solidBrush.SetColor ( Color ( 255, 0, 0, 0 ) );
-
-	else
-		solidBrush.SetColor ( Color ( 255, 255, 255, 255 ) );
-
-	Bitmap bmNew ( x, y, & gOld );
-	Graphics gNew ( &bmNew );
-	gNew.DrawImage ( &bmOriginalSize, 0, 0, x, y );
-					RectF rectG;
-	rectG.Height = (float) bmNew.GetHeight();
-	rectG.Width = (float) bmNew.GetWidth();
-	StringFormat format;
-	format.SetAlignment(StringAlignmentCenter);
-	format.SetLineAlignment(StringAlignmentCenter);
-	gNew.DrawString ( pText, -1, &font, rectG, &format, &solidBrush );
-	HBITMAP hBM;
-	bmNew.GetHBITMAP ( NULL, &hBM );
-	return hBM;
-}
-
-
-//----------------------------------------------------------------------------------------------
-// MAKE IMAGE LIST
-//----------------------------------------------------------------------------------------------
-HIMAGELIST cDlgMouseOver::make_image_list ( HWND hwnd, int x, int y, wchar_t * pText, 
-										   wchar_t * pImageFilenameGold, /* wchar_t * pImageFilenameY, */ wchar_t * pImageFilenameGray )
-{
-	HIMAGELIST hIL  = ImageList_Create( x, y,  ILC_COLORDDB | ILC_COLOR32| ILC_MASK , 2, 0);
-	HBITMAP hBM;
-	hBM = make_image_list_sub ( hwnd, x, y, pText, pImageFilenameGold, true );
-	ImageList_Add ( hIL, hBM, NULL );
-	hBM = make_image_list_sub ( hwnd, x, y, pText, pImageFilenameGray, false );
-	ImageList_Add ( hIL, hBM, NULL );
-
-	return hIL;
-}
-
-
-//----------------------------------------------------------------------------------------------
-// SET SIZE AND MAKE IMAGE LIST
-// This can be called repeatedly to change the size and images even
-// while the scrob is being displayed
-//----------------------------------------------------------------------------------------------
-void cScrobImMouseOver :: set_size_and_make_image_list ( cDlgMouseOver * pDlg, HWND hwnd )
-{
-
-	cPtI ScreenResScale ( pMach->VirtRect.dx, pMach->VirtRect.dy ); // this->pMach->ScreenRes;
-
-	if ( ScreenResScale.x < 640 || ScreenResScale.y < 480 )
-			ScreenResScale = cPtI ( 1024, 768 );
-
-	ScreenResScale /= s_iSCALE_FACTOR;
-
-	HIMAGELIST h = pDlg->make_image_list ( hwnd, ScreenResScale.x, ScreenResScale.y, this->pMach->sName.cstr(),
-			L"mouseover_gold.jpg", /* L"art\\mouseover_blue.jpg", */ L"mouseover_gray.jpg");
-
-	this->set ( ScreenResScale.x, ScreenResScale.y, h );
-}
-#endif
+/***********************************************************************************************************************
+/*
+/*    This file is part of Mojo.  For more information, see http://mojoware.org.
+/*
+/*    You may redistribute and/or modify Mojo under the terms of the GNU General Public License, version 3, as
+/*    published by the Free Software Foundation.  You should have received a copy of the license with Mojo.  If you
+/*    did not, go to http://www.gnu.org.
+/* 
+/*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+/*    NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+/*    IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+/*    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+/*    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+/*    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+/*    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+/*
+/***********************************************************************************************************************/

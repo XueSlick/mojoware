@@ -35,7 +35,9 @@ public:
 	static const wchar_t *    ex_vk_to_name ( WORD dwExVK );
 	static const wchar_t *    ex_vk_to_pretty_name ( WORD dwExVK );
 	static WORD               name_to_ex_vk ( const wchar_t * pName );
-
+	static WORD               pretty_name_to_ex_vk ( const wchar_t * pName );
+	static bool               is_modifier ( WORD wExVK );
+	static bool               is_mouse_button ( WORD wExVK );
 private:
 
 	static                    sExVK aExVK [];

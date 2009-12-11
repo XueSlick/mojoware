@@ -26,11 +26,6 @@
 #include "cLog.h"
 #include "tArray.h"
 
-#if 0
-	#include "cMonitor.h"
-#endif
-
-// extern cMonitor g_Monitor;
 extern mojo::cLog g_Log;
 
 using namespace mojo;
@@ -140,6 +135,7 @@ bool get_ip_addresses ( mojo::cArrayU * pRet )
 	//--------------------------------
 	// GET TABLE
 	//--------------------------------
+
 	DWORD dwSize = 0;
     for ( int i = 0; i < 10; i++ )
 	{
@@ -225,8 +221,6 @@ bool get_ip_addresses ( mojo::cArrayU * pRet )
 }
 
 
-
-
 //---------------------------------------------------------------------------------------------
 // GET BROADCAST ADDRESSES
 //---------------------------------------------------------------------------------------------
@@ -286,7 +280,6 @@ bool get_broadcast_addresses ( mojo::tArray<DWORD> * pRet )
 		ip_dword_to_aw ( awMask, r.dwMask );
 		ip_dword_to_aw ( awBaddr, r.dwBCastAddr );
 #endif
-
 
 		DWORD dwBaddr = ( r.dwAddr & r.dwMask ) | ~ r.dwMask;
 

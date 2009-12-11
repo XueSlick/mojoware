@@ -1,0 +1,21 @@
+==============================================================
+                      BUILD 11 WORK LIST                      
+==============================================================
+
+ 1.  Tried to make Mojo stop triggering firewall when "One
+     PC" is selected.
+	 -- put tests for g_Settings.bConnect in cFinder and
+	    cPool::connect_to.
+
+2.  Replaced cPrevKeyState with cKeyState (extended VKs).
+
+3.  Added cTrigger.
+
+4.  Added dialog box for inputting hotkey triggers
+    (cDlgGetTrigger).
+
+5.  Replaced absolute paths with relative ones for bmp's and
+    ico's.
+
+6.  Added disabled "set hotkey" field to mouseover settings 
+    dialog.

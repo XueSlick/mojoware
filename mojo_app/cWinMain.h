@@ -53,7 +53,7 @@ private:
 	void wm_command ( WPARAM wParam, LPARAM lParam );
 	void wm_create ( HWND hwnd );
 
-	HWND create_toolbar ();
+	// HWND create_toolbar ();
 
 	wchar_t * pClassName;
 

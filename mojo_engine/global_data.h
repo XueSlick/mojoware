@@ -53,3 +53,4 @@ extern const wchar_t * 		g_apDefaultScribs [];
 extern cFinder              g_Finder;
 extern cKeyBroadcaster      g_KeyBroadcaster;
 extern cMouseover           g_Mouseover;
+extern cKeyState			g_KeyState;

@@ -27,6 +27,7 @@ extern HFONT				g_hMenuFont;
 extern HFONT				g_hCaptionFont;
 extern HFONT				g_hSubheadFont;
 extern HFONT				g_hHeadFont;
+extern HFONT				g_hDialogBoxHeadFont;
 extern NONCLIENTMETRICS		g_NonClientMetrics;
 extern const wchar_t * 		g_apDefaultScribs [];
 extern cSettings			g_Settings;

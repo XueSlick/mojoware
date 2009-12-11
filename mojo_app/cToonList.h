@@ -15,16 +15,6 @@
 
 typedef mojo::tList<cToon> cToonList;
 
-#if 0
-class cToonList : public mojo::tList<cToon>
-{
-public:
-
-	cToonList ( const cToonList & r );
-	bool get_toon ( cToon * pRet, DWORD dwHandle );
-};
-#endif
-
 
 /***********************************************************************************************************************
 /*

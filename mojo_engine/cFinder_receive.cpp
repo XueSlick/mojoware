@@ -44,6 +44,12 @@ bool cFinder :: receive ()
 
 	for ( ;; )
 	{
+		if ( ! g_Settings.bConnect )
+		{
+			Sleep ( 5000 );
+			continue;
+		}
+
     	char acBuf [ 2000 ];
     	SOCKADDR_IN		sinRemote;
 		int iRemoteSize = sizeof ( sinRemote );
@@ -56,6 +62,16 @@ bool cFinder :: receive ()
         if ( iResult == SOCKET_ERROR )
 		{
             LOG_SYSTEM_ERROR_TE ( L"recvfrom", WSAGetLastError() );
+			continue;
+		}
+
+		//--------------------------------------------------
+		// HAS "ONE PC" BEEN SELECTED SINCE WE STARTED
+		// LISTENING?
+		//--------------------------------------------------
+
+		if ( ! g_Settings.bConnect ) // added dec 8 2009 without testing
+		{
 			continue;
 		}
 

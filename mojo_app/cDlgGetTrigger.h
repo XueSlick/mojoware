@@ -1,8 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgAbout.h / mojo_app
-/*
-/*    Wrapper for "About Mojo" dialog box.
+/*    cDlgGetTrigger.h / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -13,20 +11,74 @@
 #include "cDlg.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-//  CLASS cDlgAbout
+//  CLASS
+//
+//  Pass a pointer to a trigger to this dialog box.  It returns true or false depending on whether the trigger
+//  has been initialized with valid data.
 //----------------------------------------------------------------------------------------------------------------------
-class cDlgAbout : public cDlgModal
+class cDlgGetTrigger : public cDlgModal
 {
 public:
 
-	INT_PTR wm_init ( HWND hwnd );
-	int draw_text ( HWND hwnd, bool bDraw = true ); // if false, returns height
-	virtual int idd () { return IDD_ABOUT; }
+	INT_PTR make_dlg ( mojo::cTrigger * pTrigger ) { return cDlgModal :: make_dlg ( (void*) pTrigger ); }
+	virtual int idd () { return IDD_GET_TRIGGER; }
 	virtual DialogProc * dialog_proc () { return dialog_proc; }
-	static DialogProc dialog_proc;
+	virtual void set_text ();
+	static  DialogProc dialog_proc;
 
-	cWin Link;
-	cWin Okay;
+	void wm_init ();
+	void on_clear ();
+	void set_state ( int iID );
+	void draw_trigger();
+	void wm_key_event ( WORD wExVK );
+
+	class cComboWin : public cWin
+	{
+	public:
+		HWND hEdit;
+		int iID;
+		WNDPROC pOldEditProc; // The edit control needs to be subclassed to avoid incredibly annoying mousewheel behavior
+	};
+
+private:
+
+	bool bad_mods ( const wchar_t ** ppGeneric, const wchar_t ** pSppecific );
+	unsigned get_all_keys ( mojo::cArrayW * pRet );
+	bool bad_pair ( const wchar_t ** ppGeneric, const wchar_t ** ppSpecific, WORD wExVK1, WORD wExVK2 );
+
+	cWinLabel PressedLabel;
+	cWin      PressedRule;
+	cWin      Pressed;
+	cWin      Released;
+
+	cWinLabel LockLabel;
+	cWin      LockRule;
+	cWin      CapsLockOn;
+	cWin      CapsLockOff;
+	cWin      NumLockOn;
+	cWin      NumLockOff;
+	cWin      ScrollLockOn;
+	cWin      ScrollLockOff;
+	cWin      Link;
+
+	cWin      Clear, OK, Cancel;
+
+	static const int s_iQtyInRow;
+	static const int s_iComboDimY;
+	static const int iMarginX;
+	static const int iMarginY;
+	static const int iGutter;
+
+	void change_size ();
+	void add_combo ();
+	void on_combo_changed ( HWND hwnd );
+	bool init_trigger ();
+
+	int iInitialWindowHeight;
+	int iInitialComboPosY;
+
+	tArray<cComboWin> aCombo;
+	mojo::cTrigger Trigger;
 };
 
 

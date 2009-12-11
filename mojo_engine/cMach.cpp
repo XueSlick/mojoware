@@ -29,7 +29,7 @@ mojo::cMach & mojo::cMach::operator= ( const mojo::cMach & rh )
 //----------------------------------------------------------------------------------------------------------------------
 //  COPY CONSTRUCTOR
 //----------------------------------------------------------------------------------------------------------------------
-mojo::cMach::cMach ( const mojo::cMach & rh ) :	pNext			( 0 ),
+mojo::cMach::cMach ( const mojo::cMach & rh ) :	    pNext			( 0 ),
 													pPrev			( 0 ),
 													dwSerialNumber	( rh.dwSerialNumber ),
 													bThisPC 		( rh.bThisPC ),

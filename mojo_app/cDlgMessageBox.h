@@ -1,8 +1,8 @@
 /***********************************************************************************************************************
 /*
-/*   cDlgMessageBox.h / mojo_app
+/*    cDlgMessageBox.h / mojo_app
 /*
-/*   Wrapper for custom message box.
+/*    Wrapper for custom message box.
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*

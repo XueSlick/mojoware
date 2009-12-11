@@ -1,23 +1,10 @@
-/********************************************************************************************************
+/***********************************************************************************************************************
 /*
 /*    cScribMgr.cpp / mojo_engine
 /*
-/*    Copyright 2009 Robert Sacks
+/*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
-/*    This file is part of Mojo.  You may redistribute and/or modify Mojo under the terms of the GNU 
-/*    General Public License, version 3, as published by the Free Software Foundation.  You should have
-/*    received a copy of the license with mojo.  If you did not, go to http://www.gnu.org.
-/*
-/*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
-/*    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
-/*    FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
-/*    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
-/*    DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
-/*    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
-/*    IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
-/*    OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-/*
-/********************************************************************************************************/
+/**********************************************************************************************************************/
 
 #include "stdafx.h"
 #include <string>
@@ -28,12 +15,13 @@
 using namespace mojo;
 using namespace std;
 
+
 //=======================================================================================================
 //  CODE
 //=======================================================================================================
+
 //-------------------------------------------------------------------------------------------------------
-//  PRINT
-//  for debugging
+//  LOG
 //-------------------------------------------------------------------------------------------------------
 void cScribMgr :: log ()
 {
@@ -43,8 +31,7 @@ void cScribMgr :: log ()
 	{
 		LOG_V ( L"Key = %s; Head = %s", p->first.c_str(), p->second.c_str() );
 
-	}
-	
+	}	
 }
 
 
@@ -64,7 +51,6 @@ MOJO_ENGINE_API int mojo :: load_scribs ( const wchar_t * pPathname, bool bRepla
 {
 	return g_ScribMgr.load_scribs ( pPathname, bReplace );
 }
-
 
 
 //-------------------------------------------------------------------------------------------------------
@@ -104,6 +90,7 @@ bool cScribMgr :: load_sub ( const wchar_t * pLine, bool bReplace )
 	return true;
 }
 
+
 //-------------------------------------------------------------------------------------------------------
 //  LOAD FROM SOURCE CODE
 //-------------------------------------------------------------------------------------------------------
@@ -130,7 +117,6 @@ int cScribMgr::load_scribs ( const wchar_t * pRay [], bool bReplace )
 
 	return iQty;
 }
-
 
 
 //-------------------------------------------------------------------------------------------------------
@@ -190,15 +176,20 @@ void cScribMgr::remove ( const wchar_t * pKey )
 }
 
 
-#if 0
-//-------------------------------------------------------------------------------------------------------
-//  INSERT DEFAULT SCRIBS
-//  Add a few English scribs to multimap that the program needs in order to display
-//  a fatal error when it cannot load a scrip file.
-//-------------------------------------------------------------------------------------------------------
-void cScribMgr:: insert_emergency_scribs ()
-{
-	Map.insert ( pair<wstring,wstring> ( L"CannotLoadDefaultScribFile", L"Unable to load default language file." ) );
-	Map.insert ( pair<wstring,wstring> ( L"CannotLoadDefaultScribFile", L"Try reinstalling the program." ) );
-}
-#endif
+/***********************************************************************************************************************
+/*
+/*    This file is part of Mojo.  For more information, see http://mojoware.org.
+/*
+/*    You may redistribute and/or modify Mojo under the terms of the GNU General Public License, version 3, as
+/*    published by the Free Software Foundation.  You should have received a copy of the license with Mojo.  If you
+/*    did not, go to http://www.gnu.org.
+/* 
+/*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+/*    NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+/*    IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+/*    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+/*    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+/*    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+/*    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+/*
+/***********************************************************************************************************************/

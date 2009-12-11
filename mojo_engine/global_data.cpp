@@ -37,6 +37,7 @@ const wchar_t * 	g_apDefaultScribs [];
 cFinder			    g_Finder;
 cKeyBroadcaster     g_KeyBroadcaster;
 cMouseover          g_Mouseover;
+cKeyState			g_KeyState;
 
 
 /***********************************************************************************************************************

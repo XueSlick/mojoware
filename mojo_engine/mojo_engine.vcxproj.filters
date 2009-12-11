@@ -48,6 +48,9 @@
     <ClCompile Include="cKeyBroadcaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cKeyState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cLog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -93,9 +96,6 @@
     <ClCompile Include="cPool_worker_thread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cPreviousKeyState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cScrib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,6 +117,9 @@
     <ClCompile Include="cSyringe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="default_scribs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -133,9 +136,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="global_data.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="initialize_engine.cpp">
@@ -157,12 +157,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tRect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tStr.cpp">
@@ -203,6 +197,9 @@
     <ClInclude Include="cKeyBroadcaster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cKeyState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="cLapPlus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -233,9 +230,6 @@
     <ClInclude Include="cPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cPreviousKeyState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cScrib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -260,6 +254,9 @@
     <ClInclude Include="cTarget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cTrigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="cVersion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -270,9 +267,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="global_data.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="hooks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mojo_engine.h">

@@ -123,8 +123,8 @@ void cDlgSettingsConnection :: set_state ()
 
 		ShowWindow ( GetDlgItem ( hwnd, ID_AUTO_FIND_YES ), 			SW_HIDE );
 
-		ShowWindow ( GetDlgItem ( hwnd, ID_RESTORE_DEFAULTS ),					SW_HIDE );
-		ShowWindow ( GetDlgItem ( hwnd, ID_MORE_OPTIONS ),					SW_HIDE );
+		ShowWindow ( GetDlgItem ( hwnd, ID_RESTORE_DEFAULTS ),			SW_HIDE );
+		ShowWindow ( GetDlgItem ( hwnd, ID_MORE_OPTIONS ),				SW_HIDE );
 
 		MoveWindow ( hwnd, r.left, r.top, r.right-r.left, 200, TRUE );	
 	}
@@ -138,8 +138,8 @@ void cDlgSettingsConnection :: set_state ()
 		ShowWindow ( GetDlgItem ( hwnd, ID_AUTO_FIND_RULE ), 			SW_SHOW );
 		ShowWindow ( GetDlgItem ( hwnd, ID_AUTO_FIND_CAPTION ), 		SW_SHOW );
 		ShowWindow ( GetDlgItem ( hwnd, ID_AUTO_FIND_YES ), 			SW_SHOW);
-		ShowWindow ( GetDlgItem ( hwnd, ID_RESTORE_DEFAULTS ),					SW_SHOW);
-		ShowWindow ( GetDlgItem ( hwnd, ID_MORE_OPTIONS ),					SW_SHOW );
+		ShowWindow ( GetDlgItem ( hwnd, ID_RESTORE_DEFAULTS ),			SW_SHOW);
+		ShowWindow ( GetDlgItem ( hwnd, ID_MORE_OPTIONS ),				SW_SHOW );
 
 		MoveWindow ( hwnd, r.left, r.top, r.right-r.left, rFullWin.bottom - rFullWin.top, TRUE );
 	}
@@ -183,26 +183,6 @@ INT_PTR CALLBACK cDlgSettingsConnection :: dialog_proc ( HWND hwnd, UINT uMessag
 
 	switch ( uMessage )
 	{
-#if 0
-	case WM_CTLCOLORBTN:
-	case WM_CTLCOLOREDIT:
-	case WM_CTLCOLORDLG:
-	case WM_CTLCOLORSTATIC:
-		{
-			HDC hdc = (HDC) wParam;
-			HWND hCtrl = (HWND) lParam;
-
-			if ( hCtrl == GetDlgItem ( hwnd, ID_CONNECT_HEAD ) ||
-				 hCtrl == GetDlgItem ( hwnd, ID_AUTO_FIND_HEAD ) )
-				SetTextColor	( hdc, RGB ( 0x44, 0x44, 0xdd ) );
-
-			SetBkMode		( hdc, OPAQUE );
-			SetBkColor		( hdc, RGB ( 0xFF, 0xFF, 0xFF ) );
-			return 			reinterpret_cast<INT_PTR> ( GetStockObject ( WHITE_BRUSH ) );
-		}
-		break;
-#endif
-
 	case WM_INITDIALOG:
 		{
 			set_user_data ( hwnd, lParam );
@@ -290,7 +270,6 @@ INT_PTR CALLBACK cDlgSettingsConnection :: dialog_proc ( HWND hwnd, UINT uMessag
 
 	return cDlgModal::dialog_proc ( hwnd, uMessage, wParam, lParam );
 }
-
 
 
 /***********************************************************************************************************************
