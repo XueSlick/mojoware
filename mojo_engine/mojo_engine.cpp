@@ -44,9 +44,9 @@ void mojo :: stop_swallowing_key_events ()
 //----------------------------------------------------------------------------------------------------------------------
 //  REGISTER FOR KEY EVENTS
 //----------------------------------------------------------------------------------------------------------------------
-void mojo::register_for_key_events   ( HWND hNotifyMe )
+void mojo::register_for_key_events   ( /* mojo::tCircBuf<WORD> * pBuf, */ HWND hNotifyMe )
 {
-	g_Messenger.register_for_key_events ( hNotifyMe );
+	g_Messenger.register_for_key_events ( /* pBuf, */ hNotifyMe );
 }
 
 

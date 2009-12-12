@@ -153,6 +153,8 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 				ie.print ( &m );
 				if ( pThis && pThis->DlgMonitor.InputEvents.hwnd )
 				Edit_SetText ( pThis->DlgMonitor.InputEvents.hwnd, m.cstr() );
+
+				// mojo::put_ad_lib_memo ( mojo::cMemo::warning, m.cstr() );
 			}
 		}
 		break;

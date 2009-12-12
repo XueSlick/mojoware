@@ -113,7 +113,18 @@ void cDlgGetTrigger :: add_combo ()
 	// SET CURSOR
 	//----------------------------------
 
-	PostMessage ( hwnd, WM_NEXTDLGCTL, (WPARAM) aCombo[iComboQty].hwnd, TRUE );
+	HWND hwndCombo = cbi.hwndCombo;
+	hwndCombo;
+	HWND hwndEdit = cbi.hwndItem;
+	hwndEdit;
+
+	if ( 1 == aCombo.qty() )
+		PostMessage ( hwnd, WM_NEXTDLGCTL, (WPARAM) aCombo[iComboQty].hwnd, TRUE );
+
+	else
+		SendMessage ( hwnd, WM_NEXTDLGCTL, (WPARAM) aCombo[iComboQty].hwnd, TRUE );
+
+
 
 	//----------------------------------
 	// SET SIZE
@@ -126,12 +137,12 @@ void cDlgGetTrigger :: add_combo ()
 //----------------------------------------------------------------------------------------------------------------------
 // ON COMBO CHANGED
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgGetTrigger :: on_combo_changed ( HWND hCombo )
+void cDlgGetTrigger :: on_combo_changed ( HWND hNewCombo )
 {
 	wchar_t b1 [100];
 	wchar_t b2 [100];
 
-	ComboBox_GetText ( hCombo, b1, sizeof(b1)/sizeof(wchar_t) );
+	ComboBox_GetText ( hNewCombo, b1, sizeof(b1)/sizeof(wchar_t) );
 
 	//--------------------------------------
 	//  CHECK FOR DUPES
@@ -141,23 +152,28 @@ void cDlgGetTrigger :: on_combo_changed ( HWND hCombo )
 	{
 		for ( unsigned i = 0; i < aCombo.qty() - 1; i++ )
 		{
-			if ( hCombo == aCombo[i].hwnd )
+			if ( hNewCombo == aCombo[i].hwnd )
 				continue;
 
 			ComboBox_GetText ( aCombo[i].hwnd, b2, sizeof(b2)/sizeof(wchar_t) );
 
 			if ( 0 == wcscmp ( b1, b2 ) )
 			{
+				ComboBox_SetCurSel ( hNewCombo, -1 );
+
 				cStrW s;
-				s.f ( L"You entered %s twice.\n\nThat will have to be changed.", b1 );
+				s.f ( L"You entered %s twice.\n\nThat won't work.", b1 );
 				message_box ( s.cstr() );
+				SetFocus ( hNewCombo );
 				return;
 			}
 		}
 	}
 
-	if ( hCombo == aCombo[aCombo.qty() - 1].hwnd )
+#if 1
+	if ( hNewCombo == aCombo[aCombo.qty() - 1].hwnd )
 		add_combo();
+#endif
 }
 
 /***********************************************************************************************************************

@@ -1,0 +1,12 @@
+==============================================================
+                      BUILD 11 WORK LIST                      
+==============================================================
+
+ 1.  Changes to cGetDlgTrigger:
+
+     Instructions added (press keys or click mouse).
+
+     "Clear" now clears checkboxes in cGetDlgTrigger.
+
+	 It's now possible to press a key combination in the
+	 first field and fill several data structures.

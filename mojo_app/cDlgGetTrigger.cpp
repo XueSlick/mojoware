@@ -95,6 +95,13 @@ void cDlgGetTrigger :: change_size ()
 //----------------------------------------------------------------------------------------------------------------------
 void cDlgGetTrigger :: on_clear ()
 {
+	CheckDlgButton ( hwnd, ID_CAPSLOCK_ON,    FALSE );
+	CheckDlgButton ( hwnd, ID_CAPSLOCK_OFF,   FALSE );
+	CheckDlgButton ( hwnd, ID_NUMLOCK_ON,     FALSE );
+	CheckDlgButton ( hwnd, ID_NUMLOCK_OFF,    FALSE );
+	CheckDlgButton ( hwnd, ID_SCROLLLOCK_ON,  FALSE );
+	CheckDlgButton ( hwnd, ID_SCROLLLOCK_OFF, FALSE );
+
 	for ( unsigned i = 0; i < aCombo.qty(); i++ )
 		DestroyWindow ( aCombo[i].hwnd );
 
@@ -110,21 +117,23 @@ void cDlgGetTrigger :: on_clear ()
 //----------------------------------------------------------------------------------------------------------------------
 void cDlgGetTrigger :: wm_key_event ( WORD wExVK )
 {
-	int iComboQty = aCombo.qty();
+	// WORD wExVK;
 
-	HWND hFocus = GetFocus();
-
-	for ( int i = 0; i < iComboQty; i++ )
+	// while ( KeyBuf.get ( &wExVK ) )
 	{
-		if ( aCombo[i].hEdit == hFocus )
+		int iComboQty = aCombo.qty();
+
+		HWND hFocus = GetFocus();
+
+		for ( int i = 0; i < iComboQty; i++ )
 		{
-			SetWindowText ( aCombo[i].hEdit, cKeyboard::ex_vk_to_pretty_name ( wExVK ) );
-			on_combo_changed ( aCombo[i].hwnd );
+			if ( aCombo[i].hEdit == hFocus )
+			{
+				SetWindowText ( aCombo[i].hEdit, cKeyboard::ex_vk_to_pretty_name ( wExVK ) );
+				on_combo_changed ( aCombo[i].hwnd );
+			}
 		}
 	}
-
-	// init_trigger ();
-	// draw_trigger ();
 }
 
 
@@ -145,22 +154,17 @@ void cDlgGetTrigger :: wm_init ()
 	int iMarginY  = 12;
 	int iGutterY  = 6;
 
-
-	iInitialComboPosY = 59;
+	iInitialComboPosY = 81;
 
 	HWND hHead = GetDlgItem ( hwnd, ID_HEAD );
 	SetWindowFont ( hHead, g_hDialogBoxHeadFont, TRUE );
 
-	mojo::register_for_key_events ( hwnd );
+	mojo::register_for_key_events ( /* &KeyBuf, */ hwnd );
 	mojo::start_swallowing_key_events ( hwnd );
 
 	add_combo();
 
 	const int iDimX        = 90;
-	// int iMarginY = 12;
-	// int iCtrlDimY = 23;
-	// int iGutterY = 6;
-
 
 	int iLockDimX = 160;
 	int iLockPosX = iMarginX * 2;
@@ -320,9 +324,7 @@ INT_PTR CALLBACK cDlgGetTrigger::dialog_proc (HWND hwnd, UINT uMessage, WPARAM w
 		break;
 
 	case mojo::uWM_KEY_EVENT_OCCURRED:
-
-		if ( 0 == lParam ) // down
-			pThis->wm_key_event( (WORD) wParam );
+		pThis->wm_key_event((WORD)wParam); // wExVK );
 		break;
 
 #if 0

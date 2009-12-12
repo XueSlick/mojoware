@@ -33,6 +33,7 @@
 #include "tStr.h"
 #include "cLog.h"
 #include "tList2.h"
+#include "tCircBuf.h"
 
 using namespace mojo;
 
