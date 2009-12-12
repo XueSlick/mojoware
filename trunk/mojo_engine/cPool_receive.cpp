@@ -34,8 +34,8 @@
 #include "cLog.h"
 #include "cSettings.h"
 #include "cException.h"
+#include "tCircBuf.h"
 #include "cMessenger.h"
-
 
 //=============================================================================================
 // PROTOTYPES

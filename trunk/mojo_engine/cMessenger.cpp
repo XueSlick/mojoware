@@ -29,8 +29,9 @@ using namespace mojo;
 //----------------------------------------------------------------------------------------------------------------------
 //  REGISTER FOR KEY EVENTS
 //----------------------------------------------------------------------------------------------------------------------
-void cMessenger :: register_for_key_events   ( HWND hNotifyMe )
+void cMessenger :: register_for_key_events   ( /* tCircBuf<WORD> * pBuf, */ HWND hNotifyMe )
 {
+	// pKeyEventNotifyBuf  = pBuf;
 	hKeyEventNotificand = hNotifyMe;
 }
 
@@ -203,13 +204,16 @@ bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUC
 	if ( g_Messenger.hKeyEventNotificand )
 	{
 		//---------------------------------
-		//  OMIT TYPEMATICS
+		//  NON-TYPEMATIC PRESSES ONLY
 		//---------------------------------
 
 		LPARAM lParam = p->flags & LLKHF_UP ? 1 : 0;
 
-		if ( lParam || ! ( p->dwExtraInfo & (1<<30) )  )
+		if ( ! lParam && ! ( p->dwExtraInfo & (1<<30) )  )
+		{
 			PostMessage ( g_Messenger.hKeyEventNotificand, mojo::uWM_KEY_EVENT_OCCURRED, wExVK, lParam );
+			// g_Messenger.pKeyEventNotifyBuf->put ( wExVK );
+		}
 	}
 
 	//------------------------------------

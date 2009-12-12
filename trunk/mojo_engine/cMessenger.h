@@ -25,7 +25,7 @@ class cMessenger
 {
 public:
 
-	cMessenger             () : hwnd(0), hwndSwallow(0), hKeyEventNotificand(0) {}
+	cMessenger             () : hwnd(0), hwndSwallow(0), hKeyEventNotificand(0) /* pKeyEventNotifyBuf(0) */ {}
 
 	static bool keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUCT * p );
 	static bool mouse_hook_service_routine    ( WPARAM wParam, MSLLHOOKSTRUCT * p );
@@ -45,7 +45,7 @@ public:
 	void start_swallowing_key_events ( HWND hwndSwallow );
 	void stop_swallowing_key_events  ();
 
-	void register_for_key_events     ( HWND hNotifyMe );
+	void register_for_key_events     ( /* mojo::tCircBuf<WORD> * pBuf, */ HWND hNotifyMe );
 	void unregister_for_key_events   ( HWND hNotifyMe );
 
 	DWORD start_thread 	();
@@ -55,6 +55,7 @@ public:
 
 private:
 	HWND hKeyEventNotificand;
+	// mojo::tCircBuf<WORD> * pKeyEventNotifyBuf;
 	static unsigned _stdcall thread ( void * pArg );
 };
 

@@ -71,7 +71,7 @@ private:
 
 	void change_size ();
 	void add_combo ();
-	void on_combo_changed ( HWND hwnd );
+	void on_combo_changed ( HWND hNewCombo );
 	bool init_trigger ();
 
 	int iInitialWindowHeight;
@@ -79,6 +79,8 @@ private:
 
 	tArray<cComboWin> aCombo;
 	mojo::cTrigger Trigger;
+
+	// mojo::tCircBuf<WORD> KeyBuf;
 };
 
 

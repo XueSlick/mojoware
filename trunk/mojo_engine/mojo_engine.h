@@ -111,7 +111,7 @@ MOJO_ENGINE_API mojo::nConnectionStatus::eConnectionStatus
 MOJO_ENGINE_API void get_broadcast_targets       ( mojo::cArrayTarget * pRet );
 MOJO_ENGINE_API void set_mouseover_layout        ( mojo::cMachlist * pMachlist );
 MOJO_ENGINE_API void get_key_state_as_trigger    ( mojo::cTrigger * pRet );
-MOJO_ENGINE_API void register_for_key_events     ( HWND hNotifyMe );
+MOJO_ENGINE_API void register_for_key_events     ( /* mojo::tCircBuf<WORD> * pBuf, */ HWND hNotifyMe );
 MOJO_ENGINE_API void unregister_for_key_events   ( HWND hNotifyMe );
 MOJO_ENGINE_API void start_swallowing_key_events ( HWND hwndSwallow );
 MOJO_ENGINE_API void stop_swallowing_key_events  ();
