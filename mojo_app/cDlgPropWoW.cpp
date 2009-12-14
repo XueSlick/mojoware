@@ -1,87 +1,65 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgGetTrigger.h / mojo_app
+/*    cDlgPropWow.cpp / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
-#pragma once
+#include "stdafx.h"
 
-#include "cDlg.h"
+
+//======================================================================================================================
+// DATA
+//======================================================================================================================
+
+//======================================================================================================================
+// PROTOTYPES
+//======================================================================================================================
+
+//======================================================================================================================
+// CODE
+//======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
-//  CLASS
-//
-//  Pass a pointer to a trigger to this dialog box.  It returns true or false depending on whether the trigger
-//  has been initialized with valid data.
+// WM INIT
 //----------------------------------------------------------------------------------------------------------------------
-class cDlgGetTrigger : public cDlgModal
+void cDlgPropWoW :: wm_init ()
 {
-public:
+	pWoW = ( cWoW * ) pUserData;
 
-	INT_PTR make_dlg ( mojo::cTrigger * pTrigger ) { return cDlgModal :: make_dlg ( (void*) pTrigger ); }
-	virtual int idd () { return IDD_GET_TRIGGER; }
-	virtual DialogProc * dialog_proc () { return dialog_proc; }
-	virtual void set_text ();
-	static  DialogProc dialog_proc;
+	if ( pWoW )
+		SetWindowText ( GetDlgItem ( hwnd, ID_NAME ), pWoW->sName.cstr() );
+}
 
-	void wm_init ();
-	void on_clear ();
-	void set_state ( int iID );
-	void draw_trigger();
-	void wm_key_event ( WORD wExVK );
 
-	class cComboWin : public cWin
+//----------------------------------------------------------------------------------------------------------------------
+// DEFAULT PROC
+//----------------------------------------------------------------------------------------------------------------------
+INT_PTR CALLBACK cDlgPropWoW::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
+{
+	cWin * pWin = user_data_to_pWin ( hwnd );
+	cDlgPropWoW * pThis = static_cast<cDlgPropWoW*>(pWin);
+
+	switch ( uMessage )
 	{
-	public:
-		HWND hEdit;
-		int iID;
-		WNDPROC pOldEditProc; // The edit control needs to be subclassed to avoid incredibly annoying mousewheel behavior
-	};
 
-private:
+	case WM_INITDIALOG:
+		{
+			set_user_data ( hwnd, lParam );
+			cWin * pWin = lParam_to_pWin ( hwnd, lParam );
+			pThis = static_cast<cDlgPropWoW*>(pWin);
+			pThis->hwnd = hwnd;
+			pThis->wm_init();
+		}
+		break;
 
-	bool bad_mods ( const wchar_t ** ppGeneric, const wchar_t ** pSppecific );
-	unsigned get_all_keys ( mojo::cArrayW * pRet );
-	bool bad_pair ( const wchar_t ** ppGeneric, const wchar_t ** ppSpecific, WORD wExVK1, WORD wExVK2 );
+	default:
+		break;
+	}
 
-	cWinLabel PressedLabel;
-	cWin      PressedRule;
-	cWin      Pressed;
-	cWin      Released;
-
-	cWinLabel LockLabel;
-	cWin      LockRule;
-	cWin      CapsLockOn;
-	cWin      CapsLockOff;
-	cWin      NumLockOn;
-	cWin      NumLockOff;
-	cWin      ScrollLockOn;
-	cWin      ScrollLockOff;
-	cWin      Link;
-
-	cWin      Clear, OK, Cancel;
-
-	static const int s_iQtyInRow;
-	static const int s_iComboDimY;
-	static const int iMarginX;
-	static const int iMarginY;
-	static const int iGutter;
-
-	void change_size ();
-	void add_combo ();
-	void on_combo_changed ( HWND hNewCombo );
-	bool init_trigger ();
-
-	int iInitialWindowHeight;
-	int iInitialComboPosY;
-
-	tArray<cComboWin> aCombo;
-	mojo::cTrigger Trigger;
-
-	// mojo::tCircBuf<WORD> KeyBuf;
-};
+	return cDlgModal::dialog_proc ( hwnd, uMessage, wParam, lParam );
+}
 
 
 /***********************************************************************************************************************

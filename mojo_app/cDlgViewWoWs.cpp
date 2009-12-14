@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgWoWs.cpp / mojo_app
+/*    cDlgViewWoWs.cpp / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -15,6 +15,7 @@
 
 const int iButtonHeight = 27;
 const int iMargin = 9;
+const int iButtonStripDimY = 23;
 
 //======================================================================================================================
 // PROTOTYPES
@@ -25,9 +26,19 @@ const int iMargin = 9;
 //======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
+//  ITEM LIST
+//----------------------------------------------------------------------------------------------------------------------
+cConfigItemList * cDlgViewWoWs :: item_list ()
+{
+	return & g_Config.WoWList;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
 // WM INIT
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgWoWs::wm_init ()
+#if 0
+void cDlgViewWoWs::wm_init ()
 {
 	const int iMargin = 9;
 	const int iLeftMargin = 0;
@@ -40,58 +51,50 @@ void cDlgWoWs::wm_init ()
 							  nAnchor::right,		0,		-iMargin,
 							  nAnchor::bottom,		0,      -iMargin );
 }
+#endif
 
+//----------------------------------------------------------------------------------------------------------------------
+// WM PAINT
+//----------------------------------------------------------------------------------------------------------------------
+#if 0
+void cDlgViewWoWs :: wm_paint ()
+{
+
+
+	PAINTSTRUCT ps;
+	BeginPaint ( hwnd, &ps );
+	HBRUSH hBrush = ( HBRUSH ) GetStockObject ( BLACK_BRUSH );
+	// SelectObject ( hdc, (HGDIOBJ) hBrush );
+	RECT r;
+	GetClientRect ( hwnd, &r );
+	r.bottom = iButtonStripDimY;
+	FillRect ( ps.hdc, &r, hBrush );
+
+	
+
+	EndPaint ( hwnd, &ps );
+}
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------
 // DEFAULT PROC
 //----------------------------------------------------------------------------------------------------------------------
-INT_PTR CALLBACK cDlgWoWs::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
+#if 1
+INT_PTR CALLBACK cDlgViewWoWs::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
 	cWin * pWin = user_data_to_pWin ( hwnd );
-	cDlgWoWs * pThis = static_cast<cDlgWoWs*>(pWin);
+	cDlgViewWoWs * pThis = static_cast<cDlgViewWoWs*>(pWin);
 
 	switch ( uMessage )
 	{
-
-
-	case WM_COMMAND:
-		{
-			if ( BN_CLICKED == HIWORD ( wParam ) )
-			{
-				switch 	( LOWORD ( wParam ) )
-				{
-				case ID_TOGGLE_MOUSEOVER:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_TOGGLE_MOUSEOVER, ID_TOGGLE_MOUSEOVER );
-					break;
-
-				case ID_TOGGLE_HOTKEYS:
-					pThis->cWin::balloon ( GetDlgItem ( hwnd, ID_TOGGLE_HOTKEYS ), L"Sorry.", L"Hotkeys aren't implemented yet." );
-					break;
-
-				case ID_TOGGLE_BROADCAST:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_TOGGLE_BROADCAST, ID_TOGGLE_BROADCAST );
-					break;
-
-				case ID_VIEW_MONITOR:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_VIEW_MONITOR, 0 );
-					break;
-
-				case ID_VIEW_WOWS:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_VIEW_WOWS, 0 );
-					break;
-				}
-			}
-		}
-		break;
-
 
 	case WM_INITDIALOG:
 		{
 			set_user_data ( hwnd, lParam );
 			cWin * pWin = lParam_to_pWin ( hwnd, lParam );
-			pThis = static_cast<cDlgWoWs*>(pWin);
+			pThis = static_cast<cDlgViewWoWs*>(pWin);
 			pThis->hwnd = hwnd;
-			pThis->wm_init ();
+			// pThis->wm_init ();
 		}
 		break;
 
@@ -99,8 +102,9 @@ INT_PTR CALLBACK cDlgWoWs::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam,
 		break;
 	}
 
-	return cDlgModal::dialog_proc ( hwnd, uMessage, wParam, lParam );
+	return cDlgView::dialog_proc ( hwnd, uMessage, wParam, lParam );
 }
+#endif
 
 
 /***********************************************************************************************************************

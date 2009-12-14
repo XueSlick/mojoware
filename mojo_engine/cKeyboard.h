@@ -31,6 +31,14 @@ private:
 
 public:
 
+	static const WORD               wExVkLButton        = 1;
+	static const WORD               wExVkRButton        = 2;
+	static const WORD               wExVkMButton        = 4;
+	static const WORD               wExVkButton4        = 5;
+	static const WORD               wExVkButton5        = 6;
+	static const WORD               wExVkWheelForward  = 10;
+	static const WORD               wExVkWheelBackward = 11;
+
 	static const wchar_t *    pretty_key_event ( mojo::cStrW * pRet, const KBDLLHOOKSTRUCT * pHS );
 	static const wchar_t *    ex_vk_to_name ( WORD dwExVK );
 	static const wchar_t *    ex_vk_to_pretty_name ( WORD dwExVK );

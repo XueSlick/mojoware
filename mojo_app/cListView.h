@@ -1,34 +1,40 @@
 /***********************************************************************************************************************
 /*
-/*    cToon.h
+/*    cListView.h / mojo_app
+/*
+/*    Base class for cListViewToons, cListViewTeams, etc.
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
-#include "stdafx.h"
+#pragma once
+
+#include "cWin.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-//  TOON
+// CLASS
 //----------------------------------------------------------------------------------------------------------------------
-class cToon : public cConfigItem
+class cListView : public cWin
 {
 public:
 
-	cToon & operator= ( const cToon & );
+	virtual void               init ();
+	virtual void               populate ( cConfigItemList * pList );
+	virtual void               set_item ( int iIndex, cConfigItem * pConfigItem );
+	// void                       insert_image_lists ( HWND hwnd );
+	void                       set_view ( DWORD dwView );
+	DWORD                      hot_item ();
+	void                       toggle_view ();
 
-	virtual cToon * get_dupe (); // DELETE RETURN VALUE AFTER USING IT
+	cConfigItemList *          pList; // the original; it may have changed
 
-	virtual bool init_from_xml ( const wchar_t * pTxt );
+private:
 
-	cToon * pNext;
-	cToon * pPrev;
 
-	mojo::cStrW sAccount;
-	mojo::cStrW sName;
-	mojo::cStrW sIconPath;
+	void                       do_image_list ( cConfigItemList * pList );
+	HIMAGELIST	               hImageListLarge;
 };
-
 
 /***********************************************************************************************************************
 /*

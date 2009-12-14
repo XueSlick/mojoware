@@ -17,16 +17,31 @@ class cConfigItem
 {
 public:
 
+	virtual int menu () { return 0; }
+	int do_context_menu ( HWND hwnd );
+
 	cConfigItem () : dwSerialNumber ( DWORD ( -1 ) ) {}
 
-	virtual void write_xml_element ( mojo::cStrW * pStr ) = 0;
-	virtual bool init_from_xml ( const wchar_t * pTxt ) = 0;
+	cConfigItem ( const cConfigItem & r );
+	cConfigItem & operator= ( const cConfigItem & r );
+
+	virtual cConfigItem * get_dupe (); // DELETE RETURN VALUE AFTER USING IT
+
+	virtual void write_xml_element ( mojo::cStrW * pStr );
+	virtual bool init_from_xml ( const wchar_t * pTxt );
 	DWORD dwSerialNumber;
+	mojo::cStrW sName;
+	mojo::cStrW sIconPath;
+
+	cConfigItem * pNext;
+	cConfigItem * pPrev;
 
 protected:
 
 	void write_xml_element ( mojo::cStrW * pRet, const wchar_t * pName, const wchar_t * pContents );
 };
+
+
 
 
 /***********************************************************************************************************************

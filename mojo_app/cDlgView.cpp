@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgToons.cpp / mojo_app
+/*    cDlgView.cpp / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 
-
+#include "cDlgPropWoW.h"
 
 //======================================================================================================================
 // DATA
@@ -16,7 +16,8 @@
 
 const int iButtonHeight = 27;
 const int iMargin = 9;
-static int s_iButtonStripHeight = 20;
+static int s_iStripDimY = 20;
+static int s_iStripButtonDimX = 80;
 
 //======================================================================================================================
 // PROTOTYPES
@@ -26,11 +27,10 @@ static int s_iButtonStripHeight = 20;
 // CODE
 //======================================================================================================================
 
-
 //----------------------------------------------------------------------------------------------------------------------
 // WM PAINT
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgToons :: wm_paint ()
+void cDlgView :: wm_paint ()
 {
 	PAINTSTRUCT ps;
 	BeginPaint ( hwnd, &ps );
@@ -38,82 +38,110 @@ void cDlgToons :: wm_paint ()
 	RECT r;
 	GetClientRect ( hwnd, &r );
 	r.top += iMargin;
-	r.right -= iMargin * 2;
-	r.bottom = s_iButtonStripHeight + iMargin;
+	r.right -= iMargin;
+	r.bottom = s_iStripDimY + iMargin;
 	FillRect ( ps.hdc, &r, hBrush );
 	EndPaint ( hwnd, &ps );
 }
 
-
 //----------------------------------------------------------------------------------------------------------------------
 // WM INIT
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgToons::wm_init ()
+void cDlgView::wm_init ()
 {
 	const int iMargin = 9;
 	const int iLeftMargin = 0;
 
-#if 0
-	const int iButtonWidth = 80;
-	const int iButtonHeight = 21;
+	//--------------------------------
+	// MAIN LIST VIEW CONTROL
+	//--------------------------------
 
-	List.hwnd = GetDlgItem ( hwnd, ID_LIST );
-	register_child ( &List,
-							  nAnchor::right,		0,		-iMargin,
-							  nAnchor::top,			0,		iMargin,
-							  nAnchor::right,		0,		-(iMargin + iButtonWidth),
-							  nAnchor::top,		    0,      iMargin + iButtonHeight );
-
-	Pictures.hwnd = GetDlgItem ( hwnd, ID_PICTURES );
-	register_child ( &Pictures,
-							  nAnchor::right,		0,		-(iMargin*2 + iButtonWidth*2 ),
-							  nAnchor::top,			0,		iMargin,
-							  nAnchor::right,		0,		-(iMargin*2 + iButtonWidth),
-							  nAnchor::top,		    0,      iMargin + iButtonHeight );
-#endif
-
-	ListView.hwnd = GetDlgItem ( hwnd, ID_LIST_VIEW );
-	register_child ( &ListView,
+	pListView->hwnd = GetDlgItem ( hwnd, ID_LIST_VIEW );
+	register_child ( pListView,
 
 							  nAnchor::left,		0,		iLeftMargin,
-							  nAnchor::top,			0,		iMargin * 2 + s_iButtonStripHeight,
+							  nAnchor::top,			0,		iMargin * 1 + s_iStripDimY,
 							  nAnchor::right,		0,		-iMargin,
 							  nAnchor::bottom,		0,      -iMargin );
 
-	ListView.init();
+	//--------------------------------
+	// SMALL TOGGLE VIEW BUTTON
+	//--------------------------------
 
-	cToonList tl ( g_Config.ToonList );
-	ListView.populate ( &tl );
+	ToggleView.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_VIEW );
+	register_child ( &ToggleView,
+
+							  nAnchor::right,		0,		- ( iMargin * 2 + s_iStripButtonDimX ),
+							  nAnchor::top,			0,		iMargin + 1,
+							  nAnchor::right,		0,		-( iMargin * 2 ),
+							  nAnchor::top,		    0,      iMargin + s_iStripDimY - 1 );
+
+	//--------------------------------
+	// SMALL ADD BUTTON
+	//--------------------------------
+
+	Add.hwnd = GetDlgItem ( hwnd, ID_ADD  );
+	register_child ( &Add,
+
+							  nAnchor::right,		0,		- ( iMargin * 3 + s_iStripButtonDimX * 2),
+							  nAnchor::top,			0,		iMargin + 1,
+							  nAnchor::right,		0,		-( iMargin * 3 + s_iStripButtonDimX ),
+							  nAnchor::top,		    0,      iMargin + s_iStripDimY - 1 );
+
+	ShowWindow ( pListView->hwnd, TRUE );
+
+	pListView->init();
+	pListView->populate ( item_list() );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  TOGGLE VIEW
+//----------------------------------------------------------------------------------------------------------------------
+void cDlgView :: toggle_view ()
+{
+	pListView->toggle_view(); 
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 // DEFAULT PROC
 //----------------------------------------------------------------------------------------------------------------------
-INT_PTR CALLBACK cDlgToons::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK cDlgView::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
 	cWin * pWin = user_data_to_pWin ( hwnd );
-	cDlgToons * pThis = static_cast<cDlgToons*>(pWin);
+	cDlgView * pThis = static_cast<cDlgView*>(pWin);
 
 	switch ( uMessage )
 	{
+	case WM_COMMAND:
+
+		switch ( LOWORD ( wParam ) )
+		{
+		case ID_TOGGLE_VIEW:
+			pThis->toggle_view ();
+			break;
+		}
 
 	case WM_PAINT:
 		pThis->wm_paint();
 		break;
-
+#if 0
 	case uWM_TOON_LIST_CHANGED:
 		{
-			cToonList tl ( g_Config.ToonList );
-			pThis->ListView.populate ( &tl );
+		#if 0
+			// cToonList tl ( g_Config.ToonList );
+			pThis->pListView->populate ( &g_Config );
+		#endif
 		}
 		break;
+#endif
 
 	case WM_INITDIALOG:
 		{
 			set_user_data ( hwnd, lParam );
 			cWin * pWin = lParam_to_pWin ( hwnd, lParam );
-			pThis = static_cast<cDlgToons*>(pWin);
+			pThis = static_cast<cDlgView*>(pWin);
 			pThis->hwnd = hwnd;
 			pThis->wm_init ();
 		}
@@ -126,21 +154,34 @@ INT_PTR CALLBACK cDlgToons::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam
 
 			if ( pN->code == NM_RCLICK )
 			{
-				DWORD dwHandle = pThis->ListView.hot_item();
+				DWORD dwHandle = pThis->pListView->hot_item();
 
 				if ( (DWORD)-1 != dwHandle )
 				{
-				#if  0
-					cMach m;
-					if ( mojo::get_mach ( &m, dwHandle ) )
-					{
-						cStrW s;
-						s.f ( L"You right-clicked a computer.\n\nHandle = %d.\nName = %s\n", dwHandle, m.sName.cstr() );
-						message_box ( s.cstr() );
+					cConfigItem * p = pThis->pListView->pList->get_dupe ( dwHandle );
 
-						// do_pc_context_menu ( hwnd, pM );
+					if ( p )
+					{
+						int iCommand = p->do_context_menu ( hwnd );
+
+						switch ( iCommand )
+						{
+						case ID_LAUNCH:
+							message_box ( L"Sorry, Mojo can't launch programs yet." );
+							break;
+
+						case ID_PROPERTIES:
+							{
+								cDlgPropWoW d;
+								d.make_dlg ( p );
+							}
+							break;
+						default:
+							break;
+						}
+
+						delete p;
 					}
-					#endif
 				}
 			}
 		}
@@ -150,8 +191,9 @@ INT_PTR CALLBACK cDlgToons::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam
 		break;
 	}
 
-	return cDlgModal::dialog_proc ( hwnd, uMessage, wParam, lParam );
+	return cDlg::dialog_proc ( hwnd, uMessage, wParam, lParam );
 }
+
 
 
 /***********************************************************************************************************************

@@ -16,6 +16,8 @@ sDlgDatum cDlgSettingsAppearance :: aDlgData [] =
 {
 	sDlgDatum ( ID_TOON_ICON_WIDTH,              		   L"uToonIconWidth"      ),
 	sDlgDatum ( ID_TOON_ICON_HEIGHT,                       L"uToonIconHeight"     ),
+	sDlgDatum ( ID_WOW_ICON_WIDTH,              		   L"uWoWIconWidth"       ),
+	sDlgDatum ( ID_WOW_ICON_HEIGHT,                        L"uWoWIconHeight"      ),
 	sDlgDatum ( 0,                                         NULL                   ),
 };
 
@@ -38,7 +40,7 @@ void cDlgSettingsAppearance :: register_children ()
 	const int iButtonHeight = 25;
 	const int iButtonWidth	= 90;
 
-	ToonIconLabel.hwnd          = GetDlgItem ( hwnd, ID_TOON_ICON_LABEL );
+	IconLabel.hwnd          = GetDlgItem ( hwnd, ID_ICON_LABEL );
 
 	OK.hwnd = GetDlgItem ( hwnd, ID_OK );
 	register_child ( &OK,
@@ -66,10 +68,11 @@ void cDlgSettingsAppearance :: register_children ()
 void cDlgSettingsAppearance :: set_text ()
 {
 	set_item_text ( 0, 							   L"DlgSettingsAppearance.Title", g_awAppTitle );
-
-	set_item_text ( ID_TOON_ICON_LABEL,            L"DlgSettingsAppearance.ToonIcon.Label", g_awAppTitle );
+	set_item_text ( ID_ICON_LABEL,                 L"DlgSettingsAppearance.Icon.Label", g_awAppTitle );
 	set_item_text ( ID_TOON_ICON_HEIGHT_LABEL,     L"DlgSettingsAppearance.ToonIconHeightLabel" );
 	set_item_text ( ID_TOON_ICON_WIDTH_LABEL,      L"DlgSettingsAppearance.ToonIconWidthLabel" );
+	set_item_text ( ID_WOW_ICON_HEIGHT_LABEL,      L"DlgSettingsAppearance.WoWIconHeightLabel" );
+	set_item_text ( ID_WOW_ICON_WIDTH_LABEL,       L"DlgSettingsAppearance.WoWIconWidthLabel" );
 	set_item_text ( ID_LINK,                       L"DlgSettingsAppearance.Link", L"http://mojoware.org" );
 }
 
@@ -88,20 +91,20 @@ void cDlgSettingsAppearance :: set_state ()
 //----------------------------------------------------------------------------------------------------------------------
 void cDlgSettingsAppearance :: wm_init ()
 {
-
-
-
 	set_text();
 	cDlgVars::wm_init ( this->hwnd, &aDlgData[0] );
 
 	register_children ();
 
-	//--------------------------------------
-	//  MAKE SURE GROUPED RADIO BUTTONS 
-	//  GOT SET
-	//--------------------------------------
-
-	ToonIconLabel.wm_init();
+	const int iMarginX = 24;
+	IconLabel.hwnd = GetDlgItem( hwnd, ID_ICON_LABEL );
+	register_child ( &IconLabel,
+							  nAnchor::left,		0,		iMarginX,
+							  nAnchor::top,		    0,		iMarginX,
+							  nAnchor::right,		0,		-iMarginX,
+							  nAnchor::top,         0,      iMarginX + 25 );
+	IconLabel.init();
+	this->reposition_children ();
 }
 
 
@@ -115,26 +118,6 @@ INT_PTR CALLBACK cDlgSettingsAppearance :: dialog_proc ( HWND hwnd, UINT uMessag
 
 	switch ( uMessage )
 	{
-#if 0
-	case WM_CTLCOLORBTN:
-	case WM_CTLCOLOREDIT:
-	case WM_CTLCOLORDLG:
-	case WM_CTLCOLORSTATIC:
-		{
-			HDC hdc = (HDC) wParam;
-			HWND hCtrl = (HWND) lParam;
-
-			if ( hCtrl == GetDlgItem ( hwnd, ID_CONNECT_HEAD ) ||
-				 hCtrl == GetDlgItem ( hwnd, ID_AUTO_FIND_HEAD ) )
-				SetTextColor	( hdc, RGB ( 0x44, 0x44, 0xdd ) );
-
-			SetBkMode		( hdc, OPAQUE );
-			SetBkColor		( hdc, RGB ( 0xFF, 0xFF, 0xFF ) );
-			return 			reinterpret_cast<INT_PTR> ( GetStockObject ( WHITE_BRUSH ) );
-		}
-		break;
-#endif
-
 	case WM_INITDIALOG:
 		{
 			set_user_data ( hwnd, lParam );

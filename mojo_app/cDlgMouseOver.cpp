@@ -472,7 +472,7 @@ INT_PTR CALLBACK cDlgMouseOver::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 			case ID_SET_HOTKEY:
 				{
 					cTrigger Trigger;
-					cDlgGetTrigger d;
+					cDlgSetTrigger d;
 					if ( 0 < d.make_dlg ( &Trigger ) )
 					{
 						cStrW s;

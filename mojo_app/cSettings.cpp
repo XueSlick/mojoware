@@ -46,7 +46,8 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( uView,									uint,				    L"uView"				                ),
 	ENTRY ( uToonIconWidth,							uint,				    L"uToonIconWidth"				        ),
 	ENTRY ( uToonIconHeight,						uint,				    L"uToonIconHeight"				        ),
-
+	ENTRY ( uWoWIconWidth,							uint,				    L"uWoWIconWidth"				        ),
+	ENTRY ( uWoWIconHeight,						    uint,				    L"uWoWIconHeight"				        ),
 };
 
 
@@ -98,7 +99,8 @@ void cSettings :: init ()
 	uView                               = cWinMain::computers;
 	uToonIconWidth                      = 50;
 	uToonIconHeight                     = 50;
-
+	uWoWIconWidth                       = 64;
+	uWoWIconHeight                      = 64;
 }
 
 

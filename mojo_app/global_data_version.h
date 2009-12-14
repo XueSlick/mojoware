@@ -18,12 +18,10 @@
 
 namespace mojo
 {
-
 const unsigned uVERSION_MAJ =  0;
 const unsigned uVERSION_MIN =  0;
 const unsigned uVERSION_PIP =  1;
-const unsigned uVERSION_BLD = 12;
-
+const unsigned uVERSION_BLD = 13;
 } // namespace
 
 

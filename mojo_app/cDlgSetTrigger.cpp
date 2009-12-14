@@ -1,23 +1,22 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgGetTrigger.cpp / mojo_app
+/*    cDlgSetTrigger.cpp / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
 #include "stdafx.h"
-// #include "wingdi.h"
 
 //======================================================================================================================
 // DATA
 //======================================================================================================================
 
-const int cDlgGetTrigger :: s_iQtyInRow = 4; // of combo box fields for keys
-const int cDlgGetTrigger :: s_iComboDimY = 25;
-const int cDlgGetTrigger :: iMarginX = 24;
-const int cDlgGetTrigger :: iMarginY = 12;
-const int cDlgGetTrigger :: iGutter = 5;
+const int cDlgSetTrigger :: s_iQtyInRow = 4; // of combo box fields for keys
+const int cDlgSetTrigger :: s_iComboDimY = 25;
+const int cDlgSetTrigger :: iMarginX = 24;
+const int cDlgSetTrigger :: iMarginY = 12;
+const int cDlgSetTrigger :: iGutter = 5;
 
 
 //======================================================================================================================
@@ -27,16 +26,16 @@ const int cDlgGetTrigger :: iGutter = 5;
 //----------------------------------------------------------------------------------------------------------------------
 //  SET TEXT
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgGetTrigger :: set_text ()
+void cDlgSetTrigger :: set_text ()
 {
-	set_item_text ( ID_LINK, 						L"DlgGetTrigger.Link", L"http://mojoware.org/help/triggers.html" );
+	set_item_text ( ID_LINK, 						L"DlgSetTrigger.Link", L"http://mojoware.org/help/triggers.html" );
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 //  SET STATE
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgGetTrigger :: set_state ( int iID )
+void cDlgSetTrigger :: set_state ( int iID )
 {
 	switch ( iID )
 	{
@@ -76,7 +75,7 @@ void cDlgGetTrigger :: set_state ( int iID )
 //----------------------------------------------------------------------------------------------------------------------
 // CHANGE SIZE
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgGetTrigger :: change_size ()
+void cDlgSetTrigger :: change_size ()
 {
 	int iNewQtyOfRows = 1 + ( ( ((int)aCombo.qty()) - 1 ) / s_iQtyInRow );
 
@@ -93,7 +92,7 @@ void cDlgGetTrigger :: change_size ()
 //----------------------------------------------------------------------------------------------------------------------
 // ON CLEAR
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgGetTrigger :: on_clear ()
+void cDlgSetTrigger :: on_clear ()
 {
 	CheckDlgButton ( hwnd, ID_CAPSLOCK_ON,    FALSE );
 	CheckDlgButton ( hwnd, ID_CAPSLOCK_OFF,   FALSE );
@@ -106,32 +105,25 @@ void cDlgGetTrigger :: on_clear ()
 		DestroyWindow ( aCombo[i].hwnd );
 
 	aCombo.erase();
-
 	add_combo();
 }
-
 
 
 //----------------------------------------------------------------------------------------------------------------------
 // WM KEY EVENT
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgGetTrigger :: wm_key_event ( WORD wExVK )
+void cDlgSetTrigger :: wm_key_event ( WORD wExVK )
 {
-	// WORD wExVK;
+	int iComboQty = aCombo.qty();
 
-	// while ( KeyBuf.get ( &wExVK ) )
+	HWND hFocus = GetFocus();
+
+	for ( int i = 0; i < iComboQty; i++ )
 	{
-		int iComboQty = aCombo.qty();
-
-		HWND hFocus = GetFocus();
-
-		for ( int i = 0; i < iComboQty; i++ )
+		if ( aCombo[i].hwndEdit == hFocus )
 		{
-			if ( aCombo[i].hEdit == hFocus )
-			{
-				SetWindowText ( aCombo[i].hEdit, cKeyboard::ex_vk_to_pretty_name ( wExVK ) );
-				on_combo_changed ( aCombo[i].hwnd );
-			}
+			SetWindowText ( aCombo[i].hwndEdit, cKeyboard::ex_vk_to_pretty_name ( wExVK ) );
+			on_combo_changed ( aCombo[i].hwnd );
 		}
 	}
 }
@@ -140,7 +132,7 @@ void cDlgGetTrigger :: wm_key_event ( WORD wExVK )
 //----------------------------------------------------------------------------------------------
 // WM INIT
 //----------------------------------------------------------------------------------------------
-void cDlgGetTrigger :: wm_init ()
+void cDlgSetTrigger :: wm_init ()
 {
 	CheckDlgButton ( hwnd, ID_PRESSED, TRUE );
 
@@ -201,9 +193,6 @@ void cDlgGetTrigger :: wm_init ()
 	//  LOCK STUFF
 	//---------------------------------
 	
-
-
-
 	LockLabel.hwnd = GetDlgItem ( hwnd, ID_LOCK_LABEL );
 	LockLabel.init();
 	register_child ( &LockLabel,
@@ -294,10 +283,10 @@ void cDlgGetTrigger :: wm_init ()
 //----------------------------------------------------------------------------------------------------------------------
 // DEFAULT PROC
 //----------------------------------------------------------------------------------------------------------------------
-INT_PTR CALLBACK cDlgGetTrigger::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK cDlgSetTrigger::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
 	cWin * pWin = user_data_to_pWin ( hwnd );
-	cDlgGetTrigger * pThis = static_cast<cDlgGetTrigger*>(pWin);
+	cDlgSetTrigger * pThis = static_cast<cDlgSetTrigger*>(pWin);
 
 	switch ( uMessage )
 	{
@@ -327,16 +316,11 @@ INT_PTR CALLBACK cDlgGetTrigger::dialog_proc (HWND hwnd, UINT uMessage, WPARAM w
 		pThis->wm_key_event((WORD)wParam); // wExVK );
 		break;
 
-#if 0
-	case WM_PAINT:
-		break;
-#endif
-
 	case WM_INITDIALOG:
 		{
 			set_user_data ( hwnd, lParam );
 			cWin * pWin = lParam_to_pWin ( hwnd, lParam );
-			pThis = static_cast<cDlgGetTrigger*>(pWin);
+			pThis = static_cast<cDlgSetTrigger*>(pWin);
 			pThis->hwnd = hwnd;
 			pThis->wm_init ();
 		}
@@ -344,8 +328,18 @@ INT_PTR CALLBACK cDlgGetTrigger::dialog_proc (HWND hwnd, UINT uMessage, WPARAM w
 
 	case WM_COMMAND:
 		{
+			if ( CBN_SETFOCUS == HIWORD ( wParam ) )
+			{
+				HWND hwndCombo = (HWND) lParam;
+				cDlgSetTrigger::cComboWin * pCombo = pThis->get_combo_from_combo_hwnd ( hwndCombo );
+				hwndCombo, pCombo;
+			}
+
 			if ( CBN_SELCHANGE == HIWORD ( wParam ) )
+			{
 				pThis->on_combo_changed ( ( HWND ) lParam );
+				break;
+			}
 
 			int iID = LOWORD ( wParam );
 
@@ -405,7 +399,7 @@ INT_PTR CALLBACK cDlgGetTrigger::dialog_proc (HWND hwnd, UINT uMessage, WPARAM w
 			case ID_SCROLLLOCK_ON:
 			case ID_SCROLLLOCK_OFF:
 				pThis->set_state ( iID );
-				pThis->draw_trigger();
+				break;
 			}
 		}
 

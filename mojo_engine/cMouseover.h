@@ -51,7 +51,7 @@ public:
 	void enter_slave_mode   ();
 	void enter_dormant_mode ();
 
-	tList2<cMegaDisplay> MegaDisplayList;
+	mojo::tList2<cMegaDisplay> MegaDisplayList;
 
 	void set_mega_display_list ( mojo::cMachlist * pML );
 

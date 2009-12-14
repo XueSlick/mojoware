@@ -31,9 +31,7 @@ private:
 	cWin				RestoreDefaults;
 	cWin 				OK;
 	cWin 				Cancel;
-	cWinLabel			ToonIconLabel;
-
-
+	cWinLabel			IconLabel;
 };
 
 

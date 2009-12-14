@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgGetTrigger_combo.cpp / mojo_app
+/*    cDlgSetTrigger_combo.cpp / mojo_app
 /*
 /*    "Combo" means combo box, the type of Windows control used here to implement entry fields for keys.
 /*   
@@ -21,24 +21,129 @@ static WNDPROC s_pOldEditProc; // The operating system's default edit control pr
 //======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
+//  CLEAR COMBO
+//----------------------------------------------------------------------------------------------------------------------
+void cDlgSetTrigger :: clear_combo ( HWND hwndCombo )
+{
+
+	ComboBox_SetText ( hwndCombo, L"" );
+	ComboBox_SetCurSel ( hwndCombo, -1 );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  GET COMBO FROM HWND
+//----------------------------------------------------------------------------------------------------------------------
+cDlgSetTrigger::cComboWin * cDlgSetTrigger :: get_combo_from_edit_hwnd ( HWND hwnd )
+{
+	for ( unsigned i = 0; i < aCombo.qty(); i++ )
+	{
+		if ( aCombo[i].hwndEdit == hwnd )
+			return &aCombo[i];
+	}
+
+	return NULL;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  GET COMBO FROM HWND
+//----------------------------------------------------------------------------------------------------------------------
+cDlgSetTrigger::cComboWin * cDlgSetTrigger :: get_combo_from_combo_hwnd ( HWND hwnd )
+{
+	for ( unsigned i = 0; i < aCombo.qty(); i++ )
+	{
+		if ( aCombo[i].hwnd == hwnd )
+			return &aCombo[i];
+	}
+
+	return NULL;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 //  EDIT CONTROL PROC
-//  We have to subclass the edit control portion of the combo box conrols because they go berserk if the mouse wheel
-//  rotates while they have the focus and the list is closed.  However the mouse wheel is nice to have when the list
-//  is open.
+//  We have to subclass the edit control portion of the combo box conrols because (1) they go berserk if the mouse 
+//  wheel rotates while they have the focus and the list is closed and (2) it's a convenient way to enter mouse
+//  buttons.
 //----------------------------------------------------------------------------------------------------------------------
 LRESULT CALLBACK edit_control_proc ( HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam )
 {
-	HWND hwndCombo = reinterpret_cast<HWND>( GetWindowLongPtr ( hwnd, GWLP_USERDATA ) );
+	cDlgSetTrigger * pDlg = reinterpret_cast<cDlgSetTrigger*>( GetWindowLongPtr ( hwnd, GWLP_USERDATA ) );
+	cDlgSetTrigger::cComboWin * pCombo = pDlg->get_combo_from_edit_hwnd ( hwnd );
+	HWND hwndCombo = pCombo->hwnd;
 
 	switch ( uMessage )
 	{
+	case WM_LBUTTONDBLCLK:
+		{
+				int iIndex = ComboBox_FindStringExact ( hwndCombo, 0, L"LButton" );
+				ComboBox_SetCurSel ( hwndCombo, iIndex );
+				pDlg->on_combo_changed ( hwndCombo );
+		}
+		break;
+
+	case WM_RBUTTONDOWN:
+		{
+				int iIndex = ComboBox_FindStringExact ( hwndCombo, 0, L"RButton" );
+				ComboBox_SetCurSel ( hwndCombo, iIndex );
+				pDlg->on_combo_changed ( hwndCombo );
+				return TRUE;
+		}
+		break;
+
+	case WM_MBUTTONDOWN:
+		{
+				int iIndex = ComboBox_FindStringExact ( hwndCombo, 0, L"MButton" );
+				ComboBox_SetCurSel ( hwndCombo, iIndex );
+				pDlg->on_combo_changed ( hwndCombo );
+				return TRUE;
+		}
+		break;
+
+	case WM_XBUTTONDOWN:
+		{
+			int iIndex;
+
+			if ( XBUTTON1 == HIWORD ( wParam ) )
+				iIndex = ComboBox_FindStringExact ( hwndCombo, 0, L"Button4" );
+			else
+				iIndex = ComboBox_FindStringExact ( hwndCombo, 0, L"Button5" );
+
+				ComboBox_SetCurSel ( hwndCombo, iIndex );
+				pDlg->on_combo_changed ( hwndCombo );
+				return TRUE;
+		}
+		break;
+
 	case WM_MOUSEWHEEL:
 		{
 			LRESULT result = SendMessage ( hwndCombo, CB_GETDROPPEDSTATE, 0, 0 );
 
 			if ( FALSE == result )
+			{
+				//---------------------------------------------------
+				// TEMPORARILY ALLOW USER TO ENTER MOUSEWHEEL
+				// BY DIRECT ACTION.  THIS IS PROBABLY A BAD IDEA
+				// BUT LET'S GIVE TESTERS A CHANCE TO COMMENT.
+				//---------------------------------------------------
+#if 1
+				int iDelta = GET_WHEEL_DELTA_WPARAM ( wParam );
+
+				int iIndex;
+
+				if ( 0 < iDelta )
+					iIndex = ComboBox_FindStringExact ( hwndCombo, 0, L"WheelForward" );
+
+				else
+					iIndex = ComboBox_FindStringExact ( hwndCombo, 0, L"WheelBackward" );
+
+				ComboBox_SetCurSel ( hwndCombo, iIndex );
+				pDlg->on_combo_changed ( hwndCombo );
+#endif
 				return 1;
+			}
 		}
+		break;
 	}
 
 	return CallWindowProc ( s_pOldEditProc, hwnd, uMessage, wParam, lParam);	
@@ -48,15 +153,13 @@ LRESULT CALLBACK edit_control_proc ( HWND hwnd, UINT uMessage, WPARAM wParam, LP
 //----------------------------------------------------------------------------------------------
 //  ADD COMBO
 //----------------------------------------------------------------------------------------------
-void cDlgGetTrigger :: add_combo ()
+void cDlgSetTrigger :: add_combo ()
 {
 
 	int iPosY 		        = iInitialComboPosY;
 	const int iDimX 		= 116;
 
 	int iComboQty = aCombo.qty();
-
-	// int iInitialQtyOfRows = 1 + ( ( (int)(aCombo.qty()) - 1 ) /  s_iQtyInRow );
 
 	//----------------------------------
 	// CREATE IT
@@ -92,22 +195,30 @@ void cDlgGetTrigger :: add_combo ()
 	}
 
 	//----------------------------------
+	// INSERT "CLEAR ENTRY"
+	//----------------------------------
+
+	SendMessage ( aCombo[iComboQty].hwnd, CB_INSERTSTRING, 0, (LPARAM) L"(Clear entry)" );
+
+	//----------------------------------
 	// GET EDIT CONTROL HANDLE
 	//----------------------------------
 
 	COMBOBOXINFO cbi = { sizeof ( COMBOBOXINFO ) };
 	GetComboBoxInfo ( aCombo[iComboQty].hwnd, &cbi );
-	aCombo[iComboQty].hEdit = cbi.hwndItem;
+	aCombo[iComboQty].hwndEdit = cbi.hwndItem;
+	aCombo[iComboQty].hwndCombo = cbi.hwndCombo;
+	aCombo[iComboQty].hwndList = cbi.hwndList;
 	aCombo[iComboQty].iID   = GetDlgCtrlID ( cbi.hwndItem );
 
 	//----------------------------------
 	// SUBCLASS EDIT CONTROL AND STORE
-	// THE COMBO HWND IN USER DATA
+	// OUR ADDRESS IN USER DATA
 	//----------------------------------
 
 	s_pOldEditProc = (WNDPROC) GetWindowLongPtr ( cbi.hwndItem, GWLP_WNDPROC );
 	SetWindowLongPtr ( cbi.hwndItem, GWLP_WNDPROC,  (LONG_PTR) edit_control_proc );
-	SetWindowLongPtr ( cbi.hwndItem, GWLP_USERDATA, (LONG_PTR) aCombo[iComboQty].hwnd );
+	SetWindowLongPtr ( cbi.hwndItem, GWLP_USERDATA, (LONG_PTR) this );
 
 	//----------------------------------
 	// SET CURSOR
@@ -124,8 +235,6 @@ void cDlgGetTrigger :: add_combo ()
 	else
 		SendMessage ( hwnd, WM_NEXTDLGCTL, (WPARAM) aCombo[iComboQty].hwnd, TRUE );
 
-
-
 	//----------------------------------
 	// SET SIZE
 	//----------------------------------
@@ -137,16 +246,30 @@ void cDlgGetTrigger :: add_combo ()
 //----------------------------------------------------------------------------------------------------------------------
 // ON COMBO CHANGED
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgGetTrigger :: on_combo_changed ( HWND hNewCombo )
+void cDlgSetTrigger :: on_combo_changed ( HWND hNewCombo )
 {
-	wchar_t b1 [100];
-	wchar_t b2 [100];
+	wchar_t awBuf1 [100], awBuf2 [100];
 
-	ComboBox_GetText ( hNewCombo, b1, sizeof(b1)/sizeof(wchar_t) );
+	int iItemIndex = ComboBox_GetCurSel ( hNewCombo );
 
 	//--------------------------------------
+	//  CHECK FOR "(CLEAR ENTRY)"
+	//--------------------------------------
+
+	if ( 0 == iItemIndex )
+	{
+		clear_combo ( hNewCombo );
+		return;
+	}
+
+	//-----------------------------------------
 	//  CHECK FOR DUPES
-	//--------------------------------------
+	//  For some reason, this doesn't work
+	//  if you try to compare selection
+	//  indices.  You have to compare text.
+	//-----------------------------------------
+
+	ComboBox_GetText ( hNewCombo, awBuf1, sizeof(awBuf1)/sizeof(wchar_t) );
 
 	if ( 1 < aCombo.qty() )
 	{
@@ -155,26 +278,26 @@ void cDlgGetTrigger :: on_combo_changed ( HWND hNewCombo )
 			if ( hNewCombo == aCombo[i].hwnd )
 				continue;
 
-			ComboBox_GetText ( aCombo[i].hwnd, b2, sizeof(b2)/sizeof(wchar_t) );
+			ComboBox_GetText ( aCombo[i].hwnd, awBuf2, sizeof(awBuf2)/sizeof(wchar_t) );
 
-			if ( 0 == wcscmp ( b1, b2 ) )
+			if ( 0 == wcscmp ( awBuf1, awBuf2 ) )
 			{
-				ComboBox_SetCurSel ( hNewCombo, -1 );
+				clear_combo ( hNewCombo );
 
 				cStrW s;
-				s.f ( L"You entered %s twice.\n\nThat won't work.", b1 );
-				message_box ( s.cstr() );
-				SetFocus ( hNewCombo );
+				s.f ( L"You entered %s twice.\n\nThat won't work.", awBuf1 );
+				MessageBox ( hwnd, s.cstr(), L"Mojo", MB_OK | MB_ICONINFORMATION );
+
+				clear_combo ( hNewCombo );
 				return;
 			}
 		}
 	}
 
-#if 1
 	if ( hNewCombo == aCombo[aCombo.qty() - 1].hwnd )
 		add_combo();
-#endif
 }
+
 
 /***********************************************************************************************************************
 /*

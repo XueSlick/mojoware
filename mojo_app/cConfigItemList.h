@@ -1,32 +1,23 @@
 /***********************************************************************************************************************
 /*
-/*    cToon.h
+/*    cConfigItemList.h
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
-#include "stdafx.h"
+#pragma once
+
+#include "cConfigItem.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-//  TOON
+//  CLASS 
 //----------------------------------------------------------------------------------------------------------------------
-class cToon : public cConfigItem
+class cConfigItemList : public mojo::tList2<cConfigItem>
 {
 public:
 
-	cToon & operator= ( const cToon & );
-
-	virtual cToon * get_dupe (); // DELETE RETURN VALUE AFTER USING IT
-
-	virtual bool init_from_xml ( const wchar_t * pTxt );
-
-	cToon * pNext;
-	cToon * pPrev;
-
-	mojo::cStrW sAccount;
-	mojo::cStrW sName;
-	mojo::cStrW sIconPath;
+	cConfigItem * get_dupe ( DWORD dwHandle );
 };
 
 

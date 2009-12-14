@@ -91,11 +91,13 @@ DlgSettingsPerformance.MaximizeTimerResolution         = Maximize timer resoluti
 // APPEARANCE SETTINGS DIALOG
 
 DlgSettingsAppearance.Title                            = %s: Appearance settings
-DlgSettingsAppearance.ToonIcon.Label                   = Toon icons
-DlgSettingsAppearance.ToonIconHeightLabel              = Height
-DlgSettingsAppearance.ToonIconWidthLabel               = Width
+DlgSettingsAppearance.Icon.Label                       = Icons
+DlgSettingsAppearance.ToonIconHeightLabel              = Toon icon height
+DlgSettingsAppearance.ToonIconWidthLabel               = Toon icon width
+DlgSettingsAppearance.WoWIconHeightLabel               = WoW icon height
+DlgSettingsAppearance.WoWIconWidthLabel                = WoW icon width
 DlgSettingsAppearance.Link                             = <a href=\"%s\">Learn more about these choices</a>
 
 // GET TRIGGERS DIALOG
 
-DlgGetTrigger.Link                                     = <a href=\"%s\">Learn more about hotkey triggers</a>
+DlgSetTrigger.Link                                     = <a href=\"%s\">Learn more about triggers</a>

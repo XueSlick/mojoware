@@ -1,0 +1,21 @@
+==============================================================
+                      BUILD 13 WORK LIST                      
+==============================================================
+
+ 1.  Added cConfig, cConfigItem, cConfigItemList.
+
+ 2.  Added cDlgList and cListView.
+
+ 3.  Wrote new cWow based on cConfigItem.
+
+ 4.  Implemented new cDlgViewWoW.
+
+ 5.  Added button strip menus for views.
+
+ 6.  Changes to cDlgGetTrigger:
+
+     -- it's now called cDlgSetTrigger.
+	 -- Text changed on dialog box.
+	 -- LDBLCLICK now enters LButton
+	 -- other buttons enter themselves
+ 
