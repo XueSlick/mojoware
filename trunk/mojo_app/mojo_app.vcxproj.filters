@@ -27,6 +27,9 @@
     <ClCompile Include="cConfigItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cConfigItemList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cCrashHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -40,18 +43,6 @@
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cDlgCursorBlind.cpp">
-      <Filter>cWin</Filter>
-    </ClCompile>
-    <ClCompile Include="cDlgGetTrigger.cpp">
-      <Filter>cWin</Filter>
-    </ClCompile>
-    <ClCompile Include="cDlgGetTrigger_combo.cpp">
-      <Filter>cWin</Filter>
-    </ClCompile>
-    <ClCompile Include="cDlgGetTrigger_test_mods.cpp">
-      <Filter>cWin</Filter>
-    </ClCompile>
-    <ClCompile Include="cDlgGetTrigger_trigger.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cDlgLicense.cpp">
@@ -75,6 +66,9 @@
     <ClCompile Include="cDlgMouseOver2.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="cDlgPropWoW.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
     <ClCompile Include="cDlgSettingsAppearance.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
@@ -87,16 +81,31 @@
     <ClCompile Include="cDlgSettingsPerformance.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="cDlgSetTrigger.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgSetTrigger_combo.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgSetTrigger_test_mods.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgSetTrigger_trigger.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
     <ClCompile Include="cDlgToons.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cDlgVars.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="cDlgView.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
     <ClCompile Include="cDlgViewStrip.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
-    <ClCompile Include="cDlgWoWs.cpp">
+    <ClCompile Include="cDlgViewWoWs.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cGdiPlus.cpp">
@@ -106,6 +115,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cLiquidButton.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cListView.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cListViewComputers.cpp">
@@ -156,6 +168,9 @@
     <ClCompile Include="cWinMain_wm_command.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="cWoW.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="default_scribs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -197,6 +212,9 @@
     <ClInclude Include="cConfigItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cConfigItemList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="cCrashHandler.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -210,9 +228,6 @@
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgCursorBlind.h">
-      <Filter>cWin</Filter>
-    </ClInclude>
-    <ClInclude Include="cDlgGetTrigger.h">
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgLicense.h">
@@ -230,6 +245,9 @@
     <ClInclude Include="cDlgMouseOver.h">
       <Filter>cWin</Filter>
     </ClInclude>
+    <ClInclude Include="cDlgPropWow.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
     <ClInclude Include="cDlgSettingsAppearance.h">
       <Filter>cWin</Filter>
     </ClInclude>
@@ -242,16 +260,22 @@
     <ClInclude Include="cDlgSettingsPerformance.h">
       <Filter>cWin</Filter>
     </ClInclude>
+    <ClInclude Include="cDlgSetTrigger.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
     <ClInclude Include="cDlgToons.h">
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgVars.h">
       <Filter>cWin</Filter>
     </ClInclude>
+    <ClInclude Include="cDlgView.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
     <ClInclude Include="cDlgViewStrip.h">
       <Filter>cWin</Filter>
     </ClInclude>
-    <ClInclude Include="cDlgWoWs.h">
+    <ClInclude Include="cDlgViewWoWs.h">
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cGdiPlus.h">
@@ -261,6 +285,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cLiquidButton.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cListView.h">
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cListViewComputers.h">
@@ -302,6 +329,9 @@
     <ClInclude Include="cWinMain.h">
       <Filter>cWin</Filter>
     </ClInclude>
+    <ClInclude Include="cWoW.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="global_data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -334,6 +364,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\mojo_art\bitmap3.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="..\mojo_art\icon1.ico">
       <Filter>Resource Files</Filter>
     </None>
@@ -356,6 +389,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\mojo_art\toolbar_bitmaps.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\mojo_art\wow-logo-64x64.bmp">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="gpl3.txt" />

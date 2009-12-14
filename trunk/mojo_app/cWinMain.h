@@ -18,7 +18,7 @@
 #include "cDlgCursorBlind.h"
 #include "cDlgModeStrip.h"
 #include "cDlgViewStrip.h"
-#include "cDlgWoWs.h"
+#include "cDlgViewWoWs.h"
 #include "cDlgCornerLogo.h"
 #include "cDlgComputers.h"
 #include "cDlgToons.h"
@@ -62,7 +62,7 @@ private:
 	cDlgModeStrip   DlgModeStrip;
 	cDlgViewStrip   DlgViewStrip;
 	cDlgCornerLogo  DlgCornerLogo;
-	cDlgWoWs        DlgWoWs;
+	cDlgViewWoWs        DlgWoWs;
 	cDlgToons       DlgToons;
 	cDlgMessageBox  MB;
 	cDlgCursorBlind DlgCursorBlind;

@@ -31,7 +31,7 @@ private:
 
 	mojo::cTarget * find_hwnd_in_list ( HWND hwnd );
 	bool hwnd_is_in_array ( mojo::cArrayTarget * pRay, HWND hwnd );
-	tList2<mojo::cTarget> List;
+	mojo::tList2<mojo::cTarget> List;
 
 };
 

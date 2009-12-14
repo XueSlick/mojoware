@@ -1,32 +1,45 @@
 /***********************************************************************************************************************
 /*
-/*    cToon.h
+/*    cDlgView.h / mojo_app
+/*
+/*    Abstract base class for cDlgToons, cDlgTeams, etc.
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
-#include "stdafx.h"
+#pragma once
+
+#include "cDlg.h"
+#include "cListView.h"
+
 
 //----------------------------------------------------------------------------------------------------------------------
-//  TOON
+//  CLASS
 //----------------------------------------------------------------------------------------------------------------------
-class cToon : public cConfigItem
+class cDlgView : public cDlg
 {
 public:
 
-	cToon & operator= ( const cToon & );
+	virtual int idd () { return IDD_VIEW; }
+	cDlgView ( cListView * pLV ) : pListView (pLV) {}
+	virtual DialogProc * dialog_proc () { return dialog_proc; }
+	static DialogProc dialog_proc;
 
-	virtual cToon * get_dupe (); // DELETE RETURN VALUE AFTER USING IT
+protected:
 
-	virtual bool init_from_xml ( const wchar_t * pTxt );
 
-	cToon * pNext;
-	cToon * pPrev;
 
-	mojo::cStrW sAccount;
-	mojo::cStrW sName;
-	mojo::cStrW sIconPath;
+private:
+
+	virtual cConfigItemList * item_list () = 0;
+	void toggle_view ();
+	void wm_paint ();
+	void wm_init ();
+
+	cListView * pListView;
+	cWin ToggleView;
+	cWin Add;
 };
 
 
@@ -35,7 +48,7 @@ public:
 /*    This file is part of Mojo.  For more information, see http://mojoware.org.
 /*
 /*    You may redistribute and/or modify Mojo under the terms of the GNU General Public License, version 3, as
-/*    published by the Free Software Foundation.  You should have received a copy of the license with Mojo.  If you
+/*    published by the Free Software Foundation.  You should have received a copy of the license with mojo.  If you
 /*    did not, go to http://www.gnu.org.
 /* 
 /*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT

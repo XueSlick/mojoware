@@ -1,32 +1,32 @@
 /***********************************************************************************************************************
 /*
-/*    cToon.h
+/*    cWoW.h
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
-#include "stdafx.h"
+#pragma once
+
+
 
 //----------------------------------------------------------------------------------------------------------------------
 //  TOON
 //----------------------------------------------------------------------------------------------------------------------
-class cToon : public cConfigItem
+class cWoW : public cConfigItem
 {
 public:
 
-	cToon & operator= ( const cToon & );
+	cWoW () {}
+	cWoW( const cWoW & r );
+	cWoW & operator= ( const cWoW & r );
 
-	virtual cToon * get_dupe (); // DELETE RETURN VALUE AFTER USING IT
+	virtual int menu () { return ID_WOW_MENU; }
 
-	virtual bool init_from_xml ( const wchar_t * pTxt );
+	virtual cWoW * get_dupe (); // DELETE RETURN VALUE AFTER USING IT
 
-	cToon * pNext;
-	cToon * pPrev;
+private:
 
-	mojo::cStrW sAccount;
-	mojo::cStrW sName;
-	mojo::cStrW sIconPath;
 };
 
 

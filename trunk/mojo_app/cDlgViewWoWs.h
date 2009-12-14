@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgWoWs.h / mojo_app
+/*    cDlgViewWoWs.h / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -8,13 +8,31 @@
 
 #pragma once
 
-#include "cDlg.h"
+#include "cDlgView.h"
+#include "cListViewWoWs.h"
+#include "cConfigItemList.h"
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  CLASS cDlgAbout
+//  CLASS 
 //----------------------------------------------------------------------------------------------------------------------
-class cDlgWoWs : public cDlg
+
+class cDlgViewWoWs : public cDlgView
+{
+public:
+	cDlgViewWoWs () : cDlgView ( &ListView ) {}
+	virtual DialogProc * dialog_proc () { return dialog_proc; }
+	static  DialogProc dialog_proc;
+
+private:
+
+	virtual cConfigItemList * item_list ();
+	cListViewWoWs ListView;
+
+};
+
+#if 0
+class cDlgViewWoWs : public cDlg
 {
 public:
 
@@ -26,7 +44,10 @@ private:
 
 	cWin ListView;
 	void wm_init ();
+	void wm_paint ();
 };
+
+#endif
 
 
 /***********************************************************************************************************************

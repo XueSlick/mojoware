@@ -117,8 +117,8 @@ private:
 	SOCKET					create_socket				(); 
 	SOCKET					sListenSocket;
 
-	tList2<sSocketInfo>		SocketInfoList;
-	tList2<cLapPlus>	*	pLapPlusList;
+	mojo::tList2<sSocketInfo>		SocketInfoList;
+	mojo::tList2<cLapPlus>	*	pLapPlusList;
 };
 
 

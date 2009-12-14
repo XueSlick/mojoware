@@ -8,32 +8,15 @@
 
 #pragma once
 
-#include "cWin.h"
+#include "cListView.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 // CLASS CTRL LIST VIEW PC
 //----------------------------------------------------------------------------------------------------------------------
-class cListViewWoWs : public cWin
+class cListViewWoWs : public cListView
 {
-public:
 
-	cListViewWoWs ();
-	void               init ();
-	void               populate ( cToonList * pToonList );
-	void               set_item ( int iIndex, cToon * pToon );
-	int                mach_to_icon_index ( cMach * pM );
-	void               insert_image_lists ( HWND hwnd );
-	void               set_view ( DWORD dwView );
-	const wchar_t *    mach_to_connection_state_text ( cMach * p );
-	DWORD              hot_mach ();
 
-private:
-
-	HIMAGELIST	hImageListLarge;
-	HIMAGELIST	hImageListState;
-
-	int iQtyColumns;
-	bool bStateImages;
 };
 
 /***********************************************************************************************************************

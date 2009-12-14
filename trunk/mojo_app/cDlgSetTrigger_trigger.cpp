@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgGetTrigger_trigger.cpp / mojo_app
+/*    cDlgSetTrigger_trigger.cpp / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -16,6 +16,7 @@ static const int s_iQtyInRow = 4; // of combo box fields for keys
 static const int s_iMargin = 5;
 static const int s_iComboDimY = 25;
 
+
 //======================================================================================================================
 // CODE
 //======================================================================================================================
@@ -23,7 +24,7 @@ static const int s_iComboDimY = 25;
 //----------------------------------------------------------------------------------------------
 //  INIT TRIGGER
 //----------------------------------------------------------------------------------------------
-bool cDlgGetTrigger :: init_trigger ()
+bool cDlgSetTrigger :: init_trigger ()
 {
 	cArrayW aMain, aMod, aAll;
 	DWORD dwLock = 0;
@@ -213,25 +214,6 @@ bool cDlgGetTrigger :: init_trigger ()
 #endif
 
 	return true;
-}
-
-
-//----------------------------------------------------------------------------------------------
-//  DRAW TRIGGER
-//----------------------------------------------------------------------------------------------
-void cDlgGetTrigger :: draw_trigger ()
-{
-#if 0
-	cStrW s;
-	Trigger.print ( &s );
-	HWND hCtrl = GetDlgItem ( hwnd, ID_TEXT );
-	HDC hdc = GetDC ( hCtrl);
-	RECT r;
-	GetClientRect ( hCtrl, &r );
-	FillRect ( hdc, &r, ( HBRUSH ) GetStockObject ( WHITE_BRUSH ) );
-	ReleaseDC ( hCtrl, hdc );
-	draw_text ( hCtrl, NULL, text, s.cstr(), true );
-#endif
 }
 
 

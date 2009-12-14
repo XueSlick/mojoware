@@ -95,7 +95,15 @@ cConfig :: cConfig ()
 			p->init_from_xml ( sContent.cstr() );
 			p->dwSerialNumber = ++this->dwLastSerialNumberAssigned;
 			this->ToonList.append ( p );
-		}		
+		}
+
+		else if ( sName == L"WoW" )
+		{
+			cWoW * p = new cWoW;
+			p->init_from_xml ( sContent.cstr() );
+			p->dwSerialNumber = ++this->dwLastSerialNumberAssigned;
+			this->WoWList.append ( p );
+		}
 	}
 
 	PostMessage ( g_hwnd, uWM_TOON_LIST_CHANGED, 0, 0 );

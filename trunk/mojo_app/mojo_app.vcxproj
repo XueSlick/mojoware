@@ -103,14 +103,18 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClCompile Include="balloon.cpp" />
     <ClCompile Include="cConfig.cpp" />
     <ClCompile Include="cConfigItem.cpp" />
+    <ClCompile Include="cConfigItemList.cpp" />
     <ClCompile Include="cCrashHandler.cpp" />
-    <ClCompile Include="cDlgGetTrigger.cpp" />
-    <ClCompile Include="cDlgGetTrigger_combo.cpp" />
-    <ClCompile Include="cDlgGetTrigger_test_mods.cpp" />
-    <ClCompile Include="cDlgGetTrigger_trigger.cpp" />
+    <ClCompile Include="cDlgSetTrigger.cpp" />
+    <ClCompile Include="cDlgSetTrigger_combo.cpp" />
+    <ClCompile Include="cDlgSetTrigger_test_mods.cpp" />
+    <ClCompile Include="cDlgSetTrigger_trigger.cpp" />
+    <ClCompile Include="cDlgPropWoW.cpp" />
     <ClCompile Include="cDlgSettingsAppearance.cpp" />
     <ClCompile Include="cDlgToons.cpp" />
+    <ClCompile Include="cDlgView.cpp" />
     <ClCompile Include="cGdiPlus.cpp" />
+    <ClCompile Include="cListView.cpp" />
     <ClCompile Include="cListViewComputers.cpp" />
     <ClCompile Include="cDlg.cpp" />
     <ClCompile Include="cDlgAbout.cpp" />
@@ -128,7 +132,7 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClCompile Include="cDlgSettingsPerformance.cpp" />
     <ClCompile Include="cDlgVars.cpp" />
     <ClCompile Include="cDlgViewStrip.cpp" />
-    <ClCompile Include="cDlgWoWs.cpp" />
+    <ClCompile Include="cDlgViewWoWs.cpp" />
     <ClCompile Include="click_once.cpp" />
     <ClCompile Include="cLiquidButton.cpp" />
     <ClCompile Include="cListviewConnections.cpp" />
@@ -146,6 +150,7 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClCompile Include="cWinMain_toggle.cpp" />
     <ClCompile Include="cWinMain_window_proc.cpp" />
     <ClCompile Include="cWinMain_wm_command.cpp" />
+    <ClCompile Include="cWoW.cpp" />
     <ClCompile Include="default_scribs.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -170,11 +175,15 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClInclude Include="balloon.h" />
     <ClInclude Include="cConfig.h" />
     <ClInclude Include="cConfigItem.h" />
+    <ClInclude Include="cConfigItemList.h" />
     <ClInclude Include="cCrashHandler.h" />
-    <ClInclude Include="cDlgGetTrigger.h" />
+    <ClInclude Include="cDlgSetTrigger.h" />
+    <ClInclude Include="cDlgPropWow.h" />
     <ClInclude Include="cDlgSettingsAppearance.h" />
     <ClInclude Include="cDlgToons.h" />
+    <ClInclude Include="cDlgView.h" />
     <ClInclude Include="cGdiPlus.h" />
+    <ClInclude Include="cListView.h" />
     <ClInclude Include="cListViewComputers.h" />
     <ClInclude Include="cDlg.h" />
     <ClInclude Include="cDlgAbout.h" />
@@ -190,7 +199,7 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClInclude Include="cDlgSettingsPerformance.h" />
     <ClInclude Include="cDlgVars.h" />
     <ClInclude Include="cDlgViewStrip.h" />
-    <ClInclude Include="cDlgWoWs.h" />
+    <ClInclude Include="cDlgViewWoWs.h" />
     <ClInclude Include="click_once.h" />
     <ClInclude Include="cLiquidButton.h" />
     <ClInclude Include="cListviewConnections.h" />
@@ -205,6 +214,7 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClInclude Include="cWin.h" />
     <ClInclude Include="cWinLabel.h" />
     <ClInclude Include="cWinMain.h" />
+    <ClInclude Include="cWoW.h" />
     <ClInclude Include="global_data.h" />
     <ClInclude Include="global_data_version.h" />
     <ClInclude Include="resource.h" />
@@ -217,6 +227,7 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClInclude Include="xml.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\mojo_art\bitmap3.bmp" />
     <None Include="..\mojo_art\icon1.ico" />
     <None Include="..\mojo_art\list_view_computers_blue.ico" />
     <None Include="..\mojo_art\list_view_computers_gold.ico" />
@@ -225,6 +236,7 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <None Include="..\mojo_art\state-icon-blue.ico" />
     <None Include="..\mojo_art\state-icon-gold.ico" />
     <None Include="..\mojo_art\toolbar_bitmaps.bmp" />
+    <None Include="..\mojo_art\wow-logo-64x64.bmp" />
     <None Include="gpl3.txt" />
     <None Include="mojo_app.ico" />
     <None Include="mojo_app.scribs.english.txt" />

@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgGetTrigger_test_mods.cpp / mojo_app
+/*    cDlgSetTrigger_test_mods.cpp / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -16,11 +16,10 @@
 // CODE
 //======================================================================================================================
 
-
 //----------------------------------------------------------------------------------------------------------------------
 //  GET ALL KEYS
 //----------------------------------------------------------------------------------------------------------------------
-unsigned cDlgGetTrigger :: get_all_keys ( cArrayW * pRet )
+unsigned cDlgSetTrigger :: get_all_keys ( cArrayW * pRet )
 {
 	wchar_t awBuf [500];
 
@@ -41,7 +40,7 @@ unsigned cDlgGetTrigger :: get_all_keys ( cArrayW * pRet )
 //----------------------------------------------------------------------------------------------------------------------
 //  TEST MODS
 //----------------------------------------------------------------------------------------------------------------------
-bool cDlgGetTrigger :: bad_pair ( const wchar_t ** ppGeneric, const wchar_t ** ppSpecific, WORD wExVK1, WORD wExVK2 )
+bool cDlgSetTrigger :: bad_pair ( const wchar_t ** ppGeneric, const wchar_t ** ppSpecific, WORD wExVK1, WORD wExVK2 )
 {
 	struct sBadPair
 	{
@@ -79,7 +78,7 @@ bool cDlgGetTrigger :: bad_pair ( const wchar_t ** ppGeneric, const wchar_t ** p
 //----------------------------------------------------------------------------------------------------------------------
 //  TEST MODS
 //----------------------------------------------------------------------------------------------------------------------
-bool cDlgGetTrigger :: bad_mods ( const wchar_t ** ppGeneric, const wchar_t ** ppSpecific )
+bool cDlgSetTrigger :: bad_mods ( const wchar_t ** ppGeneric, const wchar_t ** ppSpecific )
 {
 	cArrayW aAll;
 	get_all_keys ( &aAll );

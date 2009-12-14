@@ -51,9 +51,14 @@ void 							make_fonts ();
 //----------------------------------------------------------------------------------------------------------------------
 void test ( )
 {
-	cDlgGetTrigger d;
+#if 0
+	cDlgPropWoW d;
+	d.make_dlg ();
+#else
+	cDlgSetTrigger d;
 	mojo::cTrigger Trigger;
 	d.make_dlg ( &Trigger );
+#endif
 	// SetTimer ( g_hwnd, 0, 30, NULL );
 }
 
