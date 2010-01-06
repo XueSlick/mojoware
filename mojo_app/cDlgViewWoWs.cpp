@@ -26,13 +26,25 @@ const int iButtonStripDimY = 23;
 //======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
+//  POPULATE
+//----------------------------------------------------------------------------------------------------------------------
+#if 0
+void  cDlgViewWoWs :: populate()
+{
+	this->ListView.populate ( &g_Config.WoWList );
+}
+#endif
+
+
+//----------------------------------------------------------------------------------------------------------------------
 //  ITEM LIST
 //----------------------------------------------------------------------------------------------------------------------
-cConfigItemList * cDlgViewWoWs :: item_list ()
+#if 0
+const cFigViewItemList * cDlgViewWoWs :: item_list ()
 {
 	return & g_Config.WoWList;
 }
-
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------
 // WM INIT
@@ -79,7 +91,6 @@ void cDlgViewWoWs :: wm_paint ()
 //----------------------------------------------------------------------------------------------------------------------
 // DEFAULT PROC
 //----------------------------------------------------------------------------------------------------------------------
-#if 1
 INT_PTR CALLBACK cDlgViewWoWs::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
 	cWin * pWin = user_data_to_pWin ( hwnd );
@@ -87,6 +98,9 @@ INT_PTR CALLBACK cDlgViewWoWs::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wPa
 
 	switch ( uMessage )
 	{
+	case uWM_WOW_LIST_CHANGED:
+		pThis->populate();
+		break;
 
 	case WM_INITDIALOG:
 		{
@@ -94,7 +108,17 @@ INT_PTR CALLBACK cDlgViewWoWs::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wPa
 			cWin * pWin = lParam_to_pWin ( hwnd, lParam );
 			pThis = static_cast<cDlgViewWoWs*>(pWin);
 			pThis->hwnd = hwnd;
-			// pThis->wm_init ();
+		}
+		break;
+
+	case WM_COMMAND:
+		switch ( LOWORD ( wParam ) )
+		{
+		case ID_ADD:
+			{
+				cDlgFigWoW d;
+				d.make_dlg();
+			}
 		}
 		break;
 
@@ -104,7 +128,6 @@ INT_PTR CALLBACK cDlgViewWoWs::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wPa
 
 	return cDlgView::dialog_proc ( hwnd, uMessage, wParam, lParam );
 }
-#endif
 
 
 /***********************************************************************************************************************

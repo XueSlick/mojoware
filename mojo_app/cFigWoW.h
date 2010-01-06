@@ -1,30 +1,54 @@
 /***********************************************************************************************************************
 /*
-/*    cWoW.h
+/*    cFigWoW.h / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
+
 #pragma once
 
+#include "cFigViewItem.h"
 
+//======================================================================================================================
+//  CLASS
+//======================================================================================================================
 
-//----------------------------------------------------------------------------------------------------------------------
-//  TOON
-//----------------------------------------------------------------------------------------------------------------------
-class cWoW : public cConfigItem
+class cFigWoW : public cFigViewItem
 {
 public:
 
-	cWoW () {}
-	cWoW( const cWoW & r );
-	cWoW & operator= ( const cWoW & r );
+	enum etOrigin { launch_by_mojo, found };
 
+	cFigWoW () : hwnd (0), eOrigin(found), bRunning(false), pNext(0), pPrev(0) {}
+	cFigWoW( const cFigWoW & r );
+	cFigWoW & operator= ( const cFig & r );
 	virtual int menu () { return ID_WOW_MENU; }
+	virtual cFigWoW * clone () const; // DELETE RETURN VALUE AFTER USING IT
 
-	virtual cWoW * get_dupe (); // DELETE RETURN VALUE AFTER USING IT
+	//------------------------------------
+	// DATA
+	//------------------------------------
 
+	mojo::cStrW sName;
+	mojo::cStrW sPath;
+	mojo::cStrW sComputer;
+	HWND hwnd;
+	cFigWoW::etOrigin eOrigin;
+	bool bRunning;
+
+	cFigWoW * pNext, * pPrev;
+
+	//------------------------------------
+	// cFIG OVERRIDES
+	//------------------------------------
+
+	virtual const sEntry * table () const { return aTable; }
+	static sEntry aTable[];
+	static const cFigWoW Default;
+	virtual void set_from_xml ( void * pvDest, const wchar_t * pTxt ) const; // override only if class is a "terminal" node
+	virtual void handle_context_menu ( int iID );
 private:
 
 };

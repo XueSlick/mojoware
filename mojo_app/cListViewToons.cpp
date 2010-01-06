@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 
+#if 0
+
 using namespace Gdiplus;
 
 
@@ -214,6 +216,10 @@ DWORD cListViewToons :: hot_item ()
 
 	return item.lParam;
 }
+
+
+#endif
+
 
 /***********************************************************************************************************************
 /*

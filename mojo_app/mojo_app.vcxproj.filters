@@ -1,6 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="cCfg">
+      <UniqueIdentifier>{350706af-d498-454a-8dac-a1ce03b322c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cFig">
+      <UniqueIdentifier>{5f458ad5-80c5-41ea-a458-35663b9e93ca}</UniqueIdentifier>
+    </Filter>
     <Filter Include="cWin">
       <UniqueIdentifier>{5ffdad92-14ff-45ce-8621-1105335864d4}</UniqueIdentifier>
     </Filter>
@@ -21,15 +27,6 @@
     <ClCompile Include="balloon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cConfig.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cConfigItem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cConfigItemList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cCrashHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -43,6 +40,9 @@
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cDlgCursorBlind.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgFigWoW.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cDlgLicense.cpp">
@@ -64,9 +64,6 @@
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cDlgMouseOver2.cpp">
-      <Filter>cWin</Filter>
-    </ClCompile>
-    <ClCompile Include="cDlgPropWoW.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cDlgSettingsAppearance.cpp">
@@ -93,10 +90,16 @@
     <ClCompile Include="cDlgSetTrigger_trigger.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="cDlgTest.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
     <ClCompile Include="cDlgToons.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cDlgVars.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgVarsFig.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cDlgView.cpp">
@@ -108,6 +111,24 @@
     <ClCompile Include="cDlgViewWoWs.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="cFig.cpp">
+      <Filter>cFig</Filter>
+    </ClCompile>
+    <ClCompile Include="cFigMgr.cpp">
+      <Filter>cFig</Filter>
+    </ClCompile>
+    <ClCompile Include="cFigRoot.cpp">
+      <Filter>cFig</Filter>
+    </ClCompile>
+    <ClCompile Include="cFigViewItem.cpp">
+      <Filter>cFig</Filter>
+    </ClCompile>
+    <ClCompile Include="cFigWoW.cpp">
+      <Filter>cFig</Filter>
+    </ClCompile>
+    <ClCompile Include="cFigWoWTree.cpp">
+      <Filter>cFig</Filter>
+    </ClCompile>
     <ClCompile Include="cGdiPlus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -115,6 +136,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cLiquidButton.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cLiquidButton2.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cListView.cpp">
@@ -144,10 +168,7 @@
     <ClCompile Include="cSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cToon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cToonList.cpp">
+    <ClCompile Include="cTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cWin.cpp">
@@ -167,9 +188,6 @@
     </ClCompile>
     <ClCompile Include="cWinMain_wm_command.cpp">
       <Filter>cWin</Filter>
-    </ClCompile>
-    <ClCompile Include="cWoW.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="default_scribs.cpp">
       <Filter>Source Files</Filter>
@@ -206,15 +224,6 @@
     <ClInclude Include="balloon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cConfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cConfigItem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cConfigItemList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cCrashHandler.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -228,6 +237,9 @@
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgCursorBlind.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgFigWow.h">
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgLicense.h">
@@ -245,9 +257,6 @@
     <ClInclude Include="cDlgMouseOver.h">
       <Filter>cWin</Filter>
     </ClInclude>
-    <ClInclude Include="cDlgPropWow.h">
-      <Filter>cWin</Filter>
-    </ClInclude>
     <ClInclude Include="cDlgSettingsAppearance.h">
       <Filter>cWin</Filter>
     </ClInclude>
@@ -263,10 +272,16 @@
     <ClInclude Include="cDlgSetTrigger.h">
       <Filter>cWin</Filter>
     </ClInclude>
+    <ClInclude Include="cDlgTest.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
     <ClInclude Include="cDlgToons.h">
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgVars.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgVarsFig.h">
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgView.h">
@@ -278,6 +293,30 @@
     <ClInclude Include="cDlgViewWoWs.h">
       <Filter>cWin</Filter>
     </ClInclude>
+    <ClInclude Include="cFig.h">
+      <Filter>cFig</Filter>
+    </ClInclude>
+    <ClInclude Include="cFigMgr.h">
+      <Filter>cFig</Filter>
+    </ClInclude>
+    <ClInclude Include="cFigRoot.h">
+      <Filter>cFig</Filter>
+    </ClInclude>
+    <ClInclude Include="cFigViewItem.h">
+      <Filter>cFig</Filter>
+    </ClInclude>
+    <ClInclude Include="cFigViewItemList.h">
+      <Filter>cFig</Filter>
+    </ClInclude>
+    <ClInclude Include="cFigWoW.h">
+      <Filter>cFig</Filter>
+    </ClInclude>
+    <ClInclude Include="cFigWoWTree.h">
+      <Filter>cFig</Filter>
+    </ClInclude>
+    <ClInclude Include="cFig_define.h">
+      <Filter>cFig</Filter>
+    </ClInclude>
     <ClInclude Include="cGdiPlus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -285,6 +324,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cLiquidButton.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cLiquidButton2.h">
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cListView.h">
@@ -314,10 +356,7 @@
     <ClInclude Include="cSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cToon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cToonList.h">
+    <ClInclude Include="cTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cWin.h">
@@ -328,9 +367,6 @@
     </ClInclude>
     <ClInclude Include="cWinMain.h">
       <Filter>cWin</Filter>
-    </ClInclude>
-    <ClInclude Include="cWoW.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="global_data.h">
       <Filter>Header Files</Filter>
@@ -391,7 +427,13 @@
     <None Include="..\mojo_art\toolbar_bitmaps.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\mojo_art\wow-logo-64x64.bmp">
+    <None Include="..\mojo_art\wow-logo-70x69.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\mojo_art\wow-logo-green-70x69.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\mojo_art\wow-logo-green.bmp">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="gpl3.txt" />

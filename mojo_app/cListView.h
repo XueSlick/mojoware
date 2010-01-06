@@ -15,26 +15,44 @@
 //----------------------------------------------------------------------------------------------------------------------
 // CLASS
 //----------------------------------------------------------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// CLASS
+//----------------------------------------------------------------------------------------------------------------------
 class cListView : public cWin
 {
+
 public:
 
-	virtual void               init ();
-	virtual void               populate ( cConfigItemList * pList );
-	virtual void               set_item ( int iIndex, cConfigItem * pConfigItem );
-	// void                       insert_image_lists ( HWND hwnd );
-	void                       set_view ( DWORD dwView );
-	DWORD                      hot_item ();
-	void                       toggle_view ();
+	cListView () : pList(0) {}
+	~cListView ();
 
-	cConfigItemList *          pList; // the original; it may have changed
+protected:
 
-private:
+	virtual void                     create_columns () = 0;
+	virtual void                     do_image_list ( const cFigViewItemList * pList ); // ( cConfigItemList * pList );
+	virtual const cFigViewItemList * create_list () = 0;
+	virtual void                     set_item ( cFigViewItem * pConfigItem );
+	virtual mojo::cPtI               get_icon_size () = 0;
+	virtual int                      icon_bitmap_id () = 0;
+	virtual const int *              default_bitmap_ids () = 0;
 
+public:
 
-	void                       do_image_list ( cConfigItemList * pList );
-	HIMAGELIST	               hImageListLarge;
+	void                             init ();
+	void                             populate (); //  const cFigViewItemList * pList = 0 ); // ( const cConfigItemList * pList = 0 );
+	void                             set_view ( DWORD dwView );
+	DWORD                            hot_item ();
+	void                             toggle_view ();
+
+	const cFigViewItemList         * pList; // a copy; keep it alive until next time we populate
+
+protected:
+
+	HIMAGELIST	                     hImageListLarge;
 };
+
 
 /***********************************************************************************************************************
 /*

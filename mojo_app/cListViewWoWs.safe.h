@@ -1,34 +1,30 @@
 /***********************************************************************************************************************
 /*
-/*    cToon.h
+/*    cListViewWoWs.h / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
-#include "stdafx.h"
+#pragma once
+
+#include "cListView.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-//  TOON
+// CLASS CTRL LIST VIEW PC
 //----------------------------------------------------------------------------------------------------------------------
-class cToon : public cConfigItem
+class cListViewWoWs : public cListView
 {
-public:
+protected:
 
-	cToon & operator= ( const cToon & );
-
-	virtual cToon * get_dupe (); // DELETE RETURN VALUE AFTER USING IT
-
-	virtual bool init_from_xml ( const wchar_t * pTxt );
-
-	cToon * pNext;
-	cToon * pPrev;
-
-	mojo::cStrW sAccount;
-	mojo::cStrW sName;
-	mojo::cStrW sIconPath;
+	virtual void                     create_columns ();
+	virtual void                     set_item ( cConfigItem * pConfigItem );
+	virtual const cConfigItemList *  list_to_populate_from_by_default ();
+	virtual mojo::cPtI               get_icon_size ();
+	virtual int                      icon_bitmap_id () { return IDB_WOW_LOGO; }
+	virtual const int *              default_bitmap_ids ();
+	// virtual void                     load_overlays_into_image_list ( HIMAGELIST h );
 };
-
 
 /***********************************************************************************************************************
 /*

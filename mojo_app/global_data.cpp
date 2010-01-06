@@ -33,8 +33,7 @@ HFONT				g_hDialogBoxHeadFont;
 NONCLIENTMETRICS    g_NonClientMetrics;
 const wchar_t * 	g_apDefaultScribs [];
 cSettings			g_Settings ( g_awAppTitle, & g_Version );
-cConfig				g_Config;
-
+cFigMgr				g_FigMgr;
 
 /***********************************************************************************************************************
 /*

@@ -9,13 +9,21 @@
 #pragma once
 
 #include "cListView.h"
+#include "cFigMgr.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 // CLASS CTRL LIST VIEW PC
 //----------------------------------------------------------------------------------------------------------------------
 class cListViewWoWs : public cListView
 {
+protected:
 
+	virtual void                     create_columns ();
+	virtual void                     set_item ( cFigViewItem * pItem);
+	virtual const cFigViewItemList * create_list (); 
+	virtual mojo::cPtI               get_icon_size ();
+	virtual int                      icon_bitmap_id () { return IDB_WOW_LOGO; }
+	virtual const int *              default_bitmap_ids ();
 
 };
 

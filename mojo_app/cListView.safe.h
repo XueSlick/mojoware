@@ -1,6 +1,8 @@
 /***********************************************************************************************************************
 /*
-/*    cToonList.h
+/*    cListView.h / mojo_app
+/*
+/*    Base class for cListViewToons, cListViewTeams, etc.
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -8,12 +10,42 @@
 
 #pragma once
 
+#include "cWin.h"
 
-//======================================================================================================================
-//  CLASS
-//======================================================================================================================
+//----------------------------------------------------------------------------------------------------------------------
+// CLASS
+//----------------------------------------------------------------------------------------------------------------------
+class cListView : public cWin
+{
 
-typedef mojo::tList<cToon> cToonList;
+public:
+
+
+
+protected:
+
+	virtual void                     create_columns () = 0;
+	virtual void                     do_image_list ( cConfigItemList * pList );
+	virtual const cConfigItemList *  list_to_populate_from_by_default () = 0;
+	virtual void                     set_item ( cConfigItem * pConfigItem );
+	virtual mojo::cPtI               get_icon_size () = 0;
+	virtual int                      icon_bitmap_id () = 0;
+	virtual const int *              default_bitmap_ids () = 0;
+
+public:
+
+	void                             init ();
+	void                             populate ( const cConfigItemList * pList = 0 );
+	void                             set_view ( DWORD dwView );
+	DWORD                            hot_item ();
+	void                             toggle_view ();
+
+	const cConfigItemList *          pList; // the original; it may have changed
+
+protected:
+
+	HIMAGELIST	                     hImageListLarge;
+};
 
 
 /***********************************************************************************************************************

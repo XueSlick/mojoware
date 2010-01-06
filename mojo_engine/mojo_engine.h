@@ -52,6 +52,7 @@
 #include "cMach.h"
 #include "cMachlist.h"
 #include "cTarget.h"
+#include "cArrayTarget.h"
 #include "directories.h"
 #include "cFile.h"
 #include "cTrigger.h"
@@ -66,7 +67,7 @@ namespace mojo
 const UINT uWM_INPUT_EVENT_READY             = WM_APP + 0xBFFF - 0;
 const UINT uWM_MEMO_READY                    = WM_APP + 0xBFFF - 1;
 const UINT uWM_MACHLIST_CHANGED              = WM_APP + 0xBFFF - 2;
-const UINT uWM_BROADCAST_TARGETS_CHANGED     = WM_APP + 0xBFFF - 3;
+const UINT uWM_TARGETS_CHANGED               = WM_APP + 0xBFFF - 3;
 const UINT uWM_HIDE_OR_SHOW_CURSOR           = WM_APP + 0xBFFF - 4;
 const UINT uWM_KEY_EVENT_OCCURRED            = WM_APP + 0xBFFF - 5;
 
@@ -108,13 +109,15 @@ MOJO_ENGINE_API void  get_machlist		         ( mojo::cMachlist * pRet );
 MOJO_ENGINE_API bool  get_mach                   ( mojo::cMach * pRet, DWORD dwHandle );
 MOJO_ENGINE_API mojo::nConnectionStatus::eConnectionStatus 
 				get_connection_status 	         ( DWORD dwMachHandle );
-MOJO_ENGINE_API void get_broadcast_targets       ( mojo::cArrayTarget * pRet );
+MOJO_ENGINE_API void get_targets                 ( mojo::cArrayTarget * pRet );
 MOJO_ENGINE_API void set_mouseover_layout        ( mojo::cMachlist * pMachlist );
 MOJO_ENGINE_API void get_key_state_as_trigger    ( mojo::cTrigger * pRet );
 MOJO_ENGINE_API void register_for_key_events     ( /* mojo::tCircBuf<WORD> * pBuf, */ HWND hNotifyMe );
 MOJO_ENGINE_API void unregister_for_key_events   ( HWND hNotifyMe );
 MOJO_ENGINE_API void start_swallowing_key_events ( HWND hwndSwallow );
 MOJO_ENGINE_API void stop_swallowing_key_events  ();
+// MOJO_ENGINE_API bool hwnd_is_in_target_array     ( mojo::cArrayTarget * pRay, HWND hwnd );
+
 
 } // namespace
 

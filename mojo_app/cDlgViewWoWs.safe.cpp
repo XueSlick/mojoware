@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cToon.cpp
+/*    cDlgViewWoWs.cpp / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -10,67 +10,112 @@
 
 
 //======================================================================================================================
-//  DATA
+// DATA
 //======================================================================================================================
 
+const int iButtonHeight = 27;
+const int iMargin = 9;
+const int iButtonStripDimY = 23;
 
 //======================================================================================================================
-//  PROTOTYPES
+// PROTOTYPES
 //======================================================================================================================
 
-
 //======================================================================================================================
-//  CODE
+// CODE
 //======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
-//  GET DUPE
+//  POPULATE
 //----------------------------------------------------------------------------------------------------------------------
-cToon * cToon :: get_dupe ()
+#if 0
+void  cDlgViewWoWs :: populate()
 {
-	cToon * pRet = new cToon ( *this );
-	return pRet;
+	this->ListView.populate ( &g_Config.WoWList );
+}
+#endif
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  ITEM LIST
+//----------------------------------------------------------------------------------------------------------------------
+cConfigItemList * cDlgViewWoWs :: item_list ()
+{
+	return & g_Config.WoWList;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
-//  OPERATOR EQUAL
-//----------------------------------------------------------------------------------------------------------------------
-cToon & cToon :: operator= ( const cToon & r )
-{
-	this->sAccount  = r.sAccount;
-	this->sIconPath = r.sIconPath;
-	this->sName     = r.sName;
 
-	return *this;
+//----------------------------------------------------------------------------------------------------------------------
+// WM INIT
+//----------------------------------------------------------------------------------------------------------------------
+#if 0
+void cDlgViewWoWs::wm_init ()
+{
+	const int iMargin = 9;
+	const int iLeftMargin = 0;
+
+	ListView.hwnd = GetDlgItem ( hwnd, ID_LIST_VIEW );
+	register_child ( &ListView,
+
+							  nAnchor::left,		0,		iLeftMargin,
+							  nAnchor::top,			0,		iMargin,
+							  nAnchor::right,		0,		-iMargin,
+							  nAnchor::bottom,		0,      -iMargin );
 }
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------
-//  
+// WM PAINT
 //----------------------------------------------------------------------------------------------------------------------
-bool cToon :: init_from_xml ( const wchar_t * pTxt )
+#if 0
+void cDlgViewWoWs :: wm_paint ()
 {
-	cStrW sName, sAttribute, sContent;
 
-	while ( xml_get_next_element ( &sName, &sAttribute, &sContent, &pTxt ) )
+
+	PAINTSTRUCT ps;
+	BeginPaint ( hwnd, &ps );
+	HBRUSH hBrush = ( HBRUSH ) GetStockObject ( BLACK_BRUSH );
+	// SelectObject ( hdc, (HGDIOBJ) hBrush );
+	RECT r;
+	GetClientRect ( hwnd, &r );
+	r.bottom = iButtonStripDimY;
+	FillRect ( ps.hdc, &r, hBrush );
+
+	
+
+	EndPaint ( hwnd, &ps );
+}
+#endif
+
+//----------------------------------------------------------------------------------------------------------------------
+// DEFAULT PROC
+//----------------------------------------------------------------------------------------------------------------------
+#if 1
+INT_PTR CALLBACK cDlgViewWoWs::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
+{
+	cWin * pWin = user_data_to_pWin ( hwnd );
+	cDlgViewWoWs * pThis = static_cast<cDlgViewWoWs*>(pWin);
+
+	switch ( uMessage )
 	{
-		if ( sName == L"Name" )
-			this->sName = sContent;
 
-		else if ( sName == L"Account" )
-			this->sAccount = sContent;
-
-		else if ( sName == L"IconPath" )
-			this->sIconPath = sContent;
-
-		else
+	case WM_INITDIALOG:
 		{
-			assert(0);
-			return false;
+			set_user_data ( hwnd, lParam );
+			cWin * pWin = lParam_to_pWin ( hwnd, lParam );
+			pThis = static_cast<cDlgViewWoWs*>(pWin);
+			pThis->hwnd = hwnd;
+			// pThis->wm_init ();
 		}
+		break;
+
+	default:
+		break;
 	}
 
-	return true;
+	return cDlgView::dialog_proc ( hwnd, uMessage, wParam, lParam );
 }
+#endif
 
 
 /***********************************************************************************************************************
@@ -78,7 +123,7 @@ bool cToon :: init_from_xml ( const wchar_t * pTxt )
 /*    This file is part of Mojo.  For more information, see http://mojoware.org.
 /*
 /*    You may redistribute and/or modify Mojo under the terms of the GNU General Public License, version 3, as
-/*    published by the Free Software Foundation.  You should have received a copy of the license with Mojo.  If you
+/*    published by the Free Software Foundation.  You should have received a copy of the license with mojo.  If you
 /*    did not, go to http://www.gnu.org.
 /* 
 /*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT

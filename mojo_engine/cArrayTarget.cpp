@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cConfig.cpp
+/*    cArrayTarget.cpp
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -9,7 +9,7 @@
 #include "stdafx.h"
 
 
-using namespace mojo;
+
 
 //======================================================================================================================
 //  DATA
@@ -25,91 +25,19 @@ using namespace mojo;
 //  CODE
 //======================================================================================================================
 
-
 //----------------------------------------------------------------------------------------------------------------------
-//  PATHNAME
+//  FIND HWND
 //----------------------------------------------------------------------------------------------------------------------
-const wchar_t * cConfig :: pathname ( cStrW * pRet )
+mojo::cTarget * mojo::cArrayTarget :: find_hwnd ( HWND hwnd )
 {
-	assert ( g_awAppTitle );
-
-	pRet->erase();
-
-	mojo::get_our_local_app_data_directory ( pRet, g_awAppTitle );
-	*pRet += g_awAppTitle;
-	*pRet += L".config.xml";
-
-	return pRet->cstr();
-
-}
-
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  SAVE
-//----------------------------------------------------------------------------------------------------------------------
-void cConfig :: save ()
-{
-
-
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  LOAD
-//----------------------------------------------------------------------------------------------------------------------
-void cConfig :: load ()
-{
-
-
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//  CONSTRUCTOR
-//----------------------------------------------------------------------------------------------------------------------
-cConfig :: cConfig ()
-{
-	cStrW sPathname;
-	pathname ( &sPathname );
-
-	cFileIn f ( sPathname.cstr() );
-
-	if ( 0 ==  f.h )
-		return;
-
-	cStrW sTxt ( 10000 );
-
-	f.get_whole_thing_without_line_breaks ( &sTxt );
-
-	const wchar_t * pNext = sTxt.cstr();
-
-	cStrW sName;
-	cStrW sAttribute;
-	cStrW sContent;
-
-	while ( xml_get_next_element ( &sName, &sAttribute, &sContent, &pNext ) )
+	for ( unsigned i = 0; i < qty(); i++ )
 	{
-		if ( sName == L"Toon" )
-		{
-			cToon * p = new cToon;
-			p->init_from_xml ( sContent.cstr() );
-			p->dwSerialNumber = ++this->dwLastSerialNumberAssigned;
-			this->ToonList.append ( p );
-		}
-
-		else if ( sName == L"WoW" )
-		{
-			cWoW * p = new cWoW;
-			p->init_from_xml ( sContent.cstr() );
-			p->dwSerialNumber = ++this->dwLastSerialNumberAssigned;
-			this->WoWList.append ( p );
-		}
+		if ( hwnd == (*this)[i].hwnd )
+			return &(*this)[i];
 	}
 
-	PostMessage ( g_hwnd, uWM_TOON_LIST_CHANGED, 0, 0 );
+	return false;
 }
-
-
 
 /***********************************************************************************************************************
 /*

@@ -47,8 +47,8 @@ public:
 	unsigned            uView;
 	unsigned			uToonIconWidth;
 	unsigned			uToonIconHeight;
-	unsigned			uWoWIconWidth;
-	unsigned			uWoWIconHeight;
+	// unsigned			uWoWIconWidth;
+	// unsigned			uWoWIconHeight;
 
 	//-----------------------------------
 	// DEFINE FOLLOWING IN DERIVED CLASS

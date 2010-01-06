@@ -30,7 +30,7 @@ DlgAbout										= This is an early alpha version.  Only a few features have be
 DlgAbout										= Version %s\n
 DlgAbout										= Built on %s\n
 DlgAbout										= Source code for this program is available under the GNU General Public License version 3.\n
-DlgAbout										= Copyright 2009 Robert Sacks
+DlgAbout										= Copyright 2009-2010 Robert Sacks
 DlgAbout.Link									= <a href=\"%s\">Learn more about %s</a>
 
 DlgMonitor.InputEventsHead						= Your last action
@@ -101,3 +101,7 @@ DlgSettingsAppearance.Link                             = <a href=\"%s\">Learn mo
 // GET TRIGGERS DIALOG
 
 DlgSetTrigger.Link                                     = <a href=\"%s\">Learn more about triggers</a>
+
+// FIG WOW DIALOG
+
+DlgFigWoW.Link                                         = <a href=\"%s\">Learn more about WoW properties</a>

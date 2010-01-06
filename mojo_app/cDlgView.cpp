@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 
-#include "cDlgPropWoW.h"
+#include "cDlgFigWoW.h"
 
 //======================================================================================================================
 // DATA
@@ -28,21 +28,61 @@ static int s_iStripButtonDimX = 80;
 //======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
+// DRAW STRIP
+//----------------------------------------------------------------------------------------------------------------------
+void cDlgView :: draw_strip ( HDC hdcOriginal, const wchar_t * pText )
+{
+
+	const COLORREF clrCOLOR = RGB ( 44, 44, 110 );
+
+	const int iLeftMargin = 9;
+
+
+	RECT rBuf;
+	GetClientRect ( hwnd, &rBuf );
+	rBuf.right -= iMargin;
+	rBuf.bottom = s_iStripDimY;
+
+	HDC		hdcMem	= CreateCompatibleDC ( hdcOriginal );
+	HBITMAP hbmMem	= CreateCompatibleBitmap(hdcOriginal, rBuf.right, rBuf.bottom);
+	HANDLE	hOld	= SelectObject(hdcMem, hbmMem);
+	HDC hdc			= hdcMem;
+
+	HBRUSH hBrush	= CreateSolidBrush ( clrCOLOR );
+	SelectObject	( hdc, HGDIOBJ ( hBrush ) );
+	FillRect		( hdc, &rBuf, hBrush );
+	DeleteObject	( (HGDIOBJ)  hBrush );
+
+	if ( wcslen ( pText ) )
+	{
+		DWORD dwStyles	= DT_VCENTER | DT_SINGLELINE;
+		rBuf.left = iLeftMargin;
+		cDlg::draw_text ( hdc, &rBuf, caption, pText, true, dwStyles );
+	}
+
+	rBuf.left = 0;
+
+	BitBlt ( hdcOriginal, 0, iMargin, rBuf.right + iMargin, rBuf.bottom + iMargin, hdcMem, 0, 0, SRCCOPY);
+	SelectObject ( hdcMem, hOld );
+	DeleteObject ( hbmMem );
+	DeleteDC     ( hdcMem );
+
+
+
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
 // WM PAINT
 //----------------------------------------------------------------------------------------------------------------------
 void cDlgView :: wm_paint ()
 {
 	PAINTSTRUCT ps;
 	BeginPaint ( hwnd, &ps );
-	HBRUSH hBrush = ( HBRUSH ) GetStockObject ( BLACK_BRUSH );
-	RECT r;
-	GetClientRect ( hwnd, &r );
-	r.top += iMargin;
-	r.right -= iMargin;
-	r.bottom = s_iStripDimY + iMargin;
-	FillRect ( ps.hdc, &r, hBrush );
+	draw_strip ( ps.hdc, L"WoWs" );
 	EndPaint ( hwnd, &ps );
 }
+
 
 //----------------------------------------------------------------------------------------------------------------------
 // WM INIT
@@ -91,7 +131,9 @@ void cDlgView::wm_init ()
 	ShowWindow ( pListView->hwnd, TRUE );
 
 	pListView->init();
-	pListView->populate ( item_list() );
+	pListView->populate (); //  item_list() );
+
+
 }
 
 
@@ -121,7 +163,14 @@ INT_PTR CALLBACK cDlgView::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam,
 		case ID_TOGGLE_VIEW:
 			pThis->toggle_view ();
 			break;
+
+
 		}
+
+#if 0
+	case WM_ERASEBKGND:
+		return TRUE;
+#endif
 
 	case WM_PAINT:
 		pThis->wm_paint();
@@ -158,27 +207,38 @@ INT_PTR CALLBACK cDlgView::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam,
 
 				if ( (DWORD)-1 != dwHandle )
 				{
-					cConfigItem * p = pThis->pListView->pList->get_dupe ( dwHandle );
+					cFigViewItem * p = pThis->pListView->pList->get_item_clone ( dwHandle );
 
 					if ( p )
 					{
-						int iCommand = p->do_context_menu ( hwnd );
+
+						int iCommand = p->show_context_menu ( hwnd );
+						p->handle_context_menu ( iCommand );
+
+#if 0
 
 						switch ( iCommand )
 						{
+						case ID_DELETE:
+							g_FigMgr.delete_fig ( dwHandle );
+							PostMessage ( g_hwnd, uWM_WOW_LIST_CHANGED, 0, 0 );
+							break;
+
 						case ID_LAUNCH:
 							message_box ( L"Sorry, Mojo can't launch programs yet." );
 							break;
 
 						case ID_PROPERTIES:
 							{
-								cDlgPropWoW d;
+								cDlgFigWoW d;
 								d.make_dlg ( p );
 							}
 							break;
+
 						default:
 							break;
 						}
+#endif
 
 						delete p;
 					}

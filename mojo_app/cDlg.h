@@ -32,7 +32,7 @@ public:
 
 	static cWin *	lParam_to_pWin 	( HWND hwnd, LPARAM lParam );
 	static void		set_user_data 	( HWND hDlg, LPARAM lParam );
-	HWND 			make_dlg 		();
+	HWND 			make_dlg 		( void * p = 0 );
 
 	virtual DialogProc * dialog_proc () { return dialog_proc; }
 	static 	DialogProc dialog_proc;

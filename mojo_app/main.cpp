@@ -22,6 +22,7 @@ using namespace mojo;
 static const wchar_t			s_awWindowClass [] = L"MojoWindowClass";
 
 
+
 //======================================================================================================================
 // PROTOTYPES
 //======================================================================================================================
@@ -46,20 +47,74 @@ void 							make_fonts ();
 // CODE
 //======================================================================================================================
 
+
+//----------------------------------------------------------------------------------------------------------------------
+//  TEST SUB
+//----------------------------------------------------------------------------------------------------------------------
+void test_sub ( cTree * p, int i )
+{
+	if ( 0 == i )
+		return;
+
+	cTree * pLeft = new cTree;
+	p->append_left ( pLeft );
+	pLeft->sName.f( L"%s:L%d", p->sName.cstr(), i );
+
+	cTree * pRight = new cTree;
+	pRight->sName.f( L"%s:R%d", p->sName.cstr(), i );
+	p->append_right ( pRight );
+
+	test_sub ( pRight, i-1 );
+	test_sub ( pLeft,  i-1 );
+
+}
+
+
+
+
 //----------------------------------------------------------------------------------------------------------------------
 //  TEST
 //----------------------------------------------------------------------------------------------------------------------
 void test ( )
 {
+	// cCfgMgr cm;
+
+
+
 #if 0
-	cDlgPropWoW d;
-	d.make_dlg ();
-#else
-	cDlgSetTrigger d;
-	mojo::cTrigger Trigger;
-	d.make_dlg ( &Trigger );
+	::SetForegroundWindow ( g_hwnd); // etWindowPos ( g_hwnd, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
 #endif
-	// SetTimer ( g_hwnd, 0, 30, NULL );
+#if 0
+	set_active_window_tracking ( true );
+	Sleep ( 500 );
+	set_active_window_tracking ( off );
+#endif
+
+#if 0
+
+
+	int x = 3;
+	x++;
+#endif
+
+
+#if 0
+	cTree t;
+	t.sName = L"root";
+
+	test_sub ( &t, 2 ); // appends more nodes
+
+	cStrW s;
+	t.print ( &s );
+
+	delete t.pRight;
+	delete t.pLeft;
+	
+
+	unsigned uCount = t.count();
+
+	uCount++;
+#endif
 }
 
 
@@ -249,7 +304,7 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 		if ( ! TranslateAccelerator ( msg.hwnd, hAccelTable, &msg ) )
 		{
 			TranslateMessage ( &msg );
-			DispatchMessage ( &msg );
+			DispatchMessage  ( &msg );
 		}
 	}
 

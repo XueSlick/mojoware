@@ -1,23 +1,36 @@
 /***********************************************************************************************************************
 /*
-/*    cConfigItemList.h
+/*    cFigRoot.h / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
+
 #pragma once
 
-#include "cConfigItem.h"
+// #include "cFig.h"
+// #include "cFigWoWTree.h"
 
-//----------------------------------------------------------------------------------------------------------------------
-//  CLASS 
-//----------------------------------------------------------------------------------------------------------------------
-class cConfigItemList : public mojo::tList2<cConfigItem>
+//======================================================================================================================
+//  CLASS
+//======================================================================================================================
+
+class cFigRoot : public cFig
 {
 public:
 
-	cConfigItem * get_dupe ( DWORD dwHandle );
+	cFigRoot ();
+	virtual const sEntry * table () const { return aTable; }
+	static sEntry aTable[];
+	static const cFigRoot Default;
+	cFigWoWTree * get_wow_tree ();
+
+private:
+
+	void append_wow ( cFigWoW * pWoW );
+
+	friend class cFigMgr;
 };
 
 

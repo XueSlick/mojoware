@@ -229,11 +229,14 @@ bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUC
 			return false;
 
 	//------------------------------------
-	//  SEDOND, MOUSEOVER
+	//  SECOND, MOUSEOVER
 	//------------------------------------
 
-	if ( g_Settings.bMouseoverIsOn )
-		return g_Mouseover.on_keyboard_hook ( wParam, p );
+	if ( ! g_Mouseover.on_keyboard_hook ( wParam, p ) )
+		return false;
+
+	// if ( g_Settings.bMouseoverIsOn )
+	// 	return g_Mouseover.on_keyboard_hook ( wParam, p );
 
 	//------------------------------------
 	//  THIRD, BROADCAST
@@ -265,8 +268,11 @@ bool cMessenger :: mouse_hook_service_routine ( WPARAM wParam, MSLLHOOKSTRUCT * 
 	//  FIRST, MOUSEOVER
 	//------------------------------------
 
-	if ( g_Settings.bMouseoverIsOn )
-		return g_Mouseover.on_mouse_hook ( wParam, p );
+	if ( ! g_Mouseover.on_mouse_hook ( wParam, p ) )
+		return false;
+
+//	if ( g_Settings.bMouseoverIsOn )
+//		return g_Mouseover.on_mouse_hook ( wParam, p );
 
 	//------------------------------------
 	//  LAST, CHAIN NEXT HOOK
@@ -356,9 +362,9 @@ void cMessenger :: tell_app_that_machlist_changed ()
 //----------------------------------------------------------------------------------------------------------------------
 //  TELL APP THAT BROADCAST TARGETS CHANGED
 //----------------------------------------------------------------------------------------------------------------------
-void cMessenger :: tell_app_that_broadcast_targets_changed ()
+void cMessenger :: tell_app_that_targets_changed ()
 {
-	PostMessage ( g_hwndApp, mojo::uWM_BROADCAST_TARGETS_CHANGED, 0, 0 );
+	PostMessage ( g_hwndApp, mojo::uWM_TARGETS_CHANGED, 0, 0 );
 }
 
 

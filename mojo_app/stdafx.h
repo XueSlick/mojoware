@@ -72,14 +72,20 @@
 #include "global_data_version.h"
 #include "cSettings.h"
 #include "balloon.h"
-#include "cConfigItem.h"
-#include "cConfigItemList.h"
-#include "cWoW.h"
-#include "cToon.h"
 #include "xml.h"
-#include "cConfig.h"
-#include "cToonList.h"
 #include "cGdiPlus.h"
+#include "cTree.h"
+
+//---------------------------------
+//  THIS PROJECT'S FIG CLASSES
+//---------------------------------
+#include "cFig.h"
+#include "cFigWoW.h"
+#include "cFigWoWTree.h"
+#include "cFigRoot.h"
+#include "cFigMgr.h"
+#include "cFigViewItemList.h"
+
 
 //---------------------------------
 //  THIS PROJECT'S WINDOW CLASSES
@@ -91,8 +97,9 @@
 #include "cWinLabel.h"
 #include "cDlg.h"
 #include "cDlgVars.h"
+#include "cDlgVarsFig.h"
 #include "cLiquidButton.h"
-
+#include "cLiquidButton2.h"
 // specific
 
 #include "cWinMain.h"
@@ -116,7 +123,8 @@
 #include "cDlgToons.h"
 #include "cDlgSettingsAppearance.h"
 #include "cDlgSetTrigger.h"
-#include "cDlgPropWoW.h"
+#include "cDlgFigWoW.h"
+#include "cDlgTest.h"
 
 //---------------------------------
 //  GLOBAL DATA

@@ -45,11 +45,7 @@ private:
 	void toggle_broadcast ();
 	void toggle_hotkeys ();
 	void toggle_mouseover ();
-	void toggle_sub ( bool * pbSetting, const wchar_t * pSettingName, 
-                              const wchar_t * pMenuTxtOn, const wchar_t * pMenuTxtOff,
-							  const wchar_t * pToolbarTxtOn, const wchar_t * pToolbarTxtOff,
-                              int iCtrlID );
-
+	void toggle_sub ();  
 	void wm_command ( WPARAM wParam, LPARAM lParam );
 	void wm_create ( HWND hwnd );
 
@@ -62,7 +58,7 @@ private:
 	cDlgModeStrip   DlgModeStrip;
 	cDlgViewStrip   DlgViewStrip;
 	cDlgCornerLogo  DlgCornerLogo;
-	cDlgViewWoWs        DlgWoWs;
+	cDlgViewWoWs    DlgWoWs;
 	cDlgToons       DlgToons;
 	cDlgMessageBox  MB;
 	cDlgCursorBlind DlgCursorBlind;

@@ -28,7 +28,7 @@ public:
 private:
 	void wm_paint ();
 
-	cListViewToons ListView;
+	// cListViewToons ListView;
 	void wm_init ();
 };
 

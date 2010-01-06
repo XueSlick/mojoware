@@ -31,7 +31,6 @@ struct sDlgDatum
 {
 	int 			iID;
 	const wchar_t * pName;
-
 	sDlgDatum 		( int iArgID, const wchar_t * pArgName ) : iID ( iArgID ), pName ( pArgName ) {}
 };
 

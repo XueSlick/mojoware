@@ -119,6 +119,13 @@ void cWinMain :: wm_command ( WPARAM wParam, LPARAM lParam )
 		::test ();
 		break;
 
+	case ID_TEST_SET_TRIGGER:
+		{
+			cDlgSetTrigger d;
+			mojo::cTrigger t;
+			d.make_dlg(&t);
+		}
+
 	case ID_TOGGLE_BROADCAST:
 		toggle_broadcast ();
 		break;

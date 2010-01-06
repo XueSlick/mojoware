@@ -43,7 +43,7 @@ void cKeyBroadcaster :: receive_from_keyboard_hook ( WPARAM wParam, KBDLLHOOKSTR
 {
 	HWND hForeground = GetForegroundWindow ();
 
-	if ( this->find_hwnd_in_list ( hForeground ) )
+	if ( g_TargetMgr.is_broadcast_source ( hForeground ) )
 	{
 		cMessageBroadcastKeyEvent m ( wParam, p );
 		broadcast_to_local_windows ( &m, hForeground );
@@ -60,13 +60,15 @@ void cKeyBroadcaster :: broadcast_to_local_windows ( const cMessageBroadcastKeyE
 	unsigned uQty = 0;
 	cStrW sBody;
 
-	List.lock();
+	mojo::tList2<mojo::cTarget> * pList = &g_TargetMgr.List;
+
+	pList->lock();
 	{
-		for ( cTarget * pTarget = List.pHead; pTarget; pTarget = pTarget->pNext )
+		for ( cTarget * pTarget = pList->pHead; pTarget; pTarget = pTarget->pNext )
 		{
 			if ( pTarget->hwnd != hExcludeThisWindow )
 			{
-				cSyringe::post_message ( pTarget->hwnd, pMsg->wParam, &pMsg->kbhs );
+				cSyringe::send_notify_message ( pTarget->hwnd, pMsg->wParam, &pMsg->kbhs, pTarget->aKeyboardState );
 
 				//--------------------------------------
 				// MAKE SCRIB BODY
@@ -86,7 +88,7 @@ void cKeyBroadcaster :: broadcast_to_local_windows ( const cMessageBroadcastKeyE
 			}
 		}
 	}
-	List.unlock();
+	pList->unlock();
 
 	cStrW sFrom;
 	cMessenger::print_from_mach ( &sFrom, pMsg->pFromMach );
@@ -105,8 +107,14 @@ void cKeyBroadcaster :: broadcast_to_local_windows ( const cMessageBroadcastKeyE
 //----------------------------------------------------------------------------------------------------------------------
 //  GET COPY OF ARRAY
 //----------------------------------------------------------------------------------------------------------------------
+#if 0
 void cKeyBroadcaster :: get_broadcast_targets ( mojo::cArrayTarget * pRet )
 {
+	pRet;
+	assert (0);
+
+#if 0 ////////////////////////////////
+
 	List.lock();
 	pRet->resize ( List.qty() );
 
@@ -119,12 +127,15 @@ void cKeyBroadcaster :: get_broadcast_targets ( mojo::cArrayTarget * pRet )
 	}
 
 	List.unlock();
-}
 
+#endif /////////////////////////////
+}
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------
 //  HWND IS IN ARRAY
 //----------------------------------------------------------------------------------------------------------------------
+#if 0
 bool cKeyBroadcaster :: hwnd_is_in_array ( cArrayTarget * pRay, HWND hwnd )
 {
 	for ( unsigned i = 0; i < pRay->qty(); i++ )
@@ -135,11 +146,12 @@ bool cKeyBroadcaster :: hwnd_is_in_array ( cArrayTarget * pRay, HWND hwnd )
 
 	return false;
 }
-
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------
 //  FIND HWND IN LIST
 //----------------------------------------------------------------------------------------------------------------------
+#if 0
 cTarget * cKeyBroadcaster :: find_hwnd_in_list ( HWND hwnd )
 {
 	for ( cTarget * p = List.pHead; p; p = p->pNext )
@@ -150,14 +162,20 @@ cTarget * cKeyBroadcaster :: find_hwnd_in_list ( HWND hwnd )
 
 	return NULL;
 }
-
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------
 //  RECEIVE
 //  cFinder calls this to send current list
 //----------------------------------------------------------------------------------------------------------------------
+#if 0
 void cKeyBroadcaster:: receive_from_finder ( cArrayTarget * a )
 {
+	a;
+	assert(0);
+
+#if 0 //////////////////////
+
 	bool bChanged = false;
 
 	List.lock();
@@ -207,8 +225,10 @@ void cKeyBroadcaster:: receive_from_finder ( cArrayTarget * a )
 
 	if ( bChanged )
 		cMessenger::tell_app_that_broadcast_targets_changed();
-}
 
+#endif //////////////////////////
+}
+#endif
 
 /***********************************************************************************************************************
 /*

@@ -40,7 +40,7 @@ public:
 	static const UINT uWM_SOCKET_HAS_CLOSED = WM_USER + 0;
 
 	static void tell_app_that_machlist_changed ();
-	static void tell_app_that_broadcast_targets_changed ();
+	static void tell_app_that_targets_changed ();
 
 	void start_swallowing_key_events ( HWND hwndSwallow );
 	void stop_swallowing_key_events  ();

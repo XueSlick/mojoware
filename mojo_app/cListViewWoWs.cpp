@@ -8,11 +8,92 @@
 
 #include "stdafx.h"
 
+using namespace mojo;
 
 //======================================================================================================================
 //  CODE
 //======================================================================================================================
 
+//----------------------------------------------------------------------------------------------------------------------
+//  SET ITEM
+//----------------------------------------------------------------------------------------------------------------------
+void cListViewWoWs :: set_item ( cFigViewItem * pFigViewItem )
+{
+	cFigWoW * pItem = reinterpret_cast<cFigWoW*> ( pFigViewItem );
+
+	LVITEM lvI;
+	ZeroMemory ( &lvI, sizeof(lvI) );
+	lvI.mask = LVIF_TEXT |  LVIF_PARAM | LVIF_IMAGE;
+	lvI.iItem = INT_MAX;
+	lvI.iImage = pItem->bRunning ? 1 : 0;
+	lvI.iSubItem = 0;
+	lvI.lParam = (LPARAM) ( pItem->dwSerialNumber );
+	lvI.pszText = const_cast<LPWSTR>( pItem->sName.cstr() );
+	int iItemIndex = SendMessage ( hwnd, LVM_INSERTITEM, 0, (LPARAM) &lvI );
+	ListView_SetItemText ( hwnd, iItemIndex, 1, pItem->bRunning ? L"Yes" : L"No" );
+	ListView_SetItemText ( hwnd, iItemIndex, 2, L"Local" );
+	ListView_SetItemText ( hwnd, iItemIndex, 3, (LPWSTR) pItem->sPath.cstr() );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  LOAD OVERLAYS INTO IMAGE LIST
+//----------------------------------------------------------------------------------------------------------------------
+const int * cListViewWoWs :: default_bitmap_ids ()
+{
+	static const int aiRet [] = { IDB_WOW_LOGO, IDB_WOW_LOGO_GREEN, 0 };
+
+	return aiRet;
+}
+
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  GET ICON SIZE
+//----------------------------------------------------------------------------------------------------------------------
+mojo::cPtI cListViewWoWs :: get_icon_size ()
+{
+	mojo::cPtI r ( 70, 69 ); // g_Settings.uWoWIconWidth, g_Settings.uWoWIconHeight );
+	return r;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+// LIST TO POPULATE FROM BY DEFAULT
+//----------------------------------------------------------------------------------------------------------------------
+void  cListViewWoWs :: create_columns ()
+{
+	LVCOLUMN lc;
+
+    memset ( &lc, 0, sizeof(lc) ); 
+	lc.mask= LVCF_TEXT | LVCF_WIDTH | LVCF_SUBITEM;    // Type of mask
+	lc.pszText = L"Name";                              // First Header
+	lc.cx = 130;
+	SendMessage ( hwnd, LVM_INSERTCOLUMN, 0, (LPARAM) &lc );
+
+	lc.pszText = L"Running";
+	lc.cx = 60;
+	SendMessage ( hwnd, LVM_INSERTCOLUMN, 1, (LPARAM) &lc );
+
+	lc.pszText = L"Computer";
+	lc.cx = 150;
+	SendMessage ( hwnd, LVM_INSERTCOLUMN, 2, (LPARAM) &lc );
+
+	lc.pszText = L"Program file";
+	lc.cx = 250;
+	SendMessage ( hwnd, LVM_INSERTCOLUMN, 3, (LPARAM) &lc );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  CREATE LIST
+//----------------------------------------------------------------------------------------------------------------------
+const cFigViewItemList * cListViewWoWs :: create_list ()
+{
+	return g_FigMgr.create_wow_list ();
+	// return g_FigMgr.wow_list()->create_fig_view_item_list();
+
+	// return 0; // g_FigMgr.get_wow_list_copy();
+}
 
 
 /***********************************************************************************************************************

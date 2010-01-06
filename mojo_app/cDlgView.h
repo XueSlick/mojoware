@@ -21,6 +21,7 @@ class cDlgView : public cDlg
 {
 public:
 
+	void populate () { pListView->populate(); }
 	virtual int idd () { return IDD_VIEW; }
 	cDlgView ( cListView * pLV ) : pListView (pLV) {}
 	virtual DialogProc * dialog_proc () { return dialog_proc; }
@@ -31,8 +32,8 @@ protected:
 
 
 private:
-
-	virtual cConfigItemList * item_list () = 0;
+	void draw_strip ( HDC hdc, const wchar_t * pText );
+	// virtual const cFigViewItemList * item_list () = 0;
 	void toggle_view ();
 	void wm_paint ();
 	void wm_init ();

@@ -31,7 +31,7 @@ extern HFONT				g_hDialogBoxHeadFont;
 extern NONCLIENTMETRICS		g_NonClientMetrics;
 extern const wchar_t * 		g_apDefaultScribs [];
 extern cSettings			g_Settings;
-extern cConfig              g_Config;
+extern cFigMgr            	g_FigMgr;
 
 /***********************************************************************************************************************
 /*
