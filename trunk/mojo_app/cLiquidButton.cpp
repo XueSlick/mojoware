@@ -108,7 +108,7 @@ void cLiquidButton::paint_green ( DRAWITEMSTRUCT* pDI, const wchar_t * pText )
 //----------------------------------------------------------------------------------------------------------------------
 // PAINT RED
 //----------------------------------------------------------------------------------------------------------------------
-void cLiquidButton::paint_red ( DRAWITEMSTRUCT* pDI, const wchar_t * pText )
+void cLiquidButton::paint_gray ( DRAWITEMSTRUCT* pDI, const wchar_t * pText )
 {
 	Color  Border ( 235, 0, 0 );
 	// paint ( pDI, Color ( 255, 200, 200 ), Color ( 0, 0, 0 ), Color ( 255, 245, 245 ), Color ( 255, 105, 105 ), pText );

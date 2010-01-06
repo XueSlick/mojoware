@@ -33,7 +33,7 @@ public:
 	static bool					is_local_ip		( DWORD dwIP );
 
 private:
-	bool                        find_wow ();
+	// bool                        find_wow ();
 	bool 						make_receive_socket ( SOCKET * pRet );
 	bool						make_send_socket	( SOCKET * pRet, DWORD dwLocalIP );
 	void                        make_remote_socket_address ( SOCKADDR_IN * pRet );

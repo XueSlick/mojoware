@@ -56,6 +56,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAPALLOC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,6 +81,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -101,19 +103,25 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="balloon.cpp" />
-    <ClCompile Include="cConfig.cpp" />
-    <ClCompile Include="cConfigItem.cpp" />
-    <ClCompile Include="cConfigItemList.cpp" />
+    <ClCompile Include="cDlgVarsFig.cpp" />
+    <ClCompile Include="cFig.cpp" />
+    <ClCompile Include="cFigMgr.cpp" />
+    <ClCompile Include="cFigRoot.cpp" />
     <ClCompile Include="cCrashHandler.cpp" />
     <ClCompile Include="cDlgSetTrigger.cpp" />
     <ClCompile Include="cDlgSetTrigger_combo.cpp" />
     <ClCompile Include="cDlgSetTrigger_test_mods.cpp" />
     <ClCompile Include="cDlgSetTrigger_trigger.cpp" />
-    <ClCompile Include="cDlgPropWoW.cpp" />
+    <ClCompile Include="cDlgFigWoW.cpp" />
     <ClCompile Include="cDlgSettingsAppearance.cpp" />
+    <ClCompile Include="cDlgTest.cpp" />
     <ClCompile Include="cDlgToons.cpp" />
     <ClCompile Include="cDlgView.cpp" />
+    <ClCompile Include="cFigViewItem.cpp" />
+    <ClCompile Include="cFigWoW.cpp" />
+    <ClCompile Include="cFigWoWTree.cpp" />
     <ClCompile Include="cGdiPlus.cpp" />
+    <ClCompile Include="cLiquidButton2.cpp" />
     <ClCompile Include="cListView.cpp" />
     <ClCompile Include="cListViewComputers.cpp" />
     <ClCompile Include="cDlg.cpp" />
@@ -142,15 +150,15 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClCompile Include="cScrobMgrIm.cpp" />
     <ClCompile Include="cScrobMgrImMouseOver.cpp" />
     <ClCompile Include="cSettings.cpp" />
-    <ClCompile Include="cToon.cpp" />
-    <ClCompile Include="cToonList.cpp" />
+    <ClCompile Include="cTree.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="cWin.cpp" />
     <ClCompile Include="cWinLabel.cpp" />
     <ClCompile Include="cWinMain.cpp" />
     <ClCompile Include="cWinMain_toggle.cpp" />
     <ClCompile Include="cWinMain_window_proc.cpp" />
     <ClCompile Include="cWinMain_wm_command.cpp" />
-    <ClCompile Include="cWoW.cpp" />
     <ClCompile Include="default_scribs.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -173,16 +181,24 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="balloon.h" />
-    <ClInclude Include="cConfig.h" />
-    <ClInclude Include="cConfigItem.h" />
-    <ClInclude Include="cConfigItemList.h" />
+    <ClInclude Include="cDlgVarsFig.h" />
+    <ClInclude Include="cFig.h" />
+    <ClInclude Include="cFigMgr.h" />
+    <ClInclude Include="cFigRoot.h" />
     <ClInclude Include="cCrashHandler.h" />
     <ClInclude Include="cDlgSetTrigger.h" />
-    <ClInclude Include="cDlgPropWow.h" />
+    <ClInclude Include="cDlgFigWow.h" />
     <ClInclude Include="cDlgSettingsAppearance.h" />
+    <ClInclude Include="cDlgTest.h" />
     <ClInclude Include="cDlgToons.h" />
     <ClInclude Include="cDlgView.h" />
+    <ClInclude Include="cFigViewItem.h" />
+    <ClInclude Include="cFigViewItemList.h" />
+    <ClInclude Include="cFigWoW.h" />
+    <ClInclude Include="cFigWoWTree.h" />
+    <ClInclude Include="cFig_define.h" />
     <ClInclude Include="cGdiPlus.h" />
+    <ClInclude Include="cLiquidButton2.h" />
     <ClInclude Include="cListView.h" />
     <ClInclude Include="cListViewComputers.h" />
     <ClInclude Include="cDlg.h" />
@@ -209,12 +225,10 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClInclude Include="cScrobMgrIm.h" />
     <ClInclude Include="cScrobMgrImMouseOver.h" />
     <ClInclude Include="cSettings.h" />
-    <ClInclude Include="cToon.h" />
-    <ClInclude Include="cToonList.h" />
+    <ClInclude Include="cTree.h" />
     <ClInclude Include="cWin.h" />
     <ClInclude Include="cWinLabel.h" />
     <ClInclude Include="cWinMain.h" />
-    <ClInclude Include="cWoW.h" />
     <ClInclude Include="global_data.h" />
     <ClInclude Include="global_data_version.h" />
     <ClInclude Include="resource.h" />
@@ -236,7 +250,9 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <None Include="..\mojo_art\state-icon-blue.ico" />
     <None Include="..\mojo_art\state-icon-gold.ico" />
     <None Include="..\mojo_art\toolbar_bitmaps.bmp" />
-    <None Include="..\mojo_art\wow-logo-64x64.bmp" />
+    <None Include="..\mojo_art\wow-logo-70x69.bmp" />
+    <None Include="..\mojo_art\wow-logo-green-70x69.bmp" />
+    <None Include="..\mojo_art\wow-logo-green.bmp" />
     <None Include="gpl3.txt" />
     <None Include="mojo_app.ico" />
     <None Include="mojo_app.scribs.english.txt" />

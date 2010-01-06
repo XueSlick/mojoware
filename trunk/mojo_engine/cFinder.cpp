@@ -146,7 +146,8 @@ bool cFinder :: periodic_stuff ()
 
 	for (;;)
 	{
-		find_wow ();
+		// find_wow ();
+		g_TargetMgr.find_targets ();
 
 		if ( g_Settings.bConnect )
 			send ( &saServer );

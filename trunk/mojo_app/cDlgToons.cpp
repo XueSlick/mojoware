@@ -53,6 +53,8 @@ void cDlgToons::wm_init ()
 	const int iMargin = 9;
 	const int iLeftMargin = 0;
 
+	iMargin, iLeftMargin;
+
 #if 0
 	const int iButtonWidth = 80;
 	const int iButtonHeight = 21;
@@ -72,6 +74,7 @@ void cDlgToons::wm_init ()
 							  nAnchor::top,		    0,      iMargin + iButtonHeight );
 #endif
 
+#if 0
 	ListView.hwnd = GetDlgItem ( hwnd, ID_LIST_VIEW );
 	register_child ( &ListView,
 
@@ -82,8 +85,10 @@ void cDlgToons::wm_init ()
 
 	ListView.init();
 
+
 	cToonList tl ( g_Config.ToonList );
 	ListView.populate ( &tl );
+#endif
 }
 
 
@@ -104,8 +109,10 @@ INT_PTR CALLBACK cDlgToons::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam
 
 	case uWM_TOON_LIST_CHANGED:
 		{
+#if 0
 			cToonList tl ( g_Config.ToonList );
 			pThis->ListView.populate ( &tl );
+#endif
 		}
 		break;
 
@@ -119,6 +126,7 @@ INT_PTR CALLBACK cDlgToons::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam
 		}
 		break;
 
+#if 0
 	case WM_NOTIFY:
 		if ( pThis )
 		{
@@ -145,6 +153,7 @@ INT_PTR CALLBACK cDlgToons::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam
 			}
 		}
 		break;
+#endif
 
 	default:
 		break;

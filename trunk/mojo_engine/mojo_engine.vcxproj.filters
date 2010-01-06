@@ -18,6 +18,9 @@
     <ClCompile Include="cAdLibMemo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cArrayTarget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cDisplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,6 +120,15 @@
     <ClCompile Include="cSyringe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cTarget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cTargetMgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cTargetMgr_find.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cTrigger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -171,6 +183,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cAdLibMemo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cArrayTarget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cDisplay.h">
@@ -252,6 +267,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cTarget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cTargetMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cTrigger.h">

@@ -68,10 +68,16 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 		}
 		break;
 
-	case uWM_BROADCAST_TARGETS_CHANGED:
+	case uWM_TARGETS_CHANGED:
 		{
 			mojo::cArrayTarget ta;
-			mojo::get_broadcast_targets ( &ta );
+			mojo::get_targets ( &ta );
+
+			g_FigMgr.receive ( &ta );
+
+#if 0
+
+			g_Config.receive ( &ta );
 			cStrW sAll;
 			for ( unsigned u = 0; u < ta.qty(); u++ )
 			{
@@ -83,6 +89,10 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 				sAll += sOne;
 			}
 			mojo::put_ad_lib_memo ( mojo::cMemo::info, L"Broadcast targets:", sAll.cstr() );
+
+#endif
+
+			pThis->DlgWoWs.populate();
 		}
 		break;
 
@@ -92,6 +102,10 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 			pThis->wm_command ( wParam, lParam );
 			return cWin :: window_proc ( hwnd, uMsg, wParam, lParam );
 		}
+		break;
+
+	case uWM_WOW_LIST_CHANGED:
+		PostMessage ( pThis->DlgWoWs.hwnd, uWM_WOW_LIST_CHANGED, 0, 0 );
 		break;
 
 	case mojo::uWM_MACHLIST_CHANGED:

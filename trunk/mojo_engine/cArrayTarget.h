@@ -1,41 +1,32 @@
 /***********************************************************************************************************************
 /*
-/*    cConfig.h / mojo_app
+/*    cArrayTarget.h
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
+
 #pragma once
 
-#include "cToonList.h"
-#include "cConfigItem.h"
 
 
-
+namespace mojo
+{
 //----------------------------------------------------------------------------------------------------------------------
-//  CLASS
+//  CLASS ARRAY OF TARGETS
 //----------------------------------------------------------------------------------------------------------------------
-
-class cConfig
+class MOJO_ENGINE_API cArrayTarget : public tArray<cTarget>
 {
 public:
 
-	cConfig ();
-
-	void load ();
-	void save ();
-	cToonList ToonList;
-	cConfigItemList WoWList;
-
-private:
-
-	DWORD dwLastSerialNumberAssigned;
-	const wchar_t * pathname ( mojo::cStrW * pRet );
-
-
+	typedef tArray<cTarget> B; // base
+	cArrayTarget( unsigned a ) : B ( a ) {}
+	cArrayTarget() {}
+	cTarget * find_hwnd ( HWND hwnd );
 };
 
+} // namespace
 
 
 /***********************************************************************************************************************
@@ -55,3 +46,4 @@ private:
 /*    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 /*
 /***********************************************************************************************************************/
+

@@ -74,6 +74,7 @@
 #include "cDisplay.h"
 #include "cMouseover.h"
 #include "cKeyState.h"
+#include "cTargetMgr.h"
 
 
 

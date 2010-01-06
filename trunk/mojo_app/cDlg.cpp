@@ -14,10 +14,10 @@
 //----------------------------------------------------------------------------------------------------------------------
 // MAKE DIALOG
 //----------------------------------------------------------------------------------------------------------------------
-HWND cDlg :: make_dlg ()
+HWND cDlg :: make_dlg ( void * pUserDataArg )
 {
+	this->pUserData = pUserDataArg;
 	cWin * pWin = static_cast<cWin *>(this);
-
 	hwnd = CreateDialogParam ( g_hInstance, MAKEINTRESOURCE ( idd() ), g_hwnd, dialog_proc(), (LPARAM) pWin );
 	return hwnd;
 }

@@ -1,65 +1,40 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgPropWow.cpp / mojo_app
+/*    cDlgPropWow.h / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
-#include "stdafx.h"
+#pragma once
 
+#include "cDlg.h"
+#include "cDlgVarsFig.h"
 
-//======================================================================================================================
-// DATA
-//======================================================================================================================
-
-//======================================================================================================================
-// PROTOTYPES
-//======================================================================================================================
-
-//======================================================================================================================
-// CODE
-//======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
-// WM INIT
+//  CLASS 
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgPropWoW :: wm_init ()
+class cDlgFigWoW : public cDlgModal
 {
-	pWoW = ( cWoW * ) pUserData;
+public:
 
-	if ( pWoW )
-		SetWindowText ( GetDlgItem ( hwnd, ID_NAME ), pWoW->sName.cstr() );
-}
+	virtual int idd () { return IDD_FIG_WOW; }
+	virtual DialogProc * dialog_proc () { return dialog_proc; }
+	static  DialogProc dialog_proc;
+	virtual void set_text ();
 
+private:
 
-//----------------------------------------------------------------------------------------------------------------------
-// DEFAULT PROC
-//----------------------------------------------------------------------------------------------------------------------
-INT_PTR CALLBACK cDlgPropWoW::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
-{
-	cWin * pWin = user_data_to_pWin ( hwnd );
-	cDlgPropWoW * pThis = static_cast<cDlgPropWoW*>(pWin);
+	enum etMode { add, change, display } eMode;
 
-	switch ( uMessage )
-	{
+	cDlgVarsFig VarsFig;
+	static sDlgDatum aData [];
 
-	case WM_INITDIALOG:
-		{
-			set_user_data ( hwnd, lParam );
-			cWin * pWin = lParam_to_pWin ( hwnd, lParam );
-			pThis = static_cast<cDlgPropWoW*>(pWin);
-			pThis->hwnd = hwnd;
-			pThis->wm_init();
-		}
-		break;
+	void wm_init ();
+	cFigWoW * pFigWoW; // the work copy
+};
 
-	default:
-		break;
-	}
-
-	return cDlgModal::dialog_proc ( hwnd, uMessage, wParam, lParam );
-}
 
 
 /***********************************************************************************************************************

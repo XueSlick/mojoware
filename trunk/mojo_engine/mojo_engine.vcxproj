@@ -83,6 +83,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cAdLibMemo.cpp" />
+    <ClCompile Include="cArrayTarget.cpp" />
     <ClCompile Include="cKeyBroadcaster.cpp" />
     <ClCompile Include="cFinder.cpp" />
     <ClCompile Include="cDisplay.cpp" />
@@ -140,6 +141,9 @@
     <ClCompile Include="cSettingsBase.cpp" />
     <ClCompile Include="cSignature.cpp" />
     <ClCompile Include="cSyringe.cpp" />
+    <ClCompile Include="cTarget.cpp" />
+    <ClCompile Include="cTargetMgr.cpp" />
+    <ClCompile Include="cTargetMgr_find.cpp" />
     <ClCompile Include="cTrigger.cpp" />
     <ClCompile Include="default_scribs.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -184,6 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cAdLibMemo.h" />
+    <ClInclude Include="cArrayTarget.h" />
     <ClInclude Include="cKeyBroadcaster.h" />
     <ClInclude Include="cKeyState.h" />
     <ClInclude Include="cMessage.h" />
@@ -211,6 +216,7 @@
     <ClInclude Include="cSettings.h" />
     <ClInclude Include="cSettingsBase.h" />
     <ClInclude Include="cSignature.h" />
+    <ClInclude Include="cTargetMgr.h" />
     <ClInclude Include="cTrigger.h" />
     <ClInclude Include="cVersion.h" />
     <ClInclude Include="directories.h" />

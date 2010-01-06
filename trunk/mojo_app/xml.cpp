@@ -1,8 +1,6 @@
 /***********************************************************************************************************************
 /*
 /*    xml.cpp / mojo_app
-/*
-/*    This file implements a small subset for xml for the .config.txt files. 
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -21,9 +19,80 @@ using namespace std::tr1;
 //----------------------------------------------------------------------------------------------------------------------
 //  XML GET NEXT ELEMENT
 //  This is a partial implementation.
+//  pRetAttribute returns value of first attribute, if it's present.
+//  Doesn't work right with nested elements that have same tag name
+//  Does not work if optional spaces are included
+//----------------------------------------------------------------------------------------------------------------------
+bool xml_get_next_element ( mojo::cStrW * pRetName, mojo::cStrW * pRetAttribute, mojo::cStrW * pRetContent, const wchar_t ** ppHaystack )
+{
+	UNREFERENCED_PARAMETER ( pRetAttribute );
+
+	assert (  ppHaystack );
+	assert ( *ppHaystack );
+
+	wregex rgx ( L"<(\\S+)\\s*"
+		         L"(.*?)"             // attribute
+				 L">(.+?)</\\1>" );
+		 
+	wcmatch match;
+
+	if ( regex_search ( *ppHaystack, match, rgx ) )
+	{
+		*pRetName      = (static_cast<std::wstring>(match[1])).c_str();
+		*pRetAttribute = (static_cast<std::wstring>(match[2])).c_str();
+		*pRetContent   = (static_cast<std::wstring>(match[3])).c_str();
+		*ppHaystack    = (wchar_t*)match[3].second;
+
+		if ( pRetAttribute->len() )
+		{
+			wregex rgx ( L"\\S+?=\"(.+?)\"" );
+			wcmatch match;
+			if ( regex_match ( pRetAttribute->cstr(), match, rgx ) )
+				*pRetAttribute = (static_cast<std::wstring>(match[1])).c_str();
+		}
+		return true;
+	}
+
+	else
+		return false;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// XML WRITE START TAG
+//----------------------------------------------------------------------------------------------------------------------
+void xml_write_start_tag  ( mojo::cStrW * pRet, const wchar_t * pName )
+{
+	if ( ! pName )
+		return;
+
+	*pRet += L"<";
+	*pRet += pName;
+	*pRet += L">";
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// XML WRITE END TAG
+//----------------------------------------------------------------------------------------------------------------------
+void xml_write_end_tag    ( mojo::cStrW * pRet, const wchar_t * pName )
+{
+	if ( ! pName )
+		return;
+
+	*pRet += L"</";
+	*pRet += pName;
+	*pRet += L">";
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  XML GET NEXT ELEMENT
+//  This is a partial implementation.
 //  Attribute isn't implemented
 //  Doesn't work right with nested elements that have same tag name  
 //----------------------------------------------------------------------------------------------------------------------
+#if 0
 bool xml_get_next_element ( mojo::cStrW * pRetName, mojo::cStrW * pRetAttribute, mojo::cStrW * pRetContent, const wchar_t ** ppHaystack )
 {
 	UNREFERENCED_PARAMETER ( pRetAttribute );
@@ -56,7 +125,7 @@ bool xml_get_next_element ( mojo::cStrW * pRetName, mojo::cStrW * pRetAttribute,
 
 	return true;
 }
-
+#endif
 
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -29,7 +29,7 @@ class MOJO_ENGINE_API cMachlist : public tList2<cMach>
 {
 public:
 
-	cMachlist () : dwLastSerialNumberAssigned ( DWORD(0) ) {} // zero is local machine
+	cMachlist () : dwLastSerialNumberAssigned ( DWORD(1) ) {} // one is local machine, and it's assigned separately
 
 	DWORD handle_to_ip ( DWORD dwHandle );
 	bool get_mach ( mojo::cMach * pRet, DWORD dwHandle );
@@ -51,8 +51,6 @@ private:
 
 	static const wchar_t * file_pathname ( mojo::cStrW * pRet );
 	DWORD dwLastSerialNumberAssigned;
-
-	// tList2<cMach> receipts;
 
 };
 

@@ -1,33 +1,41 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgPropWow.h / mojo_app
+/*    cFigWoWTree.h / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
+
 #pragma once
 
-#include "cDlg.h"
+// #include "cFig.h"
+// #include "cFigWoW.h"
 
 
-//----------------------------------------------------------------------------------------------------------------------
-//  CLASS 
-//----------------------------------------------------------------------------------------------------------------------
-class cDlgPropWoW : public cDlgModal
+//======================================================================================================================
+//  CLASS
+//======================================================================================================================
+class cFigViewItemList;
+
+class cFigWoWTree : public cFig
 {
 public:
 
-	virtual int idd () { return IDD_PROP_WOW; }
-	virtual DialogProc * dialog_proc () { return dialog_proc; }
-	static  DialogProc dialog_proc;
+	virtual void set_from_xml ( void * pvDest, const wchar_t * pTxt ) const;
+	virtual const sEntry * table () const { return aTable; }
+	static sEntry aTable[];
+	static const cFigWoWTree Default;
+	virtual void write_to_xml ( mojo::cStrW * pRet, void * pObject, const wchar_t * pTagName ) const;
+
+	cFigWoW * get_by_hwnd ( HWND hwnd ) const;
 
 private:
 
-	void wm_init ();
-	cWoW * pWoW;
-};
+	cFigViewItemList * create_fig_view_item_list ();
 
+	friend class cFigMgr;
+};
 
 
 /***********************************************************************************************************************
@@ -35,7 +43,7 @@ private:
 /*    This file is part of Mojo.  For more information, see http://mojoware.org.
 /*
 /*    You may redistribute and/or modify Mojo under the terms of the GNU General Public License, version 3, as
-/*    published by the Free Software Foundation.  You should have received a copy of the license with mojo.  If you
+/*    published by the Free Software Foundation.  You should have received a copy of the license with Mojo.  If you
 /*    did not, go to http://www.gnu.org.
 /* 
 /*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT

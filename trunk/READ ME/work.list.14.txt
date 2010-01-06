@@ -1,0 +1,18 @@
+====================================================================
+                         BUILD 14 WORK LIST                      
+====================================================================
+
+ 1.  Wrote new code for injecting broadcasted keystrokes into WoW.
+
+     -- Added aKeyboardState to cTarget.
+
+	 -- Wrote new cSyringe::send_notify_message.
+
+ 2.  Added cFig and several derived classes.
+
+ 3.  Rewrote cDlgView and cListView.
+
+ 4.  Clean copy of WoW icon extracted from wow.exe
+
+ 5.  Temporarily changed mode buttons so that when Mouseover or
+     Broadcast is on, the other is off.

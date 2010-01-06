@@ -18,20 +18,24 @@ class MOJO_ENGINE_API cTarget
 {
 public:
 
-	cTarget () : pPrev(0), pNext(0), hwnd(0) {}
-	cTarget ( const cTarget & p ) : hwnd ( p.hwnd ), sPath ( p.sPath ), pPrev(0), pNext(0) {}
-
+	cTarget (); // : pPrev(0), pNext(0), hwnd(0) {}
+	cTarget ( const cTarget & p ); // : hwnd ( p.hwnd ), sPath ( p.sPath ), pPrev(0), pNext(0) {} //  memcpy ( aKeyboardState, p.aKeyboardState, sizeof(aKeyboardState) ); }
+	cTarget & operator= ( const cTarget & r );
 	DWORD hMachHandle;
 	HWND hwnd;
 	mojo::cStrW sPath;
 	cTarget * pPrev;
 	cTarget * pNext;
+
+	// temp 5 jan 2010
+	BYTE aKeyboardState [256];
 };
 
 
 //----------------------------------------------------------------------------------------------------------------------
 //  CLASS ARRAY OF TARGETS
 //----------------------------------------------------------------------------------------------------------------------
+#if 0
 class MOJO_ENGINE_API cArrayTarget : public tArray<cTarget>
 {
 public:
@@ -39,7 +43,9 @@ public:
 	typedef tArray<cTarget> B; // base
 	cArrayTarget( unsigned a ) : B ( a ) {}
 	cArrayTarget() {}
+	cTarget * find_hwnd ( HWND hwnd );
 };
+#endif
 
 } // namespace
 

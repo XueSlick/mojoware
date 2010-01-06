@@ -10,7 +10,7 @@
 
 #include "cDlgView.h"
 #include "cListViewWoWs.h"
-#include "cConfigItemList.h"
+
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -23,10 +23,11 @@ public:
 	cDlgViewWoWs () : cDlgView ( &ListView ) {}
 	virtual DialogProc * dialog_proc () { return dialog_proc; }
 	static  DialogProc dialog_proc;
+	// void populate ();
 
 private:
 
-	virtual cConfigItemList * item_list ();
+	// virtual const cFigViewItemList * item_list ();
 	cListViewWoWs ListView;
 
 };

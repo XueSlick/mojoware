@@ -111,21 +111,21 @@ void cDlgModeStrip::wm_drawitem ( int iID, DRAWITEMSTRUCT* pDI )
 		if ( g_Settings.bMouseoverIsOn )
 			ToggleMouseover.paint_green ( pDI, L"Mouseover is on" );
 		else
-			ToggleMouseover.paint_red   ( pDI, L"Mouseover is off" );
+			ToggleMouseover.paint_gray   ( pDI, L"Mouseover is off" );
 		break;
 
 	case ID_TOGGLE_HOTKEYS:
 		if ( g_Settings.bHotkeysAreOn )
 			ToggleHotkeys.paint_green ( pDI, L"Hotkeys are on" );
 		else
-			ToggleHotkeys.paint_red   ( pDI, L"Hotkeys are off" );
+			ToggleHotkeys.paint_gray   ( pDI, L"Hotkeys are off" );
 		break;
 
 	case ID_TOGGLE_BROADCAST:
 		if ( g_Settings.bBroadcastIsOn )
 			ToggleBroadcast.paint_green ( pDI, L"Broadcast is on" );
 		else
-			ToggleBroadcast.paint_red   ( pDI, L"Broadcast is off" );
+			ToggleBroadcast.paint_gray   ( pDI, L"Broadcast is off" );
 		break;
 	}
 }
@@ -141,6 +141,15 @@ INT_PTR CALLBACK cDlgModeStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 
 	switch ( uMessage )
 	{
+#if 0
+	case WM_CTLCOLORDLG:
+		{
+			HBRUSH h   = CreateSolidBrush ( RGB ( 70, 70, 70 ) );
+			return (INT_PTR) h;
+		}
+		break;
+#endif
+
 	case WM_COMMAND:
 		{
 			if ( BN_CLICKED == HIWORD ( wParam ) )

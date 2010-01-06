@@ -268,6 +268,18 @@ bool cMouseover :: on_mouse_hook ( WPARAM wParam, MSLLHOOKSTRUCT * p )
 	int iRemoteX, iRemoteY;
 
 	//-----------------------------------
+	//  IF MOUSEOVER IS OFF, MAKE SURE
+	//  WE'RE IN REAL MODE
+	//-----------------------------------
+	if ( ! g_Settings.bMouseoverIsOn )
+	{
+		if ( real != eMode )
+		   enter_real_mode();
+
+		return true;
+	}
+
+	//-----------------------------------
 	// DORMANT?
 	//-----------------------------------
 	if ( dormant == eMode )
@@ -488,6 +500,18 @@ void cMouseover :: inject_keyboard_event ( WPARAM wParam, KBDLLHOOKSTRUCT * p )
 bool cMouseover :: on_keyboard_hook ( WPARAM wParam, KBDLLHOOKSTRUCT * p )
 {
 	//-----------------------------------
+	//  IF MOUSEOVER IS OFF, MAKE SURE
+	//  WE'RE IN REAL MODE
+	//-----------------------------------
+	if ( ! g_Settings.bMouseoverIsOn )
+	{
+		if ( real != eMode )
+		   enter_real_mode();
+
+		return true;
+	}
+
+	//-----------------------------------
 	//  SLAVE MODE?
 	//-----------------------------------
 	if ( slave == eMode )
@@ -503,13 +527,16 @@ bool cMouseover :: on_keyboard_hook ( WPARAM wParam, KBDLLHOOKSTRUCT * p )
 		return true;
 
 	//-----------------------------------
-	//  MASTER MODE
+	//  MASTER MODE AND MOUSEOVER IS ON
 	//-----------------------------------
-	else
+	else if ( master == eMode )
 	{
 		send_keyboard_command_to_slave ( wParam, p );
 		return false;
 	}
+
+	else
+		return true;
 }
 
 

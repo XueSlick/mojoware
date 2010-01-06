@@ -268,7 +268,7 @@ void cMachlist :: init_and_insert_local_machine ()
 	p->DisplayList.set_from_local_hardware ();
 	append ( p );
 	// p->dwSerialNumber = ++this->dwLastSerialNumberAssigned;
-	p->dwSerialNumber = 0; // LOCAL MACHINE IS MACHINE ZERO
+	p->dwSerialNumber = 1; // LOCAL MACHINE IS MACHINE ONE
 	get_draw_position_from_file ( p );
 }
 

@@ -33,22 +33,13 @@ void cListView :: toggle_view ()
 //----------------------------------------------------------------------------------------------------------------------
 void cListView :: init ()
 {
+	DWORD dwStyles = LVS_EX_DOUBLEBUFFER | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES;
 
+	ListView_SetExtendedListViewStyleEx ( hwnd, dwStyles, dwStyles  );
 
 	set_view ( LVS_REPORT );
 
-	LVCOLUMN lc;
-
-    memset ( &lc, 0, sizeof(lc) ); 
-	lc.mask= LVCF_TEXT | LVCF_WIDTH | LVCF_SUBITEM;    // Type of mask
-	lc.pszText = L"Name";                              // First Header
-	lc.cx = 250;
-
-	SendMessage ( hwnd, LVM_INSERTCOLUMN, 0, (LPARAM) &lc );
-
-	lc.pszText = L"IconPath";
-	lc.cx = 250;
-	SendMessage ( hwnd, LVM_INSERTCOLUMN, 1, (LPARAM) &lc );
+	create_columns();
 
 	set_view ( LVS_REPORT ); // LVS_REPORT
 	set_view ( LVS_ICON );
@@ -59,18 +50,31 @@ void cListView :: init ()
 //----------------------------------------------------------------------------------------------------------------------
 //  DO IMAGE LIST
 //----------------------------------------------------------------------------------------------------------------------
-void cListView :: do_image_list ( cConfigItemList * pList )
+void cListView :: do_image_list ( const cFigViewItemList * pList )
 {
-	int iDimX = g_Settings.uWoWIconWidth;
-	int iDimY = g_Settings.uWoWIconHeight;
+	mojo::cPtI IconSize = get_icon_size ();
+	int iDimX = IconSize.x;
+	int iDimY = IconSize.y;
 
-	HIMAGELIST hIL = ImageList_Create ( iDimX, iDimY, ILC_COLOR32, pList->qty(), 1 );
+	HIMAGELIST hIL = ImageList_Create ( iDimX, iDimY, LR_CREATEDIBSECTION | ILC_COLOR32, pList->qty(), 1 );
+
+	//------------------------------------------
+	//  LOAD DEFAULT IMAGES
+	//------------------------------------------
+
+	const int * aiBitmap = default_bitmap_ids ();
+
+	for ( int i = 0; aiBitmap[i]; i++ )
+	{
+		HANDLE hBitmap = LoadImage ( g_hInstance, MAKEINTRESOURCE ( aiBitmap[i] ), IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION );
+		ImageList_Add ( hIL, (HBITMAP) hBitmap, NULL );
+	}
 
 	int iItemIndex = 0;
-	for ( cConfigItem * p = pList->pHead; p; p = p->pNext, iItemIndex++ )
+	for ( cFigViewItem * p = pList->pHead; p; p = p->pNext, iItemIndex++ )
 	{
 		bool bLoadedFromFile = false;
-		int iImageIndex = -1;
+		int iImageIndex = 0;
 
 		//-------------------------------
 		// TRY TO LOAD IMAGE FROM FILE
@@ -113,9 +117,9 @@ void cListView :: do_image_list ( cConfigItemList * pList )
 
 		if ( ! bLoadedFromFile )
 		{
-			HANDLE hBitmap = LoadImage ( g_hInstance, MAKEINTRESOURCE ( IDB_WOW_LOGO ), IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION );
-			iImageIndex = ImageList_Add ( hIL, (HBITMAP) hBitmap, NULL );
+			iImageIndex = 0;;
 		}
+#if 0
 
 		LVITEM lvi;
 		ZeroMemory ( &lvi, sizeof(lvi) );
@@ -123,6 +127,7 @@ void cListView :: do_image_list ( cConfigItemList * pList )
 		lvi.iItem = iItemIndex;
 		lvi.iImage = iImageIndex;
 		ListView_SetItem ( hwnd, &lvi );
+#endif
 	}
 
 	HIMAGELIST hResult = ListView_SetImageList ( hwnd, hIL, LVSIL_NORMAL ); 
@@ -133,7 +138,7 @@ void cListView :: do_image_list ( cConfigItemList * pList )
 //----------------------------------------------------------------------------------------------------------------------
 //  SET ITEM
 //----------------------------------------------------------------------------------------------------------------------
-void cListView :: set_item ( int iItemIndex, cConfigItem * pConfigItem )
+void cListView :: set_item ( cFigViewItem * pConfigItem )
 {
 	LVITEM lvI;
 	ZeroMemory ( &lvI, sizeof(lvI) );
@@ -142,40 +147,41 @@ void cListView :: set_item ( int iItemIndex, cConfigItem * pConfigItem )
 	lvI.stateMask = 0; 
 
 	SetLastError(0);
-	lvI.iItem = iItemIndex;
+	lvI.iItem = INT_MAX;
 	lvI.iImage = 0;
 	lvI.iSubItem = 0;
 	lvI.lParam = (LPARAM) ( pConfigItem->dwSerialNumber );
-	lvI.pszText = const_cast<LPWSTR>( pConfigItem->sName.cstr() );
+	// lvI.pszText = const_cast<LPWSTR>( pConfigItem->sName.cstr() );
 	lvI.mask = LVIF_TEXT |  LVIF_PARAM | LVIF_STATE ; 
 	lvI.state = 1<<12;
-	SendMessage ( hwnd, LVM_INSERTITEM, 0, (LPARAM) &lvI );
-	lvI.iSubItem = 1;
-	ListView_SetItemText ( hwnd, iItemIndex, 2, const_cast<LPWSTR> ( pConfigItem->sIconPath.cstr() ) );
+	int iItemIndex = SendMessage ( hwnd, LVM_INSERTITEM, 0, (LPARAM) &lvI );
+
+	ListView_SetItemText ( hwnd, iItemIndex, 1, const_cast<LPWSTR> ( pConfigItem->sIconPath.cstr() ) );
+
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 // POPULATE
 //----------------------------------------------------------------------------------------------------------------------
-void cListView :: populate ( cConfigItemList * pListArg )
+void cListView :: populate () // const cFigViewItemList * pListArg ) //  const cConfigItemList * pListArg )
 {
-	assert ( pListArg );
-	this->pList = pListArg;
+	if ( pList )
+	{
+		delete pList;
+		pList = 0;
+	}
 
 	if ( ListView_GetItemCount ( hwnd ) )
 		ListView_DeleteAllItems ( hwnd );
 
-	if ( 0 == pListArg->qty() )
-		return;
-
-	cConfigItemList LocalList ( *pListArg );
+	pList = create_list ();
 
 	int i = 0;
-	for ( cConfigItem * p = LocalList.pHead; p; p = p->pNext, i++ )
-		set_item ( i, p );
+	for ( cFigViewItem * p = pList->pHead; p; p = p->pNext, i++ )
+		set_item ( p );
 
-	do_image_list ( &LocalList );
+	do_image_list ( pList );
 
 	InvalidateRect ( hwnd, NULL, true );
 	UpdateWindow ( hwnd );
@@ -216,6 +222,15 @@ DWORD cListView :: hot_item ()
 	}
 
 	return item.lParam;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//   DESTRUCTOR
+//----------------------------------------------------------------------------------------------------------------------
+cListView :: ~cListView ()
+{
+	if ( pList ) delete pList; pList = 0;
 }
 
 

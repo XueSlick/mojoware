@@ -34,7 +34,9 @@ class cSyringe
 {
 public:
 
-	static void post_message ( HWND hwnd, WPARAM wParamHook, const KBDLLHOOKSTRUCT * p );
+	static void send_notify_message ( HWND hwnd, WPARAM wParamHook, const KBDLLHOOKSTRUCT * p, BYTE aKeyboardState [256] );
+	// static void post_message ( HWND hwnd, WPARAM wParamHook, const KBDLLHOOKSTRUCT * p );
+	static void send_input ( WPARAM wParamHook, const KBDLLHOOKSTRUCT * p );
 	static const wchar_t * print ( mojo::cStrW * pRet, const KBDLLHOOKSTRUCT * );
 };
 

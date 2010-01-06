@@ -37,8 +37,8 @@ public:
 
    ~tList2 ();
 
-   void lock	() { EnterCriticalSection ( &cs ); }
-   void unlock	() { LeaveCriticalSection ( &cs ); }
+   void lock	() const { EnterCriticalSection ( &cs ); }
+   void unlock	() const { LeaveCriticalSection ( &cs ); }
 
    // C * get_item  ( char * pcKey );
 
@@ -51,7 +51,7 @@ public:
 
 	void	rem_del_all		();
 	C *		pop				();
-	int		qty				();
+	int		qty				() const;
 
 	bool	get_by_index	( C * pRet, int iIndex ); // fills in info and returns
 	C *		first			() { pLastIter = pHead; return pLastIter; }
@@ -78,7 +78,7 @@ public:
 	C * last ();
 
 private:
-	CRITICAL_SECTION cs;
+	mutable CRITICAL_SECTION cs;
 };
 
 
@@ -427,7 +427,7 @@ template<class C> tList2<C>::~tList2()
 // ------------------------------------------------------------
 //  QTY
 // ------------------------------------------------------------
-template<class C> int tList2<C> :: qty ()
+template<class C> int tList2<C> :: qty () const
 {
 
 	int iQty = 0;

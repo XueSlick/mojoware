@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cWoW.cpp
+/*    cListViewWoWs.cpp / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -8,53 +8,88 @@
 
 #include "stdafx.h"
 
-
-//======================================================================================================================
-//  DATA
-//======================================================================================================================
-
-
-//======================================================================================================================
-//  PROTOTYPES
-//======================================================================================================================
-
+using namespace mojo;
 
 //======================================================================================================================
 //  CODE
 //======================================================================================================================
 
-
 //----------------------------------------------------------------------------------------------------------------------
-//  GET DUPE
+//  SET ITEM
 //----------------------------------------------------------------------------------------------------------------------
-cWoW * cWoW :: get_dupe ()
+void cListViewWoWs :: set_item ( cConfigItem * pConfigItem )
 {
-	cWoW * pNew = new cWoW ( *this );
-	return pNew;
+	cWoW * pItem = reinterpret_cast<cWoW*> ( pConfigItem );
+
+	LVITEM lvI;
+	ZeroMemory ( &lvI, sizeof(lvI) );
+	lvI.mask = LVIF_TEXT |  LVIF_PARAM | LVIF_IMAGE;
+	lvI.iItem = INT_MAX;
+	lvI.iImage = pItem->bRunning ? 1 : 0;
+	lvI.iSubItem = 0;
+	lvI.lParam = (LPARAM) ( pItem->dwSerialNumber );
+	lvI.pszText = const_cast<LPWSTR>( pItem->sName.cstr() );
+	int iItemIndex = SendMessage ( hwnd, LVM_INSERTITEM, 0, (LPARAM) &lvI );
+	ListView_SetItemText ( hwnd, iItemIndex, 1, pItem->bRunning ? L"Yes" : L"No" );
+	ListView_SetItemText ( hwnd, iItemIndex, 2, L"Local" );
+	ListView_SetItemText ( hwnd, iItemIndex, 3, (LPWSTR) pItem->sPath.cstr() );
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  OPERATOR =
+//  LOAD OVERLAYS INTO IMAGE LIST
 //----------------------------------------------------------------------------------------------------------------------
-cWoW & cWoW :: operator= ( const cWoW & r )
+const int * cListViewWoWs :: default_bitmap_ids ()
 {
-	this->dwSerialNumber = r.dwSerialNumber;
-	this->sIconPath = r.sIconPath;
-	this->sName = r.sName;
+	static const int aiRet [] = { IDB_WOW_LOGO, IDB_WOW_LOGO_GREEN, 0 };
 
-	return *this;
+	return aiRet;
+}
+
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  GET ICON SIZE
+//----------------------------------------------------------------------------------------------------------------------
+mojo::cPtI cListViewWoWs :: get_icon_size ()
+{
+	mojo::cPtI r ( g_Settings.uWoWIconWidth, g_Settings.uWoWIconHeight );
+	return r;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+// LIST TO POPULATE FROM BY DEFAULT
+//----------------------------------------------------------------------------------------------------------------------
+void  cListViewWoWs :: create_columns ()
+{
+	LVCOLUMN lc;
+
+    memset ( &lc, 0, sizeof(lc) ); 
+	lc.mask= LVCF_TEXT | LVCF_WIDTH | LVCF_SUBITEM;    // Type of mask
+	lc.pszText = L"Name";                              // First Header
+	lc.cx = 130;
+	SendMessage ( hwnd, LVM_INSERTCOLUMN, 0, (LPARAM) &lc );
+
+	lc.pszText = L"Running";
+	lc.cx = 60;
+	SendMessage ( hwnd, LVM_INSERTCOLUMN, 1, (LPARAM) &lc );
+
+	lc.pszText = L"Computer";
+	lc.cx = 150;
+	SendMessage ( hwnd, LVM_INSERTCOLUMN, 2, (LPARAM) &lc );
+
+	lc.pszText = L"Program file";
+	lc.cx = 250;
+	SendMessage ( hwnd, LVM_INSERTCOLUMN, 3, (LPARAM) &lc );
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  CONSTRUCTOR
+// LIST TO POPULATE FROM BY DEFAULT
 //----------------------------------------------------------------------------------------------------------------------
-cWoW :: cWoW ( const cWoW & r )
+const cConfigItemList *  cListViewWoWs :: list_to_populate_from_by_default ()
 {
-	this->dwSerialNumber = r.dwSerialNumber;
-	this->sIconPath = r.sIconPath;
-	this->sName = r.sName;
+	return &g_Config.WoWList;
 }
 
 

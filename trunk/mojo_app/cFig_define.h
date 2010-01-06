@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cConfigItem.h
+/*    cFig_define.h / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -9,39 +9,30 @@
 #pragma once
 
 
+//======================================================================================================================
+//  DEFINES
+//======================================================================================================================
+
 //----------------------------------------------------------------------------------------------------------------------
-//  CLASS
+//  ENTRY
+//
+//  Used to initialize sEntry.   The arguments mean, in order:
+//
+//  1.  Name of XML tag
+//
+//  2.  Name of variable used for storage
+//
+//  3.  Name of class used to load and save.
+//
+//  If (2) is omitted, an offset of 0 is passed
+//
 //----------------------------------------------------------------------------------------------------------------------
 
-class cConfigItem
-{
-public:
+#define ENTRY_MEMBERLESS(a,c) L#a, 0, &c::Default
 
-	virtual int menu () { return 0; }
-	int do_context_menu ( HWND hwnd );
+#define ENTRY_MEMBER(a,b,c) L#a, int ( (BYTE*)&Default.b - (BYTE*)&Default ), &c::Default
 
-	cConfigItem () : dwSerialNumber ( DWORD ( -1 ) ) {}
-
-	cConfigItem ( const cConfigItem & r );
-	cConfigItem & operator= ( const cConfigItem & r );
-
-	virtual cConfigItem * get_dupe (); // DELETE RETURN VALUE AFTER USING IT
-
-	virtual void write_xml_element ( mojo::cStrW * pStr );
-	virtual bool init_from_xml ( const wchar_t * pTxt );
-	DWORD dwSerialNumber;
-	mojo::cStrW sName;
-	mojo::cStrW sIconPath;
-
-	cConfigItem * pNext;
-	cConfigItem * pPrev;
-
-protected:
-
-	void write_xml_element ( mojo::cStrW * pRet, const wchar_t * pName, const wchar_t * pContents );
-};
-
-
+// ENTRY(a,b,c) L#a, (offsetof(typeid(*this).name(),b), &c::Default
 
 
 /***********************************************************************************************************************

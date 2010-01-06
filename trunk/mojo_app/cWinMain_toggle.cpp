@@ -29,6 +29,59 @@ void             toggle_sub ( bool * pbSetting, const wchar_t * pSettingName,
 //----------------------------------------------------------------------------------------------------------------------
 void cWinMain :: toggle_broadcast ()
 {
+	g_Settings.bBroadcastIsOn = g_Settings.bBroadcastIsOn ? false : true;
+
+	if ( g_Settings.bBroadcastIsOn )
+		g_Settings.bMouseoverIsOn = false;
+
+	toggle_sub ();
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  TOGGLE HOTKEYS
+//----------------------------------------------------------------------------------------------------------------------
+void cWinMain :: toggle_hotkeys ()
+{
+	g_Settings.bHotkeysAreOn = g_Settings.bHotkeysAreOn ? false : true;
+	toggle_sub ();
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  TOGGLE MOUSEOVER
+//----------------------------------------------------------------------------------------------------------------------
+void cWinMain :: toggle_mouseover ()
+{
+	g_Settings.bMouseoverIsOn = g_Settings.bMouseoverIsOn ? false : true;
+
+	if ( g_Settings.bMouseoverIsOn )
+		g_Settings.bBroadcastIsOn = false;
+
+	toggle_sub ();
+}
+
+                              
+//----------------------------------------------------------------------------------------------------------------------
+//  TOGGLE SUB
+//----------------------------------------------------------------------------------------------------------------------
+void cWinMain :: toggle_sub ()
+{
+	mojo::set ( L"bBroadcastIsOn", g_Settings.bBroadcastIsOn );
+	mojo::set ( L"bMouseoverIsOn", g_Settings.bMouseoverIsOn );
+	mojo::set ( L"bHotkeysAreOn", g_Settings.bHotkeysAreOn );
+	DlgModeStrip.redraw_buttons();
+	InvalidateRect ( g_hwnd, NULL, TRUE );
+	UpdateWindow ( g_hwnd );
+}
+
+
+#if 0
+//----------------------------------------------------------------------------------------------------------------------
+//  TOGGLE BROADCAST
+//----------------------------------------------------------------------------------------------------------------------
+void cWinMain :: toggle_broadcast ()
+{
 	toggle_sub ( &g_Settings.bBroadcastIsOn,
                  L"bBroadcastIsOn",
                  L"Turn broadcast off",
@@ -67,7 +120,8 @@ void cWinMain :: toggle_mouseover ()
 				 L"Turn mouseover on",
 				 L"Mouseover is on",
 				 L"Mouseover is off",
-				 ID_TOGGLE_MOUSEOVER );
+				 
+				 );
 }
                               
 
@@ -96,7 +150,7 @@ void cWinMain :: toggle_sub ( bool * pbSetting, const wchar_t * pSettingName,
 	mojo::set ( pSettingName, *pbSetting );
 	// set_tray_icon ();
 }
-
+#endif
 
 /***********************************************************************************************************************
 /*

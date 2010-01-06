@@ -33,24 +33,24 @@
 // DATA
 //=======================================================================================================
 
-extern mojo::cVersion		g_Version;
-extern mojo::cLog			g_Log;
-extern mojo::cStrW			g_sAppTitle;
-extern mojo::cStrW			g_sAppDataDirectory;
-extern const wchar_t * const 				g_pwEngineTitle;
-extern mojo::cScribMgr      g_ScribMgr;
-extern cSettings			g_Settings;
-extern HWND					g_hwndApp;
-extern DWORD 				g_dwHookThreadID;
-extern cInputEventBuffer	g_EventBuffer;   // keyboard and mouse events
-extern mojo::cMachlist		g_Machlist;
-extern cPool				g_Pool;
-// extern cMonitor				g_Monitor;
-extern HINSTANCE			g_hAppInstance;
-extern cMessenger			g_Messenger;
-extern cMemoBuffer			g_MemoBuffer;
-extern const wchar_t * 		g_apDefaultScribs [];
-extern cFinder              g_Finder;
-extern cKeyBroadcaster      g_KeyBroadcaster;
-extern cMouseover           g_Mouseover;
-extern cKeyState			g_KeyState;
+extern mojo::cVersion		   g_Version;
+extern mojo::cLog			   g_Log;
+extern mojo::cStrW			   g_sAppTitle;
+extern mojo::cStrW			   g_sAppDataDirectory;
+extern const wchar_t * const   g_pwEngineTitle;
+extern mojo::cScribMgr         g_ScribMgr;
+extern cSettings			   g_Settings;
+extern HWND					   g_hwndApp;
+extern DWORD 				   g_dwHookThreadID;
+extern cInputEventBuffer	   g_EventBuffer;
+extern mojo::cMachlist		   g_Machlist;
+extern cPool				   g_Pool;
+extern HINSTANCE			   g_hAppInstance;
+extern cMessenger			   g_Messenger;
+extern cMemoBuffer			   g_MemoBuffer;
+extern const wchar_t * 		   g_apDefaultScribs [];
+extern cFinder                 g_Finder;
+extern cKeyBroadcaster         g_KeyBroadcaster;
+extern cMouseover              g_Mouseover;
+extern cKeyState			   g_KeyState;
+extern cTargetMgr              g_TargetMgr;
