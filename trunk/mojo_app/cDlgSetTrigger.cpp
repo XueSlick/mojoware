@@ -354,23 +354,31 @@ INT_PTR CALLBACK cDlgSetTrigger::dialog_proc (HWND hwnd, UINT uMessage, WPARAM w
 				break;
 
 			case IDOK:
-
-				if ( ! pThis->init_trigger () )
-					return true; // stay in the dialog
-
-				else
 				{
-					mojo::unregister_for_key_events ( hwnd );
-					*((mojo::cTrigger*)pThis->pUserData ) = pThis->Trigger;
+					cStrW s;
+					pThis->vars_to_string ( &s );
 
-					//------------------------------------
-					//   TEMP FOR TESTING
-					//------------------------------------
+					if ( 0 == s.len() )
+						pThis->Trigger.clear();
 
-					cStrW s, t;
-					pThis->Trigger.print ( &t );
+					else if ( ! pThis->init_trigger ( s.cstr() ) )
+						return ( INT_PTR ) TRUE;
 
-					s.f ( L"For testing purposes, Mojo has stored your trigger "
+					else
+					{
+						mojo::unregister_for_key_events ( hwnd );
+						*((mojo::cTrigger*)pThis->pUserData ) = pThis->Trigger;
+
+						//------------------------------------
+						//   TEMP FOR TESTING
+						//------------------------------------
+
+#if 0
+
+						cStrW s, t;
+						pThis->Trigger.print ( &t );
+
+						s.f ( L"For testing purposes, Mojo has stored your trigger "
 						  L"in an internal format and then converted it from that "
 						  L"format into something humans can read.  Here's the result "
 						  L"of that process:\n\n"
@@ -387,8 +395,10 @@ INT_PTR CALLBACK cDlgSetTrigger::dialog_proc (HWND hwnd, UINT uMessage, WPARAM w
 
 						  t.cstr() );
 
-					MessageBox ( hwnd, s.cstr(), g_awAppTitle, MB_OK );
+						MessageBox ( hwnd, s.cstr(), g_awAppTitle, MB_OK );
 
+#endif
+					}
 				}
 				break;
 

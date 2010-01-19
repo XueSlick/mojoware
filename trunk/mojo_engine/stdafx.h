@@ -73,8 +73,12 @@
 #include "cSyringe.h"
 #include "cDisplay.h"
 #include "cMouseover.h"
-#include "cKeyState.h"
+#include "cKeyboardStateEx.h"
 #include "cTargetMgr.h"
+#include "cMessage.h"
+#include "cMessageArrayTarget.h"
+#include "cHotkey.h"
+#include "cHotkeyTable.h"
 
 
 

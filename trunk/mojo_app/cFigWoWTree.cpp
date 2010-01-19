@@ -32,6 +32,32 @@ cFig::sEntry cFigWoWTree::aTable [] =
 //  CODE
 //======================================================================================================================
 
+//----------------------------------------------------------------------------------------------------------------------
+//  FIND TARGET
+//----------------------------------------------------------------------------------------------------------------------
+cFigWoW * cFigWoWTree :: find_target ( mojo::cTarget * a )
+{
+	for ( cTree * p = pRight; p; p = p->pRight )
+	{
+
+		cFigWoW * w = reinterpret_cast < cFigWoW* > ( p );
+
+		if ( a->bLaunchByMojo )
+		{
+			if ( w->hMach == a->hMach && w->dwTargetID == a->dwID )
+				return w;
+		}
+
+		else
+		{
+			if ( a->hwnd == w->hwnd && a->hMach == w->hMach && a->dwProcessID == w->dwProcessID )
+				return w;
+		}
+	}
+
+	return NULL;
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 //  GET BY HWND
@@ -43,6 +69,23 @@ cFigWoW * cFigWoWTree :: get_by_hwnd ( HWND hwnd ) const
 		cFigWoW * w = reinterpret_cast < cFigWoW* > ( p );
 
 		if ( w->hwnd == hwnd )
+			return w;
+	}
+
+	return NULL;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  FIND TARGET 
+//----------------------------------------------------------------------------------------------------------------------
+cFigWoW * cFigWoWTree :: find_target ( DWORD hMach, HWND hwnd, DWORD dwProcessID ) const
+{
+	for ( cTree * p = pRight; p; p = p->pRight )
+	{
+		cFigWoW * w = reinterpret_cast < cFigWoW* > ( p );
+
+		if ( hwnd == w->hwnd && hMach == w->hMach && dwProcessID == w->dwProcessID )
 			return w;
 	}
 
@@ -84,9 +127,6 @@ void cFigWoWTree :: write_to_xml ( cStrW * pRet, void * pObject, const wchar_t *
 	if ( ! p )
 		return;
 
-	// const sEntry * pEntry = table();
-	// pEntry;
-
 	xml_write_start_tag ( pRet, pTagName );
 	*pRet += L'\n';
 
@@ -94,59 +134,13 @@ void cFigWoWTree :: write_to_xml ( cStrW * pRet, void * pObject, const wchar_t *
 	{
 		cFigWoW * pWoW = reinterpret_cast<cFigWoW*>(pTree);
 
-		if ( cFigWoW::launch_by_mojo == pWoW->eOrigin )
+		if ( true == pWoW->bLaunchByMojo )
 			pWoW->write_to_xml ( pRet, pWoW, table()->pwTag );
 	}
 
 	xml_write_end_tag ( pRet, pTagName );
 	*pRet += L'\n';
 }
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  SET WOW
-//----------------------------------------------------------------------------------------------------------------------
-#if 0
-bool cFigWoWTree:: set_wow ( DWORD dwHandle, cFigWoW * pArg )
-{
-	bool bRetVal = false;
-
-	List.lock();
-
-	for ( cFigWoW * p = List.pHead; p; p = p->pNext )
-	{
-		if ( p->dwSerialNumber == dwHandle )
-		{
-			*p = *pArg;
-			bRetVal = true;
-			break;
-		}
-	}
-	List.unlock();
-
-	return bRetVal;
-}
-#endif
-
-//----------------------------------------------------------------------------------------------------------------------
-//  CREATE FIG VIEW ITEM LIST
-//  Caller should delete the returned object after using it.
-//----------------------------------------------------------------------------------------------------------------------
-#if 0
-cFigViewItemList * cFigWoWTree :: create_fig_view_item_list ()
-{
-	cFigViewItemList * pList = new cFigViewItemList;
-
-	List.lock();
-	for ( cFigWoW * p = List.pHead; p; p = p->pNext )
-	{
-		pList->append ( p->clone() );
-	}
-	List.unlock();
-
-	return pList;
-}
-#endif
 
 
 /***********************************************************************************************************************

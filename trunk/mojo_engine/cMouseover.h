@@ -76,6 +76,7 @@ public:
 	mojo::cDisplayList LocalDisplayList;
 	// cDlgCursorBlind DlgCursorBlind;
 	mojo::cMach * get_slave() { return pSlave; }
+	void bring_cursor_home ();
 private:
 	mojo::cMach * pSlave, * pMaster;
 	void inject_mouse_event_sub ( DWORD dwEvent, MSLLHOOKSTRUCT * p );

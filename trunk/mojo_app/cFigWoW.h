@@ -21,11 +21,12 @@ public:
 
 	enum etOrigin { launch_by_mojo, found };
 
-	cFigWoW () : hwnd (0), eOrigin(found), bRunning(false), pNext(0), pPrev(0) {}
+	cFigWoW () : hwnd (0), bLaunchByMojo(false), bRunning(false), pNext(0), pPrev(0), dwProcessID(0), hMach(0), dwIP(0), dwTargetID(0) {}
 	cFigWoW( const cFigWoW & r );
 	cFigWoW & operator= ( const cFig & r );
 	virtual int menu () { return ID_WOW_MENU; }
 	virtual cFigWoW * clone () const; // DELETE RETURN VALUE AFTER USING IT
+	void set_target ( mojo::cTarget * t );
 
 	//------------------------------------
 	// DATA
@@ -33,9 +34,14 @@ public:
 
 	mojo::cStrW sName;
 	mojo::cStrW sPath;
-	mojo::cStrW sComputer;
+	mojo::cStrW sComputerName;
+	mojo::cStrW sDottedDec;
+	DWORD dwIP;
+	DWORD hMach;
 	HWND hwnd;
-	cFigWoW::etOrigin eOrigin;
+	DWORD dwTargetID;
+	DWORD dwProcessID;
+	bool bLaunchByMojo;
 	bool bRunning;
 
 	cFigWoW * pNext, * pPrev;

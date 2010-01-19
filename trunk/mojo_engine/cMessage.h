@@ -37,9 +37,9 @@ class cMessage
 {
 public:
 
-	const enum eType { none, mouseover, broadcast_key_event };
+	const enum eType { none, mouseover, broadcast_key_event, array_target };
 	cMessage () : Type ( none ), pFromMach(0) {}
-	virtual const wchar_t * print ( mojo::cStrW * pRet );
+	const wchar_t * print ( mojo::cStrW * pRet ) const;
 	unsigned uLen;
 	mojo::cMach * pFromMach;
 	eType Type;
@@ -54,10 +54,11 @@ class cMessageBroadcastKeyEvent : public cMessage
 public:
 
 	cMessageBroadcastKeyEvent ( WPARAM wParamArg, KBDLLHOOKSTRUCT * pKbhsArg ) : wParam ( wParamArg ), kbhs ( *pKbhsArg ) { Type = broadcast_key_event; uLen = sizeof(cMessageBroadcastKeyEvent); }
-	virtual const wchar_t * print ( mojo::cStrW * pRet );
+	const wchar_t * print ( mojo::cStrW * pRet ) const;
 	WPARAM wParam;
 	KBDLLHOOKSTRUCT kbhs;
 };
+
 
 
 /***********************************************************************************************************************

@@ -78,7 +78,7 @@ public:
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  tARRAY OF UNSIGNED
+//  tARRAY OF WORDS
 //  This is defined so it performs its allocations and deletions in the DLL regardless of whether
 //  the code is called in the EXE or DLL.  This allows the class to be used to return values from
 //  mojo_engine to mojo_app.
@@ -90,6 +90,14 @@ public:
 	typedef tArray<WORD> B; // base
 	cArrayW ( WORD a ) : B ( a ) {}
 	cArrayW () {}
+
+	void sort ();
+	bool operator== ( const cArrayW & r ) const;
+	bool contains ( WORD a ) const;
+
+
+private:
+	static int compare ( const void *, const void * );
 };
 
 //======================================================================================================================

@@ -53,7 +53,7 @@ void cDlgModeStrip::wm_init ()
 		SetWindowLongPtr ( hwnd, GWL_EXSTYLE, dwStyle );
 	}
 
-	const int iButtonWidth = 130;
+	const int iButtonWidth = 150;
 
 	ToggleMouseover.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_MOUSEOVER );
 	register_child ( &ToggleMouseover,
@@ -71,12 +71,20 @@ void cDlgModeStrip::wm_init ()
 							  nAnchor::left,		0,		iLeftMargin + iMargin + iButtonWidth * 2,
 							  nAnchor::top,			0,      iMargin + iButtonHeight );
 
-	ToggleBroadcast.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_BROADCAST );
-	register_child ( &ToggleBroadcast,
+	ToggleWindowBroadcast.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_WINDOW_BROADCAST );
+	register_child ( &ToggleWindowBroadcast,
 
 							  nAnchor::left,		0,		iLeftMargin + iMargin * 2 + iButtonWidth * 2,
 							  nAnchor::top,			0,		iMargin,
 							  nAnchor::left,		0,		iLeftMargin + iMargin * 2 + iButtonWidth * 3,
+							  nAnchor::top,			0,      iMargin + iButtonHeight );
+
+	ToggleComputerBroadcast.hwnd = GetDlgItem ( hwnd, ID_TOGGLE_COMPUTER_BROADCAST );
+	register_child ( &ToggleComputerBroadcast,
+
+							  nAnchor::left,		0,		iLeftMargin + iMargin * 3 + iButtonWidth * 3,
+							  nAnchor::top,			0,		iMargin,
+							  nAnchor::left,		0,		iLeftMargin + iMargin * 3 + iButtonWidth * 4,
 							  nAnchor::top,			0,      iMargin + iButtonHeight );
 
 
@@ -95,8 +103,11 @@ void cDlgModeStrip::redraw_buttons ()
 	InvalidateRect ( ToggleHotkeys.hwnd, NULL, TRUE );
 	UpdateWindow   ( ToggleHotkeys.hwnd );
 
-	InvalidateRect ( ToggleBroadcast.hwnd, NULL, TRUE );
-	UpdateWindow   ( ToggleBroadcast.hwnd );
+	InvalidateRect ( ToggleWindowBroadcast.hwnd, NULL, TRUE );
+	UpdateWindow   ( ToggleWindowBroadcast.hwnd );
+
+	InvalidateRect ( ToggleComputerBroadcast.hwnd, NULL, TRUE );
+	UpdateWindow   ( ToggleComputerBroadcast.hwnd );
 }
 
 
@@ -121,11 +132,18 @@ void cDlgModeStrip::wm_drawitem ( int iID, DRAWITEMSTRUCT* pDI )
 			ToggleHotkeys.paint_gray   ( pDI, L"Hotkeys are off" );
 		break;
 
-	case ID_TOGGLE_BROADCAST:
-		if ( g_Settings.bBroadcastIsOn )
-			ToggleBroadcast.paint_green ( pDI, L"Broadcast is on" );
+	case ID_TOGGLE_WINDOW_BROADCAST:
+		if ( g_Settings.bWindowBroadcastIsOn )
+			ToggleWindowBroadcast.paint_green ( pDI, L"Window broadcast is on" );
 		else
-			ToggleBroadcast.paint_gray   ( pDI, L"Broadcast is off" );
+			ToggleWindowBroadcast.paint_gray   ( pDI, L"Window broadcast is off" );
+		break;
+
+	case ID_TOGGLE_COMPUTER_BROADCAST:
+		if ( g_Settings.bComputerBroadcastIsOn )
+			ToggleComputerBroadcast.paint_green ( pDI, L"Computer broadcast is on" );
+		else
+			ToggleComputerBroadcast.paint_gray   ( pDI, L"Computer broadcast is off" );
 		break;
 	}
 }
@@ -164,8 +182,12 @@ INT_PTR CALLBACK cDlgModeStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 					pThis->cWin::balloon ( GetDlgItem ( hwnd, ID_TOGGLE_HOTKEYS ), L"Sorry.", L"Hotkeys aren't implemented yet." );
 					break;
 
-				case ID_TOGGLE_BROADCAST:
-					PostMessage ( g_hwnd, WM_COMMAND, ID_TOGGLE_BROADCAST, ID_TOGGLE_BROADCAST );
+				case ID_TOGGLE_WINDOW_BROADCAST:
+					PostMessage ( g_hwnd, WM_COMMAND, ID_TOGGLE_WINDOW_BROADCAST, ID_TOGGLE_WINDOW_BROADCAST );
+					break;
+
+				case ID_TOGGLE_COMPUTER_BROADCAST:
+					pThis->cWin::balloon ( GetDlgItem ( hwnd, ID_TOGGLE_COMPUTER_BROADCAST ), L"Sorry.", L"Computer broadcast isn't implemented yet." );
 					break;
 
 				case ID_VIEW_MONITOR:

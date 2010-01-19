@@ -82,6 +82,14 @@ void cWinMain :: wm_command ( WPARAM wParam, LPARAM lParam )
 		}
 		break;
 
+	case ID_PREDEFINED_HOTKEYS:
+		{
+			cFigPredefinedHotkeys * p = g_FigMgr.get_predefined_hotkeys();
+			cDlgFigPredefinedHotkeys d;
+			d.make_dlg ( p );
+		}
+		break;
+
 	case ID_SHOW_APP_LOG:
 		show_app_data_file ( L"mojo.log.txt" );
 		break;

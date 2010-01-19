@@ -48,28 +48,6 @@ void 							make_fonts ();
 //======================================================================================================================
 
 
-//----------------------------------------------------------------------------------------------------------------------
-//  TEST SUB
-//----------------------------------------------------------------------------------------------------------------------
-void test_sub ( cTree * p, int i )
-{
-	if ( 0 == i )
-		return;
-
-	cTree * pLeft = new cTree;
-	p->append_left ( pLeft );
-	pLeft->sName.f( L"%s:L%d", p->sName.cstr(), i );
-
-	cTree * pRight = new cTree;
-	pRight->sName.f( L"%s:R%d", p->sName.cstr(), i );
-	p->append_right ( pRight );
-
-	test_sub ( pRight, i-1 );
-	test_sub ( pLeft,  i-1 );
-
-}
-
-
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -77,44 +55,7 @@ void test_sub ( cTree * p, int i )
 //----------------------------------------------------------------------------------------------------------------------
 void test ( )
 {
-	// cCfgMgr cm;
 
-
-
-#if 0
-	::SetForegroundWindow ( g_hwnd); // etWindowPos ( g_hwnd, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
-#endif
-#if 0
-	set_active_window_tracking ( true );
-	Sleep ( 500 );
-	set_active_window_tracking ( off );
-#endif
-
-#if 0
-
-
-	int x = 3;
-	x++;
-#endif
-
-
-#if 0
-	cTree t;
-	t.sName = L"root";
-
-	test_sub ( &t, 2 ); // appends more nodes
-
-	cStrW s;
-	t.print ( &s );
-
-	delete t.pRight;
-	delete t.pLeft;
-	
-
-	unsigned uCount = t.count();
-
-	uCount++;
-#endif
 }
 
 
@@ -202,7 +143,7 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 	mojo::set ( L"uSpecifiedLocalIP",		g_Settings.uSpecifiedLocalIP );
 	mojo::set ( L"bUseNagle",				g_Settings.bUseNagle );
 	mojo::set ( L"uPort",					g_Settings.uPort );
-	mojo::set ( L"bBroadcastIsOn",          g_Settings.bBroadcastIsOn );
+	mojo::set ( L"bWindowBroadcastIsOn",          g_Settings.bWindowBroadcastIsOn );
 	mojo::set ( L"bRaiseProcessPriority",   g_Settings.bRaiseProcessPriority );
 
 	//-------------------------------------
@@ -221,6 +162,8 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 		return 0;
 	}
 
+
+
 	//-------------------------------------
 	// LOAD APP'S SCRIBS
 	//-------------------------------------
@@ -232,6 +175,24 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 	//-------------------------------------
 
 	g_WinMain.set_text_recursive();
+
+	//-------------------------------------
+	//  SET PREDEFINED HOTKEYS
+	//-------------------------------------
+	{
+		cFigPredefinedHotkeys * p = g_FigMgr.get_predefined_hotkeys();
+
+		assert(p);
+
+		if ( p )
+			p->set_engine();
+	}
+
+	//-------------------------------------
+	//  SET ENGINE'S LAUNCH TARGETS
+	//-------------------------------------
+
+	g_FigMgr.set_engine_launch_targets();
 
 	//-------------------------------------
 	//  LICENSE AGREEMENT

@@ -84,6 +84,8 @@
   <ItemGroup>
     <ClCompile Include="cAdLibMemo.cpp" />
     <ClCompile Include="cArrayTarget.cpp" />
+    <ClCompile Include="cArrayW.cpp" />
+    <ClCompile Include="cHotkeyTable.cpp" />
     <ClCompile Include="cKeyBroadcaster.cpp" />
     <ClCompile Include="cFinder.cpp" />
     <ClCompile Include="cDisplay.cpp" />
@@ -94,7 +96,7 @@
     <ClCompile Include="cInputEvent.cpp" />
     <ClCompile Include="cInputEventBuffer.cpp" />
     <ClCompile Include="cKeyboard.cpp" />
-    <ClCompile Include="cKeyState.cpp" />
+    <ClCompile Include="cKeyboardStateEx.cpp" />
     <ClCompile Include="cLog.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -104,6 +106,7 @@
     <ClCompile Include="cMemo.cpp" />
     <ClCompile Include="cMemoBuffer.cpp" />
     <ClCompile Include="cMessage.cpp" />
+    <ClCompile Include="cMessageArrayTarget.cpp" />
     <ClCompile Include="cMessenger.cpp" />
     <ClCompile Include="cMouseover.cpp" />
     <ClCompile Include="cPool.cpp">
@@ -134,6 +137,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="cPredefinedHotkeyTable.cpp" />
     <ClCompile Include="cScrib.cpp" />
     <ClCompile Include="cScribMgr.cpp" />
     <ClCompile Include="cScribPack.cpp" />
@@ -145,6 +149,7 @@
     <ClCompile Include="cTargetMgr.cpp" />
     <ClCompile Include="cTargetMgr_find.cpp" />
     <ClCompile Include="cTrigger.cpp" />
+    <ClCompile Include="cTrigger_init.cpp" />
     <ClCompile Include="default_scribs.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -189,9 +194,12 @@
   <ItemGroup>
     <ClInclude Include="cAdLibMemo.h" />
     <ClInclude Include="cArrayTarget.h" />
+    <ClInclude Include="cHotkey.h" />
+    <ClInclude Include="cHotkeyTable.h" />
     <ClInclude Include="cKeyBroadcaster.h" />
-    <ClInclude Include="cKeyState.h" />
+    <ClInclude Include="cKeyboardStateEx.h" />
     <ClInclude Include="cMessage.h" />
+    <ClInclude Include="cMessageArrayTarget.h" />
     <ClInclude Include="cMouseover.h" />
     <ClInclude Include="cSyringe.h" />
     <ClInclude Include="cTarget.h" />

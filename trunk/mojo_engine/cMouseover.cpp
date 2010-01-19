@@ -28,6 +28,25 @@ static bool bCursor = true;
 
 
 //---------------------------------------------------------------------------------------------
+//  BRING CURSOR HOME
+//---------------------------------------------------------------------------------------------
+void cMouseover::bring_cursor_home ()
+{
+	enter_real_mode();
+	
+	//-------------------------------
+	// CENTER CURSOR
+	//-------------------------------
+
+	cPtI ptCenter;
+	ptCenter.x = GetSystemMetrics ( SM_CXSCREEN ) / 2;
+	ptCenter.y = GetSystemMetrics ( SM_CYSCREEN ) / 2;
+	SetCursorPos ( ptCenter.x, ptCenter.y );
+}
+
+
+
+//---------------------------------------------------------------------------------------------
 //  TURN CURSOR OFF
 //---------------------------------------------------------------------------------------------
 void cMouseover::turn_cursor_off ()

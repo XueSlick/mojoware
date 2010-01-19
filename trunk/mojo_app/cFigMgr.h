@@ -21,6 +21,7 @@
 //  PROTOTYPES
 //======================================================================================================================
 
+void test();
 
 //======================================================================================================================
 //  CODE
@@ -40,6 +41,8 @@ public:
 	bool               set_fig ( DWORD dwHandle, const cFig * pFig );
 	void               append_wow ( cFigWoW * p ) { Root.append_wow ( p ); }
 	bool               delete_fig ( DWORD dwHandle );
+	void               set_engine_launch_targets ();
+	cFigPredefinedHotkeys * get_predefined_hotkeys () { return Root.get_predefined_hotkeys(); }
 
 	// other functions
 
@@ -52,6 +55,8 @@ public:
 	void save_to_file ();
 
 	static DWORD dwLastSerialNumberAssigned;
+
+	friend void ::test();
 
 private:
 

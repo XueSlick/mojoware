@@ -29,9 +29,9 @@ void             toggle_sub ( bool * pbSetting, const wchar_t * pSettingName,
 //----------------------------------------------------------------------------------------------------------------------
 void cWinMain :: toggle_broadcast ()
 {
-	g_Settings.bBroadcastIsOn = g_Settings.bBroadcastIsOn ? false : true;
+	g_Settings.bWindowBroadcastIsOn = g_Settings.bWindowBroadcastIsOn ? false : true;
 
-	if ( g_Settings.bBroadcastIsOn )
+	if ( g_Settings.bWindowBroadcastIsOn )
 		g_Settings.bMouseoverIsOn = false;
 
 	toggle_sub ();
@@ -56,7 +56,7 @@ void cWinMain :: toggle_mouseover ()
 	g_Settings.bMouseoverIsOn = g_Settings.bMouseoverIsOn ? false : true;
 
 	if ( g_Settings.bMouseoverIsOn )
-		g_Settings.bBroadcastIsOn = false;
+		g_Settings.bWindowBroadcastIsOn = false;
 
 	toggle_sub ();
 }
@@ -67,7 +67,7 @@ void cWinMain :: toggle_mouseover ()
 //----------------------------------------------------------------------------------------------------------------------
 void cWinMain :: toggle_sub ()
 {
-	mojo::set ( L"bBroadcastIsOn", g_Settings.bBroadcastIsOn );
+	mojo::set ( L"bWindowBroadcastIsOn", g_Settings.bWindowBroadcastIsOn );
 	mojo::set ( L"bMouseoverIsOn", g_Settings.bMouseoverIsOn );
 	mojo::set ( L"bHotkeysAreOn", g_Settings.bHotkeysAreOn );
 	DlgModeStrip.redraw_buttons();
@@ -75,82 +75,6 @@ void cWinMain :: toggle_sub ()
 	UpdateWindow ( g_hwnd );
 }
 
-
-#if 0
-//----------------------------------------------------------------------------------------------------------------------
-//  TOGGLE BROADCAST
-//----------------------------------------------------------------------------------------------------------------------
-void cWinMain :: toggle_broadcast ()
-{
-	toggle_sub ( &g_Settings.bBroadcastIsOn,
-                 L"bBroadcastIsOn",
-                 L"Turn broadcast off",
-				 L"Turn broadcast on",
-				 L"Broadcast is on",
-				 L"Broadcast is off",
-				 ID_TOGGLE_BROADCAST );
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  TOGGLE HOTKEYS
-//----------------------------------------------------------------------------------------------------------------------
-void cWinMain :: toggle_hotkeys ()
-{
-	g_Settings.bHotkeysAreOn = true;
-
-	toggle_sub ( &g_Settings.bHotkeysAreOn,
-                 L"bHotkeysAreOn",
-                 L"Turn hotkeys off",
-				 L"Turn hotkeys on",
-				 L"Hotkeys are on",
-				 L"Hotkeys are off",
-				 ID_TOGGLE_HOTKEYS );
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  TOGGLE MOUSEOVER
-//----------------------------------------------------------------------------------------------------------------------
-void cWinMain :: toggle_mouseover ()
-{
-	toggle_sub ( &g_Settings.bMouseoverIsOn,
-                 L"bMouseoverIsOn",
-                 L"Turn mouseover off",
-				 L"Turn mouseover on",
-				 L"Mouseover is on",
-				 L"Mouseover is off",
-				 
-				 );
-}
-                              
-
-//----------------------------------------------------------------------------------------------------------------------
-//  TOGGLE SUB
-//----------------------------------------------------------------------------------------------------------------------
-void cWinMain :: toggle_sub ( bool * pbSetting, const wchar_t * pSettingName, 
-                              const wchar_t * pMenuTxtOn, const wchar_t * pMenuTxtOff,
-							  const wchar_t * pToolbarTxtOn, const wchar_t * pToolbarTxtOff,
-                              int iCtrlID )
-
-{
-	pToolbarTxtOff, pToolbarTxtOn, pMenuTxtOff, pMenuTxtOn;
-
-	*pbSetting = *pbSetting ? false : true;
-	mojo::set ( pSettingName, *pbSetting );
-
-	const wchar_t * pMenuTxt = *pbSetting ? pMenuTxtOn : pMenuTxtOff;
-
-	set_menu_item_text ( g_hwnd, iCtrlID, pMenuTxt );
-
-	DlgModeStrip.redraw_buttons();
-	InvalidateRect ( g_hwnd, NULL, TRUE );
-	UpdateWindow ( g_hwnd );
-
-	mojo::set ( pSettingName, *pbSetting );
-	// set_tray_icon ();
-}
-#endif
 
 /***********************************************************************************************************************
 /*

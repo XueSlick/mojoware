@@ -35,13 +35,13 @@ public:
 	~cMach () { DeleteCriticalSection ( & cs ); }
 
 	cMach & operator= ( const cMach & rh );
+	const wchar_t * make_pretty_name ( cStrW * pRet );
+	void lock	() { EnterCriticalSection ( &cs ); }
+	void unlock	() { LeaveCriticalSection ( &cs ); }
 
-   void lock	() { EnterCriticalSection ( &cs ); }
-   void unlock	() { LeaveCriticalSection ( &cs ); }
-
-   //------------------------------------
-   //  DATA
-   //------------------------------------
+	//------------------------------------
+	//  DATA
+	//------------------------------------
 
    DWORD dwSerialNumber;
 

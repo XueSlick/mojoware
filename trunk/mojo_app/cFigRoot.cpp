@@ -18,7 +18,8 @@ const cFigRoot cFigRoot::Default;
 
 cFig::sEntry cFigRoot::aTable [] =
 {
-	ENTRY_MEMBERLESS ( WoWTree, cFigWoWTree ),
+	ENTRY_MEMBERLESS ( WoWTree,           cFigWoWTree ),
+	ENTRY_MEMBERLESS ( PredefinedHotkeys, cFigPredefinedHotkeys ),
 	{ 0, 0, 0 }
 };
 
@@ -52,23 +53,17 @@ void cFigRoot :: append_wow ( cFigWoW * pWoW )
 //----------------------------------------------------------------------------------------------------------------------
 cFigWoWTree * cFigRoot :: get_wow_tree ()
 {
-	// memory leak
-
 	const char * pRawName = typeid ( cFigWoWTree::Default ) . raw_name ();
+	return reinterpret_cast<cFigWoWTree*> ( get_by_typeid ( pRawName ) );
+}
 
-	return reinterpret_cast<cFigWoWTree*> ( get_by_typeid ( pRawName ) ); // "class cFigWoWTree" ) );
-
-#if 0
-	for ( cTree * t = pLeft; t; t = t->pLeft )
-	{
-		const char * n = typeid(*t).name();
-
-		if ( 0 == strcmp ( "class cFigWoWTree", n ) )
-			return reinterpret_cast<cFigWoWTree*>(t);
-	}
-
-	return 0;
-#endif
+//----------------------------------------------------------------------------------------------------------------------
+//  GET PREDEFINED HOTKEYS
+//----------------------------------------------------------------------------------------------------------------------
+cFigPredefinedHotkeys * cFigRoot :: get_predefined_hotkeys ()
+{
+	const char * pRawName = typeid ( cFigPredefinedHotkeys::Default ) . raw_name ();
+	return reinterpret_cast<cFigPredefinedHotkeys*> ( get_by_typeid ( pRawName ) );
 }
 
 
@@ -79,6 +74,9 @@ cFigRoot :: cFigRoot ()
 {
 	cFigWoWTree * p = new cFigWoWTree;
 	append_left ( p );
+
+	cFigPredefinedHotkeys * q = new cFigPredefinedHotkeys;
+	append_left ( q );
 }
 
 

@@ -33,7 +33,8 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( uSpecifiedLocalIP,						uint,					L"uSpecifiedLocalIP"					),
 	ENTRY ( uPort,									uint,					L"uPort"								),
 	ENTRY ( bUseNagle,								boolean,				L"bUseNagle"							),
-	ENTRY ( bBroadcastIsOn,                         boolean,                L"bBroadcastIsOn"                       ),
+	ENTRY ( bWindowBroadcastIsOn,                   boolean,                L"bWindowBroadcastIsOn"                 ),
+	ENTRY ( bComputerBroadcastIsOn,                 boolean,                L"bComputerBroadcastIsOn"               ),
 	ENTRY ( bHotkeysAreOn,                          boolean,                L"bHotkeysAreOn"                        ),
 	ENTRY ( bMouseoverIsOn,                         boolean,                L"bMouseoverIsOn"                       ),
 	ENTRY ( uFinderBroadcastInterval,               uint,                   L"uFinderBroadcastInterval"             ),
@@ -87,15 +88,14 @@ cSettings::sEntry * cSettings :: table ( int i )
 //----------------------------------------------------------------------------------------------------------------------
 void cSettings :: init ()
 {
-	// sSignature							= awENGINE_TITLE;
-	// Version								= g_Version;
 	bConnect							= true;
 	bConnectAutomatically				= true;
 	bUseSpecifiedLocalIP				= false;
 	uSpecifiedLocalIP					= 0;
 	uPort 								= 7237;
 	bUseNagle							= false;
-	bBroadcastIsOn                      = true;
+	bWindowBroadcastIsOn                = true;
+	bComputerBroadcastIsOn              = false;
 	bHotkeysAreOn                       = true;
 	bMouseoverIsOn                      = true;
 	uFinderBroadcastInterval            = 5000;

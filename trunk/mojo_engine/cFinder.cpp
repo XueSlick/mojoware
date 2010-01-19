@@ -141,8 +141,7 @@ bool cFinder :: periodic_stuff ()
 	// REMOTE ADDRESS
 	//----------------------------------
 
-	SOCKADDR_IN saServer = {0};
-	make_remote_socket_address ( &saServer );
+	SOCKADDR_IN saServer = {0};make_remote_socket_address ( &saServer );
 
 	for (;;)
 	{

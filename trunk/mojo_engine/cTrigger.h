@@ -43,8 +43,8 @@ namespace nTrigger
 
 	const DWORD dwNSHIFT        =	1<< 0; // no shift key pressed
 	const DWORD dwLSHIFT        =   1<< 1;
-	const DWORD dwRSHIFT        =   1<< 2;
-	const DWORD dwSHIFT         =   1<< 3;
+	const DWORD dwRSHIFT        =   1<< 2; 
+	const DWORD dwSHIFT         =   1<< 3;  
 
 	const DWORD dwNCTRL         =	1<< 4;
 	const DWORD dwLCTRL         =   1<< 5;
@@ -69,7 +69,7 @@ namespace nTrigger
 //  CLASS
 //======================================================================================================================
 
-class cKeyState;
+class cKeyboardStateEx;
 
 namespace mojo
 {
@@ -78,9 +78,15 @@ class MOJO_ENGINE_API cTrigger
 public:
 
 	cTrigger () : dwModState (0), wLastExVK (0), aMain(0) {}
-	cTrigger ( const cKeyState * pKeyState );
-	cTrigger & operator= ( const cTrigger & r );
+	cTrigger ( const cKeyboardStateEx * pKeyState );
+
+	void clear () { dwModState=0; wLastExVK=0; aMain.erase(); }
+
+	bool init ( const wchar_t * a, mojo::cStrW * pRetError = 0 );
 	bool init ( DWORD dwLock, cArrayW * paMod, cArrayW * paMain, WORD wLastExVK );
+
+	cTrigger & operator= ( const cTrigger & r );
+
 	const wchar_t * print ( mojo::cStrW * pRet, bool bIncludeLocks = true );
 	WORD ex_vk_to_vk ( WORD wExVK ) { return 0xFF & wExVK; }
 
@@ -88,8 +94,14 @@ public:
 	WORD  wLastExVK;
 	mojo::cArrayW aMain; // extra mains excluding wMainExVK
 
+
+
 private:
 
+	bool validate_init ( cArrayW * paAll, cStrW * pRetError = 0 );
+
+	static bool bad_mods ( const wchar_t ** ppGeneric, const wchar_t ** ppSpecific, cArrayW * pRay  );
+	static bool bad_pair ( const wchar_t ** ppGeneric, const wchar_t ** ppSpecific, WORD wExVK1, WORD wExVK2 );
 	void remove_mod_from_modifier_state ( WORD wExVK );
 };
 } // namespace
@@ -100,7 +112,7 @@ private:
 //======================================================================================================================
 
 
-bool bang ( mojo::cTrigger * pTrigger, DWORD dwKeyboardModState );
+bool bang ( mojo::cTrigger * pTrigger, DWORD dwKeyboardModState, cKeyboardStateEx * pKB );
 
 
 /***********************************************************************************************************************

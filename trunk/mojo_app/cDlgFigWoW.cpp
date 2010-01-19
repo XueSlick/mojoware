@@ -29,6 +29,8 @@ sDlgDatum cDlgFigWoW :: aData [] =
 // CODE
 //======================================================================================================================
 
+
+
 //----------------------------------------------------------------------------------------------------------------------
 //  SET TEXT
 //----------------------------------------------------------------------------------------------------------------------
@@ -42,43 +44,77 @@ void cDlgFigWoW :: set_text ()
 //----------------------------------------------------------------------------------------------------------------------
 void cDlgFigWoW :: wm_init ()
 {
+	eMode = none;
 	pFigWoW = reinterpret_cast<cFigWoW*>(pUserData);
 	pUserData = 0;
 
 	const wchar_t * pHead = 0;
+	cStrW sHeadInstructions;
+
+	//---------------------------------------------------------
+	// CREATE FIG IF NECESSARY
+	//---------------------------------------------------------
+
+	if ( 0 == pFigWoW )
+	{
+		eMode = add;
+		pFigWoW = new cFigWoW;
+		pFigWoW->bLaunchByMojo = true; // = cFigWoW::launch_by_mojo;
+		pFigWoW->hMach = 1; // LOCAL
+	}
+
+	//---------------------------------------------------------
+	// COMPUTER NAME
+	//---------------------------------------------------------
+
+	cStrW sPC;
+	cMach mach;
+	mojo::get_mach ( &mach, pFigWoW->hMach );
+	mach.make_pretty_name ( &sPC );
+	SetWindowText ( GetDlgItem ( hwnd, ID_COMPUTER ), sPC.cstr() );
 
 	//------------------------------------------------------
 	//  SET MODE
 	//------------------------------------------------------
 
-	if ( 0 == pFigWoW )
+	if ( add == eMode )
 	{
-		this->eMode = add;
-		pHead = L"Add a WoW to be launched by Mojo";
-
-		// Make a new WoW
-
-		pFigWoW = new cFigWoW;
-		pFigWoW->eOrigin = cFigWoW::launch_by_mojo;
+		pHead = L"Add a WoW";
+		sHeadInstructions.f ( L"%s will launch this WoW on this computer.", g_awAppTitle );
 	}
 
-	else if ( cFigWoW::launch_by_mojo == pFigWoW->eOrigin )
-	{
-		this->eMode = change;
-		pHead = L"Change a WoW that gets launched by Mojo";
-	}
-
-	else if ( cFigWoW::found == pFigWoW->eOrigin )
+	else if ( ! pFigWoW->bLaunchByMojo ) // FOUND RUNNING
 	{
 		this->eMode = display;
-		pHead = L"This WoW was found running";
+		pHead = L"View WoW properties";
+		sHeadInstructions = L"This WoW's settings can't be changed because it wasn't launched by Mojo.";
 
 		Edit_SetReadOnly ( GetDlgItem ( hwnd, ID_NAME ), TRUE );
 		Edit_SetReadOnly ( GetDlgItem ( hwnd, ID_PATH ), TRUE );
 		Edit_SetReadOnly ( GetDlgItem ( hwnd, ID_ACCOUNT ), TRUE );
+		EnableWindow ( GetDlgItem ( hwnd, ID_PATH_BUTTON ), FALSE );
 	}
 
-	EnableWindow ( GetDlgItem ( hwnd, ID_COMPUTER ), FALSE );
+	else if ( 1 != pFigWoW->hMach ) // LAUNCH ON ANOTHER MACHINE
+	{
+		this->eMode = display;
+		pHead = L"View WoW properties";
+		sHeadInstructions.f ( L"This WoW's settings can be changed on the computer where it gets launched." );
+
+		Edit_SetReadOnly ( GetDlgItem ( hwnd, ID_NAME ), TRUE );
+		Edit_SetReadOnly ( GetDlgItem ( hwnd, ID_PATH ), TRUE );
+		Edit_SetReadOnly ( GetDlgItem ( hwnd, ID_ACCOUNT ), TRUE );
+		EnableWindow ( GetDlgItem ( hwnd, ID_PATH_BUTTON ), FALSE );
+	}
+
+	else // LAUNCH ON THIS MACHINE
+	{
+		this->eMode = change;
+		pHead = L"Change a WoW";
+		sHeadInstructions.f ( L"%s will launch this WoW on this computer.", g_awAppTitle );
+	}
+
+	// EnableWindow ( GetDlgItem ( hwnd, ID_COMPUTER ), FALSE );
 
 	HWND hHead = GetDlgItem ( hwnd, ID_HEAD );
 	wchar_t b [1000];
@@ -86,6 +122,7 @@ void cDlgFigWoW :: wm_init ()
 	SetWindowFont ( hHead, g_hDialogBoxHeadFont, TRUE );
 	int iResult = SetWindowText ( hHead, pHead );
 	GetWindowText ( hHead, b, sizeof(b)/sizeof(wchar_t ) );
+	SetWindowText ( GetDlgItem ( hwnd, ID_HEAD_INSTRUCTIONS ), sHeadInstructions.cstr() );
 
 	iResult;
 
@@ -135,6 +172,16 @@ INT_PTR CALLBACK cDlgFigWoW::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wPara
 	case WM_COMMAND:
 		switch ( LOWORD ( wParam ) )
 		{
+		case ID_PATH_BUTTON:
+			{
+				wchar_t b [MAX_PATH + 8092];
+				GetWindowText ( GetDlgItem ( hwnd, ID_PATH ), b, sizeof(b)/sizeof(wchar_t) );
+				cStrW s;
+				if ( get_open_file_name ( &s, hwnd, b ) )
+					SetWindowText ( GetDlgItem ( hwnd, ID_PATH ), s.cstr() );
+			}
+			break;
+
 		case ID_CANCEL:
 		case IDCANCEL:
 			if ( cDlgFigWoW::add == pThis->eMode )
@@ -147,10 +194,23 @@ INT_PTR CALLBACK cDlgFigWoW::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wPara
 			{
 				g_FigMgr.append_wow ( pThis->pFigWoW );
 			}
-			pThis->VarsFig.dlg_to_vars();
-			g_FigMgr.set_fig ( pThis->VarsFig.pFigOriginal->dwSerialNumber, (cFigWoW*)pThis->VarsFig.pFigCopy );	
-			PostMessage ( g_hwnd, uWM_WOW_LIST_CHANGED, 0, 0 );
-			g_FigMgr.save_to_file();
+
+			if ( cDlgFigWoW::add == pThis->eMode || cDlgFigWoW::change == pThis->eMode )
+			{
+				pThis->VarsFig.dlg_to_vars();
+				g_FigMgr.set_fig ( pThis->VarsFig.pFigOriginal->dwSerialNumber, (cFigWoW*)pThis->VarsFig.pFigCopy );
+				PostMessage ( g_hwnd, uWM_WOW_LIST_CHANGED, 0, 0 );
+				g_FigMgr.save_to_file();
+			}
+
+			if ( cDlgFigWoW::add == pThis->eMode )
+			{
+				pThis->pFigWoW->sComputerName = L"This computer";
+				cTarget t;
+				pThis->pFigWoW->set_target ( &t );
+				pThis->pFigWoW->dwTargetID = pThis->pFigWoW->dwSerialNumber;
+				mojo::set_launch_target ( &t );
+			}
 			break;
 		}
 		break;

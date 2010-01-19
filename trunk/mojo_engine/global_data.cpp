@@ -36,8 +36,9 @@ const wchar_t * 	     g_apDefaultScribs [];
 cFinder			         g_Finder;
 cKeyBroadcaster          g_KeyBroadcaster;
 cMouseover               g_Mouseover;
-cKeyState			     g_KeyState;
+cKeyboardStateEx		 g_KeyState;
 cTargetMgr               g_TargetMgr;
+cPredefinedHotkeyTable   g_PredefinedHotkeyTable;
 
 /***********************************************************************************************************************
 /*

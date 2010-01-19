@@ -32,7 +32,8 @@ public:
 	unsigned			uSpecifiedLocalIP;
 	unsigned			uPort;
 	bool				bUseNagle;
-	bool                bBroadcastIsOn;
+	bool                bWindowBroadcastIsOn;
+	bool                bComputerBroadcastIsOn;
 	bool                bHotkeysAreOn;
 	bool                bMouseoverIsOn;
 	unsigned            uFinderBroadcastInterval;

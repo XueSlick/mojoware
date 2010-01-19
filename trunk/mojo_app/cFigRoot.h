@@ -25,6 +25,7 @@ public:
 	static sEntry aTable[];
 	static const cFigRoot Default;
 	cFigWoWTree * get_wow_tree ();
+	cFigPredefinedHotkeys * get_predefined_hotkeys ();
 
 private:
 

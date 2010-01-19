@@ -14,6 +14,49 @@ using namespace mojo;
 //  CODE
 //======================================================================================================================
 
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// POPULATE
+//----------------------------------------------------------------------------------------------------------------------
+void cListViewWoWs :: populate () // const cFigViewItemList * pListArg ) //  const cConfigItemList * pListArg )
+{
+	if ( pList )
+	{
+		delete pList;
+		pList = 0;
+	}
+
+	if ( ListView_GetItemCount ( hwnd ) )
+		ListView_DeleteAllItems ( hwnd );
+
+	ListView_RemoveAllGroups ( hwnd );
+	ListView_EnableGroupView ( hwnd, TRUE );
+
+	pList = create_list ();
+
+	insert_group ( 1, L"This computer" );
+
+	for ( cFigViewItem * p = pList->pHead; p; p = p->pNext )
+	{
+		cFigWoW * w = reinterpret_cast<cFigWoW*>(p);
+
+		if ( 1 != w->hMach )
+		{
+			cStrW sPC;
+			sPC.f ( L"%s at %s", w->sComputerName.cstr(), w->sDottedDec.cstr() );
+			insert_group ( (int) w->hMach, sPC.cstr() );
+		}
+
+		set_item ( p );
+	}
+
+	do_image_list ( pList );
+
+	InvalidateRect ( hwnd, NULL, true );
+	UpdateWindow ( hwnd );
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 //  SET ITEM
 //----------------------------------------------------------------------------------------------------------------------
@@ -21,9 +64,12 @@ void cListViewWoWs :: set_item ( cFigViewItem * pFigViewItem )
 {
 	cFigWoW * pItem = reinterpret_cast<cFigWoW*> ( pFigViewItem );
 
+	wchar_t b [100];
+
 	LVITEM lvI;
 	ZeroMemory ( &lvI, sizeof(lvI) );
-	lvI.mask = LVIF_TEXT |  LVIF_PARAM | LVIF_IMAGE;
+	lvI.mask = LVIF_TEXT |  LVIF_PARAM | LVIF_IMAGE | LVIF_GROUPID;
+	lvI.iGroupId = pItem->hMach;
 	lvI.iItem = INT_MAX;
 	lvI.iImage = pItem->bRunning ? 1 : 0;
 	lvI.iSubItem = 0;
@@ -31,8 +77,11 @@ void cListViewWoWs :: set_item ( cFigViewItem * pFigViewItem )
 	lvI.pszText = const_cast<LPWSTR>( pItem->sName.cstr() );
 	int iItemIndex = SendMessage ( hwnd, LVM_INSERTITEM, 0, (LPARAM) &lvI );
 	ListView_SetItemText ( hwnd, iItemIndex, 1, pItem->bRunning ? L"Yes" : L"No" );
-	ListView_SetItemText ( hwnd, iItemIndex, 2, L"Local" );
-	ListView_SetItemText ( hwnd, iItemIndex, 3, (LPWSTR) pItem->sPath.cstr() );
+	ListView_SetItemText ( hwnd, iItemIndex, 2, (LPWSTR) pItem->sComputerName.cstr() );
+	ListView_SetItemText ( hwnd, iItemIndex, 3, dword_to_string ( b, sizeof(b)/sizeof(wchar_t), (DWORD) pItem->hwnd ) );
+	ListView_SetItemText ( hwnd, iItemIndex, 4, dword_to_string ( b, sizeof(b)/sizeof(wchar_t), pItem->dwProcessID ) );
+	ListView_SetItemText ( hwnd, iItemIndex, 5, dword_to_string ( b, sizeof(b)/sizeof(wchar_t), pItem->dwTargetID ) );
+	ListView_SetItemText ( hwnd, iItemIndex, 6, (LPWSTR) pItem->sPath.cstr() );
 }
 
 
@@ -78,9 +127,21 @@ void  cListViewWoWs :: create_columns ()
 	lc.cx = 150;
 	SendMessage ( hwnd, LVM_INSERTCOLUMN, 2, (LPARAM) &lc );
 
+	lc.pszText = L"HWND";
+	lc.cx = 70;
+	SendMessage ( hwnd, LVM_INSERTCOLUMN, 3, (LPARAM) &lc );
+
+	lc.pszText = L"Process ID";
+	lc.cx = 70;
+	SendMessage ( hwnd, LVM_INSERTCOLUMN, 4, (LPARAM) &lc );
+
+	lc.pszText = L"Target ID";
+	lc.cx = 70;
+	SendMessage ( hwnd, LVM_INSERTCOLUMN, 5, (LPARAM) &lc );
+
 	lc.pszText = L"Program file";
 	lc.cx = 250;
-	SendMessage ( hwnd, LVM_INSERTCOLUMN, 3, (LPARAM) &lc );
+	SendMessage ( hwnd, LVM_INSERTCOLUMN, 6, (LPARAM) &lc );
 }
 
 

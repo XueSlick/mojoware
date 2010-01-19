@@ -418,9 +418,9 @@ void cWinMain::wm_create ( HWND hwndArg )
 
 	set_view ();
 
-	// set_menu_item_text ( g_hwnd, ID_TOGGLE_BROADCAST, g_Settings.bBroadcastIsOn ? L"Turn broadcast off" : L"Turn broadcast on" );
+	// set_menu_item_text ( g_hwnd, ID_TOGGLE_BROADCAST, g_Settings.bWindowBroadcastIsOn ? L"Turn broadcast off" : L"Turn broadcast on" );
 
-	g_Settings.bBroadcastIsOn = g_Settings.bBroadcastIsOn ? false : true;
+	g_Settings.bWindowBroadcastIsOn = g_Settings.bWindowBroadcastIsOn ? false : true;
 	g_Settings.bHotkeysAreOn  = g_Settings.bHotkeysAreOn  ? false : true;
 	g_Settings.bMouseoverIsOn = g_Settings.bMouseoverIsOn ? false : true;
 	toggle_broadcast ();

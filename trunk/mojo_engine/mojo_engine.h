@@ -70,6 +70,13 @@ const UINT uWM_MACHLIST_CHANGED              = WM_APP + 0xBFFF - 2;
 const UINT uWM_TARGETS_CHANGED               = WM_APP + 0xBFFF - 3;
 const UINT uWM_HIDE_OR_SHOW_CURSOR           = WM_APP + 0xBFFF - 4;
 const UINT uWM_KEY_EVENT_OCCURRED            = WM_APP + 0xBFFF - 5;
+const UINT uWM_MOJO_OFF_ON                   = WM_APP + 0xBFFF - 6;
+const UINT uWM_WINDOW_BROADCAST_OFF_ON       = WM_APP + 0xBFFF - 7;
+const UINT uWM_COMPUTER_BROADCAST_OFF_ON     = WM_APP + 0xBFFF - 8;
+const UINT uWM_MOUSEOVER_OFF_ON              = WM_APP + 0xBFFF - 9;
+const UINT uWM_HOTKEYS_OFF_ON                = WM_APP + 0xBFFF - 10;
+const UINT uWM_HIDE_SHOW_MOJO                = WM_APP + 0xBFFF - 11;
+// const UINT uWM_BRING_MOUSEOVER_CURSOR_HOME   = WM_APP + 0xBFFF - 10;
 
 namespace nConnectionStatus
 {
@@ -84,7 +91,6 @@ namespace nConnectionStatus
 MOJO_ENGINE_API void test					();	
 
 MOJO_ENGINE_API void get_engine_version   ( cVersion * pRetVersion );
-// MOJO_ENGINE_API void load_default_engine_scribs ();
 MOJO_ENGINE_API bool load_engine_settings	( const wchar_t * pAppDataDirectory );
 MOJO_ENGINE_API bool initialize_engine 	( HINSTANCE hAppInstance, 
 										  HWND hwndAppMessageLoop,
@@ -110,14 +116,17 @@ MOJO_ENGINE_API bool  get_mach                   ( mojo::cMach * pRet, DWORD dwH
 MOJO_ENGINE_API mojo::nConnectionStatus::eConnectionStatus 
 				get_connection_status 	         ( DWORD dwMachHandle );
 MOJO_ENGINE_API void get_targets                 ( mojo::cArrayTarget * pRet );
+MOJO_ENGINE_API void get_local_targets           ( mojo::cArrayTarget * pRet );
 MOJO_ENGINE_API void set_mouseover_layout        ( mojo::cMachlist * pMachlist );
 MOJO_ENGINE_API void get_key_state_as_trigger    ( mojo::cTrigger * pRet );
 MOJO_ENGINE_API void register_for_key_events     ( /* mojo::tCircBuf<WORD> * pBuf, */ HWND hNotifyMe );
 MOJO_ENGINE_API void unregister_for_key_events   ( HWND hNotifyMe );
 MOJO_ENGINE_API void start_swallowing_key_events ( HWND hwndSwallow );
 MOJO_ENGINE_API void stop_swallowing_key_events  ();
-// MOJO_ENGINE_API bool hwnd_is_in_target_array     ( mojo::cArrayTarget * pRay, HWND hwnd );
-
+MOJO_ENGINE_API void set_launch_target           ( mojo::cTarget * p ); // adds it if necessary
+MOJO_ENGINE_API void remove_launch_target        ( DWORD dwID ); // adds it if necessary
+MOJO_ENGINE_API bool set_predefined_hotkey       ( const wchar_t * pName, mojo::cTrigger * pTrigger );
+MOJO_ENGINE_API bool clear_predefined_hotkey     ( const wchar_t * pName );
 
 } // namespace
 

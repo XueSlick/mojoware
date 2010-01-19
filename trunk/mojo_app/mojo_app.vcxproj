@@ -64,6 +64,7 @@
       <AdditionalDependencies>comctl32.lib;user32.lib;shell32.lib;mojo_engine.lib;Dbghelp.lib;gdiplus.lib;gdi32.lib;Advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <GenerateMapFile>true</GenerateMapFile>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -103,9 +104,11 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="balloon.cpp" />
+    <ClCompile Include="cDlgFigPredefinedHotkeys.cpp" />
     <ClCompile Include="cDlgVarsFig.cpp" />
     <ClCompile Include="cFig.cpp" />
     <ClCompile Include="cFigMgr.cpp" />
+    <ClCompile Include="cFigPredefinedHotkeys.cpp" />
     <ClCompile Include="cFigRoot.cpp" />
     <ClCompile Include="cCrashHandler.cpp" />
     <ClCompile Include="cDlgSetTrigger.cpp" />
@@ -117,6 +120,7 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClCompile Include="cDlgTest.cpp" />
     <ClCompile Include="cDlgToons.cpp" />
     <ClCompile Include="cDlgView.cpp" />
+    <ClCompile Include="cFigTrigger.cpp" />
     <ClCompile Include="cFigViewItem.cpp" />
     <ClCompile Include="cFigWoW.cpp" />
     <ClCompile Include="cFigWoWTree.cpp" />
@@ -163,6 +167,7 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="get_open_file_name.cpp" />
     <ClCompile Include="global_data.cpp" />
     <ClCompile Include="gpl3.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -181,9 +186,11 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="balloon.h" />
+    <ClInclude Include="cDlgFigPredefinedHotkeys.h" />
     <ClInclude Include="cDlgVarsFig.h" />
     <ClInclude Include="cFig.h" />
     <ClInclude Include="cFigMgr.h" />
+    <ClInclude Include="cFigPredefinedHotkeys.h" />
     <ClInclude Include="cFigRoot.h" />
     <ClInclude Include="cCrashHandler.h" />
     <ClInclude Include="cDlgSetTrigger.h" />
@@ -192,6 +199,7 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClInclude Include="cDlgTest.h" />
     <ClInclude Include="cDlgToons.h" />
     <ClInclude Include="cDlgView.h" />
+    <ClInclude Include="cFigTrigger.h" />
     <ClInclude Include="cFigViewItem.h" />
     <ClInclude Include="cFigViewItemList.h" />
     <ClInclude Include="cFigWoW.h" />
@@ -229,6 +237,7 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClInclude Include="cWin.h" />
     <ClInclude Include="cWinLabel.h" />
     <ClInclude Include="cWinMain.h" />
+    <ClInclude Include="get_open_file_name.h" />
     <ClInclude Include="global_data.h" />
     <ClInclude Include="global_data_version.h" />
     <ClInclude Include="resource.h" />

@@ -29,79 +29,58 @@ using namespace nTrigger;
 //  CODE
 //======================================================================================================================
 
+
 //----------------------------------------------------------------------------------------------------------------------
-//  INIT
-//  Called from Get Trigger dialog.
+//  BANG
+//  returns true if trigger is triggered
 //----------------------------------------------------------------------------------------------------------------------
-bool cTrigger :: init ( DWORD dwLock, cArrayW * paMod, cArrayW * paMain, WORD wLastExVK )
-{	
-	paMain, wLastExVK;
+bool bang ( mojo::cTrigger * pTrigger, DWORD dwKeyboardModState, cKeyboardStateEx * pKB )
+{
+	//--------------------------------------------
+	//  CHECK MODIFIERS
+	//--------------------------------------------
 
-	this->dwModState = 0;
+	if ( ( pTrigger->dwModState & dwKeyboardModState ) != pTrigger->dwModState )
+		return false;
 
-	//---------------------------------
-	//  LOCKS
-	//---------------------------------
+	//--------------------------------------------
+	//  CHECK EXTRA MAIN KEYS USED AS MODIFIERS
+	//--------------------------------------------
 
-	dwModState |= dwLock;
-
-	//---------------------------------
-	//  EXTRA (NON-FINAL) MAINS
-	//---------------------------------
-
-	this->aMain = *paMain;
-
-	//---------------------------------
-	//  LAST KEY
-	//---------------------------------
-
-	this->wLastExVK = wLastExVK;
-
-	//---------------------------------
-	//  MODS
-	//---------------------------------
-
-	this->dwModState &= ~ ( dwSHIFT | dwLSHIFT | dwRSHIFT | dwALT | dwLALT | dwRALT | dwCTRL | dwLCTRL | dwRCTRL );
-	
-	for ( unsigned i = 0; i < paMod->qty(); i++ )
+	if ( pTrigger->aMain.qty() )
 	{
-		switch ( ex_vk_to_vk ( (*paMod)[i] ) )
+		//--------------------------------------------
+		//  CHECK WHETHER ALL KEYS REQUIRED BY
+		//  TRIGGER ARE IN FACT PRESSED
+		//--------------------------------------------
+
+		for ( unsigned u = 0; u < pTrigger->aMain.qty(); u++ )
 		{
-		case VK_SHIFT:
-			dwModState |= dwSHIFT;
-			break;
+			if ( ! pKB->is_down ( (pTrigger->aMain)[u] ) )
+				return false;
+		}
 
-		case VK_LSHIFT:
-			dwModState |= dwLSHIFT;
-			break;
+		//--------------------------------------------
+		//  CHECK WHETHER ADDITIONAL KEYS ARE PRESSED
+		//  BEYOND THOSE REQUIRED BY TRIGGER
+		//--------------------------------------------
 
-		case VK_RSHIFT:
-			dwModState |= dwRSHIFT;
-			break;
+		for ( WORD v = 0; v < 512; v++ )
+		{
+			if ( pKB->is_down ( v ) )
+			{
+				if ( cKeyboard :: is_modifier ( v ) )
+					continue;
 
-		case VK_MENU:
-			dwModState |= dwALT;
-			break;
+				if ( v == pTrigger->wLastExVK )
+					continue;
 
-		case VK_LMENU:
-			dwModState |= dwLALT;
-			break;
+				else if ( pTrigger->aMain.contains ( v ) )
+					continue;
 
-		case VK_RMENU:
-			dwModState |= dwRALT;
-			break;
-
-		case VK_CONTROL:
-			dwModState |= dwCTRL;
-			break;
-
-		case VK_LCONTROL:
-			dwModState |= dwLCTRL;
-			break;
-
-		case VK_RCONTROL:
-			dwModState |= dwRCTRL;
-			break;
+				else
+					return false;
+			}
 		}
 	}
 
@@ -252,7 +231,7 @@ const wchar_t * mojo::cTrigger :: print ( cStrW * pRet, bool bIncludeLocks )
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  CONSTRUCTOR
+//  REMOVE MOD FROM MODIFIER STATE
 //----------------------------------------------------------------------------------------------------------------------
 void mojo::cTrigger :: remove_mod_from_modifier_state ( WORD wExVK )
 {
@@ -306,11 +285,11 @@ void mojo::cTrigger :: remove_mod_from_modifier_state ( WORD wExVK )
 //----------------------------------------------------------------------------------------------------------------------
 //  CONSTRUCTOR
 //----------------------------------------------------------------------------------------------------------------------
-mojo::cTrigger :: cTrigger ( const cKeyState * pKeyState ) : aMain (0)
+mojo::cTrigger :: cTrigger ( const cKeyboardStateEx * pKeyState ) : aMain (0)
 {
 	this->dwModState = pKeyState->mod_state();
 	dwModState &= ~ ( dwSHIFT | dwALT | dwCTRL | dwCAPSLOCKON | dwCAPSLOCKOFF | dwNUMLOCKON | dwNUMLOCKOFF | dwSCROLLLOCKON | dwSCROLLLOCKOFF );
-	// this->wMainExVK  = cKeyState::is_modifier ( pKeyState->wMostRecentExVK ) ? 0 : pKeyState->wMostRecentExVK;	
+	// this->wMainExVK  = cKeyboardStateEx::is_modifier ( pKeyState->wMostRecentExVK ) ? 0 : pKeyState->wMostRecentExVK;	
 
 	wLastExVK = pKeyState->wMostRecentPressedExVK;
 
@@ -319,28 +298,6 @@ mojo::cTrigger :: cTrigger ( const cKeyState * pKeyState ) : aMain (0)
 
 	dwModState &= ~ ( dwSHIFT | dwALT | dwCTRL );
 }
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  BANG
-//  returns true if trigger is triggered
-//----------------------------------------------------------------------------------------------------------------------
-bool bang ( mojo::cTrigger * pTrigger, DWORD dwKeyboardModState )
-{
-	DWORD dwTriggerModState = pTrigger->dwModState;
-
-	if ( ( dwTriggerModState & dwKeyboardModState ) == dwTriggerModState )
-	{
-		//---------------------------------
-		// CHECK FOR CHORD PREFIXES
-		//---------------------------------
-		return true;
-	}
-
-	else
-		return false;
-}
-
 
 
 /***********************************************************************************************************************

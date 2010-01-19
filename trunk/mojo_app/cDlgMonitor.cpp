@@ -91,7 +91,7 @@ void cDlgMonitor::wm_paint ()
 	draw_head  ( &ConnectionsHead  );
 
 #ifdef RED_X
-	if ( g_Settings.bBroadcastIsOn )
+	if ( g_Settings.bWindowBroadcastIsOn )
 	{
 		ShowWindow ( Memos.hwnd, SW_SHOW );
 		ShowWindow ( RedX.hwnd,  SW_HIDE );
