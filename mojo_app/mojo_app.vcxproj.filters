@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="cCfg">
-      <UniqueIdentifier>{350706af-d498-454a-8dac-a1ce03b322c6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="cFig">
       <UniqueIdentifier>{5f458ad5-80c5-41ea-a458-35663b9e93ca}</UniqueIdentifier>
     </Filter>
@@ -40,6 +37,9 @@
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cDlgCursorBlind.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgFigPredefinedHotkeys.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cDlgFigWoW.cpp">
@@ -117,7 +117,13 @@
     <ClCompile Include="cFigMgr.cpp">
       <Filter>cFig</Filter>
     </ClCompile>
+    <ClCompile Include="cFigPredefinedHotkeys.cpp">
+      <Filter>cFig</Filter>
+    </ClCompile>
     <ClCompile Include="cFigRoot.cpp">
+      <Filter>cFig</Filter>
+    </ClCompile>
+    <ClCompile Include="cFigTrigger.cpp">
       <Filter>cFig</Filter>
     </ClCompile>
     <ClCompile Include="cFigViewItem.cpp">
@@ -192,6 +198,9 @@
     <ClCompile Include="default_scribs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="get_open_file_name.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="global_data.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -237,6 +246,9 @@
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgCursorBlind.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgFigPredefinedHotkeys.h">
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgFigWow.h">
@@ -299,7 +311,13 @@
     <ClInclude Include="cFigMgr.h">
       <Filter>cFig</Filter>
     </ClInclude>
+    <ClInclude Include="cFigPredefinedHotkeys.h">
+      <Filter>cFig</Filter>
+    </ClInclude>
     <ClInclude Include="cFigRoot.h">
+      <Filter>cFig</Filter>
+    </ClInclude>
+    <ClInclude Include="cFigTrigger.h">
       <Filter>cFig</Filter>
     </ClInclude>
     <ClInclude Include="cFigViewItem.h">
@@ -367,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="cWinMain.h">
       <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="get_open_file_name.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="global_data.h">
       <Filter>Header Files</Filter>

@@ -75,17 +75,20 @@
 #include "xml.h"
 #include "cGdiPlus.h"
 #include "cTree.h"
+#include "get_open_file_name.h"
 
 //---------------------------------
 //  THIS PROJECT'S FIG CLASSES
 //---------------------------------
-#include "cFig.h"
+
 #include "cFigWoW.h"
 #include "cFigWoWTree.h"
-#include "cFigRoot.h"
-#include "cFigMgr.h"
 #include "cFigViewItemList.h"
-
+#include "cFigTrigger.h"
+#include "cFigPredefinedHotkeys.h"
+#include "cFigRoot.h"
+#include "cFig.h"
+#include "cFigMgr.h"
 
 //---------------------------------
 //  THIS PROJECT'S WINDOW CLASSES
@@ -125,6 +128,7 @@
 #include "cDlgSetTrigger.h"
 #include "cDlgFigWoW.h"
 #include "cDlgTest.h"
+#include "cDlgFigPredefinedHotkeys.h"
 
 //---------------------------------
 //  GLOBAL DATA

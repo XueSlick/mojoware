@@ -22,8 +22,82 @@ static const int s_iComboDimY = 25;
 //======================================================================================================================
 
 //----------------------------------------------------------------------------------------------
+//  VARS TO STRING
+//----------------------------------------------------------------------------------------------
+void cDlgSetTrigger :: vars_to_string ( cStrW * pRet )
+{
+	if ( IsDlgButtonChecked ( hwnd, ID_CAPSLOCK_ON ) )
+		(*pRet) += L"CapsLockOn ";
+
+	else if ( IsDlgButtonChecked ( hwnd, ID_CAPSLOCK_OFF ) )
+		(*pRet) += L"CapsLockOff ";
+
+	if ( IsDlgButtonChecked ( hwnd, ID_NUMLOCK_ON ) )
+		(*pRet) += L"NumLockOn ";
+
+	else if ( IsDlgButtonChecked ( hwnd, ID_NUMLOCK_OFF ) )
+		(*pRet) += L"NumLockOff ";
+
+	if ( IsDlgButtonChecked ( hwnd, ID_SCROLLLOCK_ON ) )
+		(*pRet) += L"ScrollLockOn ";
+
+	else if ( IsDlgButtonChecked ( hwnd, ID_SCROLLLOCK_OFF ) )
+		(*pRet) += L"ScrollLockOff ";
+
+	//---------------------------------
+	//  GET ALL KEYS (NON-BLANK COMBOS)
+	//---------------------------------
+
+	int iQtyKeys = 0;
+
+	for ( unsigned i = 0; i < aCombo.qty(); i++ )
+	{
+		wchar_t awBuf[100];
+
+		if ( 0 == ComboBox_GetText ( aCombo[i].hwnd, awBuf, sizeof(awBuf)/sizeof(wchar_t) ) )
+			continue;
+
+#ifdef DEBUG
+
+		WORD wExVK = cKeyboard::pretty_name_to_ex_vk ( awBuf );
+		assert ( 0 != wExVK && wExVK < 512 );
+#endif
+
+		(*pRet) += awBuf;
+		(*pRet) += L" ";
+
+		iQtyKeys++;
+	}
+
+	if ( 0 == iQtyKeys )
+		pRet->erase();
+
+	else
+		pRet->trim_right_space();
+}
+
+
+//----------------------------------------------------------------------------------------------
 //  INIT TRIGGER
 //----------------------------------------------------------------------------------------------
+bool cDlgSetTrigger :: init_trigger ( const wchar_t * p )
+{
+	cStrW sError;
+
+	if ( ! Trigger.init ( p, &sError ) )
+	{
+		MessageBox ( hwnd, sError.cstr(), g_awAppTitle, MB_OK | MB_ICONINFORMATION );
+		return false;
+	}
+
+	return true;
+}
+
+
+//----------------------------------------------------------------------------------------------
+//  INIT TRIGGER
+//----------------------------------------------------------------------------------------------
+#if 0
 bool cDlgSetTrigger :: init_trigger ()
 {
 	cArrayW aMain, aMod, aAll;
@@ -215,7 +289,7 @@ bool cDlgSetTrigger :: init_trigger ()
 
 	return true;
 }
-
+#endif
 
 /***********************************************************************************************************************
 /*

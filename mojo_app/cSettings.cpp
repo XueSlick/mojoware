@@ -34,7 +34,8 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( uSpecifiedLocalIP,						uint,					L"uSpecifiedLocalIP"					),
 	ENTRY ( uPort,									uint,					L"uPort"								),
 	ENTRY ( bUseNagle,								boolean,				L"bUseNagle"							),
-	ENTRY ( bBroadcastIsOn,						    boolean,				L"bBroadcastIsOn"					    ),
+	ENTRY ( bWindowBroadcastIsOn,					boolean,				L"bWindowBroadcastIsOn"					),
+	ENTRY ( bComputerBroadcastIsOn,					boolean,				L"bComputerBroadcastIsOn"               ),
 	ENTRY ( bShowIpOnMouseoverSettings,             boolean,                L"bShowIpOnMouseoverSettings"           ),
 	ENTRY ( bMouseoverDeactivatesScreenSavers,      boolean,                L"bMouseoverDeactivatesScreenSavers"    ),
 	ENTRY ( bHideRemoteCursor,                      boolean,                L"bHideRemoteCursor"                    ),
@@ -87,7 +88,8 @@ void cSettings :: init ()
 	uSpecifiedLocalIP					= 0;
 	uPort 								= 7237;
 	bUseNagle							= false;
-	bBroadcastIsOn                      = true;
+	bWindowBroadcastIsOn                = true;
+	bComputerBroadcastIsOn              = false;
 	bShowIpOnMouseoverSettings          = false;
 	bMouseoverDeactivatesScreenSavers   = true;
 	bHideRemoteCursor                   = true;

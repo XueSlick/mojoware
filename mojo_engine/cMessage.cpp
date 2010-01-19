@@ -28,16 +28,26 @@ using namespace mojo;
 //----------------------------------------------------------------------------------------------------------------------
 //  PRINT -- BASE
 //----------------------------------------------------------------------------------------------------------------------
-const wchar_t * cMessage :: print ( mojo::cStrW * pRet )
+const wchar_t * cMessage :: print ( mojo::cStrW * pRet ) const
 {
-	return pRet->cstr();
+	switch ( Type )
+	{
+	case broadcast_key_event:
+		{
+			const cMessageBroadcastKeyEvent * p = static_cast<const cMessageBroadcastKeyEvent*>(this);
+			return p->cMessageBroadcastKeyEvent::print ( pRet );
+		}
+
+	default:
+		return pRet->cstr();
+	}
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 //  PRINT -- BROADCAST KEY EVENT
 //----------------------------------------------------------------------------------------------------------------------
-const wchar_t * cMessageBroadcastKeyEvent :: print ( mojo::cStrW * pRet )
+const wchar_t * cMessageBroadcastKeyEvent :: print ( mojo::cStrW * pRet ) const
 {
 #if 0
 	WORD wExVK = (WORD) kbhs.vkCode + (( this->kbhs.flags & LLKHF_EXTENDED ) ? 0x100 : 0 );

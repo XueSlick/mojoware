@@ -37,11 +37,11 @@ protected:
 	virtual mojo::cPtI               get_icon_size () = 0;
 	virtual int                      icon_bitmap_id () = 0;
 	virtual const int *              default_bitmap_ids () = 0;
-
+	void                             insert_group ( int iID, const wchar_t * pName );
 public:
 
 	void                             init ();
-	void                             populate (); //  const cFigViewItemList * pList = 0 ); // ( const cConfigItemList * pList = 0 );
+	virtual void                     populate (); //  const cFigViewItemList * pList = 0 ); // ( const cConfigItemList * pList = 0 );
 	void                             set_view ( DWORD dwView );
 	DWORD                            hot_item ();
 	void                             toggle_view ();

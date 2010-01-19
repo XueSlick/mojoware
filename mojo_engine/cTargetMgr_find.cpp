@@ -39,6 +39,7 @@ using namespace mojo;
 //  CODE
 //======================================================================================================================
 
+
 //----------------------------------------------------------------------------------------------------------------------
 //  HWND IS IN ARRAY
 //----------------------------------------------------------------------------------------------------------------------
@@ -48,6 +49,44 @@ bool cTargetMgr :: hwnd_is_in_array ( cArrayTarget * pRay, HWND hwnd )
 	{
 		if ( hwnd == (*pRay)[i].hwnd )
 			return true;
+	}
+
+	return false;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  TARGET IS IN ARRAY
+//----------------------------------------------------------------------------------------------------------------------
+bool cTargetMgr :: target_is_in_array ( cArrayTarget * pRay, DWORD hMach, HWND hwnd, DWORD dwProcessID )
+{
+	for ( unsigned i = 0; i < pRay->qty(); i++ )
+	{
+		if ( hwnd == (*pRay)[i].hwnd && hMach == (*pRay)[i].hMach && dwProcessID ==(*pRay)[i].dwProcessID )
+			return true;
+	}
+
+	return false;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//  TARGET IS IN ARRAY
+//----------------------------------------------------------------------------------------------------------------------
+cTarget * cTargetMgr :: find_target_in_array ( cArrayTarget * pRay, cTarget * a )
+{
+	for ( unsigned i = 0; i < pRay->qty(); i++ )
+	{
+		if ( a->hMach == 1 && a->bLaunchByMojo == true )
+		{
+			if ( (*pRay)[i].dwID == a->dwID )
+				return &(*pRay)[i];
+		}
+		
+		else
+		{
+			if ( a->hwnd == (*pRay)[i].hwnd && a->hMach == (*pRay)[i].hMach && a->dwProcessID ==(*pRay)[i].dwProcessID )
+				return &(*pRay)[i];
+		}
 	}
 
 	return false;
@@ -68,11 +107,49 @@ cTarget * cTargetMgr :: find_hwnd_in_list ( HWND hwnd )
 	return NULL;
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+//  FIND TARGET IN LIST
+//----------------------------------------------------------------------------------------------------------------------
+cTarget * cTargetMgr :: find_target_in_list ( cTarget * a )
+{
+	for ( cTarget * p = List.pHead; p; p = p->pNext )
+	{
+		if ( a->bLaunchByMojo == true )
+		{
+			if ( p->hMach == a->hMach && p->dwID == a->dwID )
+				return p;
+		}
+
+		else
+		{
+			if ( a->hwnd == p->hwnd && a->hMach == p->hMach && a->dwProcessID == p->dwProcessID )
+				return p;
+		}
+	}
+
+	return NULL;
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
-//  RECEIVE FINDS
+//  FIND TARGET IN LIST
 //----------------------------------------------------------------------------------------------------------------------
-void cTargetMgr :: receive_finds ( cArrayTarget * a )
+cTarget * cTargetMgr :: find_target_in_list ( DWORD hMach, HWND hwnd, DWORD dwProcessID )
+{
+	for ( cTarget * p = List.pHead; p; p = p->pNext )
+	{
+		if ( hwnd == p->hwnd && hMach == p->hMach && dwProcessID == p->dwProcessID )
+			return p;
+	}
+
+	return NULL;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  RECEIVE LOCAL FINDS
+//----------------------------------------------------------------------------------------------------------------------
+void cTargetMgr :: receive_local_finds ( cArrayTarget * a )
 {
 	bool bChanged = false;
 
@@ -84,20 +161,41 @@ void cTargetMgr :: receive_finds ( cArrayTarget * a )
 
 	for ( unsigned i = 0; i < a->qty(); i++ )
 	{
+		(*a)[i].hMach = 1; // LOCAL
+		(*a)[i].bIsRunning = true;
+
 		//-------------------------------------------
 		//  ADD IT TO LIST IF IT'S NOT IN LIST
 		//-------------------------------------------
 
-		if ( ! find_hwnd_in_list ( (*a)[i].hwnd ) )
+//		cTarget * pTarget = find_target_in_list ( (*a)[i].hMach, (*a)[i].hwnd, (*a)[i].dwProcessID );
+
+		cTarget * pFound = find_target_in_list ( &(*a)[i] );
+
+		if ( pFound )
 		{
+			(*a)[i].sName         = pFound->sName; 
+			pFound->bIsRunning     = true;
+		}
+
+		else
+		{
+			// (*a)[i].sName         = L"(found running)";
+			(*a)[i].bLaunchByMojo = false;
+		
 			cTarget * pNew = new cTarget ( (*a)[i] );
+			pNew->sName = (*a)[i].sName;
+			pNew->hwnd = (*a)[i].hwnd;
+			pNew->hMach = 1; // LOCAL
+			pNew->bLaunchByMojo = false;
+			pNew->bIsRunning = true;
 			List.append ( pNew );
 			bChanged = true;
 		}
 	}
 
 	//-------------------------------------------
-	//  FOR EACH ITEM IN LIST
+	//  FOR EACH LOCAL TARGET IN LIST
 	//-------------------------------------------
 
 	cTarget * p = List.pHead;
@@ -105,14 +203,38 @@ void cTargetMgr :: receive_finds ( cArrayTarget * a )
 	{
 		cTarget * pNext = p->pNext;
 
-		//-------------------------------------------
-		//  REMOVE IT FROM LIST IF IT'S NOT IN ARRAY
-		//-------------------------------------------
-
-		if ( ! hwnd_is_in_array ( a, p->hwnd ) )
+		if ( 1 == p->hMach ) // LOCAL TARGETS ONLY
 		{
-			List.rem_del ( p );
-			bChanged = true;
+			//-------------------------------------------
+			//  REMOVE IT FROM LIST IF IT'S NOT IN ARRAY
+			//  AND IF IT'S NOT LAUNCH-BY-MOJO
+			//-------------------------------------------
+
+			cTarget * pFound = find_target_in_array ( a, p );
+
+			if ( pFound ) // in array
+			{
+				if ( ! p->bIsRunning )
+				{
+					p->bIsRunning = true;
+					bChanged = true;
+				}
+			}
+
+			else // not in array
+			{
+				if ( p->bIsRunning )
+				{
+					p->bIsRunning = false;
+					bChanged = true;
+				}
+
+				if ( ! p->bLaunchByMojo )
+				{
+					List.rem_del ( p );
+					bChanged = true;
+				}
+			}
 		}
 
 		p = pNext;
@@ -177,9 +299,10 @@ BOOL CALLBACK find_wow_cb ( HWND hwnd, LPARAM lParam )
 	{
 		if ( 0 == wcscmp ( awFoundClassName, awWowClassName ) )
 		{
-#ifdef SE_DEBUG
 			DWORD dwProcessID;
 			GetWindowThreadProcessId ( hwnd, &dwProcessID );
+
+#ifdef SE_DEBUG
 
 			if ( process_to_module ( awPath, MAX_PATH, dwProcessID ) )
 			{
@@ -190,6 +313,7 @@ BOOL CALLBACK find_wow_cb ( HWND hwnd, LPARAM lParam )
 			}
 #else
 			cTarget t;
+			t.dwProcessID = dwProcessID;
 			t.hwnd = hwnd;
 			pTarget->append ( t );
 
@@ -224,10 +348,12 @@ bool cTargetMgr :: find_wow ()
 
 	if ( hToken )
 		CloseHandle ( hToken );
-
 #endif
 
-	this->receive_finds( & aTarget );
+	this->receive_local_finds( & aTarget );
+	cArrayTarget aComplete;
+	mojo::get_local_targets ( &aComplete );
+	this->broadcast_targets ( & aComplete );
 
 	return true;
 }

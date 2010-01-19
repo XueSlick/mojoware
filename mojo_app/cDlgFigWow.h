@@ -26,7 +26,7 @@ public:
 
 private:
 
-	enum etMode { add, change, display } eMode;
+	enum etMode { add, change, display, none } eMode;
 
 	cDlgVarsFig VarsFig;
 	static sDlgDatum aData [];

@@ -35,7 +35,8 @@ public:
 	unsigned			uSpecifiedLocalIP;
 	unsigned			uPort;
 	bool				bUseNagle;
-	bool                bBroadcastIsOn;
+	bool                bWindowBroadcastIsOn;
+	bool                bComputerBroadcastIsOn;
 	bool                bShowIpOnMouseoverSettings;
 	bool                bMouseoverDeactivatesScreenSavers;
 	bool                bHideRemoteCursor;
@@ -47,8 +48,6 @@ public:
 	unsigned            uView;
 	unsigned			uToonIconWidth;
 	unsigned			uToonIconHeight;
-	// unsigned			uWoWIconWidth;
-	// unsigned			uWoWIconHeight;
 
 	//-----------------------------------
 	// DEFINE FOLLOWING IN DERIVED CLASS

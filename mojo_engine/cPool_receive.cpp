@@ -57,7 +57,9 @@ void cPool::receive_cb ( cLapPlus * pLap )
 {
 	if ( 1 <= pLap->dwQtyBytesXfered )
 	{
-		g_Messenger.receive ( pLap->pSocketInfo, pLap->sBuf.buffer(), pLap->dwQtyBytesXfered );
+		// Call either receive_buffered() or receive().
+
+		g_Messenger.receive ( pLap->pSocketInfo->pMach, pLap->sBuf.buffer(), pLap->dwQtyBytesXfered );
 	}
 
 	pLap->pPool->receive ( pLap );

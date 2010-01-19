@@ -24,6 +24,8 @@ public:
 	cArrayTarget( unsigned a ) : B ( a ) {}
 	cArrayTarget() {}
 	cTarget * find_hwnd ( HWND hwnd );
+	cTarget * find_target ( DWORD hMach, HWND hwnd, DWORD dwProcessID );
+	cTarget * find_target ( cTarget * a );
 };
 
 } // namespace

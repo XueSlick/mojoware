@@ -40,6 +40,16 @@ LRESULT CALLBACK cWinMain::window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 	switch ( uMsg )
 	{
 
+	case mojo::uWM_WINDOW_BROADCAST_OFF_ON:
+		g_Settings.bWindowBroadcastIsOn = 0 == wParam ? true : false;
+		pThis->toggle_broadcast();
+		break;
+
+	case mojo::uWM_MOUSEOVER_OFF_ON:
+		g_Settings.bMouseoverIsOn = 0 == wParam ? true : false;
+		pThis->toggle_mouseover();
+		break;
+
 	case WM_KEYDOWN:
 		{
 			int x = 3;

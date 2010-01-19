@@ -1,0 +1,33 @@
+====================================================================
+                         BUILD 15 WORK LIST                      
+====================================================================
+
+  1.  Predefined hotkeys added.  These are the first working
+      hotkeys in the program.  New classes include
+      cFigPredefinedHotkeys, cDlgFigPredefinedHotkeys, 
+      cHotkeyTable, cPredefinedHotkeyTable, cPredefinedHotkey.
+
+  2.  bring_cursor_home() added to cMouseover to support new
+      "Bring cursor home" hotkey.
+
+  3.  "Broadcast" changed to "Window broadcast."
+
+  4.  "Computer broadcast" and a little bit of supporting code
+      added, but it's not implemented yet.
+
+  5.  Virtual function print() removed from cMessage.
+
+  6.  cMessageArrayTarget added.
+
+  7.  cTarget::serialize() and deserialize()added.
+
+  8.  Alternative code path added so incoming TCP messages now 
+      buffered and processed by cMessenger's  thread.  However 
+      this code path is disabled and the old one used.   The 
+      thread's  "wait loop" now waits for both an event and 
+      messages.
+
+  9.  WoW icons now get grouped by PC.
+
+ 10.  Every Mojo now shows other Mojos' running WoWs.
+

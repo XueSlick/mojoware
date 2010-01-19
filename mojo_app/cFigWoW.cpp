@@ -19,9 +19,9 @@ const cFigWoW cFigWoW::Default;
 
 cFig::sEntry cFigWoW::aTable [] =
 {
-	ENTRY_MEMBER ( Name,       sName,       cFigStr ),
-	ENTRY_MEMBER ( Path,       sPath,       cFigStr ),
-	ENTRY_MEMBER ( Computer,   sComputer,   cFigStr ),
+	ENTRY_MEMBER ( Name,           sName,           cFigStr ),
+	ENTRY_MEMBER ( Path,           sPath,           cFigStr ),
+	ENTRY_MEMBER ( ComputerName,   sComputerName,   cFigStr ),
 	{ 0, 0, 0 }
 };
 
@@ -36,6 +36,22 @@ cFig::sEntry cFigWoW::aTable [] =
 //======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
+//  SET TARGET
+//----------------------------------------------------------------------------------------------------------------------
+void cFigWoW :: set_target ( mojo::cTarget * t )
+{
+	t->bLaunchByMojo = this->bLaunchByMojo;
+	t->dwID          = this->dwSerialNumber;
+	t->hMach         = this->hMach;
+	t->hwnd          = this->hwnd;
+	t->dwProcessID   = this->dwProcessID;
+	t->sName         = this->sName;
+	t->sPath         = this->sPath;
+	t->bIsRunning    = this->bRunning;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
 //  SET FROM XML
 //  Tree version
 //----------------------------------------------------------------------------------------------------------------------
@@ -45,7 +61,9 @@ void cFigWoW :: set_from_xml ( void * pvDest, const wchar_t * pTxt ) const
 	cFigWoWTree * pTree = reinterpret_cast<cFigWoWTree*>(pvDest);
 	cFigWoW * pNew = new cFigWoW;
 	pNew->cFig::set_from_xml ( pNew, pTxt );
-	pNew->eOrigin = launch_by_mojo;
+	pNew->bLaunchByMojo = true;
+	pNew->hMach = 1;
+	pNew->sComputerName = L"This computer";
 	pTree->append_right ( pNew );
 }
 
@@ -84,9 +102,15 @@ cFigWoW & cFigWoW :: operator= ( const cFig & ra )
 	this->dwSerialNumber = r.dwSerialNumber;
 	this->sName = r.sName;
 	this->sPath = r.sPath;
-	this->sComputer = r.sComputer;
-	this->eOrigin = r.eOrigin;
+	this->sComputerName = r.sComputerName;
+	this->bLaunchByMojo = r.bLaunchByMojo; // = r.eOrigin;
 	this->bRunning = r.bRunning;
+	this->hwnd = r.hwnd;
+	this->dwProcessID = r.dwProcessID;
+	this->hMach = r.hMach;
+	this->dwIP = r.dwIP;
+	this->sDottedDec = r.sDottedDec;
+	this->dwTargetID = r.dwTargetID;
 	return *this;
 }
 
@@ -99,7 +123,7 @@ void cFigWoW :: handle_context_menu ( int iID )
 	switch ( iID )
 	{
 	case ID_DELETE:
-		if ( this->found == this->eOrigin )
+		if ( ! bLaunchByMojo )
 		{
 			MessageBox ( g_hwnd, L"You can't delete a WoW that was found running.\n\n"
 				                 L"Mojo will delete it automatically when it stops running.",
@@ -107,7 +131,18 @@ void cFigWoW :: handle_context_menu ( int iID )
 								 MB_OK );
 			break;
 		}
+
+		if ( 1 != hMach )
+		{
+			MessageBox ( g_hwnd, L"You can only delete this WoW on the PC where it gets launched.",
+								 g_awAppTitle,
+								 MB_OK );
+			break;
+		}
+
+		mojo::remove_launch_target ( dwSerialNumber );
 		g_FigMgr.delete_fig ( dwSerialNumber );
+		g_FigMgr.save_to_file();
 		PostMessage ( g_hwnd, uWM_WOW_LIST_CHANGED, 0, 0 );
 		break;
 
@@ -133,9 +168,15 @@ cFigWoW :: cFigWoW ( const cFigWoW & r )
 	this->dwSerialNumber = r.dwSerialNumber;
 	this->sName = r.sName;
 	this->sPath = r.sPath;
-	this->sComputer = r.sComputer;
-	this->eOrigin = r.eOrigin;
+	this->sComputerName = r.sComputerName;
+	this->bLaunchByMojo = r.bLaunchByMojo; //  = r.eOrigin;
 	this->bRunning = r.bRunning;
+	this->hwnd = r.hwnd;
+	this->dwProcessID = r.dwProcessID;
+	this->hMach = r.hMach;
+	this->dwIP = r.dwIP;
+	this->sDottedDec = r.sDottedDec;
+	this->dwTargetID = r.dwTargetID;
 }
 
 

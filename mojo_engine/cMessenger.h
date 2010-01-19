@@ -25,13 +25,16 @@ class cMessenger
 {
 public:
 
-	cMessenger             () : hwnd(0), hwndSwallow(0), hKeyEventNotificand(0) /* pKeyEventNotifyBuf(0) */ {}
+	cMessenger             () : hwnd(0), hwndSwallow(0), hKeyEventNotificand(0) /* pKeyEventNotifyBuf(0) */ { hMessageReady = CreateEvent ( NULL, FALSE, TRUE, NULL ); }
+	~cMessenger            () { CloseHandle ( hMessageReady ); }
 
 	static bool keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUCT * p );
 	static bool mouse_hook_service_routine    ( WPARAM wParam, MSLLHOOKSTRUCT * p );
 
 	void send                     ( DWORD hMachHandle, cMessage * pMessage );
-	void receive                  ( struct sSocketInfo * pSI, const char * pBuffer, unsigned uLen );
+	void receive_buffered         ( mojo::cMach * pMach, const char * pBuffer, unsigned uLen );
+	void receive                  ( mojo::cMach * pMach, const char * pBuffer, unsigned uLen );
+
 	static const wchar_t * print_from_mach ( mojo::cStrW * pRet, const mojo::cMach * pMach );
 	void put_receive_memo         ( cMessage * pMsg, const wchar_t * pBody2 );
 	static void broadcast_message ( cMessage * pMsg );
@@ -54,8 +57,11 @@ public:
 	HWND hwndSwallow; // swallow keystrokes if this window has focus
 
 private:
+
+	HANDLE hMessageReady;
+
 	HWND hKeyEventNotificand;
-	// mojo::tCircBuf<WORD> * pKeyEventNotifyBuf;
+	mojo::tCircBuf<mojo::cStrN> MessageBuffer;
 	static unsigned _stdcall thread ( void * pArg );
 };
 

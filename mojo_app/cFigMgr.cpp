@@ -24,6 +24,26 @@ DWORD cFigMgr :: dwLastSerialNumberAssigned = 0;
 //  CODE
 //======================================================================================================================
 
+//---------------------------------------------
+//  SET ENGINE LAUNCH TARGETS
+//---------------------------------------------
+void cFigMgr :: set_engine_launch_targets ()
+{
+	cFigWoWTree * pFWT = Root.get_wow_tree ();
+
+	for ( cTree * p = pFWT->pRight; p; p = p->pRight )
+	{
+		cFigWoW * w = reinterpret_cast<cFigWoW*>(p);
+
+		cTarget t;
+
+		w->set_target ( &t );
+		w->dwTargetID = w->dwSerialNumber;
+
+		mojo::set_launch_target ( &t );
+	}
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 //  RECEIVE (TARGETS)
@@ -41,6 +61,10 @@ void cFigMgr :: receive ( mojo::cArrayTarget * pAT )
 	cFigWoWTree * const pRoot = Root.get_wow_tree ();
 	assert ( pRoot);
 
+#if 0
+	put_ad_lib_memo ( cMemo::info, L"cFigMgr::receive", L"Qty in array: %d", pAT->qty() );
+#endif
+
 	//-------------------------------------------------
 	//  FOR EACH ITEM IN ARRAY, ADD OR UPDATE
 	//  CORRESPONDING ITEM IN TREE
@@ -50,13 +74,21 @@ void cFigMgr :: receive ( mojo::cArrayTarget * pAT )
 	{
 		for ( unsigned u = 0; u < pAT->qty(); u++ )
 		{
-			cFigWoW * pWoW = pRoot->get_by_hwnd ( (*pAT)[u].hwnd );
+			cTarget * pT = &(*pAT)[u];
+
+			cFigWoW * pWoW = pRoot->find_target ( pT );
 
 			if ( pWoW )
 			{
-				if ( ! pWoW->bRunning )
+				if ( pT->bIsRunning && ! pWoW->bRunning )
 				{
 					pWoW->bRunning = true;
+					bChanged = true;
+				}
+
+				else if ( ! pT->bIsRunning && pWoW->bRunning )
+				{
+					pWoW->bRunning = false;
 					bChanged = true;
 				}
 
@@ -67,9 +99,26 @@ void cFigMgr :: receive ( mojo::cArrayTarget * pAT )
 			{
 				cFigWoW * pNew = new cFigWoW;
 				pNew->hwnd = (*pAT)[u].hwnd;
-				pNew->sName = L"(Found running)";
-				pNew->bRunning = true;
-				pNew->eOrigin = cFigWoW::found;
+				pNew->sName = (*pAT)[u].sName;
+				pNew->sPath = (*pAT)[u].sPath;
+				pNew->bRunning = (*pAT)[u].bIsRunning;
+				pNew->bLaunchByMojo = (*pAT)[u].bLaunchByMojo;
+				pNew->dwProcessID = (*pAT)[u].dwProcessID;
+				pNew->hMach = (*pAT)[u].hMach;
+				pNew->dwTargetID = (*pAT)[u].dwID;
+
+				if ( 1 == pNew->hMach )
+					pNew->sComputerName = L"Local";
+
+				else
+				{
+					mojo::cMach m;
+					mojo::get_mach ( &m, pNew->hMach );
+					pNew->sComputerName = m.sName;
+					pNew->dwIP = m.dwIP;
+					pNew->sDottedDec = m.sDottedDec;
+				}
+
 				pRoot->append_right ( pNew );
 
 				bChanged = true;
@@ -90,11 +139,13 @@ void cFigMgr :: receive ( mojo::cArrayTarget * pAT )
 
 		cFigWoW * pWoW = static_cast<cFigWoW*>(pTree);
 
-		cTarget * pTarget = pAT->find_hwnd ( pWoW->hwnd );
+		cTarget t;
+		pWoW->set_target ( &t );
+		cTarget * pTarget = pAT->find_target ( &t );
 
 		if ( ! pTarget )
 		{
-			if ( cFigWoW::found == pWoW->eOrigin )
+			if ( false == pWoW->bLaunchByMojo )
 			{
 				pTree->remove();
 				delete pTree;

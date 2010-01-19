@@ -26,6 +26,55 @@
 //======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
+//  FIND TARGET
+//----------------------------------------------------------------------------------------------------------------------
+mojo::cTarget * mojo::cArrayTarget :: find_target ( mojo::cTarget * a )
+{
+	for ( unsigned i = 0; i < qty(); i++ )
+	{
+		mojo::cTarget * p = &(*this)[i];
+
+#if 0
+		if ( a->hMach == 1 && a->bLaunchByMojo == true )
+		{
+			if ( p->dwID == a->dwID )
+				return p;
+		}
+#endif
+
+		if ( a->bLaunchByMojo == true )
+		{
+			if ( p->hMach == a->hMach && p->dwID == a->dwID )
+				return p;
+		}
+
+		else
+		{
+			if ( a->hwnd == p->hwnd && a->hMach == p->hMach && a->dwProcessID == p->dwProcessID )
+				return p;
+		}
+	}
+
+	return NULL;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  FIND TARGET
+//----------------------------------------------------------------------------------------------------------------------
+mojo::cTarget * mojo::cArrayTarget :: find_target ( DWORD hMach, HWND hwnd, DWORD dwProcessID )
+{
+	for ( unsigned i = 0; i < qty(); i++ )
+	{
+		if ( hMach == (*this)[i].hMach && hwnd == (*this)[i].hwnd && dwProcessID == (*this)[i].dwProcessID )
+			return &(*this)[i];
+	}
+
+	return false;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
 //  FIND HWND
 //----------------------------------------------------------------------------------------------------------------------
 mojo::cTarget * mojo::cArrayTarget :: find_hwnd ( HWND hwnd )

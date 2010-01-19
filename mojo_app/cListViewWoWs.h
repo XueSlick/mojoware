@@ -16,6 +16,10 @@
 //----------------------------------------------------------------------------------------------------------------------
 class cListViewWoWs : public cListView
 {
+public:
+
+	virtual void                     populate (); 
+
 protected:
 
 	virtual void                     create_columns ();

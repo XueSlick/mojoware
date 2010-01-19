@@ -13,10 +13,10 @@
 namespace mojo
 {
 
-void	MOJO_ENGINE_API 	format_system_error 	( mojo::cStrW * pRet, unsigned int dwError );
-bool	MOJO_ENGINE_API 	get_system_version 		( mojo::cStrW * pRet );
-bool    MOJO_ENGINE_API     os_version_or_higher       ( DWORD  dwMaj, DWORD dwMin ); 
-
+MOJO_ENGINE_API void      format_system_error      ( mojo::cStrW * pRet, unsigned int dwError );
+MOJO_ENGINE_API bool      get_system_version       ( mojo::cStrW * pRet );
+MOJO_ENGINE_API bool      os_version_or_higher     ( DWORD  dwMaj, DWORD dwMin ); 
+MOJO_ENGINE_API wchar_t * dword_to_string          ( wchar_t * pwRet, size_t size, DWORD a );
 
 } // namespace
 

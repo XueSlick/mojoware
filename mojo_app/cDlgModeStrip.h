@@ -32,8 +32,8 @@ private:
 
 	cLiquidButton ToggleMouseover;
 	cLiquidButton ToggleHotkeys;
-	cLiquidButton ToggleBroadcast;
-
+	cLiquidButton ToggleWindowBroadcast;
+	cLiquidButton ToggleComputerBroadcast;
 
 	void wm_init ();
 	void wm_drawitem ( int iID, DRAWITEMSTRUCT* pDI );

@@ -66,9 +66,6 @@ void cDlgView :: draw_strip ( HDC hdcOriginal, const wchar_t * pText )
 	SelectObject ( hdcMem, hOld );
 	DeleteObject ( hbmMem );
 	DeleteDC     ( hdcMem );
-
-
-
 }
 
 

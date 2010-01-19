@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cTarget.h
+/*    cTarget.h / mojo_engine
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -18,34 +18,26 @@ class MOJO_ENGINE_API cTarget
 {
 public:
 
-	cTarget (); // : pPrev(0), pNext(0), hwnd(0) {}
-	cTarget ( const cTarget & p ); // : hwnd ( p.hwnd ), sPath ( p.sPath ), pPrev(0), pNext(0) {} //  memcpy ( aKeyboardState, p.aKeyboardState, sizeof(aKeyboardState) ); }
+	void serialize ( mojo::cStrW * pRet ) const;
+	size_t deserialize ( const wchar_t * p ); // returns increment of p
+
+	cTarget ();
+	cTarget ( const cTarget & p ); 
 	cTarget & operator= ( const cTarget & r );
-	DWORD hMachHandle;
+	DWORD hMach;
 	HWND hwnd;
+	DWORD dwProcessID;
+	mojo::cStrW sName;
 	mojo::cStrW sPath;
+	bool bLaunchByMojo;
+	DWORD dwID; // NOT USED BY ENGINE; ASSIGNED BY APP
+	bool bIsRunning;
 	cTarget * pPrev;
 	cTarget * pNext;
 
 	// temp 5 jan 2010
 	BYTE aKeyboardState [256];
 };
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  CLASS ARRAY OF TARGETS
-//----------------------------------------------------------------------------------------------------------------------
-#if 0
-class MOJO_ENGINE_API cArrayTarget : public tArray<cTarget>
-{
-public:
-
-	typedef tArray<cTarget> B; // base
-	cArrayTarget( unsigned a ) : B ( a ) {}
-	cArrayTarget() {}
-	cTarget * find_hwnd ( HWND hwnd );
-};
-#endif
 
 } // namespace
 

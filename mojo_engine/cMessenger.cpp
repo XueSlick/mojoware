@@ -91,6 +91,8 @@ void cMessenger :: send_message ( cMach * pMach, cMessage * pMsg )
 
 	g_Pool.send ( pMach->dwIP, (char *) pMsg, pMsg->uLen );
 
+#if 0
+
 	cStrW m;
 	pMsg->print ( & m );
 
@@ -99,6 +101,7 @@ void cMessenger :: send_message ( cMach * pMach, cMessage * pMsg )
 													  pMach->sName.cstr(),
 													  pMach->sDottedDec.cstr(),
 													  m.cstr() );
+#endif
 }
 
 
@@ -136,7 +139,7 @@ void cMessenger :: broadcast_message ( cMessage * pMsg )
 	cStrW sBody2;
 	pMsg->print ( & sBody2 );
 
-	put_ad_lib_memo ( cMemo::success, L"Message sent", L"%s%s", sBody1.cstr(), sBody2.cstr() );
+	// put_ad_lib_memo ( cMemo::success, L"Message sent", L"%s%s", sBody1.cstr(), sBody2.cstr() );
 }
 
 
@@ -179,7 +182,7 @@ bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUC
 	
 	p->dwExtraInfo = 0;
 
-	WORD wExVK = cKeyState :: ex_vk ( p );
+	WORD wExVK = cKeyboardStateEx :: ex_vk ( p );
 
 	if ( g_KeyState.is_down ( wExVK ) )   // DO THIS BEFORE RECEIVE
 		p->dwExtraInfo |= ( 1<<30 );      // THIS BIT INDICATES PREV KEY STATE
@@ -190,6 +193,7 @@ bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUC
 	//------------------------------------
 
 	g_KeyState.receive ( p );
+	DWORD dwModState = g_KeyState.mod_state();
 
 	//------------------------------------
 	//  DISPLAY EVENT
@@ -217,7 +221,7 @@ bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUC
 	}
 
 	//------------------------------------
-	//  FIRST, SWALLOW IF A PARTICULAR
+	//  SWALLOW IF A PARTICULAR
 	//  APP WINDOW (PRESUMABLY MODAL)
 	//  ASKED FOR KEYSTROKES TO BE
 	//  BLOCKED.  (THE "GET TRIGGER"
@@ -227,6 +231,15 @@ bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUC
 	if ( g_Messenger.hwndSwallow )
 		if ( g_Messenger.hwndSwallow == GetForegroundWindow() )
 			return false;
+
+	//------------------------------------
+	//  FIRST, PREDEFINED HOTKEYS
+	//------------------------------------
+
+	if ( ! ( p->dwExtraInfo & (1<<30) ) )  // not typematic
+		if ( g_PredefinedHotkeyTable.bang ( dwModState, &g_KeyState ) )
+			return false;
+
 
 	//------------------------------------
 	//  SECOND, MOUSEOVER
@@ -242,7 +255,7 @@ bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUC
 	//  THIRD, BROADCAST
 	//------------------------------------
 
-	if ( g_Settings.bBroadcastIsOn )
+	if ( g_Settings.bWindowBroadcastIsOn )
 		g_KeyBroadcaster.receive_from_keyboard_hook ( wParam, p );
 
 	//------------------------------------
@@ -296,45 +309,30 @@ void cMessenger :: put_receive_memo ( cMessage * pMsg, const wchar_t * pBody2 )
 
 
 //----------------------------------------------------------------------------------------------------------------------
-// RECEIVE
+// RECEIVE BUFFERED
 //----------------------------------------------------------------------------------------------------------------------
-void cMessenger :: receive ( struct sSocketInfo * pSI, const char * pBuffer, unsigned uLen )
+void cMessenger :: receive_buffered ( cMach * pMach, const char * pBuffer, unsigned uLen )
 {
-	pSI;
-	assert ( pBuffer );
-
-	const char * pEnd = pBuffer + uLen;
+	// THIS FUNCTION MAY NOT BE NEEDED.
 
 	//--------------------------------------
 	// THIS LOOP DE-COALESCES TCP MESSAGES
 	//--------------------------------------
 
+    assert ( pBuffer );
+	const char * pEnd = pBuffer + uLen;
+	cStrN s;
+
 	for ( const char * p = pBuffer; p < pEnd; p += ((cMessage*)p)->uLen )
 	{
 		cMessage * pMsg = (cMessage*)p;
-		pMsg->pFromMach = pSI->pMach;
-
-		if ( pMsg->uLen < 5 )
-		{
-			LOG ( L"Disregarding short message." );
-			break;
-		}
-
-		cStrW sPrint;
-
-		switch ( pMsg->Type )
-		{
-		case cMessage::broadcast_key_event:
-			((cMessageBroadcastKeyEvent*)pMsg)->cMessageBroadcastKeyEvent::print(&sPrint);
-			put_receive_memo ( pMsg, sPrint.cstr() );
-			g_KeyBroadcaster.broadcast_to_local_windows ( ( cMessageBroadcastKeyEvent * ) pMsg );
-			break;
-
-		case cMessage::mouseover:
-			g_Mouseover.receive_command ( pMsg );
-			break;
-		}
+        pMsg->pFromMach = pMach;
+		s.erase();
+		s.append ( p, pMsg->uLen );
+		this->MessageBuffer.put ( s );
 	}
+
+	SetEvent ( hMessageReady);
 }
 
 
@@ -377,6 +375,55 @@ DWORD cMessenger::start_thread ()
 	return this->dwThreadID;
 }
 
+
+//----------------------------------------------------------------------------------------------------------------------
+// RECEIVE
+// This is called by worker threads in cPool when a message arrives via TCP.  Those threads carry out
+// cMessenger's processing.  If it turns out that a separate thread needs to do cMessenger's work, that
+// code is mostly written.  See receive_buffered ();
+//----------------------------------------------------------------------------------------------------------------------
+void cMessenger :: receive ( cMach * pMach, const char * pBuffer, unsigned uLen )
+{
+    assert ( pBuffer );
+	const char * pEnd = pBuffer + uLen;
+
+	//--------------------------------------
+	// THIS LOOP DE-COALESCES TCP MESSAGES
+	//--------------------------------------
+
+	for ( const char * p = pBuffer; p < pEnd; p += ((cMessage*)p)->uLen )
+	{
+		cMessage * pMsg = (cMessage*)p;
+        pMsg->pFromMach = pMach;
+
+		if ( pMsg->uLen < 5 )
+		{
+			LOG ( L"Disregarding short message." );
+			break;
+		}
+
+		cStrW sPrint;
+
+		switch ( pMsg->Type )
+		{
+		case cMessage::broadcast_key_event:
+			((cMessageBroadcastKeyEvent*)pMsg)->cMessageBroadcastKeyEvent::print(&sPrint);
+			put_receive_memo ( pMsg, sPrint.cstr() );
+			g_KeyBroadcaster.broadcast_to_local_windows ( ( cMessageBroadcastKeyEvent * ) pMsg );
+			break;
+
+		case cMessage::mouseover:
+			g_Mouseover.receive_command ( pMsg );
+			break;
+
+		case cMessage::array_target:
+			g_TargetMgr.receive_remote_targets ( pMsg );
+			break;
+		}
+	}
+}
+
+
 //----------------------------------------------------------------------------------------------------------------------
 //  Messenger THREAD
 //----------------------------------------------------------------------------------------------------------------------
@@ -403,20 +450,43 @@ unsigned _stdcall cMessenger::thread ( void * pArg )
 
 	MSG msg;
 
-	while ( GetMessage ( &msg, NULL, 0, 0 ) )
+	for ( ;; )
 	{
-		switch ( msg.message )
-		{
-		case uWM_SOCKET_HAS_CLOSED:
-			g_Pool.on_socket_close_notification ( msg.wParam, msg.lParam );
-			break;
 
-		default:
+		DWORD dwResult = MsgWaitForMultipleObjects ( 1, &pThis->hMessageReady, FALSE, INFINITE, QS_ALLINPUT );
+
+		switch ( dwResult )
+		{
+		case WAIT_OBJECT_0:
+			{
+				cStrN s;
+
+				while ( pThis->MessageBuffer.get ( &s ) )
+				{
+					cMessage * pMsg = (cMessage*) s.cstr();
+
+					pThis->receive ( pMsg->pFromMach, s.cstr(), pMsg->uLen );
+				}
+
+			}
 			break;
+		}
+
+		if ( PeekMessage ( &msg, NULL, 0, 0, PM_REMOVE ) )
+		{
+			switch ( msg.message )
+			{
+			case uWM_SOCKET_HAS_CLOSED:
+				g_Pool.on_socket_close_notification ( msg.wParam, msg.lParam );
+				break;
+
+			default:
+				break;
+			}
 		}
 	}
 
-	return 0;
+	// return 0;
 }
 
 

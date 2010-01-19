@@ -48,6 +48,7 @@ public:
 
 private:
 
+	void vars_to_string ( cStrW * pRet );
 	void clear_combo ( HWND hwndCombo );
 
 	bool bad_mods ( const wchar_t ** ppGeneric, const wchar_t ** pSppecific );
@@ -78,7 +79,7 @@ private:
 	void change_size ();
 	void add_combo ();
 
-	bool init_trigger ();
+	bool init_trigger ( const wchar_t * p );
 
 	int iInitialWindowHeight;
 	int iInitialComboPosY;

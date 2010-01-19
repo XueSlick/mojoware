@@ -29,6 +29,8 @@ public:
 	virtual void write_to_xml ( mojo::cStrW * pRet, void * pObject, const wchar_t * pTagName ) const;
 
 	cFigWoW * get_by_hwnd ( HWND hwnd ) const;
+	cFigWoW * find_target ( DWORD hMach, HWND hwnd, DWORD dwProcessID ) const;
+	cFigWoW * find_target ( mojo::cTarget * a );
 
 private:
 

@@ -18,16 +18,29 @@ class cTargetMgr
 {
 public:
 
-	void find_targets                  (); // called by cFinder periodically
-	void get_copy_of_targets           ( mojo::cArrayTarget * pRet );
-	bool is_broadcast_source           ( HWND hwnd );
-	static bool hwnd_is_in_array       ( mojo::cArrayTarget * pRay, HWND hwnd );
+	void update_list_from_remote_finds   ( DWORD hMach, mojo::cArrayTarget * a );
+	void find_targets                    (); // called by cFinder periodically
+	void receive_remote_targets          ( const cMessage * pMsg );
+	void get_copy_of_targets             ( mojo::cArrayTarget * pRet );
+	void get_copy_of_local_targets       ( mojo::cArrayTarget * pRet );
+	bool is_broadcast_source             ( HWND hwnd );
+	static bool hwnd_is_in_array         ( mojo::cArrayTarget * pRay, HWND hwnd );
+	static bool target_is_in_array       ( mojo::cArrayTarget * pRay, DWORD hMach, HWND hwnd, DWORD dwProcessID );
+	void set_launch_target               ( mojo::cTarget * p );
+	void remove_launch_target            ( DWORD dwID );
+
+
 private:
 
-	void receive_finds                 ( mojo::cArrayTarget * p ); // called by itself from another thread
-	bool find_wow ();
-	mojo::cTarget * find_hwnd_in_list  ( HWND hwnd );
+	void broadcast_targets		         ( mojo::cArrayTarget * p ); // called by itself from cFinder's thread
+	void receive_local_finds             ( mojo::cArrayTarget * p ); // called by itself from another thread
 
+	bool find_wow ();
+	mojo::cTarget * find_hwnd_in_list    ( HWND hwnd );
+	mojo::cTarget * find_target_in_list  ( DWORD hMach, HWND hwnd, DWORD dwProcessID );
+
+	mojo::cTarget * find_target_in_list  ( mojo::cTarget * a );
+	mojo::cTarget * find_target_in_array ( mojo::cArrayTarget * pRay, mojo::cTarget * a );
 
 	mojo::tList2<mojo::cTarget> List;
 

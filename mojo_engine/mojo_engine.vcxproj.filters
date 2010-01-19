@@ -21,6 +21,9 @@
     <ClCompile Include="cArrayTarget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cArrayW.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cDisplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,6 +42,9 @@
     <ClCompile Include="cFinder_target.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cHotkeyTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cInputEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -48,10 +54,10 @@
     <ClCompile Include="cKeyboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cKeyBroadcaster.cpp">
+    <ClCompile Include="cKeyboardStateEx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cKeyState.cpp">
+    <ClCompile Include="cKeyBroadcaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cLog.cpp">
@@ -70,6 +76,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cMessage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cMessageArrayTarget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cMessenger.cpp">
@@ -97,6 +106,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cPool_worker_thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cPredefinedHotkeyTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cScrib.cpp">
@@ -130,6 +142,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cTrigger_init.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="default_scribs.cpp">
@@ -200,6 +215,12 @@
     <ClInclude Include="cFinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cHotkey.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cHotkeyTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="cInputEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -209,10 +230,10 @@
     <ClInclude Include="cKeyboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cKeyBroadcaster.h">
+    <ClInclude Include="cKeyboardStateEx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cKeyState.h">
+    <ClInclude Include="cKeyBroadcaster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cLapPlus.h">
@@ -234,6 +255,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cMessage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cMessageArrayTarget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cMessenger.h">
