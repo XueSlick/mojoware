@@ -1,7 +1,0 @@
-====================================================================
-                         BUILD 16 WORK LIST                      
-====================================================================
-
-  1. Balloons were improved and moved entirely into cWin.
-
-  2. Some monitor messages were removed.

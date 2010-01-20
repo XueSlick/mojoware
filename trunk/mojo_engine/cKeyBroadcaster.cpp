@@ -43,10 +43,10 @@ void cKeyBroadcaster :: receive_from_keyboard_hook ( WPARAM wParam, KBDLLHOOKSTR
 {
 	WORD wExVK = cKeyboardStateEx :: ex_vk ( p );
 
-	HWND hForeground = 0;
+	HWND hForeground = GetForegroundWindow();
 
 	if ( ( ( p->flags & LLKHF_UP ) && this->KeyboardState.is_down ( wExVK ) ) || 
-		 g_TargetMgr.is_broadcast_source ( hForeground = GetForegroundWindow() ) )
+		 g_TargetMgr.is_broadcast_source ( hForeground ) )
 	{
 		cMessageBroadcastKeyEvent m ( wParam, p );
 		broadcast_to_local_windows ( &m, hForeground );
@@ -70,7 +70,7 @@ void cKeyBroadcaster :: broadcast_to_local_windows ( const cMessageBroadcastKeyE
 	{
 		for ( cTarget * pTarget = pList->pHead; pTarget; pTarget = pTarget->pNext )
 		{
-			if ( pTarget->hwnd != hExcludeThisWindow )
+			if ( 1 == pTarget->hMach && pTarget->bIsRunning && pTarget->hwnd != hExcludeThisWindow )
 			{
 				cSyringe::send_notify_message ( pTarget->hwnd, pMsg->wParam, &pMsg->kbhs, pTarget->aKeyboardState );
 
@@ -108,131 +108,6 @@ void cKeyBroadcaster :: broadcast_to_local_windows ( const cMessageBroadcastKeyE
 
 
 
-//----------------------------------------------------------------------------------------------------------------------
-//  GET COPY OF ARRAY
-//----------------------------------------------------------------------------------------------------------------------
-#if 0
-void cKeyBroadcaster :: get_broadcast_targets ( mojo::cArrayTarget * pRet )
-{
-	pRet;
-	assert (0);
-
-#if 0 ////////////////////////////////
-
-	List.lock();
-	pRet->resize ( List.qty() );
-
-	int i = 0;
-
-	for ( cTarget * p = List.first(); p; p = List.next() )
-	{
-		(*pRet)[i] = *p;
-		i++;
-	}
-
-	List.unlock();
-
-#endif /////////////////////////////
-}
-#endif
-
-//----------------------------------------------------------------------------------------------------------------------
-//  HWND IS IN ARRAY
-//----------------------------------------------------------------------------------------------------------------------
-#if 0
-bool cKeyBroadcaster :: hwnd_is_in_array ( cArrayTarget * pRay, HWND hwnd )
-{
-	for ( unsigned i = 0; i < pRay->qty(); i++ )
-	{
-		if ( hwnd == (*pRay)[i].hwnd )
-			return true;
-	}
-
-	return false;
-}
-#endif
-
-//----------------------------------------------------------------------------------------------------------------------
-//  FIND HWND IN LIST
-//----------------------------------------------------------------------------------------------------------------------
-#if 0
-cTarget * cKeyBroadcaster :: find_hwnd_in_list ( HWND hwnd )
-{
-	for ( cTarget * p = List.pHead; p; p = p->pNext )
-	{
-		if ( hwnd == p->hwnd )
-			return p;
-	}
-
-	return NULL;
-}
-#endif
-
-//----------------------------------------------------------------------------------------------------------------------
-//  RECEIVE
-//  cFinder calls this to send current list
-//----------------------------------------------------------------------------------------------------------------------
-#if 0
-void cKeyBroadcaster:: receive_from_finder ( cArrayTarget * a )
-{
-	a;
-	assert(0);
-
-#if 0 //////////////////////
-
-	bool bChanged = false;
-
-	List.lock();
-
-	//-------------------------------------------
-	//  FOR EACH ITEM IN ARRAY
-	//-------------------------------------------
-
-	for ( unsigned i = 0; i < a->qty(); i++ )
-	{
-		//-------------------------------------------
-		//  ADD IT TO LIST IF IT'S NOT IN LIST
-		//-------------------------------------------
-
-		if ( ! find_hwnd_in_list ( (*a)[i].hwnd ) )
-		{
-			cTarget * pNew = new cTarget ( (*a)[i] );
-			List.append ( pNew );
-			bChanged = true;
-		}
-	}
-
-
-	//-------------------------------------------
-	//  FOR EACH ITEM IN LIST
-	//-------------------------------------------
-
-	cTarget * p = List.pHead;
-	while ( p )
-	{
-		cTarget * pNext = p->pNext;
-
-		//-------------------------------------------
-		//  REMOVE IT FROM LIST IF IT'S NOT IN ARRAY
-		//-------------------------------------------
-
-		if ( ! hwnd_is_in_array ( a, p->hwnd ) )
-		{
-			List.rem_del ( p );
-			bChanged = true;
-		}
-
-		p = pNext;
-	}
-
-	List.unlock();
-
-	if ( bChanged )
-		cMessenger::tell_app_that_broadcast_targets_changed();
-
-#endif //////////////////////////
-}
-#endif
 
 /***********************************************************************************************************************
 /*
