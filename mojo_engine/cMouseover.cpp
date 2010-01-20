@@ -515,6 +515,8 @@ void cMouseover :: inject_keyboard_event ( WPARAM wParam, KBDLLHOOKSTRUCT * p )
 
 //---------------------------------------------------------------------------------------------
 //  ON KEYBOARD HOOK
+//  Returns value that should be passed to keyboard hook, i.e., if it sends the keystroke
+//  to a remote PC, it returns false
 //---------------------------------------------------------------------------------------------
 bool cMouseover :: on_keyboard_hook ( WPARAM wParam, KBDLLHOOKSTRUCT * p )
 {

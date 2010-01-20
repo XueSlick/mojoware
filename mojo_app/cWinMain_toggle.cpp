@@ -31,8 +31,10 @@ void cWinMain :: toggle_broadcast ()
 {
 	g_Settings.bWindowBroadcastIsOn = g_Settings.bWindowBroadcastIsOn ? false : true;
 
+#if 0
 	if ( g_Settings.bWindowBroadcastIsOn )
 		g_Settings.bMouseoverIsOn = false;
+#endif
 
 	toggle_sub ();
 }
@@ -55,8 +57,10 @@ void cWinMain :: toggle_mouseover ()
 {
 	g_Settings.bMouseoverIsOn = g_Settings.bMouseoverIsOn ? false : true;
 
+#if 0
 	if ( g_Settings.bMouseoverIsOn )
 		g_Settings.bWindowBroadcastIsOn = false;
+#endif
 
 	toggle_sub ();
 }

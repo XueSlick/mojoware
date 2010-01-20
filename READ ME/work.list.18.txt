@@ -1,0 +1,7 @@
+====================================================================
+                         BUILD 18 WORK LIST                      
+====================================================================
+
+ 1. Simultaneous mouseover and window broadcast now possible.
+
+ 2. WoWs screen reenabled.

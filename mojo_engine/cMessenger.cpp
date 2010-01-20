@@ -248,9 +248,6 @@ bool cMessenger :: keyboard_hook_service_routine ( WPARAM wParam, KBDLLHOOKSTRUC
 	if ( ! g_Mouseover.on_keyboard_hook ( wParam, p ) )
 		return false;
 
-	// if ( g_Settings.bMouseoverIsOn )
-	// 	return g_Mouseover.on_keyboard_hook ( wParam, p );
-
 	//------------------------------------
 	//  THIRD, BROADCAST
 	//------------------------------------
