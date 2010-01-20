@@ -195,6 +195,9 @@
     <ClCompile Include="cWinMain_wm_command.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
+    <ClCompile Include="cWin_balloon.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
     <ClCompile Include="default_scribs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

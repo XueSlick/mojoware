@@ -13,13 +13,6 @@
 //  CODE
 //======================================================================================================================
 
-void cWin :: balloon ( HWND hCtrl, const wchar_t * pTitle, const wchar_t * pBody )
-{
-	if ( hBalloon )
-		DestroyWindow ( hBalloon );
-
-	hBalloon = ::display_balloon ( hCtrl, pTitle, pBody );
-}
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -107,20 +100,6 @@ void cWin::reposition_children ()
 }
 
 
-//----------------------------------------------------------------------------------------------------------------------
-//  WM MOVE
-//----------------------------------------------------------------------------------------------------------------------
-void cWin::wm_move ( int x, int y )
-{
-	UNREFERENCED_PARAMETER (x);
-	UNREFERENCED_PARAMETER (y);
-
-	if ( hBalloon )
-	{
-		DestroyWindow ( hBalloon );
-		hBalloon = 0;
-	}
-}
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -205,6 +184,8 @@ void cWin::register_child ( cWin * p,
 }
 
 
+
+
 //----------------------------------------------------------------------------------------------------------------------
 //  WINDOW PROC
 //----------------------------------------------------------------------------------------------------------------------
@@ -214,6 +195,22 @@ LRESULT CALLBACK cWin :: window_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LPAR
 
 	switch ( uMsg )
 	{
+	case WM_LBUTTONDOWN:
+	case WM_RBUTTONDOWN:
+		pThis->wm_buttondown();
+		break;
+
+	case WM_MOUSEMOVE:
+		pThis->wm_mousemove();
+		break;
+
+#if 0
+	case WM_MOUSELEAVE:
+	case WM_NCMOUSELEAVE:
+		pThis->wm_mouseleave();
+		break;
+#endif
+
 	case WM_SIZE:
 		pThis->wm_size ( LOWORD ( lParam ), HIWORD ( lParam ) );
 		break;

@@ -163,6 +163,7 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClCompile Include="cWinMain_toggle.cpp" />
     <ClCompile Include="cWinMain_window_proc.cpp" />
     <ClCompile Include="cWinMain_wm_command.cpp" />
+    <ClCompile Include="cWin_balloon.cpp" />
     <ClCompile Include="default_scribs.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>

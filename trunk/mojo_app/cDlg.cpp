@@ -162,6 +162,14 @@ INT_PTR CALLBACK cDlg::dialog_proc ( HWND hDlg, UINT uMessage, WPARAM wParam, LP
 
 	switch ( uMessage )
 	{
+	case WM_MOUSEMOVE:
+		pThis->wm_mousemove();
+		break;
+
+	case WM_LBUTTONDOWN:
+	case WM_RBUTTONDOWN:
+		pThis->cWin::wm_buttondown();
+		break;
 			
 	case WM_SIZE:
 		if ( pThis )
@@ -209,6 +217,14 @@ INT_PTR CALLBACK cDlgModal::dialog_proc (HWND hDlg, UINT uMessage, WPARAM wParam
 
 	switch ( uMessage )
 	{
+	case WM_MOUSEMOVE:
+		pThis->wm_mousemove();
+		break;
+
+	case WM_LBUTTONDOWN:
+	case WM_RBUTTONDOWN:
+		pThis->cWin::wm_buttondown();
+		break;
 
 	case WM_INITDIALOG:
 		{
@@ -246,116 +262,6 @@ INT_PTR CALLBACK cDlgModal::dialog_proc (HWND hDlg, UINT uMessage, WPARAM wParam
 	}
 	return (INT_PTR)FALSE;
 }
-
-////////////// FOLLOWING CODE HAS BEEN MOVED TO cDlgVars:
-
-//----------------------------------------------------------------------------------------------------------------------
-// UPDATE VARS
-//----------------------------------------------------------------------------------------------------------------------
-#if 0
-void cDlg :: update_vars ()
-{
-	for ( sDlgDatum * d = DlgData.pHead; d; d = d->pNext )
-	{
-		d->update_var ();
-	}
-}
-#endif
-
-//----------------------------------------------------------------------------------------------------------------------
-// UPDATE DLG
-//----------------------------------------------------------------------------------------------------------------------
-#if 0
-void cDlg :: update_dlg ()
-{
-	for ( sDlgDatum * d = DlgData.pHead; d; d = d->pNext )
-	{
-		d->update_ctrl ();
-	}
-}
-#endif
-
-
-#if 0
-//----------------------------------------------------------------------------------------------
-// UPDATE VAR -- INT
-//----------------------------------------------------------------------------------------------
-void sDlgDatumInt::update_var ( HWND hParent, void * pVar, int iID )
-{
-	HWND hCtrl = GetDlgItem ( hParent, iID );
-	wchar_t b[100];
-	Edit_GetText ( hCtrl, b, sizeof(b)-1 );
-	*(int*)pVar = wcstoul ( b, NULL, 10 );
-}
-
-
-//----------------------------------------------------------------------------------------------
-// UPDATE CTRL -- INT
-//----------------------------------------------------------------------------------------------
-void sDlgDatumInt::update_ctrl ( HWND hParent, int ID, void * pVar )
-{
-	HWND hCtrl = GetDlgItem ( hParent, iID );
-	wchar_t b[200];
-	int iVal = *(int*)pVar;
-	_itow_s ( iVal, b, sizeof(b)/sizeof(wchar_t), 10 );
-	Edit_SetText ( hCtrl, b );
-}
-
-
-
-//----------------------------------------------------------------------------------------------
-// UPDATE VAR -- UINT
-//----------------------------------------------------------------------------------------------
-void sDlgDatumUnsigned::update_var ()
-{
-	HWND hCtrl = GetDlgItem ( hParent, iID );
-	wchar_t b[100];
-	Edit_GetText ( hCtrl, b, sizeof(b)-1 );
-	*(unsigned*)pVar = wcstoul ( b, NULL, 10 );
-}
-
-
-//----------------------------------------------------------------------------------------------
-// UPDATE DLG -- UINT
-//----------------------------------------------------------------------------------------------
-void sDlgDatumUnsigned::update_ctrl ()
-{
-	HWND hCtrl = GetDlgItem ( hParent, iID );
-	wchar_t b[200];
-	unsigned uVal = *(unsigned*)pVar;
-	_ultow_s ( uVal, b, sizeof(b)/sizeof(wchar_t), 10 );
-	Edit_SetText ( hCtrl, b );
-}
-
-
-//----------------------------------------------------------------------------------------------
-// UPDATE VAR -- bool
-//----------------------------------------------------------------------------------------------
-void sDlgDatumBool::update_var ()
-{
-	if ( IsDlgButtonChecked ( hParent, iID ) )
-		*pVar = true;
-
-	else
-		*pVar = false;
-}
-
-
-//----------------------------------------------------------------------------------------------
-// UPDATE DLG -- bool
-//----------------------------------------------------------------------------------------------
-void sDlgDatumBool::update_ctrl ()
-{
-	// HWND hCtrl = GetDlgItem ( hParent, iID );
-
-	if ( *pVar )
-		CheckDlgButton ( hParent, iID, TRUE );
-
-	else
-		CheckDlgButton ( hParent, iID, FALSE );
-}
-
-#endif
 
 
 /***********************************************************************************************************************

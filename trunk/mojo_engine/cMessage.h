@@ -53,7 +53,7 @@ class cMessageBroadcastKeyEvent : public cMessage
 {
 public:
 
-	cMessageBroadcastKeyEvent ( WPARAM wParamArg, KBDLLHOOKSTRUCT * pKbhsArg ) : wParam ( wParamArg ), kbhs ( *pKbhsArg ) { Type = broadcast_key_event; uLen = sizeof(cMessageBroadcastKeyEvent); }
+	cMessageBroadcastKeyEvent ( WPARAM wParamArg, const KBDLLHOOKSTRUCT * pKbhsArg ) : wParam ( wParamArg ), kbhs ( *pKbhsArg ) { Type = broadcast_key_event; uLen = sizeof(cMessageBroadcastKeyEvent); }
 	const wchar_t * print ( mojo::cStrW * pRet ) const;
 	WPARAM wParam;
 	KBDLLHOOKSTRUCT kbhs;

@@ -9,9 +9,10 @@
 
 #pragma once
 
-#include "tArray.h"
-#include "cTarget.h"
-#include "tList.h"
+// #include "tArray.h"
+// #include "cTarget.h"
+// #include "tList.h"
+#include "cKeyboardStateEx.h"
 
 //======================================================================================================================
 //  CLASS
@@ -24,15 +25,10 @@ public:
 	void inject_key_event		    ( const mojo::cTarget * pTarget, WPARAM wParam, KBDLLHOOKSTRUCT * p );
 	void receive_from_keyboard_hook ( WPARAM wParam,  KBDLLHOOKSTRUCT * p );	
 	void broadcast_to_local_windows ( const cMessageBroadcastKeyEvent * pMsg, HWND hExcludeThisWindow = 0 );
-	// void get_broadcast_targets      ( mojo::cArrayTarget * pRet );
-	// void receive_from_finder        ( mojo::cArrayTarget * p );
 
 private:
 
-	// mojo::cTarget * find_hwnd_in_list ( HWND hwnd );
-	// bool hwnd_is_in_array ( mojo::cArrayTarget * pRay, HWND hwnd );
-	// mojo::tList2<mojo::cTarget> List;
-
+	cKeyboardStateEx KeyboardState;
 };
 
 

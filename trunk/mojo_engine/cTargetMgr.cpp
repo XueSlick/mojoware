@@ -157,7 +157,9 @@ void cTargetMgr :: update_list_from_remote_finds ( DWORD hMach, cArrayTarget * a
 	if ( bChanged )
 		cMessenger::tell_app_that_targets_changed();
 
+#if 0
 	put_ad_lib_memo ( cMemo::info, L"cTargetMgr", L"Qty after receive remote: %d", List.qty() );
+#endif
 
 }
 
