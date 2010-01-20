@@ -15,26 +15,6 @@
 //  CODE
 //======================================================================================================================
 
-//----------------------------------------------------------------------------------------------------------------------
-//  WINDOW PROC
-//  Makes the balloon destroy itself when user clicks on it.
-//----------------------------------------------------------------------------------------------------------------------
-LRESULT CALLBACK balloon_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
-{
-	WNDPROC pfOldProc = reinterpret_cast<WNDPROC>( GetWindowLongPtr ( hwnd, GWLP_USERDATA ) );
-
-	switch ( uMsg )
-	{
-	case WM_LBUTTONDOWN:
-	case WM_RBUTTONDOWN:
-		DestroyWindow ( hwnd );
-		break;
-	}
-
-	assert ( pfOldProc );
-	return CallWindowProc ( pfOldProc, hwnd, uMsg, wParam, lParam);	
-}
-
 
 //----------------------------------------------------------------------------------------------------------------------
 //  DISPLAY BALLOON
@@ -47,7 +27,7 @@ HWND display_balloon ( HWND hCtrl, const wchar_t * pTitle, const wchar_t * pBody
     HWND hTip = CreateWindowEx ( 	WS_EX_TOPMOST,
         							TOOLTIPS_CLASS, 
 									NULL,
-        							WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP | TTS_BALLOON | TTS_CLOSE ,		
+        							WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP | TTS_BALLOON, // | TTS_CLOSE ,		
         							CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
         							hParent, 
 									NULL, 
@@ -62,9 +42,11 @@ HWND display_balloon ( HWND hCtrl, const wchar_t * pTitle, const wchar_t * pBody
 	//  ONE IN USER DATA SO NEW ONE CAN CALL IT
 	//-------------------------------------------------
 
+#if 0
 	WNDPROC pfOldProc = (WNDPROC) GetWindowLongPtr ( hTip, GWLP_WNDPROC );
 	SetWindowLongPtr ( hTip, GWLP_WNDPROC, (LONG_PTR) balloon_proc );
 	SetWindowLongPtr ( hTip, GWLP_USERDATA, (LONG_PTR) pfOldProc );
+#endif
 
 	//-------------------------------------------------
 	//  ASSOCIATE THE BALLOON WITH THE CLIENT RECT
@@ -72,11 +54,11 @@ HWND display_balloon ( HWND hCtrl, const wchar_t * pTitle, const wchar_t * pBody
 
 	TOOLINFO ti;
     ti.cbSize 	= sizeof(TOOLINFO);
-    ti.uFlags 	= TTF_IDISHWND | TTF_TRACK | TTF_ABSOLUTE;
-    ti.hwnd 	= hParent;
+    ti.uFlags 	= TTF_IDISHWND | TTF_SUBCLASS; //  TTF_TRACK ; // | TTF_ABSOLUTE;
+    ti.hwnd 	= hCtrl; // hParent;
     ti.hinst 	= g_hInstance;
     ti.lpszText = (LPWSTR) pBody;
-    ti.uId 		= (UINT_PTR)hParent;
+    ti.uId 		= (UINT_PTR)hCtrl; // hParent;
     GetClientRect ( hParent, &ti.rect );
 
     SendMessage ( hTip, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &ti);	

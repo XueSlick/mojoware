@@ -92,8 +92,13 @@ public:
 
 protected:
 
-	void balloon ( HWND hCtrl, const wchar_t * pTitle, const wchar_t * pBody );
+	static VOID CALLBACK kill_balloon_cb ( HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime );
+	void wm_mousemove ();
+	void wm_buttondown();
+	// void wm_mouseleave();
+	HWND balloon ( HWND hCtrl, const wchar_t * pTitle, const wchar_t * pBody );
 	HWND hBalloon; // new nov 20 2009
+	void kill_balloon ();
 
 	static cWin *	user_data_to_pWin	( HWND hwnd );
 	static void		set_user_data		( HWND hwnd, cWin * pWin );

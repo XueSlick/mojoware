@@ -22,10 +22,12 @@ const int iLeftMargin = 0;
 // PROTOTYPES
 //======================================================================================================================
 
+LRESULT CALLBACK tool_proc ( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
+
+
 //======================================================================================================================
 // CODE
 //======================================================================================================================
-
 
 //----------------------------------------------------------------------------------------------------------------------
 // WM INIT
@@ -159,15 +161,6 @@ INT_PTR CALLBACK cDlgModeStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 
 	switch ( uMessage )
 	{
-#if 0
-	case WM_CTLCOLORDLG:
-		{
-			HBRUSH h   = CreateSolidBrush ( RGB ( 70, 70, 70 ) );
-			return (INT_PTR) h;
-		}
-		break;
-#endif
-
 	case WM_COMMAND:
 		{
 			if ( BN_CLICKED == HIWORD ( wParam ) )
@@ -207,8 +200,6 @@ INT_PTR CALLBACK cDlgModeStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 			pThis->wm_drawitem ( (int) wParam, (DRAWITEMSTRUCT*) lParam );
 		break;
 
-
-
 	case WM_INITDIALOG:
 		{
 			set_user_data ( hwnd, lParam );
@@ -219,53 +210,13 @@ INT_PTR CALLBACK cDlgModeStrip::dialog_proc (HWND hwnd, UINT uMessage, WPARAM wP
 		}
 		break;
 
-#if 0
-	case WM_CTLCOLORDLG:
-	case WM_CTLCOLORSTATIC:
-			return (INT_PTR) GetStockObject ( WHITE_BRUSH );
-			break;
-
-	case WM_COMMAND:
-		{
-			int iID = LOWORD(wParam);
-
-			if ( iID == ID_OK )
-			{
-
-			}
-		}
-		break;
-#endif
-
-#if 0
-	case WM_NOTIFY:
-		{
-			switch( wParam )
-			{
-			case ID_LINK:
-
-				switch ( ((LPNMHDR)lParam)->code )
-				{
-					case NM_CLICK:
-					case NM_RETURN:
-					{
-						wchar_t * pURL = PNMLINK(lParam)->item.szUrl;
-						ShellExecute ( NULL, L"open", pURL, NULL, NULL, SW_SHOW );
-					}
-					break;
-				}
-				break;
-			}
-        }
-		break;
-#endif
-
 	default:
 		break;
 	}
 
 	return cDlgModal::dialog_proc ( hwnd, uMessage, wParam, lParam );
 }
+
 
 /***********************************************************************************************************************
 /*

@@ -41,14 +41,18 @@ void cKeyBroadcaster :: inject_key_event ( const mojo::cTarget * pTarget, WPARAM
 //----------------------------------------------------------------------------------------------------------------------
 void cKeyBroadcaster :: receive_from_keyboard_hook ( WPARAM wParam, KBDLLHOOKSTRUCT * p )
 {
-	HWND hForeground = GetForegroundWindow ();
+	WORD wExVK = cKeyboardStateEx :: ex_vk ( p );
 
-	if ( g_TargetMgr.is_broadcast_source ( hForeground ) )
+	HWND hForeground = 0;
+
+	if ( this->KeyboardState.is_down ( wExVK ) || g_TargetMgr.is_broadcast_source ( hForeground = GetForegroundWindow() ) )
 	{
 		cMessageBroadcastKeyEvent m ( wParam, p );
 		broadcast_to_local_windows ( &m, hForeground );
 		cMessenger::broadcast_message ( &m );
 	}
+
+	this->KeyboardState.receive ( p );
 }
 
 
