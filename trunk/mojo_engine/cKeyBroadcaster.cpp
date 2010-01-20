@@ -45,14 +45,14 @@ void cKeyBroadcaster :: receive_from_keyboard_hook ( WPARAM wParam, KBDLLHOOKSTR
 
 	HWND hForeground = 0;
 
-	if ( this->KeyboardState.is_down ( wExVK ) || g_TargetMgr.is_broadcast_source ( hForeground = GetForegroundWindow() ) )
+	if ( ( ( p->flags & LLKHF_UP ) && this->KeyboardState.is_down ( wExVK ) ) || 
+		 g_TargetMgr.is_broadcast_source ( hForeground = GetForegroundWindow() ) )
 	{
 		cMessageBroadcastKeyEvent m ( wParam, p );
 		broadcast_to_local_windows ( &m, hForeground );
 		cMessenger::broadcast_message ( &m );
+		this->KeyboardState.receive ( p );
 	}
-
-	this->KeyboardState.receive ( p );
 }
 
 
