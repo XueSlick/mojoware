@@ -178,7 +178,7 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 	else if ( 2 == g_Settings.uActiveWindowTrackingZ )
 		mojo::set_active_window_tracking_z_order ( true );
 
-	if ( g_Settings.bActiveWindowTrackingDelaySet )
+	if ( ! g_Settings.bActiveWindowTrackingDelaySystem )
 		mojo::set_active_window_tracking_delay ( g_Settings.uActiveWindowTrackingDelay );
 
 	//-------------------------------------

@@ -51,7 +51,7 @@ public:
 	unsigned            uActiveWindowTracking;
 	unsigned            uActiveWindowTrackingZ;
 	unsigned            uActiveWindowTrackingDelay;
-	bool                bActiveWindowTrackingDelaySet;
+	bool                bActiveWindowTrackingDelaySystem;
 
 	//-----------------------------------
 	// DEFINE FOLLOWING IN DERIVED CLASS

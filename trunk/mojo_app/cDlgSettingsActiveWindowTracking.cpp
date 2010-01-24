@@ -14,9 +14,8 @@
 
 sDlgDatum cDlgSettingsActiveWindowTracking :: aDlgData [] = 
 {
-	sDlgDatum ( ID_ACTIVE_WINDOW_TRACKING_DELAY,        L"uActiveWindowTrackingDelay"        ),
-	sDlgDatum ( ID_ACTIVE_WINDOW_TRACKING_DELAY_SET,    L"bActiveWindowTrackingDelaySet"     ),
-	sDlgDatum ( 0,                                      NULL                                 ),
+	sDlgDatum ( ID_ACTIVE_WINDOW_TRACKING_DELAY,          L"uActiveWindowTrackingDelay"        ),
+	sDlgDatum ( 0,                                        NULL                                 ),
 };
 
 
@@ -61,6 +60,18 @@ void cDlgSettingsActiveWindowTracking :: settings_to_dlg ( HWND h, cSettings * p
 
 	if ( 2 == p->uActiveWindowTrackingZ )
 		Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_Z_ON ), TRUE );
+
+	if ( p->bActiveWindowTrackingDelaySystem )
+	{
+		Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_DELAY_SYSTEM ), TRUE );
+		Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_DELAY_MY_SETTING ), FALSE );
+	}
+
+	else
+	{
+		Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_DELAY_SYSTEM ), FALSE );
+		Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_DELAY_MY_SETTING ), TRUE );
+	}
 }
 
 
@@ -89,6 +100,12 @@ void cDlgSettingsActiveWindowTracking :: dlg_to_settings ( cSettings * p, HWND h
 
 	else if ( Button_GetCheck ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_Z_ON ) ) )
 		p->uActiveWindowTrackingZ = 2;
+
+
+	if ( Button_GetCheck ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY_SYSTEM ) ) )
+		p->bActiveWindowTrackingDelaySystem = true;
+	else
+		p->bActiveWindowTrackingDelaySystem = false;
 }
 
 
@@ -138,11 +155,11 @@ void cDlgSettingsActiveWindowTracking :: set_text ()
 //----------------------------------------------------------------------------------------------------------------------
 void cDlgSettingsActiveWindowTracking :: set_state ()
 {
-	if ( Button_GetCheck ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY_SET ) ) )
-		EnableWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY ), TRUE );
+	if ( Button_GetCheck ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY_SYSTEM ) ) )
+		EnableWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY ), FALSE);
 
 	else
-		EnableWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY ), FALSE );
+		EnableWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY ), TRUE );
 }
 
 
@@ -157,6 +174,7 @@ void cDlgSettingsActiveWindowTracking :: wm_init ()
 	set_text();
 	cDlgVars::wm_init ( this->hwnd, &aDlgData[0] );
 	register_children ();
+	set_state();
 }
 
 
@@ -199,7 +217,8 @@ INT_PTR CALLBACK cDlgSettingsActiveWindowTracking :: dialog_proc ( HWND hwnd, UI
 			case ID_CANCEL:
 				break;
 
-			case ID_ACTIVE_WINDOW_TRACKING_DELAY_SET:
+			case ID_ACTIVE_WINDOW_TRACKING_DELAY_SYSTEM:
+			case ID_ACTIVE_WINDOW_TRACKING_DELAY_MY_SETTING:
 				pThis->set_state();
 				break;
 
@@ -227,7 +246,7 @@ INT_PTR CALLBACK cDlgSettingsActiveWindowTracking :: dialog_proc ( HWND hwnd, UI
 						mojo::set_active_window_tracking_z_order ( false );
 					else if ( 2 == g_Settings.uActiveWindowTrackingZ )
 						mojo::set_active_window_tracking_z_order ( true );
-					if ( g_Settings.bActiveWindowTrackingDelaySet )
+					if ( ! g_Settings.bActiveWindowTrackingDelaySystem )
 						mojo::set_active_window_tracking_delay ( g_Settings.uActiveWindowTrackingDelay );
 				}
 				break;
