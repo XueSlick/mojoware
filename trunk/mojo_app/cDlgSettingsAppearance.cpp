@@ -16,8 +16,8 @@ sDlgDatum cDlgSettingsAppearance :: aDlgData [] =
 {
 	sDlgDatum ( ID_TOON_ICON_WIDTH,              		   L"uToonIconWidth"      ),
 	sDlgDatum ( ID_TOON_ICON_HEIGHT,                       L"uToonIconHeight"     ),
-	sDlgDatum ( ID_WOW_ICON_WIDTH,              		   L"uWoWIconWidth"       ),
-	sDlgDatum ( ID_WOW_ICON_HEIGHT,                        L"uWoWIconHeight"      ),
+	// sDlgDatum ( ID_WOW_ICON_WIDTH,              		   L"uWoWIconWidth"       ),
+	// sDlgDatum ( ID_WOW_ICON_HEIGHT,                        L"uWoWIconHeight"      ),
 	sDlgDatum ( 0,                                         NULL                   ),
 };
 

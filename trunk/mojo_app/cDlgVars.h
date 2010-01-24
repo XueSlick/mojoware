@@ -44,8 +44,8 @@ class cDlgVars
 protected:
 
 	void			wm_init 		( HWND h, sDlgDatum * pDlgDataArg );
-	void			settings_to_dlg ( HWND h, cSettings * );
-	void			dlg_to_settings ( cSettings *, HWND h );
+	virtual void    settings_to_dlg ( HWND h, cSettings * );
+	virtual void	dlg_to_settings ( cSettings *, HWND h );
 
 	sDlgDatum * pDlgData; // table of sDlgDatum's
 };

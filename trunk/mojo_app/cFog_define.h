@@ -1,55 +1,39 @@
 /***********************************************************************************************************************
 /*
-/*    cTree.h / mojo_app
-/*
-/*    Each node in a tree is an object of this class.   To make a tree of cSomething's, derive cSomething from 
-/*    this class.
-/*
-/*    Rights are used to represent binary lists.   Some particular node is a pointer to the head of the list.  Its
-/*    right (if it exists) is the head (first item) of the list.  The right's right is the next item.  Etc.
+/*    cFog_define.h / mojo_app
 /*   
-/*    Copyright 2009 Robert Sacks.  See end of file for more info.
+/*    Copyright 2010 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
-
 #pragma once
 
+
+//======================================================================================================================
+//  DEFINES
+//======================================================================================================================
+
 //----------------------------------------------------------------------------------------------------------------------
-//  CLASS
+//  ENTRY
+//
+//	struct sEntry
+//	{
+//		const wchar_t *	pwTag;         // Name used in XML tag
+//		int				iOffset;       // offset of member from start of the object that contains it
+//		fCREATE *       pfCreate;      // 
+//	};
+//
+//  ENTRY ( Tag, 
+//
 //----------------------------------------------------------------------------------------------------------------------
-class cTree
-{
-public:
 
-	cTree () : pParent(0), pRight(0), pLeft(0) {}
-	virtual ~cTree ();
 
-	void remove ();
+// #define ENTRY(a,b,c,d) L#a, int ( (BYTE*)&Default.b - (BYTE*)&Default ), &c::Default
 
-	void insert_left    ( cTree * pNew );
-	void append_left    ( cTree * pNew );
+// #define ENTRY_TREE(tag,parentclass,childclass) L#tag, false, 0, &childclass::create
 
-	void insert_right   ( cTree * pNew );
-	void append_right   ( cTree * pNew );
-
-	size_t count () const;
-
-	virtual cTree * clone_node () const { return new cTree; }
-	cTree * clone_tree () const;
-
-	// void print ( mojo::cStrW * pRet ) const;
-
-	cTree * head() { return pRight; }   // used with nodes that are acting like linked lists
-	cTree * next() { return pRight; }   // used with nodes that are acting like nodes in linked lists
-
-	// mojo::cStrW sName;
-
-public:
-
-	cTree * pParent, * pRight, * pLeft;
-};
-
+#define ENTRY_TREE(   tag, childclass )             L#tag, 0,                                    &childclass::create
+#define ENTRY_MEMBER( tag, thisclass, membername )  L#tag, int (offsetof(thisclass,membername)), 0
 
 /***********************************************************************************************************************
 /*

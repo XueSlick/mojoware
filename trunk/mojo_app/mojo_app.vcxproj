@@ -105,6 +105,7 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
   <ItemGroup>
     <ClCompile Include="balloon.cpp" />
     <ClCompile Include="cDlgFigPredefinedHotkeys.cpp" />
+    <ClCompile Include="cDlgSettingsActiveWindowTracking.cpp" />
     <ClCompile Include="cDlgVarsFig.cpp" />
     <ClCompile Include="cFig.cpp" />
     <ClCompile Include="cFigMgr.cpp" />
@@ -124,6 +125,11 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClCompile Include="cFigViewItem.cpp" />
     <ClCompile Include="cFigWoW.cpp" />
     <ClCompile Include="cFigWoWTree.cpp" />
+    <ClCompile Include="cFog.cpp" />
+    <ClCompile Include="cFogMgr.cpp" />
+    <ClCompile Include="cFogPredefinedHotkeys.cpp" />
+    <ClCompile Include="cFogRoot.cpp" />
+    <ClCompile Include="cFogWoWTree.cpp" />
     <ClCompile Include="cGdiPlus.cpp" />
     <ClCompile Include="cLiquidButton2.cpp" />
     <ClCompile Include="cListView.cpp" />
@@ -188,6 +194,8 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
   <ItemGroup>
     <ClInclude Include="balloon.h" />
     <ClInclude Include="cDlgFigPredefinedHotkeys.h" />
+    <ClInclude Include="cDlgKeyMap.h" />
+    <ClInclude Include="cDlgSettingsActiveWindowTracking.h" />
     <ClInclude Include="cDlgVarsFig.h" />
     <ClInclude Include="cFig.h" />
     <ClInclude Include="cFigMgr.h" />
@@ -206,6 +214,11 @@ copy $(SolutionDir)Release\mojo_hooks.dll  $(SolutionDir)MojoInstaller</Command>
     <ClInclude Include="cFigWoW.h" />
     <ClInclude Include="cFigWoWTree.h" />
     <ClInclude Include="cFig_define.h" />
+    <ClInclude Include="cFog.h" />
+    <ClInclude Include="cFogMgr.h" />
+    <ClInclude Include="cFogPredefinedHotkeys.h" />
+    <ClInclude Include="cFogRoot.h" />
+    <ClInclude Include="cFogWoWTree.h" />
     <ClInclude Include="cGdiPlus.h" />
     <ClInclude Include="cLiquidButton2.h" />
     <ClInclude Include="cListView.h" />

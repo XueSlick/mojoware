@@ -1,15 +1,23 @@
 /***********************************************************************************************************************
 /*
-/*	  utility.cpp / mojo_engine
-/*
+/*    cFigMgr.cpp / mojo_app
+/*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
 #include "stdafx.h"
-#include "cMemo.h"
 
-using namespace mojo;
+//======================================================================================================================
+//  DATA
+//======================================================================================================================
+
+DWORD cFogMgr :: dwLastSerialNumberAssigned = 0;
+
+
+//======================================================================================================================
+//  PROTOTYPES
+//======================================================================================================================
 
 
 //======================================================================================================================
@@ -17,99 +25,86 @@ using namespace mojo;
 //======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
-//  SET ACTIVE WINDOW TRACKING
+//  GET BY HANDLE
 //----------------------------------------------------------------------------------------------------------------------
-MOJO_ENGINE_API void mojo::set_active_window_tracking ( bool b)
+cFog * cFogMgr :: get_by_handle ( DWORD dwHandle )
 {
-	SystemParametersInfo ( SPI_SETACTIVEWINDOWTRACKING, 0, b ? (void*)TRUE : (void*)FALSE, 0 );
+	return Root.get_by_handle ( dwHandle );
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  SET ACTIVE WINDOW TRACKING Z ORDER
+//  PATHNAME
 //----------------------------------------------------------------------------------------------------------------------
-MOJO_ENGINE_API void mojo::set_active_window_tracking_z_order ( bool b )
+const wchar_t * cFogMgr :: pathname ( cStrW * pRet )
 {
-	SystemParametersInfo ( SPI_SETACTIVEWNDTRKZORDER, 0, b ? (void*)TRUE : (void*)FALSE, 0 );
+	assert ( g_awAppTitle );
+	pRet->erase();
+	mojo::get_our_local_app_data_directory ( pRet, g_awAppTitle );
+	*pRet += g_awAppTitle;
+	*pRet += L".fog.xml";
+	return pRet->cstr();
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  SET ACTIVE WINDOW TRACKING INT
+//  LOAD
 //----------------------------------------------------------------------------------------------------------------------
-MOJO_ENGINE_API void mojo::set_active_window_tracking_delay ( int a )
+void cFogMgr :: load_from_file ( cFog * pFog )
 {
-	SystemParametersInfo ( SPI_SETACTIVEWNDTRKTIMEOUT, 0, (void*)a, 0 );
+	cStrW sPathname;
+	pathname ( &sPathname );
+
+	cFileIn f ( sPathname.cstr() );
+
+	if ( 0 ==  f.h )
+		return;
+
+	cStrW sTxt ( 10000 );
+
+	f.get_whole_thing_without_line_breaks ( &sTxt );
+
+	pFog->set_from_xml ( sTxt.cstr() );
+
+	PostMessage ( g_hwnd, uWM_TOON_LIST_CHANGED, 0, 0 );
+	PostMessage ( g_hwnd, uWM_WOW_LIST_CHANGED, 0, 0 );
 }
 
 
+#if 0
 //----------------------------------------------------------------------------------------------------------------------
-//  DWORD TO STRING
+//  SAVE TO FILE
 //----------------------------------------------------------------------------------------------------------------------
-MOJO_ENGINE_API wchar_t * mojo::dword_to_string ( wchar_t * pwRet, size_t size, DWORD a )
+void cFogMgr :: save_to_file ()
 {
-	_ultow_s ( a, pwRet, size, 16 );
-	return pwRet;
-}
 
+	cStrW sPathname;
+	pathname ( &sPathname );
 
-//----------------------------------------------------------------------------------------------------------------------
-//   VERSION OR HIGHER (OF OPERATING SYSTEM)
-//----------------------------------------------------------------------------------------------------------------------
-bool MOJO_ENGINE_API mojo::os_version_or_higher ( DWORD  dwMaj, DWORD dwMin )
-{
-	bool bRetVal = false;
+	FILE * h;
 
-	OSVERSIONINFOEX osvi;
-	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-
-	BOOL iGetVersionExRetVal = GetVersionEx ((OSVERSIONINFO *) &osvi);
-
-	if ( iGetVersionExRetVal )
+	if ( 0 != _wfopen_s ( & h, sPathname.cstr(), L"wt, ccs=UTF-8" ) )
 	{
-		bRetVal = 	
-
-		( (osvi.dwMajorVersion > dwMaj) ||
-		( (osvi.dwMajorVersion == dwMaj ) && (osvi.dwMinorVersion >= dwMin )) );
+		LOG_V ( L"Unable to open configuration file for writing: %s.", sPathname.cstr() );
+		return;
 	}
 
-	return bRetVal;
+	cStrW s (10000);
+
+	Root.write_to_xml ( &s, &Root, 0 );
+
+	const wchar_t * pTxt = s.cstr();
+	int iLen = s.len() * 2;
+	pTxt;
+	iLen;
+
+	// fwprintf ( h, L"Test string" );
+	fwrite ( pTxt, iLen, 1, h );
+	fclose(h);
+
 }
+#endif
 
-
-//----------------------------------------------------------------------------------------------------------------------
-//	FORMAT SYSTEM ERROR
-//  Convert system error code into text
-//----------------------------------------------------------------------------------------------------------------------
-void MOJO_ENGINE_API mojo::format_system_error ( cStrW * pRet, unsigned int dwError )
-{
-    // Retrieve the system error message for the last-error code
-
-    LPVOID lpMsgBuf;
-
-    int iMsgLen = FormatMessageW(
-        FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-        FORMAT_MESSAGE_FROM_SYSTEM |
-        FORMAT_MESSAGE_IGNORE_INSERTS,
-        NULL,
-        dwError,
-        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-        (wchar_t *) &lpMsgBuf,
-        0, NULL );
-
-	if ( iMsgLen )
-	{
-		*pRet = (wchar_t*)lpMsgBuf;
-		pRet->trim_right ( 0xA );
-		pRet->trim_right ( 0xD );
-	}
-
-	else
-		pRet->erase();
-
-	LocalFree(lpMsgBuf);
-}
 
 
 /***********************************************************************************************************************

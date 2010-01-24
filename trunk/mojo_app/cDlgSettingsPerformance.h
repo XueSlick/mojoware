@@ -28,6 +28,8 @@ public:
 
 private:
 
+
+
 	void				register_children ();
 	cWin				RestoreDefaults;
 	cWin 				OK;

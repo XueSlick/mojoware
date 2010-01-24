@@ -127,7 +127,9 @@ MOJO_ENGINE_API void set_launch_target           ( mojo::cTarget * p ); // adds 
 MOJO_ENGINE_API void remove_launch_target        ( DWORD dwID ); // adds it if necessary
 MOJO_ENGINE_API bool set_predefined_hotkey       ( const wchar_t * pName, mojo::cTrigger * pTrigger );
 MOJO_ENGINE_API bool clear_predefined_hotkey     ( const wchar_t * pName );
-
+MOJO_ENGINE_API void set_active_window_tracking  ( bool b );
+MOJO_ENGINE_API void set_active_window_tracking_z_order  ( bool b );
+MOJO_ENGINE_API void set_active_window_tracking_delay ( int );
 } // namespace
 
 /***********************************************************************************************************************

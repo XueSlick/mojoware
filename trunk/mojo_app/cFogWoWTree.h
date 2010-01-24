@@ -1,53 +1,44 @@
 /***********************************************************************************************************************
 /*
-/*    cTree.h / mojo_app
-/*
-/*    Each node in a tree is an object of this class.   To make a tree of cSomething's, derive cSomething from 
-/*    this class.
-/*
-/*    Rights are used to represent binary lists.   Some particular node is a pointer to the head of the list.  Its
-/*    right (if it exists) is the head (first item) of the list.  The right's right is the next item.  Etc.
+/*    cFogWoWTree.h / mojo_app
 /*   
-/*    Copyright 2009 Robert Sacks.  See end of file for more info.
+/*    Copyright 2010 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
 
 #pragma once
 
-//----------------------------------------------------------------------------------------------------------------------
+// #include "cFog.h"
+// #include "cFogWoW.h"
+
+
+//======================================================================================================================
 //  CLASS
-//----------------------------------------------------------------------------------------------------------------------
-class cTree
+//======================================================================================================================
+class cFogViewItemList;
+
+class cFogWoWTree : public cFogTree
 {
 public:
 
-	cTree () : pParent(0), pRight(0), pLeft(0) {}
-	virtual ~cTree ();
 
-	void remove ();
+protected:
+	virtual const sEntry * table () const { return aTable; }
+	static sEntry aTable[];
+	static cFogTree * create () { return new cFogWoWTree; }
 
-	void insert_left    ( cTree * pNew );
-	void append_left    ( cTree * pNew );
+#if 0
+	cFogWoW * get_by_hwnd ( HWND hwnd ) const;
+	cFogWoW * find_target ( DWORD hMach, HWND hwnd, DWORD dwProcessID ) const;
+	cFogWoW * find_target ( mojo::cTarget * a );
+#endif
 
-	void insert_right   ( cTree * pNew );
-	void append_right   ( cTree * pNew );
+private:
 
-	size_t count () const;
+	// cFogViewItemList * create_Fog_view_item_list ();
 
-	virtual cTree * clone_node () const { return new cTree; }
-	cTree * clone_tree () const;
-
-	// void print ( mojo::cStrW * pRet ) const;
-
-	cTree * head() { return pRight; }   // used with nodes that are acting like linked lists
-	cTree * next() { return pRight; }   // used with nodes that are acting like nodes in linked lists
-
-	// mojo::cStrW sName;
-
-public:
-
-	cTree * pParent, * pRight, * pLeft;
+	friend class cFogMgr;
 };
 
 

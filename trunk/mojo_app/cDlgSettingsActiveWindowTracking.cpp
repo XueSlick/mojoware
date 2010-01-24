@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 /*
-/*    cDlgSettingsPerformance.cpp / mojo_app
+/*    cDlgSettingsActiveWindowTracking.cpp / mojo_app
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
@@ -12,11 +12,11 @@
 //  DATA
 //======================================================================================================================
 
-sDlgDatum cDlgSettingsPerformance :: aDlgData [] = 
+sDlgDatum cDlgSettingsActiveWindowTracking :: aDlgData [] = 
 {
-	sDlgDatum ( ID_RAISE_PROCESS_PRIORITY,              L"bRaiseProcessPriority"        ),
-	sDlgDatum ( ID_MAXIMIZE_TIMER_RESOLUTION,           L"bMaximizeTimerResolution"     ),
-	sDlgDatum ( 0,                                      NULL                            ),
+	sDlgDatum ( ID_ACTIVE_WINDOW_TRACKING_DELAY,        L"uActiveWindowTrackingDelay"        ),
+	sDlgDatum ( ID_ACTIVE_WINDOW_TRACKING_DELAY_SET,    L"bActiveWindowTrackingDelaySet"     ),
+	sDlgDatum ( 0,                                      NULL                                 ),
 };
 
 
@@ -31,33 +31,43 @@ sDlgDatum cDlgSettingsPerformance :: aDlgData [] =
 //----------------------------------------------------------------------------------------------------------------------
 //  SETTINGS TO DIALOG
 //----------------------------------------------------------------------------------------------------------------------
-#if 0
-void cDlgSettingsPerformance :: settings_to_dlg ( HWND h, cSettings * p )
+void cDlgSettingsActiveWindowTracking :: settings_to_dlg ( HWND h, cSettings * p )
 {
 	cDlgVars::settings_to_dlg ( h, p );
-
 
 	Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_SYSTEM ), FALSE );
 	Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_OFF ),    FALSE );
 	Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_ON ),     FALSE );
 
-	if ( 0 == g_Settings.uActiveWindowTracking )
+	if ( 0 == p->uActiveWindowTracking )
 		Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_SYSTEM ), TRUE );
 
-	if ( 1 == g_Settings.uActiveWindowTracking )
+	if ( 1 == p->uActiveWindowTracking )
 		Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_OFF ), TRUE );
 
-	if ( 2 == g_Settings.uActiveWindowTracking )
+	if ( 2 == p->uActiveWindowTracking )
 		Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_ON ), TRUE );
+
+
+	Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_Z_SYSTEM ), FALSE );
+	Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_Z_OFF ),    FALSE );
+	Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_Z_ON ),     FALSE );
+
+	if ( 0 == p->uActiveWindowTrackingZ )
+		Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_Z_SYSTEM ), TRUE );
+
+	if ( 1 == p->uActiveWindowTrackingZ )
+		Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_Z_OFF ), TRUE );
+
+	if ( 2 == p->uActiveWindowTrackingZ )
+		Button_SetCheck ( GetDlgItem ( h, ID_ACTIVE_WINDOW_TRACKING_Z_ON ), TRUE );
 }
-#endif
 
 
 //----------------------------------------------------------------------------------------------------------------------
 //  DIALOG TO SETTINGS
 //----------------------------------------------------------------------------------------------------------------------
-#if 0
-void cDlgSettingsPerformance :: dlg_to_settings ( cSettings * p, HWND h )
+void cDlgSettingsActiveWindowTracking :: dlg_to_settings ( cSettings * p, HWND h )
 {
 	cDlgVars::dlg_to_settings ( p, h );
 
@@ -69,22 +79,29 @@ void cDlgSettingsPerformance :: dlg_to_settings ( cSettings * p, HWND h )
 
 	else if ( Button_GetCheck ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_ON ) ) )
 		p->uActiveWindowTracking = 2;
+
+
+	if ( Button_GetCheck ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_Z_SYSTEM ) ) )
+		p->uActiveWindowTrackingZ = 0;
+
+	else if ( Button_GetCheck ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_Z_OFF ) ) )
+		p->uActiveWindowTrackingZ = 1;
+
+	else if ( Button_GetCheck ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_Z_ON ) ) )
+		p->uActiveWindowTrackingZ = 2;
 }
-#endif
 
 
 //----------------------------------------------------------------------------------------------------------------------
 //  REGISTER CHILDREN
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgSettingsPerformance :: register_children ()
+void cDlgSettingsActiveWindowTracking :: register_children ()
 {
 	const int iBigMargin	= 32;
 	const int iMargin 		= 10;
 	const int iButtonHeight = 25;
 	const int iButtonWidth	= 90;
 
-	MojoLabel.hwnd          = GetDlgItem ( hwnd, ID_MOJO_LABEL );
-	SystemLabel.hwnd        = GetDlgItem ( hwnd, ID_SYSTEM_LABEL );
 
 	OK.hwnd = GetDlgItem ( hwnd, ID_OK );
 	register_child ( &OK,
@@ -109,85 +126,67 @@ void cDlgSettingsPerformance :: register_children ()
 //----------------------------------------------------------------------------------------------------------------------
 //  SET TEXT
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgSettingsPerformance :: set_text ()
+void cDlgSettingsActiveWindowTracking :: set_text ()
 {
-	set_item_text ( 0, 							   L"DlgSettingsPerformance.Title", g_awAppTitle );
-
-	set_item_text ( ID_MOJO_LABEL, 			       L"DlgSettingsPerformance.Mojo.Label", g_awAppTitle );
-	set_item_text ( ID_SYSTEM_LABEL, 			   L"DlgSettingsPerformance.System.Label" );
-	set_item_text ( ID_RAISE_PROCESS_PRIORITY,     L"DlgSettingsPerformance.RaiseProcessPriority" );
-	set_item_text ( ID_MAXIMIZE_TIMER_RESOLUTION,  L"DlgSettingsPerformance.MaximizeTimerResolution" );
-	set_item_text ( ID_LINK,                       L"DlgSettingsPerformance.Link", L"http://mojoware.org" );
+	SetWindowText ( GetDlgItem ( hwnd, ID_HEAD ),  L"Set active window tracking" );
+	set_item_text ( ID_LINK,                       L"DlgSettingsActiveWindowTracking.Link", L"http://mojoware.org/help/active_window_tracking.html" );
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 //  SET STATE
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgSettingsPerformance :: set_state ()
+void cDlgSettingsActiveWindowTracking :: set_state ()
 {
+	if ( Button_GetCheck ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY_SET ) ) )
+		EnableWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY ), TRUE );
 
+	else
+		EnableWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY ), FALSE );
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 //  WM INIT
 //----------------------------------------------------------------------------------------------------------------------
-void cDlgSettingsPerformance :: wm_init ()
+void cDlgSettingsActiveWindowTracking :: wm_init ()
 {
-
-
-
+	SetWindowText ( hwnd, L"Mojo: Set active window tracking" );
+	HWND hHead = GetDlgItem ( hwnd, ID_HEAD );
+	SetWindowFont ( hHead, g_hDialogBoxHeadFont, TRUE );
 	set_text();
 	cDlgVars::wm_init ( this->hwnd, &aDlgData[0] );
-
 	register_children ();
-
-	//--------------------------------------
-	//  MAKE SURE GROUPED RADIO BUTTONS 
-	//  GOT SET
-	//--------------------------------------
-
-	MojoLabel.wm_init();
-	SystemLabel.wm_init();
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 //  DIALOG PROC
 //----------------------------------------------------------------------------------------------------------------------
-INT_PTR CALLBACK cDlgSettingsPerformance :: dialog_proc ( HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam )
+INT_PTR CALLBACK cDlgSettingsActiveWindowTracking :: dialog_proc ( HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam )
 {
 	cWin * pWin = user_data_to_pWin ( hwnd );
-	cDlgSettingsPerformance * pThis = static_cast<cDlgSettingsPerformance*>(pWin);
+	cDlgSettingsActiveWindowTracking * pThis = static_cast<cDlgSettingsActiveWindowTracking*>(pWin);
 
 	switch ( uMessage )
 	{
-#if 0
-	case WM_CTLCOLORBTN:
-	case WM_CTLCOLOREDIT:
-	case WM_CTLCOLORDLG:
 	case WM_CTLCOLORSTATIC:
+
+		if ( lParam == (long) GetDlgItem ( hwnd, ID_HEAD ) )
 		{
-			HDC hdc = (HDC) wParam;
-			HWND hCtrl = (HWND) lParam;
-
-			if ( hCtrl == GetDlgItem ( hwnd, ID_CONNECT_HEAD ) ||
-				 hCtrl == GetDlgItem ( hwnd, ID_AUTO_FIND_HEAD ) )
-				SetTextColor	( hdc, RGB ( 0x44, 0x44, 0xdd ) );
-
-			SetBkMode		( hdc, OPAQUE );
-			SetBkColor		( hdc, RGB ( 0xFF, 0xFF, 0xFF ) );
-			return 			reinterpret_cast<INT_PTR> ( GetStockObject ( WHITE_BRUSH ) );
+			HDC hdc = (HDC)wParam;
+			SetTextColor ( hdc, RGB ( 90, 104, 170 ) );		
+			SetBkMode(hdc, TRANSPARENT );
+			SetDCBrushColor ( hdc, GetSysColor ( COLOR_BTNFACE ) );
+			return (LONG) GetStockObject ( DC_BRUSH );
 		}
 		break;
-#endif
 
 	case WM_INITDIALOG:
 		{
 			set_user_data ( hwnd, lParam );
 			cWin * pWin = lParam_to_pWin ( hwnd, lParam );
-			pThis = static_cast<cDlgSettingsPerformance*>(pWin);
+			pThis = static_cast<cDlgSettingsActiveWindowTracking*>(pWin);
 			pThis->hwnd = hwnd;
 			pThis->wm_init ();
 		}
@@ -198,6 +197,10 @@ INT_PTR CALLBACK cDlgSettingsPerformance :: dialog_proc ( HWND hwnd, UINT uMessa
 			switch ( LOWORD ( wParam ) ) // ID
 			{
 			case ID_CANCEL:
+				break;
+
+			case ID_ACTIVE_WINDOW_TRACKING_DELAY_SET:
+				pThis->set_state();
 				break;
 
 			case ID_RESTORE_DEFAULTS:
@@ -216,12 +219,16 @@ INT_PTR CALLBACK cDlgSettingsPerformance :: dialog_proc ( HWND hwnd, UINT uMessa
 				{
 					pThis->dlg_to_settings ( &g_Settings, hwnd );
 					g_Settings.save_to_file ();
-					mojo::set ( L"bRaiseProcessPriority",    g_Settings.bRaiseProcessPriority );
-					mojo::set ( L"bMaximizeTimerResolution", g_Settings.bMaximizeTimerResolution );
 					if ( 1 == g_Settings.uActiveWindowTracking )
 						mojo::set_active_window_tracking ( false );
 					else if ( 2 == g_Settings.uActiveWindowTracking )
 						mojo::set_active_window_tracking ( true );
+					if ( 1 == g_Settings.uActiveWindowTrackingZ )
+						mojo::set_active_window_tracking_z_order ( false );
+					else if ( 2 == g_Settings.uActiveWindowTrackingZ )
+						mojo::set_active_window_tracking_z_order ( true );
+					if ( g_Settings.bActiveWindowTrackingDelaySet )
+						mojo::set_active_window_tracking_delay ( g_Settings.uActiveWindowTrackingDelay );
 				}
 				break;
 

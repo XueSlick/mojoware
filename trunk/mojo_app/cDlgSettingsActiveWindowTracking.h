@@ -1,53 +1,40 @@
 /***********************************************************************************************************************
 /*
-/*    cTree.h / mojo_app
+/*    cDlgSettingsActiveWindowTracking.h / mojo_app
 /*
-/*    Each node in a tree is an object of this class.   To make a tree of cSomething's, derive cSomething from 
-/*    this class.
-/*
-/*    Rights are used to represent binary lists.   Some particular node is a pointer to the head of the list.  Its
-/*    right (if it exists) is the head (first item) of the list.  The right's right is the next item.  Etc.
+/*    Wrapper for the Connection Settings dialog box. 
 /*   
 /*    Copyright 2009 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
-
 #pragma once
 
+
 //----------------------------------------------------------------------------------------------------------------------
-//  CLASS
+//  CLASS DLG SETTINGS CONNECTION
 //----------------------------------------------------------------------------------------------------------------------
-class cTree
+class cDlgSettingsActiveWindowTracking : public cDlgModal, public cDlgVars
 {
 public:
 
-	cTree () : pParent(0), pRight(0), pLeft(0) {}
-	virtual ~cTree ();
+	void 				wm_init ();
+	virtual int 		idd () { return IDD_SETTINGS_ACTIVE_WINDOW_TRACKING; }
+	virtual 			DialogProc * dialog_proc () { return dialog_proc; }
+	static 				DialogProc dialog_proc;
+	static sDlgDatum 	aDlgData[];
+	virtual void 		set_text ();
+	void				set_state ();
 
-	void remove ();
+private:
 
-	void insert_left    ( cTree * pNew );
-	void append_left    ( cTree * pNew );
+	virtual void		settings_to_dlg ( HWND h, cSettings * );
+	virtual void		dlg_to_settings ( cSettings *, HWND h );
 
-	void insert_right   ( cTree * pNew );
-	void append_right   ( cTree * pNew );
-
-	size_t count () const;
-
-	virtual cTree * clone_node () const { return new cTree; }
-	cTree * clone_tree () const;
-
-	// void print ( mojo::cStrW * pRet ) const;
-
-	cTree * head() { return pRight; }   // used with nodes that are acting like linked lists
-	cTree * next() { return pRight; }   // used with nodes that are acting like nodes in linked lists
-
-	// mojo::cStrW sName;
-
-public:
-
-	cTree * pParent, * pRight, * pLeft;
+	void				register_children ();
+	cWin				RestoreDefaults;
+	cWin 				OK;
+	cWin 				Cancel;
 };
 
 
@@ -56,7 +43,7 @@ public:
 /*    This file is part of Mojo.  For more information, see http://mojoware.org.
 /*
 /*    You may redistribute and/or modify Mojo under the terms of the GNU General Public License, version 3, as
-/*    published by the Free Software Foundation.  You should have received a copy of the license with Mojo.  If you
+/*    published by the Free Software Foundation.  You should have received a copy of the license with mojo.  If you
 /*    did not, go to http://www.gnu.org.
 /* 
 /*    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT

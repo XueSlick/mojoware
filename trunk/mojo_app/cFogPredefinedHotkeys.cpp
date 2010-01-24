@@ -1,207 +1,204 @@
 /***********************************************************************************************************************
 /*
-/*    cTree.cpp / mojo_app
+/*    cFogPredefinedHotkeys.cpp / mojo_app
 /*   
-/*    Copyright 2009 Robert Sacks.  See end of file for more info.
+/*    Copyright 2010 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
 #include "stdafx.h"
-#include "cTree.h"
+#include "cFog_define.h"
+
+
 
 //======================================================================================================================
 //  DATA
 //======================================================================================================================
 
 
+
+cFogTree::sEntry cFogPredefinedHotkeys::aTable [] =
+{
+	ENTRY_MEMBER ( ToggleMojo,               cFogPredefinedHotkeys,     sToggleMojo ),
+	ENTRY_MEMBER ( ToggleWindowBroadcast,    cFogPredefinedHotkeys,     sToggleWindowBroadcast ),
+	ENTRY_MEMBER ( ToggleComputerBroadcast,  cFogPredefinedHotkeys,     sToggleComputerBroadcast ),
+	ENTRY_MEMBER ( ToggleMouseover,          cFogPredefinedHotkeys,     sToggleMouseover ),
+	ENTRY_MEMBER ( ToggleHotkeys,            cFogPredefinedHotkeys,     sToggleHotkeys ),
+	ENTRY_MEMBER ( HideShowMojo,             cFogPredefinedHotkeys,     sHideShowMojo ),
+	ENTRY_MEMBER ( BringMouseoverCursorHome, cFogPredefinedHotkeys,     sBringMouseoverCursorHome ),
+	{ 0, 0, 0 }
+};
+
+#if 0
+
+
 //======================================================================================================================
 //  PROTOTYPES
 //======================================================================================================================
 
+static void set_engine_sub ( const wchar_t * pName, cStrW * pTxt );
 
 //======================================================================================================================
 //  CODE
 //======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
-//  INSERT LEFT
+//  SET ENGINE
 //----------------------------------------------------------------------------------------------------------------------
-void cTree :: insert_left ( cTree * pNew )
+void set_engine_sub ( const wchar_t * pName, cStrW * pTxt )
 {
-	if ( this->pLeft )
-		this->pLeft->pParent = pNew;
+	if ( 0 == pTxt->len() )
+		mojo::clear_predefined_hotkey (pName);
 
-	pNew->pLeft = this->pLeft;
+	else
+	{
+		cTrigger t;
+		t.init ( pTxt->cstr() );
+		mojo::set_predefined_hotkey ( pName, &t );
+	}
+}
 
-	this->pLeft = pNew;
-
-	pNew->pParent = this;
-};
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  APPEND LEFT
+//  SET ENGINE
 //----------------------------------------------------------------------------------------------------------------------
-void cTree :: append_left ( cTree * pNew )
+void cFogPredefinedHotkeys :: set_engine ()
 {
-	cTree * pLast = this;
+	struct sEntry
+	{
+		const wchar_t * pName;
+		cStrW * pStr;
+	};
 
-	while ( pLast->pLeft )
-		pLast = pLast->pLeft;
+	sEntry aTable [] = 
+	{
+		L"ToggleMojo",               &sToggleMojo,
+		L"ToggleWindowBroadcast",    &sToggleWindowBroadcast,
+		L"ToggleComputerBroadcast",  &sToggleComputerBroadcast,
+		L"ToggleMouseover",          &sToggleMouseover,
+		L"ToggleHotkeys",            &sToggleHotkeys,
+		L"HideShowMojo",             &sHideShowMojo,
+		L"BringMouseoverCursorHome", &sBringMouseoverCursorHome,
+	};
 
-	pLast->pLeft = pNew;
-	pNew->pParent = pLast;
+	for ( int i = 0; i < sizeof(aTable)/sizeof(sEntry); i++ )
+	{
+		set_engine_sub ( aTable[i].pName, aTable[i].pStr ); 
+	}
+}
+
+
+
+
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  WRITE TO XML
+//  Writes the whole element
+//----------------------------------------------------------------------------------------------------------------------
+void cFogPredefinedHotkeys :: write_to_xml ( cStrW * pRet, void * pObject, const wchar_t * pTagName ) const
+{
+
+	pRet; pObject; pTagName;
+
+	cFogRoot * pRoot = reinterpret_cast<cFogRoot*>(pObject);
+
+	cFogPredefinedHotkeys * pThis = (cFogPredefinedHotkeys *) pRoot->get_by_typeid ( typeid ( cFogPredefinedHotkeys::Default ) . raw_name() );
+
+	if ( ! pThis )
+		return;
+
+	cFog::write_to_xml ( pRet, pThis, pTagName /* table()->pwTag */ );
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  INSERT RIGHT
+//  OPERATOR =
 //----------------------------------------------------------------------------------------------------------------------
-void cTree :: insert_right ( cTree * pNew )
+cFogPredefinedHotkeys & cFogPredefinedHotkeys:: operator= ( const cFog & ra )
 {
-	if ( this->pRight)
-		this->pRight->pParent = pNew;
+	const cFogPredefinedHotkeys &r = (const cFogPredefinedHotkeys &) ra;
 
-	pNew->pRight = this->pRight;
+	this->dwSerialNumber                = r.dwSerialNumber;
+	this->sToggleMojo                   = r.sToggleMojo;
+	this->sToggleWindowBroadcast        = r.sToggleWindowBroadcast;
+	this->sToggleComputerBroadcast      = r.sToggleComputerBroadcast;
+	this->sToggleMouseover              = r.sToggleMouseover;
+	this->sToggleHotkeys                = r.sToggleHotkeys;
+	this->sBringMouseoverCursorHome     = r.sBringMouseoverCursorHome;
+	this->sHideShowMojo                 = r.sHideShowMojo;
 
-	this->pRight = pNew;
-
-	pNew->pParent = this;
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  APPEND RIGHT
-//----------------------------------------------------------------------------------------------------------------------
-void cTree :: append_right ( cTree * pNew )
-{
-	cTree * pLast = this;
-
-	while ( pLast->pRight )
-		pLast = pLast->pRight;
-
-	pLast->pRight = pNew;
-	pNew->pParent = pLast;
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  COUNT
-//----------------------------------------------------------------------------------------------------------------------
-size_t cTree :: count () const
-{
-	unsigned uRetVal = 1;
-
-	if ( pLeft )
-		uRetVal += pLeft->count();
-
-	if ( pRight )
-		uRetVal += pRight->count();
-
-	return uRetVal;
+	return *this;
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 //  CLONE
 //----------------------------------------------------------------------------------------------------------------------
-cTree * cTree :: clone_tree () const
+cFogPredefinedHotkeys * cFogPredefinedHotkeys :: clone () const
 {
-	cTree * pNew = clone_node();
-
-	if ( pLeft )
-		pNew->pLeft = pLeft->clone_tree();
-
-	if ( pRight )
-		pNew->pRight = pRight->clone_tree();
-
-	return pNew;   	
+	return new cFogPredefinedHotkeys ( *this );
 }
 
+
 //----------------------------------------------------------------------------------------------------------------------
-//  PRINT
+//  SET FROM XML
+//  Tree version
+//----------------------------------------------------------------------------------------------------------------------
+void cFogPredefinedHotkeys :: set_from_xml ( void * pvDest, const wchar_t * pTxt ) const
+{
+	cFogRoot * pRoot = reinterpret_cast<cFogRoot*>(pvDest);
+
+	cFogPredefinedHotkeys * pFPH = pRoot->get_predefined_hotkeys ();
+
+	if ( ! pFPH )
+	{
+		pFPH = new cFogPredefinedHotkeys;
+		pRoot->append_left ( pFPH );
+	}
+
+	pFPH->cFog::set_from_xml ( pFPH, pTxt );
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  CLONE
 //----------------------------------------------------------------------------------------------------------------------
 #if 0
-void cTree :: print ( mojo::cStrW * pRet ) const
+cFogPredefinedHotkeys * cFogPredefinedHotkeys :: clone () const
 {
-	*pRet += L"    ";
-	*pRet += sName;
-	*pRet += L'\n';
-
-	if ( pLeft )
-		pLeft->print( pRet );
-
-	if ( pRight )
-		pRight->print ( pRet );
+	return new cFogPredefinedHotkeys ( *this );
 }
 #endif
 
 //----------------------------------------------------------------------------------------------------------------------
-//  REMOVE
+//  OPERATOR =
 //----------------------------------------------------------------------------------------------------------------------
-void cTree :: remove ()
+#if 0
+cFogPredefinedHotkeys & cFogPredefinedHotkeys :: operator= ( const cFog & r )
 {
-	if ( 0 == pParent )
-		return;
-
-	// PRESERVE LEFT LINE OF DESCENT
-	else if ( this == pParent->pLeft )
-	{
-		pParent->pLeft = pLeft;
-		if ( pLeft )
-		{
-			pLeft->pParent = pParent;
-			pLeft = 0;
-		}
-		pParent = 0;
-	}
-
-	// PRESERVE RIGHT LINE OF DESCENT
-	else if ( this == pParent->pRight )
-	{
-		pParent->pRight = pRight;
-		if ( pRight )
-		{
-			pRight->pParent = pParent;
-			pRight = 0;
-		}
-		pParent = 0;
-	}
-
-	else
-		assert(0);
+	this->sToggleMojo = r.sToggleMojo;
+	return *this;
 }
+#endif
+
+
+
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  DESTRUCTOR
+//  CONSTRUCTOR
 //----------------------------------------------------------------------------------------------------------------------
-cTree :: ~cTree ()
+#if 0
+cFogPredefinedHotkeys :: cFogPredefinedHotkeys ( const cFogPredefinedHotkeys & r ) :
+	sToggleMojo ( r.sToggleMojo )
 {
-	if ( pLeft )
-	{
-		delete pLeft;
-		pLeft = 0;
-	}
-
-	if ( pRight )
-	{
-		delete pRight;
-		pRight = 0;
-	}
-
-	if ( pParent )
-	{
-		if ( this == pParent->pLeft )
-			pParent->pLeft = 0;
-
-		else if ( this == pParent->pRight )
-			pParent->pRight = 0;
-
-		pParent = 0;
-	}
 }
+#endif
 
+
+#endif
 
 /***********************************************************************************************************************
 /*

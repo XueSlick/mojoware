@@ -42,6 +42,13 @@ void cWinMain :: wm_command ( WPARAM wParam, LPARAM lParam )
 		}
 		break;
 
+	case ID_ACTIVE_WINDOW_TRACKING_SETTINGS:
+		{
+			cDlgSettingsActiveWindowTracking d;
+			d.make_dlg ();
+		}
+		break;
+
 	case ID_APPEARANCE_SETTINGS:
 		{
 			cDlgSettingsAppearance d;

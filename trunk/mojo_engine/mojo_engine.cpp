@@ -15,6 +15,7 @@
 #include <vector>
 
 bool get_ip_addresses ( mojo::cArrayU * pRet );
+void set_active_window_tracking ( bool );
 
 using namespace mojo;
 
@@ -32,6 +33,9 @@ void mojo :: test ()
 		return;
 	fwprintf ( f.h, L"Test string" );
 }
+
+
+
 
 //----------------------------------------------------------------------------------------------------------------------
 //  CLEAR PREDEFINED HOTKEY

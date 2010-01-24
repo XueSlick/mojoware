@@ -48,6 +48,10 @@ public:
 	unsigned            uView;
 	unsigned			uToonIconWidth;
 	unsigned			uToonIconHeight;
+	unsigned            uActiveWindowTracking;
+	unsigned            uActiveWindowTrackingZ;
+	unsigned            uActiveWindowTrackingDelay;
+	bool                bActiveWindowTrackingDelaySet;
 
 	//-----------------------------------
 	// DEFINE FOLLOWING IN DERIVED CLASS
