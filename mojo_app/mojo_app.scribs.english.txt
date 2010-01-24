@@ -109,3 +109,7 @@ DlgFigWoW.Link                                         = <a href=\"%s\">Learn mo
 // FIG PREDEFINED HOTKEYS DIALOG
 
 DlgFigPredefinedHotkeys.Link                           = <a href=\"%s\">Learn more about predefined hotkeys</a>
+
+// ACTIVE WINDOW TRACKING SETTINGS DIALOG
+
+DlgSettingsActiveWindowTracking.Link                   = <a href=\"%s\">Learn more about active window tracking</a>

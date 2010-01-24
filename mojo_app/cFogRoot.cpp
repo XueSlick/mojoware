@@ -1,54 +1,44 @@
 /***********************************************************************************************************************
 /*
-/*    cTree.h / mojo_app
-/*
-/*    Each node in a tree is an object of this class.   To make a tree of cSomething's, derive cSomething from 
-/*    this class.
-/*
-/*    Rights are used to represent binary lists.   Some particular node is a pointer to the head of the list.  Its
-/*    right (if it exists) is the head (first item) of the list.  The right's right is the next item.  Etc.
+/*    cConFogRoot.cpp / mojo_app
 /*   
-/*    Copyright 2009 Robert Sacks.  See end of file for more info.
+/*    Copyright 2010 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
+#include "stdafx.h"
+#include "cFog_define.h"
 
-#pragma once
 
-//----------------------------------------------------------------------------------------------------------------------
-//  CLASS
-//----------------------------------------------------------------------------------------------------------------------
-class cTree
+//======================================================================================================================
+//  DATA
+//======================================================================================================================
+
+cFogTree::sEntry cFogRoot::aTable [] =
 {
-public:
-
-	cTree () : pParent(0), pRight(0), pLeft(0) {}
-	virtual ~cTree ();
-
-	void remove ();
-
-	void insert_left    ( cTree * pNew );
-	void append_left    ( cTree * pNew );
-
-	void insert_right   ( cTree * pNew );
-	void append_right   ( cTree * pNew );
-
-	size_t count () const;
-
-	virtual cTree * clone_node () const { return new cTree; }
-	cTree * clone_tree () const;
-
-	// void print ( mojo::cStrW * pRet ) const;
-
-	cTree * head() { return pRight; }   // used with nodes that are acting like linked lists
-	cTree * next() { return pRight; }   // used with nodes that are acting like nodes in linked lists
-
-	// mojo::cStrW sName;
-
-public:
-
-	cTree * pParent, * pRight, * pLeft;
+	ENTRY_TREE ( WoWTree,           cFogRoot ),
+	ENTRY_TREE ( PredefinedHotkeys, cFogPredefinedHotkeys ),
+	{ 0, 0, 0 }
 };
+
+
+//======================================================================================================================
+//  PROTOTYPES
+//======================================================================================================================
+
+
+//======================================================================================================================
+//  CODE
+//======================================================================================================================
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  CONSTRUCTOR
+//----------------------------------------------------------------------------------------------------------------------
+cFogRoot :: cFogRoot ()
+{
+
+}
 
 
 /***********************************************************************************************************************

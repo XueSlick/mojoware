@@ -91,6 +91,16 @@
 #include "cFigMgr.h"
 
 //---------------------------------
+//  THIS PROJECT'S FOG CLASSES
+//---------------------------------
+
+#include "cFog.h"
+#include "cFogWoWTree.h"
+#include "cFogPredefinedHotkeys.h"
+#include "cFogRoot.h"
+#include "cFogMgr.h"
+
+//---------------------------------
 //  THIS PROJECT'S WINDOW CLASSES
 //---------------------------------
 
@@ -129,6 +139,8 @@
 #include "cDlgFigWoW.h"
 #include "cDlgTest.h"
 #include "cDlgFigPredefinedHotkeys.h"
+#include "cDlgKeyMap.h"
+#include "cDlgSettingsActiveWindowTracking.h"
 
 //---------------------------------
 //  GLOBAL DATA

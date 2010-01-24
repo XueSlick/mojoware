@@ -40,6 +40,7 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( uFinderBroadcastInterval,               uint,                   L"uFinderBroadcastInterval"             ),
 	ENTRY ( bRaiseProcessPriority,					boolean,				L"bRaiseProcessPriority"				),
 	ENTRY ( bMaximizeTimerResolution,				boolean,				L"bMaximizeTimerResolution"				),
+
 #if 0
 	ENTRY ( sScriptName,							string,					L"sScriptName"							),
 	ENTRY ( WinPos,									rect_i,					L"WinPos"								),	

@@ -47,6 +47,11 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( uView,									uint,				    L"uView"				                ),
 	ENTRY ( uToonIconWidth,							uint,				    L"uToonIconWidth"				        ),
 	ENTRY ( uToonIconHeight,						uint,				    L"uToonIconHeight"				        ),
+	ENTRY ( uActiveWindowTracking,				    uint,				    L"uActiveWindowTracking"				),
+	ENTRY ( uActiveWindowTrackingZ,				    uint,				    L"uActiveWindowTrackingZ"				),
+	ENTRY ( uActiveWindowTrackingDelay,				uint,				    L"uActiveWindowTrackingDelay"		    ),
+	ENTRY ( bActiveWindowTrackingDelaySet,			boolean,				L"bActiveWindowTrackingDelaySet"		),
+
 	// ENTRY ( uWoWIconWidth,							uint,				    L"uWoWIconWidth"				        ),
 	// ENTRY ( uWoWIconHeight,						    uint,				    L"uWoWIconHeight"				        ),
 };
@@ -101,6 +106,12 @@ void cSettings :: init ()
 	uView                               = cWinMain::computers;
 	uToonIconWidth                      = 50;
 	uToonIconHeight                     = 50;
+	uActiveWindowTracking               = 0;
+	uActiveWindowTrackingZ              = 0;
+	uActiveWindowTrackingDelay          = 500;
+	bActiveWindowTrackingDelaySet       = false;
+
+
 	// uWoWIconWidth                       = 70;
 	// uWoWIconHeight                      = 69;
 }

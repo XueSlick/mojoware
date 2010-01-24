@@ -1,53 +1,45 @@
 /***********************************************************************************************************************
 /*
-/*    cTree.h / mojo_app
-/*
-/*    Each node in a tree is an object of this class.   To make a tree of cSomething's, derive cSomething from 
-/*    this class.
-/*
-/*    Rights are used to represent binary lists.   Some particular node is a pointer to the head of the list.  Its
-/*    right (if it exists) is the head (first item) of the list.  The right's right is the next item.  Etc.
+/*    cFogPredefinedHotkeys.h / mojo_app
 /*   
-/*    Copyright 2009 Robert Sacks.  See end of file for more info.
+/*    Copyright 2010 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
 
 #pragma once
 
-//----------------------------------------------------------------------------------------------------------------------
+//======================================================================================================================
 //  CLASS
-//----------------------------------------------------------------------------------------------------------------------
-class cTree
+//======================================================================================================================
+
+class cFogPredefinedHotkeys : public cFogTree
 {
 public:
 
-	cTree () : pParent(0), pRight(0), pLeft(0) {}
-	virtual ~cTree ();
+	void set_engine ();
 
-	void remove ();
+	//------------------------------------
+	// cFog OVERRIDES
+	//------------------------------------
 
-	void insert_left    ( cTree * pNew );
-	void append_left    ( cTree * pNew );
+	virtual const sEntry * table () const { return aTable; }
+	static sEntry aTable[];
+	static cFog * create () { return new cFogPredefinedHotkeys; }
+	cFogPredefinedHotkeys & operator= ( const cFog & r );
+	virtual cFog * clone () const { return new cFogPredefinedHotkeys ( *this ); }
 
-	void insert_right   ( cTree * pNew );
-	void append_right   ( cTree * pNew );
+	//------------------------------------
+	// DATA
+	//------------------------------------
 
-	size_t count () const;
-
-	virtual cTree * clone_node () const { return new cTree; }
-	cTree * clone_tree () const;
-
-	// void print ( mojo::cStrW * pRet ) const;
-
-	cTree * head() { return pRight; }   // used with nodes that are acting like linked lists
-	cTree * next() { return pRight; }   // used with nodes that are acting like nodes in linked lists
-
-	// mojo::cStrW sName;
-
-public:
-
-	cTree * pParent, * pRight, * pLeft;
+	cFogStr sToggleMojo;
+	cFogStr sToggleWindowBroadcast;
+	cFogStr sToggleComputerBroadcast;
+	cFogStr sToggleMouseover;
+	cFogStr sToggleHotkeys;
+	cFogStr sHideShowMojo;
+	cFogStr sBringMouseoverCursorHome;
 };
 
 

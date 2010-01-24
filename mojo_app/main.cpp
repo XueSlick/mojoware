@@ -55,6 +55,28 @@ void 							make_fonts ();
 //----------------------------------------------------------------------------------------------------------------------
 void test ( )
 {
+	cFogMgr fm;
+
+	cFogTree * pPDH = (cFogTree*) fm.Root.pRight;
+
+	cFog * pClone = pPDH->clone(); pClone;
+
+	cFog * p = fm.get_by_handle ( 3 );
+
+	p;
+
+	cFog * pNew = p->clone();
+
+	pNew;
+
+	cFogStr * pFS = (cFogStr*) p;
+
+	const wchar_t * pw = pFS->cstr(); pw;
+
+	cStrW X = *pFS;
+
+	int x =3;
+	x++;
 
 }
 
@@ -145,6 +167,19 @@ int APIENTRY _tWinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pC
 	mojo::set ( L"uPort",					g_Settings.uPort );
 	mojo::set ( L"bWindowBroadcastIsOn",          g_Settings.bWindowBroadcastIsOn );
 	mojo::set ( L"bRaiseProcessPriority",   g_Settings.bRaiseProcessPriority );
+
+	if ( 1 == g_Settings.uActiveWindowTracking )
+		mojo::set_active_window_tracking ( false );
+	else if ( 2 == g_Settings.uActiveWindowTracking )
+		mojo::set_active_window_tracking ( true );
+
+	if ( 1 == g_Settings.uActiveWindowTrackingZ )
+		mojo::set_active_window_tracking_z_order ( false );
+	else if ( 2 == g_Settings.uActiveWindowTrackingZ )
+		mojo::set_active_window_tracking_z_order ( true );
+
+	if ( g_Settings.bActiveWindowTrackingDelaySet )
+		mojo::set_active_window_tracking_delay ( g_Settings.uActiveWindowTrackingDelay );
 
 	//-------------------------------------
 	// INIT ENGINE (after window exists)

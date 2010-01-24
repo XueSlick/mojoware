@@ -1,114 +1,146 @@
 /***********************************************************************************************************************
 /*
-/*	  utility.cpp / mojo_engine
-/*
-/*    Copyright 2009 Robert Sacks.  See end of file for more info.
+/*    cFog.cpp / mojo_app
+/*   
+/*    Copyright 2010 Robert Sacks.  See end of file for more info.
 /*
 /**********************************************************************************************************************/
 
 #include "stdafx.h"
-#include "cMemo.h"
 
-using namespace mojo;
+//======================================================================================================================
+//  DATA
+//======================================================================================================================
 
+DWORD cFog :: dwLastSerialNumberAssigned = 0;
+
+//======================================================================================================================
+//  PROTOTYPES
+//======================================================================================================================
 
 //======================================================================================================================
 //  CODE
 //======================================================================================================================
 
 //----------------------------------------------------------------------------------------------------------------------
-//  SET ACTIVE WINDOW TRACKING
+//  GET BY HANDLE
 //----------------------------------------------------------------------------------------------------------------------
-MOJO_ENGINE_API void mojo::set_active_window_tracking ( bool b)
+cFog * cFog :: get_by_handle ( DWORD dwHandle )
 {
-	SystemParametersInfo ( SPI_SETACTIVEWINDOWTRACKING, 0, b ? (void*)TRUE : (void*)FALSE, 0 );
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  SET ACTIVE WINDOW TRACKING Z ORDER
-//----------------------------------------------------------------------------------------------------------------------
-MOJO_ENGINE_API void mojo::set_active_window_tracking_z_order ( bool b )
-{
-	SystemParametersInfo ( SPI_SETACTIVEWNDTRKZORDER, 0, b ? (void*)TRUE : (void*)FALSE, 0 );
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  SET ACTIVE WINDOW TRACKING INT
-//----------------------------------------------------------------------------------------------------------------------
-MOJO_ENGINE_API void mojo::set_active_window_tracking_delay ( int a )
-{
-	SystemParametersInfo ( SPI_SETACTIVEWNDTRKTIMEOUT, 0, (void*)a, 0 );
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//  DWORD TO STRING
-//----------------------------------------------------------------------------------------------------------------------
-MOJO_ENGINE_API wchar_t * mojo::dword_to_string ( wchar_t * pwRet, size_t size, DWORD a )
-{
-	_ultow_s ( a, pwRet, size, 16 );
-	return pwRet;
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//   VERSION OR HIGHER (OF OPERATING SYSTEM)
-//----------------------------------------------------------------------------------------------------------------------
-bool MOJO_ENGINE_API mojo::os_version_or_higher ( DWORD  dwMaj, DWORD dwMin )
-{
-	bool bRetVal = false;
-
-	OSVERSIONINFOEX osvi;
-	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-
-	BOOL iGetVersionExRetVal = GetVersionEx ((OSVERSIONINFO *) &osvi);
-
-	if ( iGetVersionExRetVal )
-	{
-		bRetVal = 	
-
-		( (osvi.dwMajorVersion > dwMaj) ||
-		( (osvi.dwMajorVersion == dwMaj ) && (osvi.dwMinorVersion >= dwMin )) );
-	}
-
-	return bRetVal;
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//	FORMAT SYSTEM ERROR
-//  Convert system error code into text
-//----------------------------------------------------------------------------------------------------------------------
-void MOJO_ENGINE_API mojo::format_system_error ( cStrW * pRet, unsigned int dwError )
-{
-    // Retrieve the system error message for the last-error code
-
-    LPVOID lpMsgBuf;
-
-    int iMsgLen = FormatMessageW(
-        FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-        FORMAT_MESSAGE_FROM_SYSTEM |
-        FORMAT_MESSAGE_IGNORE_INSERTS,
-        NULL,
-        dwError,
-        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-        (wchar_t *) &lpMsgBuf,
-        0, NULL );
-
-	if ( iMsgLen )
-	{
-		*pRet = (wchar_t*)lpMsgBuf;
-		pRet->trim_right ( 0xA );
-		pRet->trim_right ( 0xD );
-	}
+	if ( dwSerialNumber == dwHandle )
+		return this;
 
 	else
-		pRet->erase();
+		return 0;
+}
 
-	LocalFree(lpMsgBuf);
+
+//----------------------------------------------------------------------------------------------------------------------
+//  GET BY HANDLE
+//----------------------------------------------------------------------------------------------------------------------
+cFog * cFogTree :: get_by_handle ( DWORD dwHandle )
+{
+	//--------------------------------
+	// THIS
+	//--------------------------------
+
+	if ( dwSerialNumber == dwHandle )
+		return this;
+
+	//--------------------------------
+	// MEMBERS
+	//--------------------------------
+
+	else for ( const cFogTree::sEntry * pE = table(); pE->pwTag; pE++ )
+	{
+		if ( 0 == pE->pfCreate )
+		{
+			cFog * pEl = reinterpret_cast<cFog*>( (BYTE*)this + pE->iOffset );
+
+			cFog * pRet = pEl->get_by_handle ( dwHandle );
+
+			if ( pRet )
+				return pRet;
+		}
+	}
+
+	//--------------------------------
+	// CHILDREN
+	//--------------------------------
+
+	if ( pLeft )
+	{
+		if ( cFog * p = (static_cast<cFogTree*>(pLeft))->get_by_handle ( dwHandle ) )
+			return p;
+	}
+
+	if ( pRight )
+	{
+		if ( cFog * p = (static_cast<cFogTree*>(pRight))->get_by_handle ( dwHandle ) )
+			return p;
+	}
+
+	return NULL;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// SET FROM XML
+//----------------------------------------------------------------------------------------------------------------------
+void cFogTree :: set_from_xml ( const wchar_t * pTxt )
+{
+	const wchar_t * pNext = pTxt;
+
+	cStrW sName, sAttribute, sContent;
+
+	int iQtyChildren = 0;
+
+	while ( xml_get_next_element ( &sName, &sAttribute, &sContent, &pNext ) )
+	{
+		const sEntry * e = name_to_entry ( sName.cstr() );
+
+		if ( ! e )
+		{
+			assert(e);
+			continue;
+		}
+
+		cFog * pEl = 0;
+
+		if ( 0 == e->pfCreate ) // MEMBER
+			pEl = reinterpret_cast<cFog*>( (BYTE*)this + e->iOffset );
+
+		else // /NEW NODE IN TREE
+		{
+			pEl = e->pfCreate();
+
+			iQtyChildren++;
+
+			if ( 1 == iQtyChildren )
+				append_right ( (cFogTree*) pEl );
+
+			else
+				pRight->append_left ( (cFogTree*) pEl );
+		}
+			
+		pEl->set_from_xml ( sContent.cstr() );
+	}
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// NAME TO ENTRY
+//----------------------------------------------------------------------------------------------------------------------
+
+const cFogTree::sEntry * cFogTree :: name_to_entry ( const wchar_t * pTxt ) const
+{ 
+	for ( const cFogTree::sEntry * pE = table(); pE->pwTag; pE++ )
+	{
+		if ( 0 == wcscmp ( pTxt, pE->pwTag ) )
+			return ( pE );	
+	}
+
+	return 0;
 }
 
 

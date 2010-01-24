@@ -4,6 +4,9 @@
     <Filter Include="cFig">
       <UniqueIdentifier>{5f458ad5-80c5-41ea-a458-35663b9e93ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cFog">
+      <UniqueIdentifier>{8c9754a6-2d99-45a8-9dbb-7b51beabd020}</UniqueIdentifier>
+    </Filter>
     <Filter Include="cWin">
       <UniqueIdentifier>{5ffdad92-14ff-45ce-8621-1105335864d4}</UniqueIdentifier>
     </Filter>
@@ -64,6 +67,9 @@
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cDlgMouseOver2.cpp">
+      <Filter>cWin</Filter>
+    </ClCompile>
+    <ClCompile Include="cDlgSettingsActiveWindowTracking.cpp">
       <Filter>cWin</Filter>
     </ClCompile>
     <ClCompile Include="cDlgSettingsAppearance.cpp">
@@ -134,6 +140,21 @@
     </ClCompile>
     <ClCompile Include="cFigWoWTree.cpp">
       <Filter>cFig</Filter>
+    </ClCompile>
+    <ClCompile Include="cFog.cpp">
+      <Filter>cFog</Filter>
+    </ClCompile>
+    <ClCompile Include="cFogMgr.cpp">
+      <Filter>cFog</Filter>
+    </ClCompile>
+    <ClCompile Include="cFogPredefinedHotkeys.cpp">
+      <Filter>cFog</Filter>
+    </ClCompile>
+    <ClCompile Include="cFogRoot.cpp">
+      <Filter>cFog</Filter>
+    </ClCompile>
+    <ClCompile Include="cFogWoWTree.cpp">
+      <Filter>cFog</Filter>
     </ClCompile>
     <ClCompile Include="cGdiPlus.cpp">
       <Filter>Source Files</Filter>
@@ -257,6 +278,9 @@
     <ClInclude Include="cDlgFigWow.h">
       <Filter>cWin</Filter>
     </ClInclude>
+    <ClInclude Include="cDlgKeyMap.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
     <ClInclude Include="cDlgLicense.h">
       <Filter>cWin</Filter>
     </ClInclude>
@@ -270,6 +294,9 @@
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgMouseOver.h">
+      <Filter>cWin</Filter>
+    </ClInclude>
+    <ClInclude Include="cDlgSettingsActiveWindowTracking.h">
       <Filter>cWin</Filter>
     </ClInclude>
     <ClInclude Include="cDlgSettingsAppearance.h">
@@ -337,6 +364,21 @@
     </ClInclude>
     <ClInclude Include="cFig_define.h">
       <Filter>cFig</Filter>
+    </ClInclude>
+    <ClInclude Include="cFog.h">
+      <Filter>cFog</Filter>
+    </ClInclude>
+    <ClInclude Include="cFogMgr.h">
+      <Filter>cFog</Filter>
+    </ClInclude>
+    <ClInclude Include="cFogPredefinedHotkeys.h">
+      <Filter>cFog</Filter>
+    </ClInclude>
+    <ClInclude Include="cFogRoot.h">
+      <Filter>cFog</Filter>
+    </ClInclude>
+    <ClInclude Include="cFogWoWTree.h">
+      <Filter>cFog</Filter>
     </ClInclude>
     <ClInclude Include="cGdiPlus.h">
       <Filter>Header Files</Filter>
