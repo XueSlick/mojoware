@@ -50,7 +50,7 @@ cSettings::sEntry cSettings::aTable [] =
 	ENTRY ( uActiveWindowTracking,				    uint,				    L"uActiveWindowTracking"				),
 	ENTRY ( uActiveWindowTrackingZ,				    uint,				    L"uActiveWindowTrackingZ"				),
 	ENTRY ( uActiveWindowTrackingDelay,				uint,				    L"uActiveWindowTrackingDelay"		    ),
-	ENTRY ( bActiveWindowTrackingDelaySet,			boolean,				L"bActiveWindowTrackingDelaySet"		),
+	ENTRY ( bActiveWindowTrackingDelaySystem,		boolean,				L"bActiveWindowTrackingDelaySystem"		),
 
 	// ENTRY ( uWoWIconWidth,							uint,				    L"uWoWIconWidth"				        ),
 	// ENTRY ( uWoWIconHeight,						    uint,				    L"uWoWIconHeight"				        ),
@@ -109,7 +109,7 @@ void cSettings :: init ()
 	uActiveWindowTracking               = 0;
 	uActiveWindowTrackingZ              = 0;
 	uActiveWindowTrackingDelay          = 500;
-	bActiveWindowTrackingDelaySet       = false;
+	bActiveWindowTrackingDelaySystem    = true;
 
 
 	// uWoWIconWidth                       = 70;
