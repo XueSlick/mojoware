@@ -27,6 +27,38 @@ sDlgDatum cDlgSettingsActiveWindowTracking :: aDlgData [] =
 //  CODE
 //======================================================================================================================
 
+
+//----------------------------------------------------------------------------------------------------------------------
+//  SET STATE
+//----------------------------------------------------------------------------------------------------------------------
+void cDlgSettingsActiveWindowTracking :: set_state ()
+{
+	int iENABLE;
+
+	if ( Button_GetCheck ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_ON ) ) )
+		iENABLE = TRUE;
+	else
+		iENABLE = FALSE;
+
+	ShowWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_Z_CAPTION ), iENABLE );
+	ShowWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_Z_ON ), iENABLE );
+	ShowWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_Z_OFF ), iENABLE );
+	ShowWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_Z_SYSTEM ), iENABLE );
+
+	ShowWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY_CAPTION ), iENABLE );
+	ShowWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY_MY_SETTING ), iENABLE );
+	ShowWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY_SYSTEM ), iENABLE );
+	ShowWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY ), iENABLE );
+
+	if ( Button_GetCheck ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY_SYSTEM ) ) )
+		EnableWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY ), FALSE);
+
+	else
+		EnableWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY ), TRUE );
+}
+
+
+
 //----------------------------------------------------------------------------------------------------------------------
 //  SETTINGS TO DIALOG
 //----------------------------------------------------------------------------------------------------------------------
@@ -151,19 +183,6 @@ void cDlgSettingsActiveWindowTracking :: set_text ()
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//  SET STATE
-//----------------------------------------------------------------------------------------------------------------------
-void cDlgSettingsActiveWindowTracking :: set_state ()
-{
-	if ( Button_GetCheck ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY_SYSTEM ) ) )
-		EnableWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY ), FALSE);
-
-	else
-		EnableWindow ( GetDlgItem ( hwnd, ID_ACTIVE_WINDOW_TRACKING_DELAY ), TRUE );
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
 //  WM INIT
 //----------------------------------------------------------------------------------------------------------------------
 void cDlgSettingsActiveWindowTracking :: wm_init ()
@@ -212,6 +231,9 @@ INT_PTR CALLBACK cDlgSettingsActiveWindowTracking :: dialog_proc ( HWND hwnd, UI
 
 	case WM_COMMAND:
 		{
+				pThis->set_state();
+	
+
 			switch ( LOWORD ( wParam ) ) // ID
 			{
 			case ID_CANCEL:

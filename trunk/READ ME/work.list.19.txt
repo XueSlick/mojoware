@@ -1,9 +1,0 @@
-====================================================================
-                         BUILD 19 WORK LIST                      
-====================================================================
-
- 1.  Settings for Active Window Tracking were added.
-
- 2.  Bug fixed in cDlgSettingsAppearance that asserted.
-
- 3.  Two functions in cDlgVars made virtual.

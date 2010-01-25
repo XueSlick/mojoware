@@ -1,0 +1,16 @@
+====================================================================
+                         BUILD 21 WORK LIST                      
+====================================================================
+
+ 1.  cDlgSettingsActiveWindowTracking changed again.
+
+ 2.  Added structured exception handling to cMessenger::receive
+     because a tester sent a minidump that crashed there.
+
+ 3.  cDlgCursorBlind changed to unowned window to prevent HotkeyNet
+     from becoming the foreground window on mouseover master.  Code
+	 added to cWinMain::hide_or_show_cursor to manually save and
+	 restore foreground window, but this commented out since it
+	 seems to be unnecessary.  However it was tested and can be
+	 enabled if it's needed.
+
