@@ -34,7 +34,7 @@ public:
 	void send                     ( DWORD hMachHandle, cMessage * pMessage );
 	void receive_buffered         ( mojo::cMach * pMach, const char * pBuffer, unsigned uLen );
 	void receive                  ( mojo::cMach * pMach, const char * pBuffer, unsigned uLen );
-
+	void receive_sub              ( cMessage * p );
 	static const wchar_t * print_from_mach ( mojo::cStrW * pRet, const mojo::cMach * pMach );
 	void put_receive_memo         ( cMessage * pMsg, const wchar_t * pBody2 );
 	static void broadcast_message ( cMessage * pMsg );

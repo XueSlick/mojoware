@@ -374,6 +374,32 @@ DWORD cMessenger::start_thread ()
 
 
 //----------------------------------------------------------------------------------------------------------------------
+// RECEIVE SUB
+//----------------------------------------------------------------------------------------------------------------------
+void cMessenger::receive_sub ( cMessage * pMsg )
+{
+	cStrW sPrint;
+
+	switch ( pMsg->Type )
+	{
+			case cMessage::broadcast_key_event:
+			((cMessageBroadcastKeyEvent*)pMsg)->cMessageBroadcastKeyEvent::print(&sPrint);
+			put_receive_memo ( pMsg, sPrint.cstr() );
+			g_KeyBroadcaster.broadcast_to_local_windows ( ( cMessageBroadcastKeyEvent * ) pMsg );
+			break;
+
+	case cMessage::mouseover:
+			g_Mouseover.receive_command ( pMsg );
+			break;
+
+	case cMessage::array_target:
+			g_TargetMgr.receive_remote_targets ( pMsg );
+			break;
+	}
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
 // RECEIVE
 // This is called by worker threads in cPool when a message arrives via TCP.  Those threads carry out
 // cMessenger's processing.  If it turns out that a separate thread needs to do cMessenger's work, that
@@ -390,31 +416,28 @@ void cMessenger :: receive ( cMach * pMach, const char * pBuffer, unsigned uLen 
 
 	for ( const char * p = pBuffer; p < pEnd; p += ((cMessage*)p)->uLen )
 	{
-		cMessage * pMsg = (cMessage*)p;
-        pMsg->pFromMach = pMach;
-
-		if ( pMsg->uLen < 5 )
+		__try
 		{
-			LOG ( L"Disregarding short message." );
-			break;
+			cMessage * pMsg = (cMessage*)p;
+
+			if ( pMsg->uLen < sizeof(cMessage) )
+			{
+				LOG ( L"Disregarding short message." );
+				break;
+			}
+
+			pMsg->pFromMach = pMach;
+
+			receive_sub ( pMsg );
 		}
 
-		cStrW sPrint;
-
-		switch ( pMsg->Type )
+		__except ( EXCEPTION_EXECUTE_HANDLER )
 		{
-		case cMessage::broadcast_key_event:
-			((cMessageBroadcastKeyEvent*)pMsg)->cMessageBroadcastKeyEvent::print(&sPrint);
-			put_receive_memo ( pMsg, sPrint.cstr() );
-			g_KeyBroadcaster.broadcast_to_local_windows ( ( cMessageBroadcastKeyEvent * ) pMsg );
-			break;
-
-		case cMessage::mouseover:
-			g_Mouseover.receive_command ( pMsg );
-			break;
-
-		case cMessage::array_target:
-			g_TargetMgr.receive_remote_targets ( pMsg );
+			MessageBox ( g_hwndApp, L"The mysterious crash error has occurred.  Instead \n"
+				                 L"of crashing, Mojo is displaying this box.  Please \n"
+								 L"try to notice what made it happen.  Thanks! ",
+								 L"Mojo", MB_ICONINFORMATION );
+			LOG ( L"Exception in cMessenger::receive()" );
 			break;
 		}
 	}

@@ -71,19 +71,35 @@ void cWinMain :: set_view ()
 }
 
 
+
 //----------------------------------------------------------------------------------------------------------------------
 // HIDE OR SHOW CURSOR
 //----------------------------------------------------------------------------------------------------------------------
-#if 1
 void cWinMain::hide_or_show_cursor ( WPARAM wParam )
 {
+
+#define HIDE_CURSOR_FOREGROUND
+
 	static bool bOn = true;
+
+#ifdef HIDE_CURSOR_FOREGROUND
+	static HWND hPreHideForeground;
+#endif
 
 	//---------------------------------
 	//  SHOW CURSOR
 	//---------------------------------
 	if ( 1 == wParam && ! bOn )
 	{
+
+#ifdef HIDE_CURSOR_FOREGROUND
+		if ( hPreHideForeground )
+		{
+			SetForegroundWindow ( hPreHideForeground );
+			hPreHideForeground = 0;
+		}
+#endif
+
 		ShowWindow ( DlgCursorBlind.hwnd, SW_HIDE );
 		bOn = true;
 		ShowCursor ( TRUE );
@@ -94,6 +110,11 @@ void cWinMain::hide_or_show_cursor ( WPARAM wParam )
 	//---------------------------------
 	else if ( 0 == wParam && bOn )
 	{
+
+#ifdef HIDE_CURSOR_FOREGROUND
+		hPreHideForeground = GetForegroundWindow();
+#endif
+
 		cPtI ptCenter;
 		ptCenter.x = GetSystemMetrics ( SM_CXSCREEN ) / 2;
 		ptCenter.y = GetSystemMetrics ( SM_CYSCREEN ) / 2;
@@ -104,7 +125,6 @@ void cWinMain::hide_or_show_cursor ( WPARAM wParam )
 		ShowCursor ( FALSE );
 	}
 }
-#endif
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -409,8 +429,18 @@ void cWinMain::wm_create ( HWND hwndArg )
 	//  CURSOR BLIND (HIDES CURSOR WHILE
 	//  IT'S MOUSED OVER TO A REMOTE
 	//----------------------------------------
+	{
+		// DlgCursorBlind.make_dlg();
+		// Make DlgCursorBlind manually so it can be an unowned window
+		DlgCursorBlind.pUserData = 0;
+		cWin * pWin = static_cast<cWin *>(this);
+		DlgCursorBlind.hwnd = CreateDialogParam ( g_hInstance, MAKEINTRESOURCE ( IDD_CURSOR_BLIND ), 0, DlgCursorBlind.dialog_proc(), (LPARAM) pWin );
+		LONG_PTR Style = GetWindowLongPtr ( DlgCursorBlind.hwnd, GWL_EXSTYLE );
+		Style |= WS_EX_TOOLWINDOW;
+		SetWindowLongPtr ( DlgCursorBlind.hwnd, GWL_EXSTYLE, Style );
+	}
 
-	DlgCursorBlind.make_dlg();
+
 	ShowWindow ( DlgCursorBlind.hwnd, SW_HIDE );
 	SetParent ( DlgCursorBlind.hwnd, NULL ); // NO PARENT TO FACILITATE POSITIONING IN CENTER OF SCREEN
 
